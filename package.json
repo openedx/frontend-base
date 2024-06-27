@@ -1,6 +1,6 @@
 {
-  "name": "@openedx/frontend-build",
-  "version": "1.0.0-semantically-released",
+  "name": "@openedx/frontend-base",
+  "version": "1.0.0",
   "description": "Build tools, setup and config for frontend apps",
   "publishConfig": {
     "access": "public"
@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openedx/frontend-build.git"
+    "url": "git+https://github.com/openedx/frontend-base.git"
   },
   "keywords": [],
   "author": "Open edX Community",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/openedx/frontend-build/issues"
+    "url": "https://github.com/openedx/frontend-base/issues"
   },
-  "homepage": "https://github.com/openedx/frontend-build#readme",
+  "homepage": "https://github.com/openedx/frontend-base#readme",
   "dependencies": {
     "@babel/cli": "7.24.7",
     "@babel/core": "7.24.7",

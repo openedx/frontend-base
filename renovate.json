@@ -2,5 +2,22 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "patch": {
+    "automerge": true
+  },
+  "rebaseStalePrs": true,
+  "packageRules": [
+    {
+      "packagePatterns": [
+        "eslint"
+      ],
+      "groupName": "eslint"
+    },
+    {
+      "matchPackagePatterns": ["@edx", "@openedx"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
   ]
 }
