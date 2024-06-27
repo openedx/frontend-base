@@ -7,7 +7,7 @@ const presets = require('../lib/presets');
 /**
  * TLDR:
  *  - Find the command to be run in process.argv
- *  - Remove fedx-scripts in process.argv
+ *  - Remove 'openedx' in process.argv
  *  - Add a --config option to process.argv if one is missing
  *  - Execute the command's bin script by pulling it directly in with require()
  *
@@ -40,10 +40,10 @@ function ensureConfigOption(preset, keys = ['--config', '-c']) {
   }
 }
 
-// commandName is the third argument after node and fedx-scripts
+// commandName is the third argument after node and 'openedx'
 const commandName = process.argv[2];
 
-// remove fedx-scripts from process.argv to allow subcommands to read options properly
+// remove 'openedx' from process.argv to allow subcommands to read options properly
 process.argv.splice(1, 1);
 
 switch (commandName) {
@@ -84,5 +84,5 @@ switch (commandName) {
     require('../lib/scripts/serve');
     break;
   default:
-    console.log(chalk.red(`[ERROR] fedx-scripts: The command ${chalk.bold.red(commandName)} is unsupported.`));
+    console.log(chalk.red(`[ERROR] openedx: The command ${chalk.bold.red(commandName)} is unsupported.`));
 }

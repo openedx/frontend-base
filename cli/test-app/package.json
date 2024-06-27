@@ -4,12 +4,12 @@
   "description": "",
   "main": "webpack.prod.config.js",
   "scripts": {
-    "test": "../../bin/fedx-scripts.js jest ./src",
-    "build": "../../bin/fedx-scripts.js webpack",
-    "lint": "../../bin/fedx-scripts.js eslint . --ext .jsx,.js",
-    "babel": "../../bin/fedx-scripts.js babel src --out-dir dist/babel --source-maps --ignore **/*.test.jsx,**/*.test.js --copy-files",
-    "start": "../../bin/fedx-scripts.js webpack-dev-server",
-    "serve": "../../bin/fedx-scripts.js serve"
+    "test": "../../bin/openedx.js jest ./src",
+    "build": "../../bin/openedx.js webpack",
+    "lint": "../../bin/openedx.js eslint . --ext .jsx,.js",
+    "babel": "../../bin/openedx.js babel src --out-dir dist/babel --source-maps --ignore **/*.test.jsx,**/*.test.js --copy-files",
+    "start": "../../bin/openedx.js webpack-dev-server",
+    "serve": "../../bin/openedx.js serve"
   },
   "keywords": [],
   "author": "",

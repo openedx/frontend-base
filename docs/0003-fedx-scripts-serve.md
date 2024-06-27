@@ -1,4 +1,4 @@
-# Serving production Webpack builds locally with `fedx-scripts`
+# Serving production Webpack builds locally with `openedx`
 
 ## Summary
 
@@ -16,7 +16,7 @@ To mitigate this, this ADR describes a new mechanism to provide a standard, docu
 
 # Decision
 
-We will create a new `serve` command for `fedx-scripts` that creates an Express.js server to run the generated `dist` file assets (e.g., `index.html`) on the `PORT` specified in the MFE's `env.config.js` and/or `.env.development|private` file(s) on `localhost`.
+We will create a new `serve` command for `openedx` that creates an Express.js server to run the generated `dist` file assets (e.g., `index.html`) on the `PORT` specified in the MFE's `env.config.js` and/or `.env.development|private` file(s) on `localhost`.
 
 If no `env.config.js` and/or `.env.development|private` file(s) exist and/or no `PORT` setting is specified those files, the `serve` command will fallback to a default port 8080, which is similar to the default ports our typical example MFE applications use.
 
@@ -29,9 +29,15 @@ Once in place, a MFE application may add a `serve` script to its NPM scripts in 
 ```json
 {
     "scripts": {
-        "serve": "fedx-scripts serve"
+        "serve": "openedx serve"
     }
 }
 ```
 
 Then, running `npm run serve` in the root of that MFE application will run the new `serve` command in `@edx/frontend-build`, serving the assets in the MFE's `dist` directory on the `PORT` specified in the `env.config.js` file or `.env.development|private` file(s).
+
+# Change Log
+
+## 2024-06-27
+
+Updating the ADR to refer to the CLI tool as "openedx" instead of "fedx-scripts".  The CLI tool name changed to "openedx" in frontend-base - in frontend-build it was called "fedx-scripts".

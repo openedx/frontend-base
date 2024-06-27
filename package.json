@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "bin": {
-    "fedx-scripts": "./bin/fedx-scripts.js"
+    "openedx": "./bin/openedx.js"
   },
   "scripts": {
     "lint": "eslint . --no-eslintrc -c .eslintrc.js",
