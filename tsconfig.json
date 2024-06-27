@@ -8,8 +8,8 @@
     ".eslintrc.js",
     "config/.eslintrc.js",
     "config/.eslintrc.next.js",
-    "example/.eslintrc.js",
-    "example/**/*",
+    "cli/test-app/.eslintrc.js",
+    "cli/test-app/**/*",
     "lib",
     "bin",
     "config"
@@ -17,7 +17,7 @@
   "exclude": [
     "node_modules",
     "dist",
-    "example/dist/*",
-    "example/node_modules/*'"
+    "cli/test-app/dist/*",
+    "cli/test-app/node_modules/*'"
   ]
 }
