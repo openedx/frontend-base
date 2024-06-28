@@ -11,9 +11,9 @@ const PostCssAutoprefixerPlugin = require('autoprefixer');
 const PostCssRTLCSS = require('postcss-rtlcss');
 const PostCssCustomMediaCSS = require('postcss-custom-media');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { transform } = require('@formatjs/ts-transformer');
 
 const commonConfig = require('./webpack.common.config');
-const presets = require('../lib/presets');
 const resolvePrivateEnvConfig = require('../lib/resolvePrivateEnvConfig');
 const getLocalAliases = require('./getLocalAliases');
 
@@ -44,22 +44,24 @@ module.exports = merge(commonConfig, {
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
-      // The babel-loader transforms newer ES2015+ syntax to older ES5 for older browsers.
-      // Babel is configured with the .babelrc file at the root of the project.
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules\/(?!@(open)?edx)/,
+        exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('ts-loader'),
           options: {
-            configFile: presets['babel-typescript'].resolvedFilepath,
-            // Caches result of loader to the filesystem. Future builds will attempt to read
-            // from the cache to avoid needing to run the expensive recompilation process
-            // on each run.
-            cacheDirectory: true,
-            plugins: [
-              require.resolve('react-refresh/babel'),
-            ],
+            compilerOptions: {
+              noEmit: false,
+            },
+            getCustomTransformers() {
+              return {
+                before: [
+                  transform({
+                    overrideIdFn: '[sha512:contenthash:base64:6]',
+                  }),
+                ],
+              };
+            },
           },
         },
       },

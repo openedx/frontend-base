@@ -47,10 +47,6 @@ const commandName = process.argv[2];
 process.argv.splice(1, 1);
 
 switch (commandName) {
-  case 'babel':
-    ensureConfigOption(presets.babel, ['--config-file']);
-    require('@babel/cli/bin/babel');
-    break;
   case 'eslint':
     ensureConfigOption(presets.eslint);
     // eslint-disable-next-line import/extensions, import/no-extraneous-dependencies
@@ -70,13 +66,12 @@ switch (commandName) {
     break;
   case 'formatjs': {
     const commonArgs = [
-      '--format', 'node_modules/@openedx/frontend-build/lib/formatter.js',
+      '--format', 'node_modules/@openedx/frontend-base/lib/formatter.js',
       '--ignore', 'src/**/*.json',
-      '--out-file', './temp/babel-plugin-formatjs/Default.messages.json',
+      '--out-file', './temp/formatjs/Default.messages.json',
       '--', 'src/**/*.js*',
     ];
     process.argv = process.argv.concat(commonArgs);
-    ensureConfigOption(presets.formatjs);
     require('@formatjs/cli/bin/formatjs');
     break;
   }

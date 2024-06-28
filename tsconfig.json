@@ -1,5 +1,5 @@
 {
-  "extends": "@edx/typescript-config",
+  "extends": "./config/tsconfig.json",
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist"
@@ -7,7 +7,6 @@
   "include": [
     ".eslintrc.js",
     "config/.eslintrc.js",
-    "config/.eslintrc.next.js",
     "cli/test-app/.eslintrc.js",
     "cli/test-app/**/*",
     "lib",

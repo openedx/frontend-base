@@ -1,14 +1,9 @@
-const { babel } = require('../lib/presets');
-
 module.exports = {
   extends: '@edx/eslint-config',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'formatjs'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     requireConfigFile: true,
-    babelOptions: {
-      configFile: babel.resolvedFilepath || babel.defaultFilepath,
-    },
   },
   rules: {
     'import/no-extraneous-dependencies': [
@@ -34,6 +29,7 @@ module.exports = {
       components: ['Link'],
       specialLink: ['to'],
     }],
+    'formatjs/enforce-description': ['error', 'literal'],
     'import/no-import-module-export': 'off',
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
   },

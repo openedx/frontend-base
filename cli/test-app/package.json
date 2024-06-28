@@ -7,7 +7,6 @@
     "test": "../../bin/openedx.js jest ./src",
     "build": "../../bin/openedx.js webpack",
     "lint": "../../bin/openedx.js eslint . --ext .jsx,.js",
-    "babel": "../../bin/openedx.js babel src --out-dir dist/babel --source-maps --ignore **/*.test.jsx,**/*.test.js --copy-files",
     "start": "../../bin/openedx.js webpack-dev-server",
     "serve": "../../bin/openedx.js serve"
   },

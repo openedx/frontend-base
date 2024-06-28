@@ -1,3 +1,3 @@
-const config = require('../../config/.eslintrc');
+const { createConfig } = require('.');
 
-module.exports = config;
+module.exports = createConfig('eslint');

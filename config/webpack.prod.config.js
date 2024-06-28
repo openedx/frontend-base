@@ -3,7 +3,6 @@
 
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { merge } = require('webpack-merge');
 const CssNano = require('cssnano');
 const Dotenv = require('dotenv-webpack');
@@ -15,13 +14,13 @@ const path = require('path');
 const PostCssAutoprefixerPlugin = require('autoprefixer');
 const PostCssRTLCSS = require('postcss-rtlcss');
 const PostCssCustomMediaCSS = require('postcss-custom-media');
+const { transform } = require('@formatjs/ts-transformer');
 
 // Reduce CSS file size by ~70%
 const purgecss = require('@fullhuman/postcss-purgecss');
 
 const HtmlWebpackNewRelicPlugin = require('../lib/plugins/html-webpack-new-relic-plugin');
 const commonConfig = require('./webpack.common.config');
-const presets = require('../lib/presets');
 
 // Add process env vars. Currently used only for setting the PUBLIC_PATH.
 dotenv.config({
@@ -63,19 +62,29 @@ module.exports = merge(commonConfig, {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: process.env.PUBLIC_PATH || '/',
+    clean: true, // Clean the output directory before emit.
   },
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
-      // The babel-loader transforms newer ES2015+ syntax to older ES5 for older browsers.
-      // Babel is configured with the .babelrc file at the root of the project.
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules\/(?!@(open)?edx)/,
+        exclude: /node_modules/, // \/(?!@(open)?edx)/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('ts-loader'),
           options: {
-            configFile: presets['babel-typescript'].resolvedFilepath,
+            compilerOptions: {
+              noEmit: false,
+            },
+            getCustomTransformers() {
+              return {
+                before: [
+                  transform({
+                    overrideIdFn: '[sha512:contenthash:base64:6]',
+                  }),
+                ],
+              };
+            },
           },
         },
       },
@@ -192,8 +201,6 @@ module.exports = merge(commonConfig, {
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
-    // Cleans the dist directory before each build
-    new CleanWebpackPlugin(),
     // Writes the extracted CSS from each entry to a file in the output directory.
     new MiniCssExtractPlugin({
       filename: '[name].[chunkhash].css',
