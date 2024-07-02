@@ -23,6 +23,7 @@
   "bugs": {
     "url": "https://github.com/openedx/frontend-base/issues"
   },
+  "sideEffects": false,
   "homepage": "https://github.com/openedx/frontend-base#readme",
   "dependencies": {
     "@edx/eslint-config": "4.1.0",
