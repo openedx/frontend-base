@@ -18,11 +18,11 @@ As part of this process, we decided to unify these libraries to further reduce o
 
 At the time of this writing, the repository already contains `frontend-build`.
 
-# Decision
+## Decision
 
 We will move the code from these libraries into `frontend-base`.  We decided we wanted to preserve the commit history of these repositories as we add them to this repository, and found a relatively simple process for accomplishing this, as described below in "Commit History Preservation".
 
-## Migration Order
+### Migration Order
 
 We chose to move `frontend-build` first as the foundation upon which all the others will be built.  A modified version of `frontend-build` will be used to build the shell and provide build scripts to the frontend apps which support webpack module federation, amongst other things.
 
@@ -30,7 +30,7 @@ Following frontend build, we will move `frontend-platform` and validate that thi
 
 Once that has been proven, we'll add the other libraries and the 'shell' application in support of the new architecture described in OEP-65.
 
-## Commit History Preservation
+### Commit History Preservation
 
 We created this repository by pushing the entire commit history from `frontend-build` into this repository.  This was accomplished by:
 
@@ -43,7 +43,7 @@ This successfully preserved the commit history of `frontend-build`.  We will fol
 
 We acknowledge that this move will make it more difficult for GitHub, in particular, to track commit history through the move in its UI, but expect that it's far better than not having the history at all.
 
-# Implementation
+## Implementation
 
 For `frontend-build`, the majority of its code is in:
 
@@ -76,10 +76,10 @@ Focusing on the libraries described in this ADR, we expect the final repository 
   ... other folders...
 ```
 
-## package.json and node_modules
+### package.json and node_modules
 
 The entire `frontend-base` repository will have a single package.json file and a single node_modules directory.  The only exception here will be the test apps ("example apps" in the current repositories), which will continue to act as independent applications.
 
-## npm Package
+### npm Package
 
 The entire, unified library will be released as a single npm package, `@openedx/frontend-base`.

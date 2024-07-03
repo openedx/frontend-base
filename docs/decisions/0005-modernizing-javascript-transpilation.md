@@ -12,15 +12,15 @@ This means that Babel is likely doing very little for us since our supported bro
 
 Further, we're trying to simplify our dependency tree and reduce our bundle size, and believe the ~14 Babel-related dependencies in `frontend-build` are a source of unnecessary bloat.
 
-# Decision
+## Decision
 
 As part of migrating to `frontend-base`, we chose to simplify and modernize our build process.  We've accomplished this by replacing `babel-loader` in our webpack configurations with `ts-loader`, and then removing all Babel-related dependencies from the library.  Anecdotally, we expect this will reduce build times by at least 2-3 seconds and reduce this library's dependencies by roughly 100MB.
 
 In migrating from `babel-loader` and `@edx/browserslist-config` to `ts-loader` and `tsconfig.json`, how we calculate our transpilation targets has changed a bit.  We believe this is acceptable given how up-to-date and modern our target browsers are.  Rather than targeting browser versions, we target a particular version of JavaScript sufficiently 'old' that our supported browsers are guaranteed to support it.  In order to update this target in the future, we will need to evaluate and understand what JavaScript language features are supported by recent versions of evergreen browsers.
 
-# Implementation
+## Implementation
 
-## Transpilation targets
+### Transpilation targets
 
 In `frontend-build`'s transpilation process, we use `@edx/browserslist-config` and `@babel/preset-env` to determine our target JavaScript language features.  The Browserslist config looks like:
 
@@ -61,7 +61,7 @@ The "target" describes the JavaScript language version emitted by the transpilat
 
 As related evidence, `create-react-app` TypeScript projects, for instance, set the target to "ES5" to be extremely conservative and support as many platforms as possible.  Given our supported browsers as described in our Browserslist config, we don't need to be as conservative.
 
-## Dependencies
+### Dependencies
 
 We have removed these dependencies:
 
@@ -86,7 +86,7 @@ We have added these dependencies:
 - `ts-loader`
 - `@formatjs/ts-transformer`
 
-## Other notable changes
+### Other notable changes
 
 - We've removed the `babel` CLI command, as it's no longer necessary and to our knowledge nothing is using it.
 - We've removed the babel config files, as they'll no longer be used.  In particular, we've removed `babel-preserve-modules.config.js` which is in use by some libraries that use `frontend-build`.  It's our expectation that these libraries should be moving toward a 'buildless' process where they rely on their consumer to run a webpack build, rather than doing it themselves.  Our Open edX libraries are currently double-transpiling; once as part of their own build process and once by the consuming app or library.  It's wasteful and unnecessary.
