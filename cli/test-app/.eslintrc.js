@@ -1,3 +1,7 @@
-const { createConfig } = require('.');
+const { createConfig } = require('@openedx/frontend-base');
 
-module.exports = createConfig('eslint');
+module.exports = createConfig('eslint', {
+  parserOptions: {
+    project: './tsconfig.json',
+  },
+});

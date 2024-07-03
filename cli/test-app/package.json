@@ -2,22 +2,23 @@
   "name": "cli-test-app",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.prod.config.js",
+  "main": "src/index.jsx",
   "scripts": {
     "test": "../../bin/openedx.js jest ./src",
     "build": "../../bin/openedx.js webpack",
-    "lint": "../../bin/openedx.js eslint . --ext .jsx,.js",
+    "lint": "eslint . --no-eslintrc -c .eslintrc.js",
     "start": "../../bin/openedx.js webpack-dev-server",
     "serve": "../../bin/openedx.js serve"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Open edX Community",
+  "license": "AGPL-3.0",
   "dependencies": {
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   },
   "devDependencies": {
-    "react-test-renderer": "16.14.0"
+    "react-test-renderer": "16.14.0",
+    "@openedx/frontend-base": "file:../../../frontend-base"
   }
 }
