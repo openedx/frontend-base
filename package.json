@@ -26,7 +26,6 @@
   "sideEffects": false,
   "homepage": "https://github.com/openedx/frontend-base#readme",
   "dependencies": {
-    "@edx/eslint-config": "4.1.0",
     "@edx/new-relic-source-map-webpack-plugin": "2.1.0",
     "@edx/typescript-config": "1.0.1",
     "@formatjs/cli": "^6.0.3",

@@ -18,7 +18,7 @@
     "react-dom": "^16.14.0"
   },
   "devDependencies": {
-    "react-test-renderer": "16.14.0",
-    "@openedx/frontend-base": "file:../../../frontend-base"
+    "@openedx/frontend-base": "file:../../../frontend-base",
+    "react-test-renderer": "16.14.0"
   }
 }
