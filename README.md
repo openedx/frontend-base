@@ -97,3 +97,10 @@ Replace the import from 'frontend-build' with 'frontend-base'.
 ### 8. Search for any other usages of `frontend-build`
 
 Find any other imports/usages of `frontend-build` in your repository and replace them with `frontend-base` so they don't break.
+
+## Migrating to frontend-base
+
+Currently this section is a quick of notes documenting required changes to MFEs.  We will turn this into a more rigorous migration guide in the future.
+
+- First follow the steps above in the "Development" section.
+- Description fields are now required on all i18n messages in the repository.  This is because of a change to the ESLint config.

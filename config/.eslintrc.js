@@ -32,7 +32,7 @@ module.exports = {
     'formatjs/enforce-description': ['error', 'literal'],
     'import/no-import-module-export': 'off',
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
-    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }]
+    'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
   },
   globals: {
     newrelic: false,
