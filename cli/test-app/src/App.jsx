@@ -1,7 +1,7 @@
 import config from 'env.config';
 import Image from './Image';
-import appleUrl, { ReactComponent as Apple } from './apple.svg';
 import appleImg from './apple.jpg';
+import appleUrl, { ReactComponent as Apple } from './apple.svg';
 
 import './style.scss';
 
