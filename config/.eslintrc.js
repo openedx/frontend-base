@@ -14,11 +14,17 @@ module.exports = {
     'airbnb/hooks',
     'airbnb-typescript',
   ],
+  globals: {
+    newrelic: false,
+  },
+  ignorePatterns: [
+    'module.config.js',
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     requireConfigFile: true,
   },
   plugins: ['@typescript-eslint', 'formatjs'],
-  parser: '@typescript-eslint/parser',
   // If you add rule overrides here, add code to test.js that proves you formatted it right.
   rules: {
     'class-methods-use-this': 'off',
@@ -78,10 +84,4 @@ module.exports = {
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
   },
-  globals: {
-    newrelic: false,
-  },
-  ignorePatterns: [
-    'module.config.js',
-  ],
 };
