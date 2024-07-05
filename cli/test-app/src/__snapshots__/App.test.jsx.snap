@@ -32,7 +32,7 @@ exports[`Basic test should render 1`] = `
   <h2>
     JSX parsing tests
   </h2>
-  <IconMock
+  <SvgMock
     style={
       {
         "width": "10rem",
@@ -44,7 +44,7 @@ exports[`Basic test should render 1`] = `
   </h2>
   <img
     alt="appleFromTsx"
-    src="icon/mock/path"
+    src="SvgURL"
     style={
       {
         "width": "10rem",
@@ -56,7 +56,7 @@ exports[`Basic test should render 1`] = `
   </h2>
   <img
     alt="apple"
-    src="icon/mock/path"
+    src="SvgURL"
     style={
       {
         "width": "10rem",
@@ -65,7 +65,7 @@ exports[`Basic test should render 1`] = `
   />
   <img
     alt="apple"
-    src="icon/mock/path"
+    src="SvgURL"
     style={
       {
         "width": "10rem",
@@ -75,7 +75,7 @@ exports[`Basic test should render 1`] = `
   <br />
   <img
     alt="apple"
-    src="test-file-stub"
+    src="FileMock"
     style={
       {
         "width": "10rem",

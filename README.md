@@ -102,5 +102,40 @@ Find any other imports/usages of `frontend-build` in your repository and replace
 
 Currently this section is a quick of notes documenting required changes to MFEs.  We will turn this into a more rigorous migration guide in the future.
 
-- First follow the steps above in the "Development" section.
-- Description fields are now required on all i18n messages in the repository.  This is because of a change to the ESLint config.
+### Follow "Development" section.
+
+First follow the steps above in the "Development" section.
+
+### i18n Descriptions
+
+Description fields are now required on all i18n messages in the repository.  This is because of a change to the ESLint config.
+
+### Jest Mocks
+
+Jest test suites that test React components that import SVG and files must add mocks for those filetypes.  This can be accomplished by adding the following module name mappers to jest.config.js:
+
+```
+moduleNameMapper: {
+  '\\.svg$': '<rootDir>/src/__mocks__/svg.js',
+  '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/__mocks__/file.js',
+},
+```
+
+Then, create a `src/__mocks__` folder and add the necessary mocks.
+
+**svg.js:**
+
+```
+export default 'SvgrURL';
+export const ReactComponent = 'SvgMock';
+```
+
+**file.js:**
+
+```
+module.exports = 'FileMock';
+```
+
+You can change the values of "SvgrURL", "SvgMock", and "FileMock" if you want to reduce changes necessary to your snapshot tests; the old values from frontend-build assume svg is only being used for icons, so the values referenced an "icon" which felt unnecessarily narrow.
+
+This is necessary because we cannot write a tsconfig.json in MFEs that includes transpilation of the "config/jest" folder in frontend-base, it can't meaningfully find those files and transpile them, and we wouldn't want all MFEs to have to include such idiosyncratic configuration anyway.  The SVG mock, however, requires ESModules syntax to export its default and ReactComponent exports at the same time.  This means without moving the mocks into the MFE code, the SVG one breaks transpilation and doesn't understand the `export` syntax used.  By moving them into the MFE, they can be easily transpiled along with all the other code when jest tries to run.
