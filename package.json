@@ -11,7 +11,7 @@
     "openedx": "./bin/openedx.js"
   },
   "scripts": {
-    "lint": "eslint . --no-eslintrc -c .eslintrc.js",
+    "lint": "eslint .",
     "test": "bash ./smoke-test.sh"
   },
   "repository": {

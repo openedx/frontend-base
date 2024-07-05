@@ -6,7 +6,7 @@
   "scripts": {
     "test": "../../bin/openedx.js jest ./src",
     "build": "../../bin/openedx.js webpack",
-    "lint": "eslint . --no-eslintrc -c .eslintrc.js",
+    "lint": "../../bin/openedx.js eslint . --no-eslintrc -c .eslintrc.js",
     "start": "../../bin/openedx.js webpack-dev-server",
     "serve": "../../bin/openedx.js serve"
   },
@@ -14,11 +14,11 @@
   "author": "Open edX Community",
   "license": "AGPL-3.0",
   "dependencies": {
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@openedx/frontend-base": "file:../../../frontend-base",
-    "react-test-renderer": "16.14.0"
+    "react-test-renderer": "^17.0.2"
   }
 }
