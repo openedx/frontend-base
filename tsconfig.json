@@ -5,18 +5,18 @@
     "outDir": "dist"
   },
   "include": [
+    "index.js",
     ".eslintrc.js",
-    "config/.eslintrc.js",
-    "cli/test-app/.eslintrc.js",
-    "cli/test-app/**/*",
-    "lib",
+    "jest.config.js",
     "bin",
-    "config"
+    "cli",
+    "config",
+    "config/.eslintrc.js",
+    "lib"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "cli/test-app/dist/*",
-    "cli/test-app/node_modules/*'"
+    "cli/test-app"
   ]
 }
