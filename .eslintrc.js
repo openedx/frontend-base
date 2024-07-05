@@ -1,8 +1,10 @@
+const path = require('path');
+
 const { createConfig } = require('.');
 
 module.exports = createConfig('eslint', {
   parserOptions: {
-    project: './tsconfig.json',
+    project: path.resolve(__dirname, './tsconfig.json'),
   },
   rules: {
     'no-console': 'off',
