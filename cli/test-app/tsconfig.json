@@ -10,8 +10,4 @@
     "env.config.js",
     "src"
   ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
 }

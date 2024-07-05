@@ -6,6 +6,7 @@
     "access": "public"
   },
   "main": "index.js",
+  "types": "index.d.ts",
   "bin": {
     "openedx": "./bin/openedx.js"
   },
@@ -62,7 +63,9 @@
     "postcss-custom-media": "10.0.6",
     "postcss-loader": "7.3.4",
     "postcss-rtlcss": "5.1.2",
+    "react": "^17.0.2",
     "react-dev-utils": "12.0.1",
+    "react-dom": "^17.0.2",
     "react-refresh": "0.14.2",
     "resolve-url-loader": "5.0.0",
     "sass": "1.69.7",

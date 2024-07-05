@@ -59,7 +59,13 @@ This will let your MFE use the checked out version of `frontend-base`.
 
 Run `npm install` again to update your `node_modules` and `package-lock.json`.
 
-### 4. Edit package.json `scripts`
+### 4. Migrate your MFE
+
+Follow the steps below to migrate an MFE to use frontend-base.
+
+## Migrating to frontend-base
+
+### 1. Edit package.json `scripts`
 
 Replace all instances of `fedx-scripts` with `openedx` in your package.json file.
 
@@ -67,7 +73,7 @@ Replace all instances of `fedx-scripts` with `openedx` in your package.json file
 > **Why change `fedx-scripts` to `openedx`?**
 > A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
-### 5. Add a tsconfig.json file
+### 2. Add a tsconfig.json file
 
 Create a tsconfig.json file and add the following contents to it:
 
@@ -79,38 +85,42 @@ Create a tsconfig.json file and add the following contents to it:
     "outDir": "dist"
   },
   "include": [
-    "src"
+    ".eslintrc.js",
+    "jest.config.js",
+    "env.config.js",
+    "src",
+    "app.d.ts",
   ]
 }
 ```
 
 This assumes you have a `src` folder and your build goes in `dist`, which is the best practice.
 
-### 6. Edit `jest.config.js`
+### 3. Add a Type Declaration file (app.d.ts)
+
+Add a file named `app.d.ts` to the root of your MFE.  It should contain:
+
+```
+/// <reference types="@openedx/frontend-base" />
+```
+
+### 4. Edit `jest.config.js`
 
 Replace the import from 'frontend-build' with 'frontend-base'.
 
-### 7. Edit `.eslintrc.js`
+### 5. Edit `.eslintrc.js`
 
 Replace the import from 'frontend-build' with 'frontend-base'.
 
-### 8. Search for any other usages of `frontend-build`
+### 6. Search for any other usages of `frontend-build`
 
 Find any other imports/usages of `frontend-build` in your repository and replace them with `frontend-base` so they don't break.
 
-## Migrating to frontend-base
-
-Currently this section is a quick of notes documenting required changes to MFEs.  We will turn this into a more rigorous migration guide in the future.
-
-### Follow "Development" section.
-
-First follow the steps above in the "Development" section.
-
-### i18n Descriptions
+### 7. i18n Descriptions
 
 Description fields are now required on all i18n messages in the repository.  This is because of a change to the ESLint config.
 
-### Jest Mocks
+### 8. Jest Mocks
 
 Jest test suites that test React components that import SVG and files must add mocks for those filetypes.  This can be accomplished by adding the following module name mappers to jest.config.js:
 

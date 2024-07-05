@@ -12,11 +12,10 @@
     "cli",
     "config",
     "config/.eslintrc.js",
-    "lib"
+    "lib",
+    "index.d.ts"
   ],
   "exclude": [
-    "node_modules",
-    "dist",
     "cli/test-app"
   ]
 }
