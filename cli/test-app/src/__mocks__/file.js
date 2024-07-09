@@ -1,1 +1,1 @@
-module.exports = 'FileMock';
+export default 'FileMock';
