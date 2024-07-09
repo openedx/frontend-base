@@ -19,7 +19,7 @@ const { transform } = require('@formatjs/ts-transformer');
 // Reduce CSS file size by ~70%
 const purgecss = require('@fullhuman/postcss-purgecss');
 
-const HtmlWebpackNewRelicPlugin = require('../lib/plugins/html-webpack-new-relic-plugin');
+const HtmlWebpackNewRelicPlugin = require('../cli/plugins/html-webpack-new-relic-plugin');
 const commonConfig = require('./webpack.common.config');
 
 // Add process env vars. Currently used only for setting the PUBLIC_PATH.

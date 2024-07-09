@@ -51,9 +51,9 @@ For `frontend-build`, the majority of its code is in:
 - config
 - lib
 
-These folders should not, generally, conflict with the folders of the other libraries, and so can stay in place.  We expect to move parts of `lib` to `cli` or `config` to reduce ambiguity as other libraries are added.
+These folders should not, generally, conflict with the folders of the other libraries, and so can stay in place.  We have moved `lib` to `cli` and `config` to reduce ambiguity as other libraries are added.
 
-The `example` sub-folder is problematic, as all of the other libraries contain their own `example` folders.  `frontend-build`'s example app has been moved to `cli/test-app`.
+The `example` sub-folder is problematic, as all of the other libraries contain their own `example` folders.  `frontend-build`'s example app has been moved to `test-app`.
 
 The other libraries all contain `src` folders.  We will move each library to a sub-folder as it's added:
 

@@ -5,6 +5,11 @@ import appleUrl from './apple.svg';
 
 import './style.scss';
 
+
+import { subscribe } from '@openedx/frontend-base/runtime';
+
+console.log(subscribe);
+
 // eslint-disable-next-line react/function-component-definition
 export default function App() {
   const newEnglandApples = ['macintosh', 'granny smith'];

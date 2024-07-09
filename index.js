@@ -1,5 +1,5 @@
-const getBaseConfig = require('./lib/getBaseConfig');
-const createConfig = require('./lib/createConfig');
+const getBaseConfig = require('./cli/getBaseConfig');
+const createConfig = require('./cli/createConfig');
 
 module.exports = {
   getBaseConfig,

@@ -4,7 +4,11 @@ const { createConfig } = require('.');
 
 module.exports = createConfig('eslint', {
   ignorePatterns: [
-    'cli/test-app',
+    'test-app',
+    'docs',
+    'runtime', // TODO: Remove this ignore
+    'example', // TODO: Remove this ignore
+    'env.config.js', // TODO: Remove this ignore
   ],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),

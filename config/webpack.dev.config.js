@@ -14,7 +14,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const { transform } = require('@formatjs/ts-transformer');
 
 const commonConfig = require('./webpack.common.config');
-const resolvePrivateEnvConfig = require('../lib/resolvePrivateEnvConfig');
+const resolvePrivateEnvConfig = require('../cli/resolvePrivateEnvConfig');
 const getLocalAliases = require('./getLocalAliases');
 
 // Add process env vars. Currently used only for setting the
