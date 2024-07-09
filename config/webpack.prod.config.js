@@ -69,7 +69,7 @@ module.exports = merge(commonConfig, {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules/, // \/(?!@(open)?edx)/,
+        exclude: /node_modules/,
         use: {
           loader: require.resolve('ts-loader'),
           options: {
@@ -146,11 +146,6 @@ module.exports = merge(commonConfig, {
             },
           },
         ],
-      },
-      {
-        test: /.svg(\?v=\d+\.\d+\.\d+)?$/,
-        issuer: /\.jsx?$/,
-        use: ['@svgr/webpack'],
       },
       // Webpack, by default, uses the url-loader for images and fonts that are required/included by
       // files it processes, which just base64 encodes them and inlines them in the javascript

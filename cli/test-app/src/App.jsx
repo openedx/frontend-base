@@ -1,7 +1,7 @@
 import config from 'env.config';
 import Image from './Image';
 import appleImg from './apple.jpg';
-import appleUrl, { ReactComponent as Apple } from './apple.svg';
+import appleUrl from './apple.svg';
 
 import './style.scss';
 
@@ -18,12 +18,9 @@ export default function App() {
       <ul>
         {allApples.map(apple => <li key={apple}>{apple}</li>)}
       </ul>
-      <h2>JSX parsing tests</h2>
-      <Apple style={{ width: '10rem' }} />
       <h2>TSX parsing tests</h2>
       <Image src={appleUrl} alt="appleFromTsx" style={{ width: '10rem' }} />
       <h2>Asset import tests</h2>
-      <img src={appleUrl} alt="apple" style={{ width: '10rem' }} />
       <img src={appleUrl} alt="apple" style={{ width: '10rem' }} />
       <br />
       <img src={appleImg} alt="apple" style={{ width: '10rem' }} />

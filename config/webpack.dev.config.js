@@ -110,11 +110,6 @@ module.exports = merge(commonConfig, {
           },
         ],
       },
-      {
-        test: /.svg(\?v=\d+\.\d+\.\d+)?$/,
-        issuer: /\.jsx?$/,
-        use: ['@svgr/webpack'],
-      },
       // Webpack, by default, uses the url-loader for images and fonts that are required/included by
       // files it processes, which just base64 encodes them and inlines them in the javascript
       // bundles. This makes the javascript bundles ginormous and defeats caching so we will use the
