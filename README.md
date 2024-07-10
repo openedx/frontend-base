@@ -46,18 +46,34 @@ In the meantime, it can be used as a replacement for `openedx/frontend-build` in
 
 ### 2. Edit package.json
 
-- Replace the `@openedx/frontend-build` dependency with:
+- Uninstall `@edx/frontend-platform`
+- Uninstall `@edx/frontend-build`
+- Add frontend-base to dependencies:
 
 ```
-- "@openedx/frontend-build": "13.1.4",
+"dependencies": {
 + "@openedx/frontend-base": "file:../frontend-base",
+},
 ```
 
 This will let your MFE use the checked out version of `frontend-base`.
 
 ### 3. `npm install`
 
-Run `npm install` again to update your `node_modules` and `package-lock.json`.
+Run `npm install` again to update your `node_modules` and `package-lock.json` with the frontend-base dependency.
+
+### 4. Add frontend-base to module.config.js
+
+To use a local version of frontend-base properly, you need to add it to module.config.js.  Add the following line to your module.config.js file in your MFE:
+
+```diff
+module.exports = {
+  localModules: [
++   { moduleName: '@openedx/frontend-base', dir: '../frontend-base', dist: 'dist' },
+  ],
+};
+
+```
 
 ### 4. Migrate your MFE
 
@@ -73,7 +89,22 @@ Replace all instances of `fedx-scripts` with `openedx` in your package.json file
 > **Why change `fedx-scripts` to `openedx`?**
 > A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
-### 2. Add a tsconfig.json file
+### 2. Add a Type Declaration file (app.d.ts)
+
+Create an `app.d.ts` file in the root of your MFE with the following contents:
+
+```
+/// <reference types="@openedx/frontend-base" />
+
+declare module "*.svg" {
+  const content: string;
+  export default content;
+}
+```
+
+This will ensure that you can import SVG files, and have type declarations for the frontend-base library.
+
+### 3. Add a tsconfig.json file
 
 Create a tsconfig.json file and add the following contents to it:
 
@@ -96,21 +127,23 @@ Create a tsconfig.json file and add the following contents to it:
 
 This assumes you have a `src` folder and your build goes in `dist`, which is the best practice.
 
-### 3. Add a Type Declaration file (app.d.ts)
-
-Add a file named `app.d.ts` to the root of your MFE.  It should contain:
-
-```
-/// <reference types="@openedx/frontend-base" />
-```
-
 ### 4. Edit `jest.config.js`
 
 Replace the import from 'frontend-build' with 'frontend-base'.
 
+```diff
+- const { createConfig } = require('@edx/frontend-build');
++ const { createConfig } = require('@openedx/frontend-base/config');
+```
+
 ### 5. Edit `.eslintrc.js`
 
 Replace the import from 'frontend-build' with 'frontend-base'.
+
+```diff
+- const { createConfig } = require('@edx/frontend-build');
++ const { createConfig } = require('@openedx/frontend-base/config');
+```
 
 ### 6. Search for any other usages of `frontend-build`
 
@@ -162,35 +195,9 @@ In frontend-build, `createConfig` and `getBaseConfig` could be imported from the
 + const { createConfig } = require('@openedx/frontend-base/config');
 ```
 
-### 11. Create app.d.ts file
+You may have handled this in steps 4 and 5 above (jest.config.js and .eslintrc.js)
 
-Create an `app.d.ts` file in the root of your MFE with the following contents:
-
-```
-/// <reference types="@openedx/frontend-base" />
-
-declare module "*.svg" {
-  const content: string;
-  export default content;
-}
-```
-
-This will ensure that you can import SVG files, and have type declarations for the frontend-base library.
-
-Also add `app.d.ts` to your tsconfig.json file's `include`:
-
-```diff
-{
-  "extends": "@openedx/frontend-base/config/tsconfig.json",
-  ...
-  "include": [
-    ...
-+   "app.d.ts",
-  ]
-}
-```
-
-### 12. Replace all imports from `@edx/frontend-platform` with `@openedx/frontend-base`
+### 11. Replace all imports from `@edx/frontend-platform` with `@openedx/frontend-base`
 
 frontend-base includes all exports from frontend-platform.  Rather than export them from sub-directories, it exports them all from the root package folder. As an example:
 
@@ -203,4 +210,18 @@ frontend-base includes all exports from frontend-platform.  Rather than export t
 +   logInfo,
 +   FormattedMessage
 + } from '@openedx/frontend-base';
+```
+
+Note that the `configure` functions for auth, logging, and analytics are now exported with the names:
+
+- configureAuth
+- configureLogging
+- configureAnalytics
+- configureI18n
+
+Remember to make the following substitution for these functions:
+
+```diff
+- import { configure as configureLogging } from '@openedx/frontend-platform/logging';
++ import { configureLogging } from '@openedx/frontend-base';
 ```
