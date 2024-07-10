@@ -5,12 +5,15 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "openedx": "./bin/openedx.js"
+    "openedx": "dist/bin/openedx.js"
   },
   "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "lint": "eslint .",
     "test": "bash ./smoke-test.sh"
   },
@@ -79,11 +82,11 @@
     "postcss-loader": "7.3.4",
     "postcss-rtlcss": "5.1.2",
     "pubsub-js": "^1.9.4",
-    "react": "^17.0.2",
     "react-dev-utils": "12.0.1",
-    "react-dom": "^17.0.2",
     "react-intl": "^6.6.6",
+    "react-redux": "^8.1.3",
     "react-refresh": "0.14.2",
+    "react-router-dom": "^6.24.1",
     "resolve-url-loader": "5.0.0",
     "sass": "1.69.7",
     "sass-loader": "13.3.3",
@@ -102,8 +105,18 @@
     "webpack-merge": "^5.10.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "29.5.12",
     "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.11"
+    "@types/react-dom": "^17.0.11",
+    "axios-mock-adapter": "^1.22.0",
+    "jsdoc": "^4.0.3"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@openedx/paragon": "^22.6.1"
   }
 }
