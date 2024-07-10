@@ -46,10 +46,13 @@ module.exports = merge(commonConfig, {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules/,
+        include: [
+          /src/,
+        ],
         use: {
           loader: require.resolve('ts-loader'),
           options: {
+            transpileOnly: true,
             compilerOptions: {
               noEmit: false,
             },
