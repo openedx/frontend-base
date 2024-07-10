@@ -11,9 +11,11 @@
     "openedx": "dist/bin/openedx.js"
   },
   "scripts": {
-    "clean": "rm -rf dist",
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "docs": "jsdoc -c jsdoc.json",
+    "docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
     "lint": "eslint .",
     "test": "bash ./smoke-test.sh"
   },
@@ -112,11 +114,12 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.11",
     "axios-mock-adapter": "^1.22.0",
-    "jsdoc": "^4.0.3"
+    "jsdoc": "^4.0.3",
+    "nodemon": "^3.1.4"
   },
   "peerDependencies": {
+    "@openedx/paragon": "^22.6.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@openedx/paragon": "^22.6.1"
+    "react-dom": "^17.0.2"
   }
 }
