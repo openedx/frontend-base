@@ -112,14 +112,14 @@ Create a tsconfig.json file and add the following contents to it:
 {
   "extends": "@openedx/frontend-base/config/tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist"
   },
   "include": [
     ".eslintrc.js",
     "jest.config.js",
     "env.config.js",
-    "src",
+    "src/**/*",
     "app.d.ts",
   ]
 }
