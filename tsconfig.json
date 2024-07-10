@@ -11,8 +11,7 @@
     "config/**/*",
     "config/.eslintrc.js",
     "runtime/**/*",
-    "index.d.ts",
-    "index.js",
+    "index.ts",
     "config/tsconfig.json"
   ],
   "exclude": [

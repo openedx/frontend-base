@@ -1,4 +1,4 @@
-import { defineMessages } from '@openedx/frontend-base/runtime/i18n';
+import { defineMessages } from '@openedx/frontend-base';
 
 const messages = defineMessages({
   'test-app.message': {

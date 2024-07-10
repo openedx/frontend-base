@@ -162,3 +162,45 @@ In frontend-build, `createConfig` and `getBaseConfig` could be imported from the
 + const { createConfig } = require('@openedx/frontend-base/config');
 ```
 
+### 11. Create app.d.ts file
+
+Create an `app.d.ts` file in the root of your MFE with the following contents:
+
+```
+/// <reference types="@openedx/frontend-base" />
+
+declare module "*.svg" {
+  const content: string;
+  export default content;
+}
+```
+
+This will ensure that you can import SVG files, and have type declarations for the frontend-base library.
+
+Also add `app.d.ts` to your tsconfig.json file's `include`:
+
+```diff
+{
+  "extends": "@openedx/frontend-base/config/tsconfig.json",
+  ...
+  "include": [
+    ...
++   "app.d.ts",
+  ]
+}
+```
+
+### 12. Replace all imports from `@edx/frontend-platform` with `@openedx/frontend-base`
+
+frontend-base includes all exports from frontend-platform.  Rather than export them from sub-directories, it exports them all from the root package folder. As an example:
+
+```diff
+- import { getConfig } from '@edx/frontend-platform/config';
+- import { logInfo } from '@edx/frontend-platform/logging';
+- import { FormattedMessage } from '@edx/frontend-platform/i18n';
++ import {
++   getConfig,
++   logInfo,
++   FormattedMessage
++ } from '@openedx/frontend-base';
+```

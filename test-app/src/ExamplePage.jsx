@@ -1,11 +1,15 @@
+import {
+  AppContext,
+  ensureConfig,
+  getAuthenticatedUser,
+  getConfig,
+  logInfo,
+  mergeConfig,
+  useIntl
+} from '@openedx/frontend-base';
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ensureConfig, getConfig, mergeConfig } from '@openedx/frontend-base/runtime';
-import { getAuthenticatedUser } from '@openedx/frontend-base/runtime/auth';
-import { useIntl } from '@openedx/frontend-base/runtime/i18n';
-import { logInfo } from '@openedx/frontend-base/runtime/logging';
-import { AppContext } from '@openedx/frontend-base/runtime/react';
-import { useContext, useEffect } from 'react';
 import appleImg from './apple.jpg';
 import appleUrl from './apple.svg';
 import Image from './Image';

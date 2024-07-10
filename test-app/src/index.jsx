@@ -1,15 +1,13 @@
 import {
   APP_INIT_ERROR,
   APP_READY,
-  initialize,
-  subscribe
-} from '@openedx/frontend-base/runtime';
-import {
   AppProvider,
   AuthenticatedPageRoute,
   ErrorPage,
+  initialize,
   PageWrap,
-} from '@openedx/frontend-base/runtime/react';
+  subscribe
+} from '@openedx/frontend-base';
 import ReactDOM from 'react-dom';
 import {
   Route,
