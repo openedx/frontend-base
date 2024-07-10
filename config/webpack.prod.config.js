@@ -99,7 +99,9 @@ module.exports = merge(commonConfig, {
       },
       {
         test: /\.js$/,
-        use: ['source-map-loader'],
+        use: [
+          require.resolve('source-map-loader')
+        ],
         enforce: 'pre',
       },
       // Webpack, by default, includes all CSS in the javascript bundles. Unfortunately, that means:
@@ -117,7 +119,7 @@ module.exports = merge(commonConfig, {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader', // translates CSS into CommonJS
+            loader: require.resolve('css-loader'), // translates CSS into CommonJS
             options: {
               sourceMap: true,
               modules: {
@@ -126,7 +128,7 @@ module.exports = merge(commonConfig, {
             },
           },
           {
-            loader: 'postcss-loader',
+            loader: require.resolve('postcss-loader'),
             options: {
               postcssOptions: {
                 plugins: [
@@ -139,9 +141,9 @@ module.exports = merge(commonConfig, {
               },
             },
           },
-          'resolve-url-loader',
+          require.resolve('resolve-url-loader'),
           {
-            loader: 'sass-loader', // compiles Sass to CSS
+            loader: require.resolve('sass-loader'), // compiles Sass to CSS
             options: {
               sourceMap: true,
               sassOptions: {
@@ -162,18 +164,18 @@ module.exports = merge(commonConfig, {
       // file-loader instead to copy the files directly to the output directory.
       {
         test: /\.(woff2?|ttf|svg|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader',
+        loader: require.resolve('file-loader'),
       },
       {
         test: /favicon.ico$/,
-        loader: 'file-loader',
+        loader: require.resolve('file-loader'),
         options: {
           name: '[name].[ext]', // <-- retain original file name
         },
       },
       {
         test: /\.(jpe?g|png|gif)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader',
+        loader: require.resolve('file-loader'),
       },
     ],
   },
