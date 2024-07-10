@@ -54,7 +54,7 @@ This 'env.config' package is a special 'magic' alias in our webpack configuratio
 It points at an `env.config.js` file in the root of an MFE's repository if it exists and falls back
 to an empty object `{}` if the file doesn't exist.  This acts like an 'optional' import, in a sense.
 Note that the env.config.js file in frontend-platform's root directory is NOT used by the actual
-initialization code, it's just there for the test suite and example application.
+initialization code, it's just there for the test suite and test-app application.
 */
 import envConfig from 'env.config'; // eslint-disable-line import/no-unresolved
 import {

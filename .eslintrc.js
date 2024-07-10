@@ -7,8 +7,7 @@ module.exports = createConfig('eslint', {
     'test-app',
     'docs',
     'runtime', // TODO: Remove this ignore
-    'example', // TODO: Remove this ignore
-    'env.config.js', // TODO: Remove this ignore
+    '.eslintrc.js',
   ],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),

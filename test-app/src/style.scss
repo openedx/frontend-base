@@ -1,6 +1,8 @@
+@import "@openedx/paragon/scss/core/core";
+
 $h3-color: red;
 
-h3 {
+.red-text {
   color: $h3-color;
 }
 

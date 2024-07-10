@@ -1,13 +1,51 @@
+import {
+  APP_INIT_ERROR,
+  APP_READY,
+  initialize,
+  subscribe
+} from '@openedx/frontend-base/runtime';
+import {
+  AppProvider,
+  AuthenticatedPageRoute,
+  ErrorPage,
+  PageWrap,
+} from '@openedx/frontend-base/runtime/react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import {
+  Route,
+  Routes
+} from 'react-router-dom';
 
-// This line is to emulate what frontend-platform does when i18n initializes.
-// It's necessary because our stylesheet is generated with `[dir="ltr"]` as a prefix on all
-// direction-sensitive CSS classes.  Without this line, those classes wouldn't be applied to the
-// document.  See: https://github.com/openedx/frontend-platform/blob/master/src/i18n/lib.js#L186
-global.document.getElementsByTagName('html')[0].setAttribute('dir', 'ltr');
+import AuthenticatedPage from './AuthenticatedPage';
+import ExamplePage from './ExamplePage';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root'),
-);
+import './style.scss';
+
+subscribe(APP_READY, () => {
+  ReactDOM.render(
+    <AppProvider>
+      <Routes>
+        <Route path="/" element={<PageWrap><ExamplePage /></PageWrap>} />
+        <Route
+          path="/error"
+          element={<PageWrap><ErrorPage message="Test error message" /></PageWrap>}
+        />
+        <Route path="/authenticated" element={<AuthenticatedPageRoute><AuthenticatedPage /></AuthenticatedPageRoute>} />
+      </Routes>
+    </AppProvider>,
+    document.getElementById('root'),
+  );
+});
+
+subscribe(APP_INIT_ERROR, (error) => {
+  ReactDOM.render(<ErrorPage message={error.message} />, document.getElementById('root'));
+});
+
+initialize({
+  messages: [],
+  requireAuthenticatedUser: false,
+  hydrateAuthenticatedUser: true,
+  handlers: {
+    auth: () => { },
+  }
+});

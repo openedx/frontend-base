@@ -1,8 +1,8 @@
-import { defineMessages } from '@edx/frontend-platform/i18n';
+import { defineMessages } from '@openedx/frontend-base/runtime/i18n';
 
 const messages = defineMessages({
-  'example.message': {
-    id: 'example.message',
+  'test-app.message': {
+    id: 'test-app.message',
     defaultMessage: 'This message proves that i18n is working.',
     description: 'A message that proves that internationalization is working.',
   },

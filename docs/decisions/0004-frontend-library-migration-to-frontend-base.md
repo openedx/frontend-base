@@ -53,7 +53,7 @@ For `frontend-build`, the majority of its code is in:
 
 These folders should not, generally, conflict with the folders of the other libraries, and so can stay in place.  We have moved `lib` to `cli` and `config` to reduce ambiguity as other libraries are added.
 
-The `example` sub-folder is problematic, as all of the other libraries contain their own `example` folders.  `frontend-build`'s example app has been moved to `test-app`.
+The `example` sub-folder is problematic, as all of the other libraries contain their own `example` folders.  `frontend-build`'s example app has been moved to `test-app`.  Other `example` apps will be merged into `test-app`.
 
 The other libraries all contain `src` folders.  We will move each library to a sub-folder as it's added:
 
@@ -78,7 +78,7 @@ Focusing on the libraries described in this ADR, we expect the final repository 
 
 ### package.json and node_modules
 
-The entire `frontend-base` repository will have a single package.json file and a single node_modules directory.  The only exception here will be the test apps ("example apps" in the current repositories), which will continue to act as independent applications.
+The entire `frontend-base` repository will have a single package.json file and a single node_modules directory.  The only exception here will be the `test-app` ("example apps" in the current repositories, which will be combined), which will continue to act as an independent application when merged.
 
 ### npm Package
 
