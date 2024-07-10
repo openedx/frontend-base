@@ -19,6 +19,7 @@ const { transform } = require('@formatjs/ts-transformer');
 // Reduce CSS file size by ~70%
 const purgecss = require('@fullhuman/postcss-purgecss');
 
+const getLocalAliases = require('./getLocalAliases');
 const HtmlWebpackNewRelicPlugin = require('../cli/plugins/html-webpack-new-relic-plugin');
 const commonConfig = require('./webpack.common.config');
 
@@ -55,6 +56,8 @@ if (process.env.ENABLE_NEW_RELIC !== 'false') {
   }));
 }
 
+const aliases = getLocalAliases();
+
 module.exports = merge(commonConfig, {
   mode: 'production',
   devtool: 'source-map',
@@ -63,6 +66,9 @@ module.exports = merge(commonConfig, {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: process.env.PUBLIC_PATH || '/',
     clean: true, // Clean the output directory before emit.
+  },
+  resolve: {
+    alias: aliases,
   },
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
