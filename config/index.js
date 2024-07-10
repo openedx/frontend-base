@@ -1,2 +1,7 @@
-export { createConfig } from './createConfig';
-export { getBaseConfig } from './getBaseConfig';
+const createConfig = require('./createConfig');
+const getBaseConfig = require('./getBaseConfig');
+
+module.exports = {
+  createConfig,
+  getBaseConfig
+}

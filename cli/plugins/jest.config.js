@@ -1,4 +1,4 @@
-const { createConfig } = require('../../config/createConfig');
+const { createConfig } = require('../../config');
 
 module.exports = createConfig('jest', {
   // This testEnvironment is important - our default Jest configuration sets the testEnvironment to
