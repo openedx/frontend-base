@@ -12,7 +12,8 @@
     "config/.eslintrc.js",
     "runtime/**/*",
     "index.ts",
-    "config/tsconfig.json"
+    "config/tsconfig.json",
+    "jest.config.js"
   ],
   "exclude": [
     "test-app/**/*",

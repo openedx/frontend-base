@@ -3,5 +3,5 @@ const getBaseConfig = require('./getBaseConfig');
 
 module.exports = {
   createConfig,
-  getBaseConfig
-}
+  getBaseConfig,
+};

@@ -100,7 +100,7 @@ module.exports = merge(commonConfig, {
       {
         test: /\.js$/,
         use: [
-          require.resolve('source-map-loader')
+          require.resolve('source-map-loader'),
         ],
         enforce: 'pre',
       },
