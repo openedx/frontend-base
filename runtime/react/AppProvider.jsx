@@ -1,13 +1,8 @@
-import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import OptionalReduxProvider from './OptionalReduxProvider';
-
-import ErrorBoundary from './ErrorBoundary';
-import AppContext from './AppContext';
-import { useAppEvent, useTrackColorSchemeChoice } from './hooks';
-import { getAuthenticatedUser, AUTHENTICATED_USER_CHANGED } from '../auth';
+import { AUTHENTICATED_USER_CHANGED, getAuthenticatedUser } from '../auth';
 import { getConfig } from '../config';
 import { CONFIG_CHANGED } from '../constants';
 import {
@@ -17,6 +12,11 @@ import {
   LOCALE_CHANGED,
 } from '../i18n';
 import { basename } from '../initialize';
+
+import AppContext from './AppContext';
+import ErrorBoundary from './ErrorBoundary';
+import { useAppEvent, useTrackColorSchemeChoice } from './hooks';
+import OptionalReduxProvider from './OptionalReduxProvider';
 
 /**
  * A wrapper component for React-based micro-frontends to initialize a number of common data/
