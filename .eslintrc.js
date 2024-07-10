@@ -1,6 +1,6 @@
 const path = require('path');
 
-const { createConfig } = require('.');
+const { createConfig } = require('./config');
 
 module.exports = createConfig('eslint', {
   ignorePatterns: [

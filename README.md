@@ -152,3 +152,13 @@ This is necessary because we cannot write a tsconfig.json in MFEs that includes 
 ### 9. SVGR "ReactComponent" imports have been removed.
 
 We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `test-app/src/App.jsx`.
+
+### 10. Import `createConfig` and `getBaseConfig` from `@openedx/frontend-base/config`
+
+In frontend-build, `createConfig` and `getBaseConfig` could be imported from the root package (`@edx/frontend-build`).  They have been moved to a sub-directory to make room for runtime exports from the root package (`@openedx/frontend-base`).
+
+```diff
+- const { createConfig } = require('@edx/frontend-build');
++ const { createConfig } = require('@openedx/frontend-base/config');
+```
+

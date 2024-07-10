@@ -1,4 +1,4 @@
-const presets = require('./presets');
+const presets = require('../cli/presets');
 
 module.exports = (commandName) => {
   if (presets[commandName] === undefined) {
