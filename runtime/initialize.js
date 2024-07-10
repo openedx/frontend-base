@@ -45,7 +45,10 @@
  * @module Initialization
  */
 
-import { createBrowserHistory, createMemoryHistory } from 'history';
+import {
+  createBrowserHistory,
+  createMemoryHistory
+} from 'history';
 /*
 This 'env.config' package is a special 'magic' alias in our webpack configuration in frontend-build.
 It points at an `env.config.js` file in the root of an MFE's repository if it exists and falls back
@@ -54,41 +57,48 @@ Note that the env.config.js file in frontend-platform's root directory is NOT us
 initialization code, it's just there for the test suite and example application.
 */
 import envConfig from 'env.config'; // eslint-disable-line import/no-unresolved
-import { getPath } from './utils';
 import {
   publish,
 } from './pubSub';
+import { getPath } from './utils';
 // eslint-disable-next-line import/no-cycle
+import {
+  configure as configureAnalytics,
+  identifyAnonymousUser,
+  identifyAuthenticatedUser,
+  SegmentAnalyticsService,
+} from './analytics';
+import {
+  AxiosJwtAuthService,
+  configure as configureAuth,
+  ensureAuthenticatedUser,
+  fetchAuthenticatedUser,
+  getAuthenticatedHttpClient,
+  getAuthenticatedUser,
+  hydrateAuthenticatedUser,
+} from './auth';
+import configureCache from './auth/LocalForageCache';
 import {
   getConfig, mergeConfig,
 } from './config';
 import {
-  configure as configureLogging, getLoggingService, NewRelicLoggingService, logError,
-} from './logging';
-import {
-  configure as configureAnalytics, SegmentAnalyticsService, identifyAnonymousUser, identifyAuthenticatedUser,
-} from './analytics';
-import { GoogleAnalyticsLoader } from './scripts';
-import {
-  getAuthenticatedHttpClient,
-  configure as configureAuth,
-  ensureAuthenticatedUser,
-  fetchAuthenticatedUser,
-  hydrateAuthenticatedUser,
-  getAuthenticatedUser,
-  AxiosJwtAuthService,
-} from './auth';
+  APP_ANALYTICS_INITIALIZED,
+  APP_AUTH_INITIALIZED,
+  APP_CONFIG_INITIALIZED,
+  APP_I18N_INITIALIZED,
+  APP_INIT_ERROR,
+  APP_LOGGING_INITIALIZED,
+  APP_PUBSUB_INITIALIZED,
+  APP_READY,
+} from './constants';
 import { configure as configureI18n } from './i18n';
 import {
-  APP_PUBSUB_INITIALIZED,
-  APP_CONFIG_INITIALIZED,
-  APP_AUTH_INITIALIZED,
-  APP_I18N_INITIALIZED,
-  APP_LOGGING_INITIALIZED,
-  APP_ANALYTICS_INITIALIZED,
-  APP_READY, APP_INIT_ERROR,
-} from './constants';
-import configureCache from './auth/LocalForageCache';
+  configure as configureLogging,
+  getLoggingService,
+  logError,
+  NewRelicLoggingService,
+} from './logging';
+import { GoogleAnalyticsLoader } from './scripts';
 
 /**
  * A browser history or memory history object created by the [history](https://github.com/ReactTraining/history)
