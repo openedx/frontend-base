@@ -34,7 +34,6 @@
   "dependencies": {
     "@cospired/i18n-iso-languages": "^4.2.0",
     "@edx/new-relic-source-map-webpack-plugin": "2.1.0",
-    "@edx/typescript-config": "1.0.1",
     "@formatjs/cli": "^6.0.3",
     "@formatjs/intl-pluralrules": "^4.3.3",
     "@formatjs/intl-relativetimeformat": "^10.0.1",
@@ -95,7 +94,7 @@
     "style-loader": "3.3.4",
     "ts-jest": "29.1.4",
     "ts-loader": "^9.5.1",
-    "typescript": "4.9.5",
+    "typescript": "^5.5.3",
     "universal-cookie": "^4.0.4",
     "url-loader": "4.1.1",
     "webpack": "^5.89.0",
