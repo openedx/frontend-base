@@ -97,7 +97,7 @@ export function snakeCaseObject(object) {
  * reverse - formatting names from the client application to names expected by an API.
  *
  * ```
- * import { convertKeyNames } from '@edx/frontend-base';
+ * import { convertKeyNames } from '@openedx/frontend-base';
  *
  * // This object can be of any shape or depth with subobjects/arrays.
  * const myObject = {
