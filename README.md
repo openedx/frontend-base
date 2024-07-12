@@ -255,3 +255,18 @@ Remember to make the following substitution for these functions:
 - import { configure as configureLogging } from '@openedx/frontend-platform/logging';
 + import { configureLogging } from '@openedx/frontend-base';
 ```
+
+
+## Merging repositories
+
+Followed this process: https://stackoverflow.com/questions/13040958/merge-two-git-repositories-without-breaking-file-history
+
+After adding a remote of the repo to merge in, run this command:
+
+```
+git merge other-repo-remote/master --allow-unrelated-histories
+```
+
+Then work through the conflicts and use a merge commit to add the history into the frontend-base.
+
+Then move the files out of the way (move src to some other sub-dir, mostly) to make room for the next repo.

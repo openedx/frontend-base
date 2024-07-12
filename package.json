@@ -39,6 +39,7 @@
     "@formatjs/intl-relativetimeformat": "^10.0.1",
     "@formatjs/ts-transformer": "^3.13.14",
     "@fullhuman/postcss-purgecss": "5.0.0",
+    "@module-federation/runtime": "^0.2.6",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
