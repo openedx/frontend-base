@@ -44,11 +44,23 @@ In the meantime, it can be used as a replacement for `openedx/frontend-build` in
 
   Clone this repository as a peer of your micro-frontend folder(s).
 
-### 2. Edit package.json
+### 2. `npm install` and `npm run build` in frontend-base
+
+You'll need to install dependencies and then build this repo at least once.  If you want the build process to watch for changes, you can do `npm run build:watch` instead.
+
+### 3. Change dependencies in package.json in MFE
+
+We need to:
 
 - Uninstall `@edx/frontend-platform`
-- Uninstall `@edx/frontend-build`
-- Add frontend-base to dependencies:
+- Uninstall `@openedx/frontend-build`
+- Add frontend-base to dependencies
+
+```
+npm uninstall @edx/frontend-platform @openedx/frontend-build
+```
+
+And then manually add `frontend-base` to package.json's dependencies:
 
 ```
 "dependencies": {
@@ -56,13 +68,31 @@ In the meantime, it can be used as a replacement for `openedx/frontend-build` in
 },
 ```
 
+After doing these two steps, your package.json should have changed in this way:
+
+```
+"dependencies": {
++ "@openedx/frontend-base": "file:../frontend-base",
+- "@edx/frontend-platform": "@edx/frontend-platform@<version>"
+},
+"devDependencies": {
+- "@openedx/frontend-build": "@openedx/frontend-build@<version>"
+}
+```
+
 This will let your MFE use the checked out version of `frontend-base`.
 
-### 3. `npm install`
+### 4. `npm install`in MFE
 
-Run `npm install` again to update your `node_modules` and `package-lock.json` with the frontend-base dependency.
+Just to be sure you don't run into any dependency skew issues, delete the MFE's `node_modules` and `package-lock.json`.  Then run `npm install` again to make sure we've fully cleaned out frontend-platform and frontend-build's downstream dependencies.  Historically, messing with frontend-build has caused big problems if you don't do this.
 
-### 4. Add frontend-base to module.config.js
+```
+rm -rf node_modules
+rm package-lock.json
+npm install
+```
+
+### 5. Add frontend-base to module.config.js in MFE
 
 To use a local version of frontend-base properly, you need to add it to module.config.js.  Add the following line to your module.config.js file in your MFE:
 
@@ -75,7 +105,7 @@ module.exports = {
 
 ```
 
-### 4. Migrate your MFE
+### 6. Migrate your MFE
 
 Follow the steps below to migrate an MFE to use frontend-base.
 
@@ -132,7 +162,7 @@ This assumes you have a `src` folder and your build goes in `dist`, which is the
 Replace the import from 'frontend-build' with 'frontend-base'.
 
 ```diff
-- const { createConfig } = require('@edx/frontend-build');
+- const { createConfig } = require('@openedx/frontend-build');
 + const { createConfig } = require('@openedx/frontend-base/config');
 ```
 
@@ -141,7 +171,7 @@ Replace the import from 'frontend-build' with 'frontend-base'.
 Replace the import from 'frontend-build' with 'frontend-base'.
 
 ```diff
-- const { createConfig } = require('@edx/frontend-build');
+- const { createConfig } = require('@openedx/frontend-build');
 + const { createConfig } = require('@openedx/frontend-base/config');
 ```
 
@@ -188,10 +218,10 @@ We have removed the `@svgr/webpack` loader because it was incompatible with more
 
 ### 10. Import `createConfig` and `getBaseConfig` from `@openedx/frontend-base/config`
 
-In frontend-build, `createConfig` and `getBaseConfig` could be imported from the root package (`@edx/frontend-build`).  They have been moved to a sub-directory to make room for runtime exports from the root package (`@openedx/frontend-base`).
+In frontend-build, `createConfig` and `getBaseConfig` could be imported from the root package (`@openedx/frontend-build`).  They have been moved to a sub-directory to make room for runtime exports from the root package (`@openedx/frontend-base`).
 
 ```diff
-- const { createConfig } = require('@edx/frontend-build');
+- const { createConfig } = require('@openedx/frontend-build');
 + const { createConfig } = require('@openedx/frontend-base/config');
 ```
 
