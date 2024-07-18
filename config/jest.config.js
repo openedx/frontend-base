@@ -31,6 +31,6 @@ module.exports = {
     'setupTest.js',
   ],
   transformIgnorePatterns: [
-    'node_modules/(?!@(open)?edx)',
+    '/node_modules/(?!(@openedx|@edx)/)',
   ],
 };
