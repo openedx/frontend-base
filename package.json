@@ -19,7 +19,10 @@
     "docs": "jsdoc -c jsdoc.json",
     "docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
     "lint": "eslint .",
-    "test": "bash ./smoke-test.sh"
+    "test": "npm run test:cli && npm run test:app && npm run test:runtime",
+    "test:app": "npm --prefix ./test-app i && npm --prefix ./test-app run lint && npm --prefix ./test-app run test --no-cache && npm --prefix ./test-app run build",
+    "test:cli": "./bin/openedx.js jest --coverage cli --config cli/jest.config.js",
+    "test:runtime": "./bin/openedx.js jest runtime --config runtime/jest.config.js  --no-cache"
   },
   "repository": {
     "type": "git",
