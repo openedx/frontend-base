@@ -7,6 +7,7 @@ import {
   mergeConfig,
   useIntl
 } from '@openedx/frontend-base';
+import { Container } from '@openedx/paragon';
 import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -40,7 +41,7 @@ export default function ExamplePage() {
   }, [])
 
   return (
-    <div>
+    <Container>
       <h1>{context.config.SITE_NAME} test page</h1>
 
       <h2>Links</h2>
@@ -91,6 +92,6 @@ export default function ExamplePage() {
 
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>
-    </div>
+    </Container>
   )
 }

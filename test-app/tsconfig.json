@@ -8,6 +8,7 @@
     ".eslintrc.js",
     "jest.config.js",
     "env.config.js",
-    "src/**/*"
+    "src/**/*",
+    "app.d.ts",
   ],
 }
