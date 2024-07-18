@@ -8,7 +8,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "openedx": "dist/bin/openedx.js"
+    "openedx": "dist/bin/openedx.js",
+    "intl-imports.js": "cli/scripts/intl-imports.js",
+    "transifex-utils.js": "cli/scripts/transifex-utils.js"
   },
   "scripts": {
     "build": "tsc",

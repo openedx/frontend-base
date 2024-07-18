@@ -3,7 +3,7 @@
 import path from 'path';
 import { main as realMain } from './intl-imports';
 
-const sempleAppDirectory = path.join(__dirname, '../../../test-app');
+const sampleAppDirectory = path.join(__dirname, '../../test-app');
 
 // History for `process.stdout.write` mock calls.
 const logHistory = {
@@ -35,7 +35,7 @@ const main = (...directories) => realMain({
   directories,
   log,
   writeFileSync,
-  pwd: sempleAppDirectory,
+  pwd: sampleAppDirectory,
 });
 
 // Clean up mock histories
@@ -152,7 +152,7 @@ describe('list of generated index.js files', () => {
     main('frontend-component-singlelang', 'frontend-component-nolangs', 'frontend-component-emptylangs', 'frontend-app-sample');
     const writtenFiles = writeFileHistory.log
       .map(file => file.filename)
-      .map(file => path.relative(sempleAppDirectory, file));
+      .map(file => path.relative(sampleAppDirectory, file));
     expect(writtenFiles).toEqual([
       'src/i18n/messages/frontend-component-singlelang/index.js',
       'src/i18n/messages/frontend-app-sample/index.js',
