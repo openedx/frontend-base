@@ -7,6 +7,7 @@ import {
   subscribe,
 } from '../runtime';
 
+import Header from './header';
 import './index.scss';
 
 const messages = [];
@@ -24,6 +25,7 @@ init({
 subscribe(APP_READY, () => {
   ReactDOM.render(
     <AppProvider>
+      <Header />
       <div>Hi there.</div>
     </AppProvider>,
     document.getElementById('root'),
