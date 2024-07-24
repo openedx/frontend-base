@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 import Responsive from 'react-responsive';
-import { AppContext } from '@edx/frontend-platform/react';
-import { ensureConfig } from '@edx/frontend-platform';
+import { AppContext, ensureConfig } from '../../../runtime';
 
-import MobileHeader from './MobileHeader';
 import HeaderBody from './HeaderBody';
+import MobileHeader from './MobileHeader';
 
 ensureConfig([
   'STUDIO_BASE_URL',
