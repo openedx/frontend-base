@@ -54,6 +54,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     'react/destructuring-assignment': 'off',
     'no-plusplus': 'off',
+    '@typescript-eslint/comma-dangle': 'off',
     strict: 'off',
     'import/no-extraneous-dependencies': [
       'error',

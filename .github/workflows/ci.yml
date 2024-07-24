@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm ci
-        cd cli/test-app
+        cd test-app
         npm ci
     - name: Lint
       run: npm run lint

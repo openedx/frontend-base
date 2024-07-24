@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 
-const presets = require('../lib/presets');
+const presets = require('../cli/presets');
 
 /**
  * TLDR:
@@ -66,7 +66,7 @@ switch (commandName) {
     break;
   case 'formatjs': {
     const commonArgs = [
-      '--format', 'node_modules/@openedx/frontend-base/lib/formatter.js',
+      '--format', 'node_modules/@openedx/frontend-base/cli/formatter.js',
       '--ignore', 'src/**/*.json',
       '--out-file', './temp/formatjs/Default.messages.json',
       '--', 'src/**/*.js*',
@@ -76,7 +76,7 @@ switch (commandName) {
     break;
   }
   case 'serve':
-    require('../lib/scripts/serve');
+    require('../cli/scripts/serve');
     break;
   default:
     console.log(chalk.red(`[ERROR] openedx: The command ${chalk.bold.red(commandName)} is unsupported.`));

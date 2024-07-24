@@ -9,8 +9,6 @@ if (fs.existsSync(appEnvConfigPath)) {
 }
 
 module.exports = {
-  // TypeScript and JavaScript files (.ts, .tsx, .js, .jsx) will be transformed by ts-jest to CommonJS syntax.
-  preset: 'ts-jest/presets/js-with-ts',
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
     url: 'http://localhost/',
@@ -20,7 +18,7 @@ module.exports = {
   ],
   rootDir: process.cwd(),
   moduleNameMapper: {
-    '\\.(css|scss)$': 'identity-obj-proxy',
+    '\\.(css|scss)$': require.resolve('identity-obj-proxy'),
     'env.config': envConfigPath,
   },
   collectCoverageFrom: [
@@ -31,6 +29,13 @@ module.exports = {
     'setupTest.js',
   ],
   transformIgnorePatterns: [
-    'node_modules/(?!@(open)?edx)',
+    '/node_modules/(?!(@openedx|@edx)/)',
+  ],
+  modulePathIgnorePatterns: [
+    '<rootDir>/dist/',
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/dist/',
   ],
 };

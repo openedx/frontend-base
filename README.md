@@ -44,22 +44,68 @@ In the meantime, it can be used as a replacement for `openedx/frontend-build` in
 
   Clone this repository as a peer of your micro-frontend folder(s).
 
-### 2. Edit package.json
+### 2. `npm install` and `npm run build` in frontend-base
 
-- Replace the `@openedx/frontend-build` dependency with:
+You'll need to install dependencies and then build this repo at least once.  If you want the build process to watch for changes, you can do `npm run build:watch` instead.
+
+### 3. Change dependencies in package.json in MFE
+
+We need to:
+
+- Uninstall `@edx/frontend-platform`
+- Uninstall `@openedx/frontend-build`
+- Add frontend-base to dependencies
 
 ```
-- "@openedx/frontend-build": "13.1.4",
+npm uninstall @edx/frontend-platform @openedx/frontend-build
+```
+
+And then manually add `frontend-base` to package.json's dependencies:
+
+```
+"dependencies": {
 + "@openedx/frontend-base": "file:../frontend-base",
+},
+```
+
+After doing these two steps, your package.json should have changed in this way:
+
+```
+"dependencies": {
++ "@openedx/frontend-base": "file:../frontend-base",
+- "@edx/frontend-platform": "@edx/frontend-platform@<version>"
+},
+"devDependencies": {
+- "@openedx/frontend-build": "@openedx/frontend-build@<version>"
+}
 ```
 
 This will let your MFE use the checked out version of `frontend-base`.
 
-### 3. `npm install`
+### 4. `npm install`in MFE
 
-Run `npm install` again to update your `node_modules` and `package-lock.json`.
+Just to be sure you don't run into any dependency skew issues, delete the MFE's `node_modules` and `package-lock.json`.  Then run `npm install` again to make sure we've fully cleaned out frontend-platform and frontend-build's downstream dependencies.  Historically, messing with frontend-build has caused big problems if you don't do this.
 
-### 4. Migrate your MFE
+```
+rm -rf node_modules
+rm package-lock.json
+npm install
+```
+
+### 5. Add frontend-base to module.config.js in MFE
+
+To use a local version of frontend-base properly, you need to add it to module.config.js.  Add the following line to your module.config.js file in your MFE:
+
+```diff
+module.exports = {
+  localModules: [
++   { moduleName: '@openedx/frontend-base', dir: '../frontend-base', dist: 'dist' },
+  ],
+};
+
+```
+
+### 6. Migrate your MFE
 
 Follow the steps below to migrate an MFE to use frontend-base.
 
@@ -73,7 +119,22 @@ Replace all instances of `fedx-scripts` with `openedx` in your package.json file
 > **Why change `fedx-scripts` to `openedx`?**
 > A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
-### 2. Add a tsconfig.json file
+### 2. Add a Type Declaration file (app.d.ts)
+
+Create an `app.d.ts` file in the root of your MFE with the following contents:
+
+```
+/// <reference types="@openedx/frontend-base" />
+
+declare module "*.svg" {
+  const content: string;
+  export default content;
+}
+```
+
+This will ensure that you can import SVG files, and have type declarations for the frontend-base library.
+
+### 3. Add a tsconfig.json file
 
 Create a tsconfig.json file and add the following contents to it:
 
@@ -81,14 +142,14 @@ Create a tsconfig.json file and add the following contents to it:
 {
   "extends": "@openedx/frontend-base/config/tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist"
   },
   "include": [
     ".eslintrc.js",
     "jest.config.js",
     "env.config.js",
-    "src",
+    "src/**/*",
     "app.d.ts",
   ]
 }
@@ -96,21 +157,23 @@ Create a tsconfig.json file and add the following contents to it:
 
 This assumes you have a `src` folder and your build goes in `dist`, which is the best practice.
 
-### 3. Add a Type Declaration file (app.d.ts)
-
-Add a file named `app.d.ts` to the root of your MFE.  It should contain:
-
-```
-/// <reference types="@openedx/frontend-base" />
-```
-
 ### 4. Edit `jest.config.js`
 
 Replace the import from 'frontend-build' with 'frontend-base'.
 
+```diff
+- const { createConfig } = require('@openedx/frontend-build');
++ const { createConfig } = require('@openedx/frontend-base/config');
+```
+
 ### 5. Edit `.eslintrc.js`
 
 Replace the import from 'frontend-build' with 'frontend-base'.
+
+```diff
+- const { createConfig } = require('@openedx/frontend-build');
++ const { createConfig } = require('@openedx/frontend-base/config');
+```
 
 ### 6. Search for any other usages of `frontend-build`
 
@@ -151,4 +214,59 @@ This is necessary because we cannot write a tsconfig.json in MFEs that includes 
 
 ### 9. SVGR "ReactComponent" imports have been removed.
 
-We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `cli/test-app/src/App.jsx`.
+We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `test-app/src/App.jsx`.
+
+### 10. Import `createConfig` and `getBaseConfig` from `@openedx/frontend-base/config`
+
+In frontend-build, `createConfig` and `getBaseConfig` could be imported from the root package (`@openedx/frontend-build`).  They have been moved to a sub-directory to make room for runtime exports from the root package (`@openedx/frontend-base`).
+
+```diff
+- const { createConfig } = require('@openedx/frontend-build');
++ const { createConfig } = require('@openedx/frontend-base/config');
+```
+
+You may have handled this in steps 4 and 5 above (jest.config.js and .eslintrc.js)
+
+### 11. Replace all imports from `@edx/frontend-platform` with `@openedx/frontend-base`
+
+frontend-base includes all exports from frontend-platform.  Rather than export them from sub-directories, it exports them all from the root package folder. As an example:
+
+```diff
+- import { getConfig } from '@edx/frontend-platform/config';
+- import { logInfo } from '@edx/frontend-platform/logging';
+- import { FormattedMessage } from '@edx/frontend-platform/i18n';
++ import {
++   getConfig,
++   logInfo,
++   FormattedMessage
++ } from '@openedx/frontend-base';
+```
+
+Note that the `configure` functions for auth, logging, and analytics are now exported with the names:
+
+- configureAuth
+- configureLogging
+- configureAnalytics
+- configureI18n
+
+Remember to make the following substitution for these functions:
+
+```diff
+- import { configure as configureLogging } from '@openedx/frontend-platform/logging';
++ import { configureLogging } from '@openedx/frontend-base';
+```
+
+
+## Merging repositories
+
+Followed this process: https://stackoverflow.com/questions/13040958/merge-two-git-repositories-without-breaking-file-history
+
+After adding a remote of the repo to merge in, run this command:
+
+```
+git merge other-repo-remote/master --allow-unrelated-histories
+```
+
+Then work through the conflicts and use a merge commit to add the history into the frontend-base.
+
+Then move the files out of the way (move src to some other sub-dir, mostly) to make room for the next repo.
