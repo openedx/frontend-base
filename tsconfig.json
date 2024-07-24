@@ -1,0 +1,21 @@
+{
+  "extends": "./config/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist"
+  },
+  "include": [
+    "bin/**/*",
+    "cli/**/*",
+    "config/**/*",
+    "config/.eslintrc.js",
+    "lib/**/*",
+    "index.d.ts",
+    "index.js",
+    ".eslintrc.js",
+    "jest.config.js",
+  ],
+  "exclude": [
+    "cli/test-app"
+  ]
+}
