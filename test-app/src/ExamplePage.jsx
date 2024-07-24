@@ -29,9 +29,6 @@ function printTestResult(value) {
 }
 
 export default function ExamplePage() {
-  const newEnglandApples = ['macintosh', 'granny smith'];
-  const allApples = [...newEnglandApples, 'fuji', 'golden delicious'];
-
   const context = useContext(AppContext);
 
   const intl = useIntl();
