@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform**
+ * #### Import members from **@openedx/frontend-base**
  *
  * The initialization module provides a function for managing an application's initialization
  * lifecycle.  It also provides constants and default handler implementations.
@@ -10,9 +10,11 @@
  *   APP_INIT_ERROR,
  *   APP_READY,
  *   subscribe,
- * } from '@edx/frontend-platform';
- * import { AppProvider, ErrorPage, PageWrap } from '@edx/frontend-platform/react';
- * import React from 'react';
+ *   AppProvider,
+ *   ErrorPage,
+ *   PageWrap
+ * } from '@openedx/frontend-base';
+  * import React from 'react';
  * import ReactDOM from 'react-dom';
  * import { Routes, Route } from 'react-router-dom';
  *
@@ -53,8 +55,6 @@ import {
 This 'env.config' package is a special 'magic' alias in our webpack configuration in frontend-build.
 It points at an `env.config.js` file in the root of an MFE's repository if it exists and falls back
 to an empty object `{}` if the file doesn't exist.  This acts like an 'optional' import, in a sense.
-Note that the env.config.js file in frontend-platform's root directory is NOT used by the actual
-initialization code, it's just there for the test suite and test-app application.
 */
 import envConfig from 'env.config'; // eslint-disable-line import/no-unresolved
 import {
@@ -128,7 +128,7 @@ export const basename = getPath(getConfig().PUBLIC_PATH);
  * The default handler for the initialization lifecycle's `initError` phase.  Logs the error to the
  * LoggingService using `logError`
  *
- * @see {@link module:frontend-platform/logging~logError}
+ * @see {@link module:frontend-base~logError}
  * @param {*} error
  */
 export async function initError(error) {

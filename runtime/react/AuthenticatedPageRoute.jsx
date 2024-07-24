@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
+import { getLoginRedirectUrl } from '../auth';
 import AppContext from './AppContext';
 import PageWrap from './PageWrap';
-import { getLoginRedirectUrl } from '../auth';
 
 /**
  * A react-router route that redirects to the login page when the route becomes active and the user
@@ -16,7 +16,7 @@ import { getLoginRedirectUrl } from '../auth';
  * Like a `PageWrap`, also calls `sendPageEvent` when the route becomes active.
  *
  * @see PageWrap
- * @see {@link module:frontend-platform/analytics~sendPageEvent}
+ * @see {@link module:frontend-base~sendPageEvent}
  * @memberof module:React
  * @param {Object} props
  * @param {string} props.redirectUrl The URL anonymous users should be redirected to, rather than

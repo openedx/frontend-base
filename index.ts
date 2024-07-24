@@ -97,5 +97,5 @@ export {
   subscribe,
   unsubscribe,
   useAppEvent,
-  useIntl,
+  useIntl
 } from './runtime';

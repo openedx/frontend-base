@@ -24,7 +24,7 @@ Some working examples, as of the time of this writing:
 
 { moduleName: '@openedx/paragon/scss', dir: '../paragon', dist: 'scss' }
 { moduleName: '@openedx/paragon', dir: '../paragon', dist: 'dist' }
-{ moduleName: '@edx/frontend-platform', dir: '../frontend-platform', dist: 'dist' }
+{ moduleName: '@openedx/frontend-base', dir: '../frontend-base', dist: 'dist' }
 
 */
 function getLocalAliases() {

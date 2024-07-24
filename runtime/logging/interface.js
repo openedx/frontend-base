@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform/logging**
+ * #### Import members from **@openedx/frontend-base logging**
  *
  * Contains a shared interface for logging information. (The default implementation is in
  * NewRelicLoggingService.js.) When in development mode, all messages will instead be sent to the console.
@@ -8,8 +8,7 @@
  * you're not using the `initialize` function, logging (via New Relic) can be configured via:
  *
  * ```
- * import { configure, NewRelicLoggingService, logInfo, logError } from '@edx/frontend-platform/logging';
- * import { geConfig } from '@edx/frontend-platform';
+ * import { getConfig, configure, NewRelicLoggingService, logInfo, logError } from '@openedx/frontend-base';
  *
  * configureLogging(NewRelicLoggingService, {
  *   config: getConfig(),

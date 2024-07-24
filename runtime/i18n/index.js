@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform/i18n**
+ * #### Import members from **@openedx/frontend-base**
  * The i18n module relies on react-intl and re-exports all of that package's exports.
  *
  * For each locale we want to support, react-intl needs 1) the locale-data, which includes
@@ -18,7 +18,7 @@
  *
  *
  * @module Internationalization
- * @see {@link https://github.com/openedx/frontend-platform/blob/master/docs/how_tos/i18n.rst}
+ * @see {@link https://github.com/openedx/frontend-base/blob/master/docs/how_tos/i18n.rst}
  * @see {@link https://formatjs.io/docs/react-intl/components/ Intl} for components exported from this module.
  *
  */

@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform/analytics**
+ * #### Import members from **@openedx/frontend-base** Analytics
  *
  * Contains a shared interface for tracking events.  Has a default implementation of
  * SegmentAnalyticsService, which supports Segment and the Tracking Log API (hosted in LMS).
@@ -8,10 +8,13 @@
  * you're not using the `initialize` function, analytics can be configured via:
  *
  * ```
- * import { configure, SegmentAnalyticsService } from '@edx/frontend-platform/analytics';
- * import { getConfig } from '@edx/frontend-platform';
- * import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
- * import { getLoggingService } from '@edx/frontend-platform/logging';
+ * import {
+ *   getConfig,
+ *   getAuthenticatedHttpClient,
+ *   getLoggingService,
+ *   configureAnalytics,
+ *   SegmentAnalyticsService
+ * } from '@openedx/frontend-base';
  *
  * configure(SegmentAnalyticsService, {
  *   config: getConfig(),

@@ -46,8 +46,7 @@ const optionsPropTypes = {
  * you could do the following to set up a MockAuthService for your test:
  *
  * ```
- * import { getConfig, mergeConfig } from '@edx/frontend-platform';
- * import { configure, MockAuthService } from '@edx/frontend-platform/auth';
+ * import { getConfig, mergeConfig, configureAuth, MockAuthService } from '@openedx/frontend-base';
  * import MockAdapter from 'axios-mock-adapter';
  *
  * const mockLoggingService = {
