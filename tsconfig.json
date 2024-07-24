@@ -19,7 +19,6 @@
   ],
   "exclude": [
     "test-app/**/*",
-    "dist/**/*"
     "dist/**/*",
     "coverage/**/*",
     "cli/coverage",

@@ -1,8 +1,8 @@
 import { configure as configureAnalytics, MockAnalyticsService } from '../analytics';
-import { configure as configureI18n } from '../i18n';
-import { configure as configureLogging, MockLoggingService } from '../logging';
 import { configure as configureAuth, MockAuthService } from '../auth';
 import { getConfig } from '../config';
+import { configure as configureI18n } from '../i18n';
+import { configure as configureLogging, MockLoggingService } from '../logging';
 import mockMessages from './mockMessages';
 
 /**
@@ -24,8 +24,7 @@ import mockMessages from './mockMessages';
  * Example:
  *
  * ```
- * import { initializeMockApp } from '@edx/frontend-platform/testing';
- * import { logInfo } from '@edx/frontend-platform/logging';
+ * import { initializeMockApp, logInfo } from '@openedx/frontend-base';
  *
  * describe('initializeMockApp', () => {
  *   it('mocks things correctly', () => {

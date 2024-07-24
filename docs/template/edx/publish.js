@@ -635,7 +635,7 @@ exports.publish = (memberData, opts, tutorials) => {
     files = find({kind: 'file'});
     packages = find({kind: 'package'});
 
-    generate('Open edX frontend-platform API Documentation',
+    generate('Open edX frontend-base API Documentation',
         packages.concat(
             [{
                 kind: 'mainpage',

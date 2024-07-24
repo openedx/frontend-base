@@ -33,7 +33,7 @@ export const useTrackColorSchemeChoice = () => {
   useEffect(() => {
     const trackColorSchemeChoice = ({ matches }) => {
       const preferredColorScheme = matches ? 'dark' : 'light';
-      sendTrackEvent('openedx.ui.frontend-platform.prefers-color-scheme.selected', { preferredColorScheme });
+      sendTrackEvent('openedx.ui.frontend-base.prefers-color-scheme.selected', { preferredColorScheme });
     };
     const colorSchemeQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
     if (colorSchemeQuery) {

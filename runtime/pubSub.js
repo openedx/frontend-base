@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform**
+ * #### Import members from **@openedx/frontend-base**
  *
  * The PubSub module is a thin wrapper around the base functionality of
  * [PubSubJS](https://github.com/mroderick/PubSubJS).  For the sake of simplicity and not relying

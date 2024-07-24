@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform/testing**
+ * #### Import members from **@openedx/frontend-base** Testing
  * The testing module provides helpers for writing tests in Jest.
  *
  * @module Testing

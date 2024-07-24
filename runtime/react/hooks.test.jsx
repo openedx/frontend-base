@@ -29,7 +29,7 @@ describe('useTrackColorSchemeChoice hook', () => {
 
     expect(sendTrackEvent).toHaveBeenCalledTimes(1);
     expect(sendTrackEvent).toHaveBeenCalledWith(
-      'openedx.ui.frontend-platform.prefers-color-scheme.selected',
+      'openedx.ui.frontend-base.prefers-color-scheme.selected',
       { preferredColorScheme: 'dark' },
     );
   });
@@ -40,7 +40,7 @@ describe('useTrackColorSchemeChoice hook', () => {
 
     expect(sendTrackEvent).toHaveBeenCalledTimes(1);
     expect(sendTrackEvent).toHaveBeenCalledWith(
-      'openedx.ui.frontend-platform.prefers-color-scheme.selected',
+      'openedx.ui.frontend-base.prefers-color-scheme.selected',
       { preferredColorScheme: 'light' },
     );
   });

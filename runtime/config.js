@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform**
+ * #### Import members from **@edx/frontend-base**
  *
  * The configuration module provides utilities for working with an application's configuration
  * document (ConfigDocument).  Configuration variables can be supplied to the
@@ -180,7 +180,7 @@ let config = {
  * Example:
  *
  * ```
- * import { getConfig } from '@edx/frontend-platform';
+ * import { getConfig } from '@openedx/frontend-base';
  *
  * const {
  *   LMS_BASE_URL,
@@ -202,7 +202,7 @@ export function getConfig() {
  * Example:
  *
  * ```
- * import { setConfig } from '@edx/frontend-platform';
+ * import { setConfig } from '@openedx/frontend-base';
  *
  * setConfig({
  *   LMS_BASE_URL, // This is overriding the ENTIRE document - this is not merged in!

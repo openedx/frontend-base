@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform/auth**
+ * #### Import members from **@openedx/frontend-base**
  *
  * Simplifies the process of making authenticated API requests to backend edX services by providing
  * common authN/authZ client code that enables the login/logout flow and handles ensuring the
@@ -12,10 +12,10 @@
  * import {
  *   configure,
  *   fetchAuthenticatedUser,
- *   getAuthenticatedHttpClient
- * } from '@edx/frontend-platform/auth';
- * import { getConfig } from '@edx/frontend-platform';
- * import { getLoggingService } from '@edx/frontend-platform/logging';
+ *   getAuthenticatedHttpClient,
+ *   getConfig,
+ *   getLoggingService
+ * } from '@openedx/frontend-base';
  *
  * configure({
  *   loggingService: getLoggingService(),

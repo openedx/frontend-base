@@ -1,5 +1,5 @@
 /**
- * #### Import members from **@edx/frontend-platform**
+ * #### Import members from **@openedx/frontend-base**
  *
  * @module Utilities
  */
