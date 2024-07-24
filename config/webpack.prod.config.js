@@ -19,7 +19,8 @@ const { transform } = require('@formatjs/ts-transformer');
 // Reduce CSS file size by ~70%
 const purgecss = require('@fullhuman/postcss-purgecss');
 
-const HtmlWebpackNewRelicPlugin = require('../lib/plugins/html-webpack-new-relic-plugin');
+const getLocalAliases = require('./getLocalAliases');
+const HtmlWebpackNewRelicPlugin = require('../cli/plugins/html-webpack-new-relic-plugin');
 const commonConfig = require('./webpack.common.config');
 
 // Add process env vars. Currently used only for setting the PUBLIC_PATH.
@@ -55,6 +56,8 @@ if (process.env.ENABLE_NEW_RELIC !== 'false') {
   }));
 }
 
+const aliases = getLocalAliases();
+
 module.exports = merge(commonConfig, {
   mode: 'production',
   devtool: 'source-map',
@@ -64,15 +67,21 @@ module.exports = merge(commonConfig, {
     publicPath: process.env.PUBLIC_PATH || '/',
     clean: true, // Clean the output directory before emit.
   },
+  resolve: {
+    alias: aliases,
+  },
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules/,
+        include: [
+          /src/,
+        ],
         use: {
           loader: require.resolve('ts-loader'),
           options: {
+            transpileOnly: true,
             compilerOptions: {
               noEmit: false,
             },
@@ -90,7 +99,9 @@ module.exports = merge(commonConfig, {
       },
       {
         test: /\.js$/,
-        use: ['source-map-loader'],
+        use: [
+          require.resolve('source-map-loader'),
+        ],
         enforce: 'pre',
       },
       // Webpack, by default, includes all CSS in the javascript bundles. Unfortunately, that means:
@@ -108,7 +119,7 @@ module.exports = merge(commonConfig, {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader', // translates CSS into CommonJS
+            loader: require.resolve('css-loader'), // translates CSS into CommonJS
             options: {
               sourceMap: true,
               modules: {
@@ -117,7 +128,7 @@ module.exports = merge(commonConfig, {
             },
           },
           {
-            loader: 'postcss-loader',
+            loader: require.resolve('postcss-loader'),
             options: {
               postcssOptions: {
                 plugins: [
@@ -130,9 +141,9 @@ module.exports = merge(commonConfig, {
               },
             },
           },
-          'resolve-url-loader',
+          require.resolve('resolve-url-loader'),
           {
-            loader: 'sass-loader', // compiles Sass to CSS
+            loader: require.resolve('sass-loader'), // compiles Sass to CSS
             options: {
               sourceMap: true,
               sassOptions: {
@@ -153,18 +164,18 @@ module.exports = merge(commonConfig, {
       // file-loader instead to copy the files directly to the output directory.
       {
         test: /\.(woff2?|ttf|svg|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader',
+        loader: require.resolve('file-loader'),
       },
       {
         test: /favicon.ico$/,
-        loader: 'file-loader',
+        loader: require.resolve('file-loader'),
         options: {
           name: '[name].[ext]', // <-- retain original file name
         },
       },
       {
         test: /\.(jpe?g|png|gif)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader',
+        loader: require.resolve('file-loader'),
       },
     ],
   },

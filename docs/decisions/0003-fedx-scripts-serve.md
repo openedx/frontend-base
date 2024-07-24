@@ -22,7 +22,7 @@ If no `env.config.js` and/or `.env.development|private` file(s) exist and/or no 
 
 # Implementation
 
-The new `serve` command will live as under a new `scripts` directory under `lib`.
+The new `serve` command will live as under a new `scripts` directory under `cli`.
 
 Once in place, a MFE application may add a `serve` script to its NPM scripts in the `package.json` file:
 
