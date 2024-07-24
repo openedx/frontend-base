@@ -13,6 +13,7 @@
     "runtime/**/*",
     "shell/**/*",
     "index.ts",
+    "index.d.ts",
     "config/tsconfig.json",
     "jest.config.js",
     "babel.config.js",
