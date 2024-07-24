@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
 import {
-  render,
   fireEvent,
+  render,
   waitFor,
 } from '@testing-library/react';
+import { useMemo } from 'react';
 
-import { AppContext } from '@edx/frontend-platform/react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Context as ResponsiveContext } from 'react-responsive';
+import { AppContext, IntlProvider } from '../../../runtime';
 
 import StudioHeader from './StudioHeader';
 import messages from './messages';

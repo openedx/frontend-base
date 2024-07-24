@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import {
   OverlayTrigger,
   Tooltip,
 } from '@openedx/paragon';
+import PropTypes from 'prop-types';
+import { injectIntl, intlShape } from '../../../runtime';
 import messages from './messages';
 
 const CourseLockUp = ({

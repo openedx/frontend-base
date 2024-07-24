@@ -1,12 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
-import { getConfig } from '@edx/frontend-platform';
+import React from 'react';
+import { getConfig, injectIntl, intlShape } from '../../runtime';
 
 // Local Components
-import { Menu, MenuTrigger, MenuContent } from './Menu';
 import Avatar from './Avatar';
 import { LinkedLogo, Logo } from './Logo';
+import { Menu, MenuContent, MenuTrigger } from './Menu';
 
 // i18n
 import messages from './Header.messages';

@@ -1,6 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   ActionRow,
   Button,
@@ -11,11 +8,13 @@ import {
   Row,
 } from '@openedx/paragon';
 import { Close, MenuIcon, Search } from '@openedx/paragon/icons';
+import PropTypes from 'prop-types';
+import { useIntl } from '../../../runtime';
 
-import CourseLockUp from './CourseLockUp';
-import UserMenu from './UserMenu';
 import BrandNav from './BrandNav';
+import CourseLockUp from './CourseLockUp';
 import NavDropdownMenu from './NavDropdownMenu';
+import UserMenu from './UserMenu';
 import messages from './messages';
 
 const HeaderBody = ({

@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import TestRenderer from 'react-test-renderer';
-import { AppContext } from '@edx/frontend-platform/react';
 import { Context as ResponsiveContext } from 'react-responsive';
+import TestRenderer from 'react-test-renderer';
+import { AppContext, IntlProvider } from '../../runtime';
 
 import Header from './index';
 
