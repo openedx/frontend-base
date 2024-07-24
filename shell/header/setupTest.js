@@ -1,18 +1,21 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
-import PropTypes from 'prop-types';
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
-import 'babel-polyfill';
-import 'jest-chain';
-import { getConfig, mergeConfig } from '@edx/frontend-platform';
-import { configure as configureLogging } from '@edx/frontend-platform/logging';
-import { configure as configureI18n } from '@edx/frontend-platform/i18n';
-import { configure as configureAuth, MockAuthService } from '@edx/frontend-platform/auth';
 import { render as rtlRender } from '@testing-library/react';
-import { IntlProvider } from 'react-intl';
-import AppProvider from '@edx/frontend-platform/react/AppProvider';
+import 'jest-chain';
+import PropTypes from 'prop-types';
+import {
+  AppProvider,
+  configureAuth,
+  configureI18n,
+  configureLogging,
+  getConfig,
+  IntlProvider,
+  mergeConfig,
+  MockAuthService
+} from '../../runtime';
+
 import appMessages from './i18n';
 
 // These configuration values are usually set in webpack's EnvironmentPlugin however
@@ -121,5 +124,5 @@ export * from '@testing-library/react';
 
 // Override `render` method.
 export {
-  render,
+  render
 };

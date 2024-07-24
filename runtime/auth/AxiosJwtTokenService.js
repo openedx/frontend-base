@@ -1,8 +1,8 @@
-import Cookies from 'universal-cookie';
-import jwtDecode from 'jwt-decode';
 import axios from 'axios';
-import { logFrontendAuthError, processAxiosErrorAndThrow } from './utils';
+import jwtDecode from 'jwt-decode';
+import Cookies from 'universal-cookie';
 import createRetryInterceptor from './interceptors/createRetryInterceptor';
+import { logFrontendAuthError, processAxiosErrorAndThrow } from './utils';
 
 export default class AxiosJwtTokenService {
   static isTokenExpired(token) {
