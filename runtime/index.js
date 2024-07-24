@@ -1,41 +1,100 @@
 export {
-  MockAnalyticsService, SegmentAnalyticsService, configure as configureAnalytics, getAnalyticsService, identifyAnonymousUser,
-  identifyAuthenticatedUser, resetAnalyticsService, sendPageEvent,
+  MockAnalyticsService,
+  SegmentAnalyticsService,
+  configure as configureAnalytics,
+  getAnalyticsService,
+  identifyAnonymousUser,
+  identifyAuthenticatedUser,
+  resetAnalyticsService,
+  sendPageEvent,
   sendTrackEvent,
   sendTrackingLogEvent
 } from './analytics';
 
 export {
-  AUTHENTICATED_USER_CHANGED, AUTHENTICATED_USER_TOPIC, AxiosJwtAuthService,
-  MockAuthService, configure as configureAuth, ensureAuthenticatedUser, fetchAuthenticatedUser, getAuthService, getAuthenticatedHttpClient, getAuthenticatedUser, getHttpClient,
-  getLoginRedirectUrl, getLogoutRedirectUrl, hydrateAuthenticatedUser, redirectToLogin, redirectToLogout, setAuthenticatedUser
+  AUTHENTICATED_USER_CHANGED,
+  AUTHENTICATED_USER_TOPIC,
+  AxiosJwtAuthService,
+  MockAuthService,
+  configure as configureAuth,
+  ensureAuthenticatedUser,
+  fetchAuthenticatedUser,
+  getAuthService,
+  getAuthenticatedHttpClient,
+  getAuthenticatedUser,
+  getHttpClient,
+  getLoginRedirectUrl,
+  getLogoutRedirectUrl,
+  hydrateAuthenticatedUser,
+  redirectToLogin,
+  redirectToLogout,
+  setAuthenticatedUser
 } from './auth';
 
 export {
-  ensureConfig, getConfig, mergeConfig, setConfig
+  ensureConfig,
+  getConfig,
+  mergeConfig,
+  setConfig
 } from './config';
 
 export {
-  APP_ANALYTICS_INITIALIZED, APP_AUTH_INITIALIZED, APP_CONFIG_INITIALIZED, APP_I18N_INITIALIZED, APP_INIT_ERROR, APP_LOGGING_INITIALIZED, APP_PUBSUB_INITIALIZED, APP_READY, APP_TOPIC, CONFIG_CHANGED, CONFIG_TOPIC
+  APP_ANALYTICS_INITIALIZED,
+  APP_AUTH_INITIALIZED,
+  APP_CONFIG_INITIALIZED,
+  APP_I18N_INITIALIZED,
+  APP_INIT_ERROR,
+  APP_LOGGING_INITIALIZED,
+  APP_PUBSUB_INITIALIZED,
+  APP_READY,
+  APP_TOPIC,
+  CONFIG_CHANGED,
+  CONFIG_TOPIC
 } from './constants';
 
 export {
-  FormattedDate, FormattedMessage, FormattedNumber,
-  FormattedPlural, FormattedRelativeTime, FormattedTime, IntlProvider, LOCALE_CHANGED,
-  LOCALE_TOPIC, configure as configureI18n, createIntl, defineMessages, getCountryList,
+  FormattedDate,
+  FormattedMessage,
+  FormattedNumber,
+  FormattedPlural,
+  FormattedRelativeTime,
+  FormattedTime,
+  IntlProvider,
+  LOCALE_CHANGED,
+  LOCALE_TOPIC,
+  configure as configureI18n,
+  createIntl,
+  defineMessages,
+  getCountryList,
   getCountryMessages,
   getLanguageList,
-  getLanguageMessages, getLocale,
-  getMessages, getPrimaryLanguageSubtag, handleRtl, injectIntl, intlShape, isRtl, mergeMessages, useIntl
+  getLanguageMessages,
+  getLocale,
+  getMessages,
+  getPrimaryLanguageSubtag,
+  handleRtl,
+  injectIntl,
+  intlShape,
+  isRtl,
+  mergeMessages,
+  useIntl
 } from './i18n';
 
 export {
-  auth, history,
-  initError, initialize
+  auth,
+  history,
+  initError,
+  initialize
 } from './initialize';
 
 export {
-  MockLoggingService, NewRelicLoggingService, configure as configureLogging, getLoggingService, logError, logInfo, resetLoggingService
+  MockLoggingService,
+  NewRelicLoggingService,
+  configure as configureLogging,
+  getLoggingService,
+  logError,
+  logInfo,
+  resetLoggingService
 } from './logging';
 
 export {
@@ -61,5 +120,12 @@ export {
 } from './testing';
 
 export {
-  camelCaseObject, convertKeyNames, ensureDefinedConfig, getPath, getQueryParameters, modifyObjectKeys, parseURL, snakeCaseObject
+  camelCaseObject,
+  convertKeyNames,
+  ensureDefinedConfig,
+  getPath,
+  getQueryParameters,
+  modifyObjectKeys,
+  parseURL,
+  snakeCaseObject
 } from './utils';

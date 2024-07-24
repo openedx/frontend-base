@@ -174,7 +174,7 @@ class SegmentAnalyticsService {
    * @param {*} [traits]
    * @returns {Promise} Promise that will resolve once the document readyState is complete
    */
-  identifyAnonymousUser(traits) { // eslint-disable-line no-unused-vars
+  identifyAnonymousUser(traits) { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (!this.segmentInitialized) {
       return Promise.resolve();
     }
@@ -182,7 +182,7 @@ class SegmentAnalyticsService {
     // but we still have a user id associated in segment, reset the local segment state
     // This has to be wrapped in the analytics.ready() callback because the analytics.user()
     // function isn't available until the analytics.js package has finished initializing.
-    return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
+    return new Promise((resolve, reject) => { // eslint-disable-line @typescript-eslint/no-unused-vars
       global.analytics.ready(() => {
         if (global.analytics.user().id()) {
           global.analytics.reset();

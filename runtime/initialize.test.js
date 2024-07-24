@@ -1,37 +1,36 @@
-import PubSub from 'pubsub-js';
 import { createBrowserHistory } from 'history';
 import {
-  APP_PUBSUB_INITIALIZED,
-  APP_CONFIG_INITIALIZED,
-  APP_LOGGING_INITIALIZED,
-  APP_AUTH_INITIALIZED,
   APP_ANALYTICS_INITIALIZED,
+  APP_AUTH_INITIALIZED,
+  APP_CONFIG_INITIALIZED,
   APP_I18N_INITIALIZED,
-  APP_READY,
   APP_INIT_ERROR,
+  APP_LOGGING_INITIALIZED,
+  APP_PUBSUB_INITIALIZED,
+  APP_READY,
 } from './constants';
 import { initialize } from './initialize';
 import { subscribe } from './pubSub';
 
+import { configure as configureAnalytics, SegmentAnalyticsService } from './analytics';
 import {
-  configure as configureLogging,
-  NewRelicLoggingService,
-  getLoggingService,
-  logError,
-} from './logging';
-import {
+  AxiosJwtAuthService,
   configure as configureAuth,
-  getAuthenticatedHttpClient,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
-  hydrateAuthenticatedUser,
+  getAuthenticatedHttpClient,
   getAuthenticatedUser,
-  AxiosJwtAuthService,
+  hydrateAuthenticatedUser,
 } from './auth';
-import { configure as configureAnalytics, SegmentAnalyticsService } from './analytics';
-import { configure as configureI18n } from './i18n';
-import { getConfig } from './config';
 import configureCache from './auth/LocalForageCache';
+import { getConfig } from './config';
+import { configure as configureI18n } from './i18n';
+import {
+  configure as configureLogging,
+  getLoggingService,
+  logError,
+  NewRelicLoggingService,
+} from './logging';
 
 jest.mock('./logging');
 jest.mock('./auth');
@@ -84,7 +83,7 @@ describe('initialize', () => {
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();
     logError.mockReset();
-    PubSub.clearAllSubscriptions();
+    global.PubSub.clearAllSubscriptions();
   });
 
   it('should call default handlers in the absence of overrides', async () => {

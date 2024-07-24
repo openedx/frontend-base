@@ -6,7 +6,6 @@ module.exports = createConfig('eslint', {
   ignorePatterns: [
     'test-app',
     'docs',
-    'runtime', // TODO: Remove this ignore
     '.eslintrc.js',
   ],
   parserOptions: {
