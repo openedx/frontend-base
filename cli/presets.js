@@ -2,16 +2,15 @@ const ConfigPreset = require('./ConfigPreset');
 
 const searchFilepaths = [process.cwd()];
 
-const eslint = new ConfigPreset({
-  defaultFilename: '.eslintrc.js',
-  searchFilenames: ['.eslintrc', '.eslintrc.js'],
+const babel = new ConfigPreset({
+  defaultFilename: 'babel.config.js',
+  searchFilenames: ['.babelrc', '.babelrc.js', 'babel.config.js'],
   searchFilepaths,
 });
 
-// This will be removed and replace "eslint" once all MFEs are ready
-const eslintNext = new ConfigPreset({
-  defaultFilename: '.eslintrc.next.js',
-  searchFilenames: ['.eslintrc.next', '.eslintrc.next.js'],
+const eslint = new ConfigPreset({
+  defaultFilename: '.eslintrc.js',
+  searchFilenames: ['.eslintrc', '.eslintrc.js'],
   searchFilepaths,
 });
 
@@ -40,8 +39,8 @@ const webpack = new ConfigPreset({
 });
 
 module.exports = {
+  babel,
   eslint,
-  'eslint-next': eslintNext, // This will be removed and replace "eslint" once all MFEs are ready
   jest,
   webpack,
   webpackDevServer,

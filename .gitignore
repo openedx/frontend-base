@@ -7,3 +7,4 @@ dist
 node_modules
 npm-debug.log
 docs/api
+/openedx-frontend-base-1.0.0.tgz

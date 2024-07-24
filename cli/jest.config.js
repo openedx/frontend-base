@@ -1,8 +1,24 @@
-const { createConfig } = require('../config');
-
-module.exports = createConfig('jest', {
-  // This testEnvironment is important - our default Jest configuration sets the testEnvironment to
-  // 'jsdom' - this does not work for tests that rely on node features, such as those for
-  // HtmlWebpackNewRelicPlugin.
+module.exports = {
   testEnvironment: 'node',
-});
+  testEnvironmentOptions: {
+    url: 'http://localhost/',
+  },
+  rootDir: process.cwd(),
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+  ],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    'setupTest.js',
+  ],
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@openedx|@edx)/)',
+  ],
+  modulePathIgnorePatterns: [
+    '<rootDir>/dist/',
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/dist/',
+  ],
+};
