@@ -1,0 +1,18 @@
+# This file records information about this repo. Its use is described in OEP-55:
+# https://open-edx-proposals.readthedocs.io/en/latest/processes/oep-0055-proc-project-maintainers.html
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "frontend-plugin-framework"
+  description: " An experimental framework for micro-frontend plugins."
+  links:
+    - url: "https://github.com/openedx/frontend-plugin-framework/blob/master/README.rst"
+      title: "README"
+      icon: "Article"
+  annotations:
+    openedx.org/arch-interest-groups: ""
+spec:
+  owner: group:committers-frontend
+  type: "library"
+  lifecycle: "experimental"
