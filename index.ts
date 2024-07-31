@@ -99,3 +99,12 @@ export {
   useAppEvent,
   useIntl
 } from './runtime';
+
+export interface OpenedXConfig {
+  /**
+   * The application content for the shell.  This is a temporary configuration option while we
+   * convert micro-frontends to plugins.  It must be a React functional component that takes no
+   * arguments and returns JSX.
+   */
+  app?: () => JSX.Element
+}

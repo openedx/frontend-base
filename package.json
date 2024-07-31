@@ -7,7 +7,7 @@
 	},
 	"main": "dist/index.js",
 	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"types": "dist/frontend-base.d.ts",
 	"files": [
 		"/dist",
 		"/config",
@@ -21,7 +21,6 @@
 	},
 	"scripts": {
 		"build": "make build",
-		"build:watch": "tsc --watch",
 		"clean": "rm -rf dist",
 		"docs": "jsdoc -c jsdoc.json",
 		"docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
