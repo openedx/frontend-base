@@ -4,7 +4,7 @@
     "config:recommended"
   ],
   "patch": {
-    "automerge": true
+    "automerge": false
   },
   "rebaseStalePrs": true,
   "packageRules": [
@@ -17,7 +17,7 @@
     {
       "matchPackagePatterns": ["@edx", "@openedx"],
       "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
+      "automerge": false
     }
   ]
 }
