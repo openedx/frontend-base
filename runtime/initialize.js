@@ -52,9 +52,10 @@ import {
   createMemoryHistory
 } from 'history';
 /*
-This 'env.config' package is a special 'magic' alias in our webpack configuration in frontend-build.
-It points at an `env.config.js` file in the root of an MFE's repository if it exists and falls back
-to an empty object `{}` if the file doesn't exist.  This acts like an 'optional' import, in a sense.
+This 'env.config' package is a special 'magic' alias in our webpack configuration in the `config`
+folder. It points at an `env.config.js` file in the root of an MFE's repository if it exists and
+falls back to an empty object `{}` if the file doesn't exist.  This acts like an 'optional' import,
+in a sense.
 */
 import envConfig from 'env.config'; // eslint-disable-line import/no-unresolved
 import {
