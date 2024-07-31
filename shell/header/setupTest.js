@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
 import { render as rtlRender } from '@testing-library/react';
 import 'jest-chain';
 import PropTypes from 'prop-types';
