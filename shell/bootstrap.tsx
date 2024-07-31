@@ -9,6 +9,7 @@ import {
   subscribe,
 } from '../runtime';
 
+import Footer from './footer';
 import Header from './header';
 
 const messages = [];
@@ -18,6 +19,7 @@ subscribe(APP_READY, () => {
     <AppProvider>
       <Header />
       {getConfig().app ? createElement(getConfig().app, {}) : null}
+      <Footer />
     </AppProvider>,
     document.getElementById('root'),
   );

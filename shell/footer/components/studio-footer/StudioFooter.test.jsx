@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { AppContext } from '@edx/frontend-platform/react';
+import { useMemo } from 'react';
+
+import { AppContext, IntlProvider } from '../../../../runtime';
 import StudioFooter from './StudioFooter';
 import messages from './messages';
 
