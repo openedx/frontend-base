@@ -4,7 +4,7 @@
     "rootDir": ".",
     "outDir": "dist",
     "noEmit": false,
-    "declaration": false,
+    "declaration": true,
   },
   "include": [
     "bin/**/*",
@@ -13,7 +13,6 @@
     "runtime/**/*",
     "shell/**/*",
     "index.ts",
-    "index.d.ts",
     "jest.config.js",
     "babel.config.js",
   ],
