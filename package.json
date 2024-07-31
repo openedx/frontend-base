@@ -28,7 +28,8 @@
 		"test": "npm run test:cli; npm run test:app; npm run test:runtime",
 		"test:app": "npm --prefix ./test-app i; npm --prefix ./test-app run lint; npm --prefix ./test-app run build",
 		"test:cli": "jest cli --config cli/jest.config.js --no-cache",
-		"test:runtime": "jest runtime --config runtime/jest.config.js --no-cache"
+		"test:runtime": "jest runtime --config runtime/jest.config.js --no-cache",
+		"test:shell": "jest shell --config shell/jest.config.js --no-cache"
 	},
 	"repository": {
 		"type": "git",

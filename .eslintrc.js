@@ -8,6 +8,7 @@ module.exports = createConfig('eslint', {
     'docs',
     '.eslintrc.js',
     'frontend-base.d.ts',
+    'coverage',
   ],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),
