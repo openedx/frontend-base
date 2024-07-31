@@ -1,6 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, intlShape, FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, injectIntl, intlShape } from '../../../runtime';
 
 const LanguageSelector = ({
   intl, options, onSubmit, ...props
