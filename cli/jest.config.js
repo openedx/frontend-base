@@ -5,7 +5,7 @@ module.exports = {
   },
   rootDir: process.cwd(),
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
+    'cli/**/*.{js,jsx,ts,tsx}',
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
