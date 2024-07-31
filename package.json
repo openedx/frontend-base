@@ -25,7 +25,7 @@
 		"docs": "jsdoc -c jsdoc.json",
 		"docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
 		"lint": "eslint .",
-		"test": "npm run test:cli; npm run test:app; npm run test:runtime",
+		"test": "npm run test:cli; npm run test:app; npm run test:runtime; npm run test:shell",
 		"test:app": "npm --prefix ./test-app i; npm --prefix ./test-app run lint; npm --prefix ./test-app run build",
 		"test:cli": "jest cli --config cli/jest.config.js --no-cache",
 		"test:runtime": "jest runtime --config runtime/jest.config.js --no-cache",
