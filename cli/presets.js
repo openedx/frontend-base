@@ -26,6 +26,12 @@ const webpackDevServer = new ConfigPreset({
   searchFilepaths,
 });
 
+const shellDevServer = new ConfigPreset({
+  defaultFilename: 'webpack.shell.dev.config.js',
+  searchFilenames: ['webpack.shell.dev.config.js'],
+  searchFilepaths,
+});
+
 const webpackDevServerStage = new ConfigPreset({
   defaultFilename: 'webpack.dev-stage.config.js',
   searchFilenames: ['webpack.dev-stage.config.js'],
@@ -46,6 +52,7 @@ module.exports = {
   webpackDevServer,
   'webpack-dev': webpackDevServer,
   'webpack-dev-server': webpackDevServer,
+  shellDevServer,
   webpackDevServerStage,
   'webpack-dev-server-stage': webpackDevServerStage,
   'webpack-dev-stage': webpackDevServerStage,

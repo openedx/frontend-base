@@ -11,7 +11,8 @@
 	"files": [
 		"/dist",
 		"/config",
-		"/cli"
+		"/cli",
+		"/shell/**/*.scss"
 	],
 	"bin": {
 		"openedx": "dist/bin/openedx.js",
@@ -19,7 +20,7 @@
 		"transifex-utils.js": "dist/cli/scripts/transifex-utils.js"
 	},
 	"scripts": {
-		"build": "tsc",
+		"build": "make build",
 		"build:watch": "tsc --watch",
 		"clean": "rm -rf dist",
 		"docs": "jsdoc -c jsdoc.json",
