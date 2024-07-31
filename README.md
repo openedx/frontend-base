@@ -109,7 +109,7 @@ module.exports = {
 
 Follow the steps below to migrate an MFE to use frontend-base.
 
-## Migrating to frontend-base
+## Migrating to frontend-base (no shell)
 
 ### 1. Edit package.json `scripts`
 
@@ -256,6 +256,55 @@ Remember to make the following substitution for these functions:
 + import { configureLogging } from '@openedx/frontend-base';
 ```
 
+## Migrating to the frontend-base shell (:rotating_light: Work In Progress)
+
+This is an interim migration that helps prepare an MFE to be released as a set of modules suitable for module federation or being included as a plugin into the shell application.
+
+This migration may require some refactoring of the top-level files of the application; it is less straight-forward than simply replacing frontend-build and frontend-platform with frontend-base.
+
+Prior to attempting this, you _must_ complete the steps above to migrate your MFE to use frontend-base instead of frontend-build and frontend-platform.
+
+In spirit, in this migration we remove the initialization and header/footer code from the MFE and instead rely on the shell to manage our application.  We turn the MFE into a set of exported modules, and to maintain backwards compatibility, we create a small 'project' in the repository that helps us build the MFE as an independent application.
+
+### 1. Remove initialization
+
+In your index.(jsx|tsx) file, you need to remove the subscribe and initialization code.  If you have customizations here, they will need to migrate to your env.config.tsx file instead and take advantage of the shell's provided customization mechanisms.
+
+### 2. Migrate header/footer dependencies
+
+If your application uses a custom header or footer, you can use the shell's header and footer plugin slots to provide your custom header/footer components.  This is done through the env.config.tsx file.
+
+### 3. Export the modules of your app as a component.
+
+This may require a little interpretation.  In spirit, the modules of your app are the 'pages' of an Open edX Frontend site that it provides.  This likely corresponds to the top-level react-router routes in your app.  At the time of this writing, we don't have module federation yet, so to use the shell, you export all of your application code in a single component.  In frontend-app-profile, for instance, this is the ProfilePage component.  Some MFEs have put their router and pages directly into the index.jsx file inside the initialization callback - this code will need to be moved to a single component that can be exported.
+
+### 4. Create a project.scss file
+
+Create a new project.scss file at the top of your application.  It's responsible for:
+
+1. Importing the shell's stylesheet, which includes Paragon's core stylesheet.
+2. Importing your brand stylesheet.
+3. Importing the stylesheets from your application.
+
+You must then import this new stylesheet into your env.config.tsx file:
+
+```diff
++ import './project.scss';
+
+const config = {
+  // config document
+}
+
+export default config;
+```
+
+### 5. Add new build scripts to package.json
+
+After the previous steps, the legacy `build` and `start` scripts in package.json will no longer work properly.  They need to be replaced with versions from the `openedx` CLI that:
+
+- Build the MFE for production using the shell application.
+- Build the MFE for dev using the shell application.
+- Build the MFE for release as a library.
 
 ## Merging repositories
 

@@ -101,10 +101,19 @@ export {
 } from './runtime';
 
 declare module 'env.config' {
+  export default OpenedXConfig;
+}
 
-  export default {
-    modules: {
-      [key]: Component
-    }
-  };
+declare module '*.svg' {
+  const content: string;
+  export default content;
+}
+
+export interface OpenedXConfig {
+  /**
+   * The application content for the shell.  This is a temporary configuration option while we
+   * convert micro-frontends to plugins.  It must be a React functional component that takes no
+   * arguments and returns JSX.
+   */
+  app?: () => JSX.Element
 }

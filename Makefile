@@ -12,13 +12,14 @@ cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 
 build:
 	rm -rf ./dist
-	./node_modules/.bin/fedx-scripts babel src --out-dir dist --source-maps --ignore **/*.test.jsx,**/*.test.js,**/setupTest.js --copy-files
-	@# --copy-files will bring in everything else that wasn't processed by babel. Remove what we don't want.
-	@find dist -name '*.test.js*' -delete
-	rm ./dist/setupTest.js
-	cp ./package.json ./dist/package.json
-	cp ./LICENSE ./dist/LICENSE
-	cp ./README.md ./dist/README.md
+	tsc
+	cp index.d.ts dist/index.d.ts
+	mkdir -p ./scss/header/studio-header
+
+	cp shell/index.scss dist/shell/index.scss
+	cp shell/header/index.scss dist/shell/header/index.scss
+	cp shell/header/Menu/menu.scss dist/shell/header/Menu/menu.scss
+	cp shell/header/studio-header/StudioHeader.scss dist/shell/header/studio-header/StudioHeader.scss
 
 docs-build:
 	${doc_command}

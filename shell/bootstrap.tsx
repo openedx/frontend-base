@@ -1,32 +1,23 @@
-import { init } from '@module-federation/runtime';
+import { createElement } from 'react';
 import ReactDOM from 'react-dom';
+
 import {
   APP_INIT_ERROR, APP_READY,
   AppProvider,
+  getConfig,
   initialize,
   subscribe,
 } from '../runtime';
 
 import Header from './header';
-import './index.scss';
 
 const messages = [];
-
-init({
-  name: 'host',
-  remotes: [
-    {
-      name: 'guest',
-      entry: 'http://localhost:8081/remoteEntry.js',
-    },
-  ],
-});
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
     <AppProvider>
       <Header />
-      <div>Hi there.</div>
+      {getConfig().app ? createElement(getConfig().app, {}) : null}
     </AppProvider>,
     document.getElementById('root'),
   );
@@ -39,6 +30,6 @@ subscribe(APP_INIT_ERROR, (error) => {
 initialize({
   messages,
   handlers: {
-    auth: () => { }, // This MFE turns off auth so it can run independently of edx-platform.
+    auth: () => {}, // This MFE turns off auth so it can run independently of edx-platform.
   },
 });

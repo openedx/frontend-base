@@ -64,6 +64,10 @@ switch (commandName) {
     ensureConfigOption(presets.webpackDevServer);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
+  case 'shell-dev-server':
+    ensureConfigOption(presets.shellDevServer);
+    require('webpack-dev-server/bin/webpack-dev-server');
+    break;
   case 'formatjs': {
     const commonArgs = [
       '--format', 'node_modules/@openedx/frontend-base/cli/formatter.js',
