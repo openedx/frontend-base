@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 
-import React from 'react';
 import '@testing-library/jest-dom';
-import { render, fireEvent } from '@testing-library/react';
-import { logError } from '@edx/frontend-platform/logging';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { fireEvent, render } from '@testing-library/react';
+
+import { IntlProvider } from '../i18n';
+import { logError } from '../logging';
+
 import PluginSlot from './PluginSlot';
-import { usePluginSlot } from './data/hooks';
 import { PLUGIN_OPERATIONS } from './data/constants';
+import { usePluginSlot } from './data/hooks';
 
 const iframePluginConfig = {
   op: PLUGIN_OPERATIONS.Insert,
@@ -37,7 +38,7 @@ jest.mock('react', () => ({
   Suspense: ({ children }) => children,
 }));
 
-jest.mock('@edx/frontend-platform/logging', () => ({
+jest.mock('../logging', () => ({
   logError: jest.fn(),
 }));
 

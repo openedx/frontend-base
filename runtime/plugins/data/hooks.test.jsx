@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom';
-import { getConfig } from '@edx/frontend-platform';
-import { usePluginSlot } from './hooks';
+
+import { getConfig } from '../../config';
 
 import { IFRAME_PLUGIN, PLUGIN_OPERATIONS } from './constants';
+import { usePluginSlot } from './hooks';
 
 const mockSlotChanges = [
   {
@@ -17,7 +18,7 @@ const mockSlotChanges = [
   },
 ];
 
-jest.mock('@edx/frontend-platform');
+jest.mock('../../config');
 
 describe('usePluginSlots', () => {
   afterEach(() => {

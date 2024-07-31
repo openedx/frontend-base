@@ -65,6 +65,7 @@
 		"babel-jest": "^29.7.0",
 		"babel-plugin-formatjs": "^10.5.16",
 		"chalk": "4.1.2",
+		"classnames": "^2.5.1",
 		"clean-webpack-plugin": "4.0.0",
 		"css-loader": "5.2.7",
 		"cssnano": "6.0.3",
@@ -125,6 +126,7 @@
 		"webpack-merge": "^5.10.0"
 	},
 	"devDependencies": {
+		"@testing-library/dom": "^8.20.1",
 		"@testing-library/jest-dom": "^6.4.6",
 		"@testing-library/react": "^12.1.5",
 		"@testing-library/react-hooks": "^8.0.1",

@@ -1,6 +1,6 @@
 import React from 'react';
-import { getConfig } from '@edx/frontend-platform';
-import { logError } from '@edx/frontend-platform/logging';
+import { getConfig } from '../../config';
+import { logError } from '../../logging';
 import { PLUGIN_OPERATIONS, requiredPluginTypes } from './constants';
 
 /**

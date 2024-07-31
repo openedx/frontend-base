@@ -2,13 +2,14 @@
 
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import { logError } from '@edx/frontend-platform/logging';
+
+import { logError } from '../../logging';
 
 import {
   getConfigSlots, organizePlugins, validatePlugin, wrapComponent,
 } from './utils';
 
-import { PLUGIN_OPERATIONS, IFRAME_PLUGIN, DIRECT_PLUGIN } from './constants';
+import { DIRECT_PLUGIN, IFRAME_PLUGIN, PLUGIN_OPERATIONS } from './constants';
 
 const mockModifyWidget = (widget) => {
   const modifiedWidget = widget;
@@ -69,7 +70,7 @@ const mockDefaultContent = [{
   RenderWidget: jest.fn(),
 }];
 
-jest.mock('@edx/frontend-platform', () => ({
+jest.mock('../../config', () => ({
   getConfig: jest.fn(() => ({
     pluginSlots: {
       example_plugin_slot: {
@@ -80,7 +81,7 @@ jest.mock('@edx/frontend-platform', () => ({
   })),
 }));
 
-jest.mock('@edx/frontend-platform/logging', () => ({
+jest.mock('../../logging', () => ({
   logError: jest.fn(),
 }));
 

@@ -1,22 +1,21 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint react/prop-types: off */
 
-import React from 'react';
-import { render } from '@testing-library/react';
 import { fireEvent } from '@testing-library/dom';
 import '@testing-library/jest-dom';
+import { render } from '@testing-library/react';
 
-import { initializeMockApp } from '@edx/frontend-platform/testing';
 import {
   FormattedMessage,
   IntlProvider,
-} from '@edx/frontend-platform/i18n';
+} from '../i18n';
+import { initializeMockApp } from '../testing';
 
-import PluginContainer from './PluginContainer';
-import Plugin from './Plugin';
 import {
   DIRECT_PLUGIN, IFRAME_PLUGIN, PLUGIN_MOUNTED, PLUGIN_READY, PLUGIN_RESIZE,
 } from './data/constants';
+import Plugin from './Plugin';
+import PluginContainer from './PluginContainer';
 import { IFRAME_FEATURE_POLICY } from './PluginContainerIframe';
 
 const iframeConfig = {
@@ -149,44 +148,38 @@ describe('Plugin', () => {
     throw new Error(error);
   };
 
-  function HealthyComponent() {
-    return (
-      <div>
+  const HealthyComponent = () => (
+    <div>
+      <FormattedMessage
+        id="hello.world.message.text"
+        defaultMessage="Hello World!"
+        description="greeting the world with a hello"
+      />
+    </div>
+  );
+
+  const ErrorFallbackComponent = () => (
+    <div>
+      <p>
         <FormattedMessage
-          id="hello.world.message.text"
-          defaultMessage="Hello World!"
-          description="greeting the world with a hello"
+          id="unexpected.error.message.text"
+          defaultMessage="Oh geez, this is not good at all."
+          description="error message when an unexpected error occurs"
         />
-      </div>
-    );
-  }
+      </p>
+      <br />
+    </div>
+  );
 
-  function ErrorFallbackComponent() {
-    return (
-      <div>
-        <p>
-          <FormattedMessage
-            id="unexpected.error.message.text"
-            defaultMessage="Oh geez, this is not good at all."
-            description="error message when an unexpected error occurs"
-          />
-        </p>
-        <br />
-      </div>
-    );
-  }
-
-  function PluginPageWrapper({
+  const PluginPageWrapper = ({
     params, FallbackComponent, ChildComponent,
-  }) {
-    return (
-      <IntlProvider locale="en">
-        <Plugin params={params} ErrorFallbackComponent={FallbackComponent}>
-          <ChildComponent />
-        </Plugin>
-      </IntlProvider>
-    );
-  }
+  }) => (
+    <IntlProvider locale="en">
+      <Plugin params={params} ErrorFallbackComponent={FallbackComponent}>
+        <ChildComponent />
+      </Plugin>
+    </IntlProvider>
+  );
 
   it('should render children if no error', () => {
     const component = (
