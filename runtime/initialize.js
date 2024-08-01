@@ -57,7 +57,7 @@ folder. It points at an `env.config.js` file in the root of an MFE's repository 
 falls back to an empty object `{}` if the file doesn't exist.  This acts like an 'optional' import,
 in a sense.
 */
-import envConfig from 'env.config'; // eslint-disable-line import/no-unresolved
+import envConfig from 'env.config';
 import {
   publish,
 } from './pubSub';

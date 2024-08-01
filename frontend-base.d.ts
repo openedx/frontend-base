@@ -1,6 +1,4 @@
-/// <reference types="./index.d.ts" />
-
-import { OpenedXConfig } from "./dist";
+import { OpenedXConfig } from "./";
 
 declare module 'env.config' {
   export default OpenedXConfig;

@@ -13,7 +13,6 @@ cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 build:
 	rm -rf ./dist
 	tsc
-	cp frontend-base.d.ts dist/frontend-base.d.ts
 	mkdir -p ./scss/header/studio-header
 
 	cp shell/index.scss dist/shell/index.scss
