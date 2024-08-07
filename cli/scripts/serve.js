@@ -2,20 +2,6 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
-const dotenv = require('dotenv');
-
-const resolvePrivateEnvConfig = require('../resolvePrivateEnvConfig');
-
-// Add process env vars. Currently used only for setting the
-// server port and the publicPath
-dotenv.config({
-  path: path.resolve(process.cwd(), '.env.development'),
-});
-
-// Allow private/local overrides of env vars from .env.development for config settings
-// that you'd like to persist locally during development, without the risk of checking
-// in temporary modifications to .env.development.
-resolvePrivateEnvConfig('.env.private');
 
 function isDirectoryEmpty(directoryPath) {
   try {

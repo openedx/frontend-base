@@ -2,8 +2,6 @@
 // time at the expense of creating larger, unoptimized bundles.
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
-const Dotenv = require('dotenv-webpack');
-const dotenv = require('dotenv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const PostCssAutoprefixerPlugin = require('autoprefixer');
@@ -11,20 +9,7 @@ const PostCssRTLCSS = require('postcss-rtlcss');
 const PostCssCustomMediaCSS = require('postcss-custom-media');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { transform } = require('@formatjs/ts-transformer');
-
-const resolvePrivateEnvConfig = require('../cli/resolvePrivateEnvConfig');
 const getLocalAliases = require('./getLocalAliases');
-
-// Add process env vars. Currently used only for setting the
-// server port and the publicPath
-dotenv.config({
-  path: path.resolve(process.cwd(), '.env.development'),
-});
-
-// Allow private/local overrides of env vars from .env.development for config settings
-// that you'd like to persist locally during development, without the risk of checking
-// in temporary modifications to .env.development.
-resolvePrivateEnvConfig('.env.private');
 
 const aliases = getLocalAliases();
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
@@ -195,10 +180,6 @@ module.exports = {
       FAVICON_URL: process.env.FAVICON_URL || null,
       OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
       NODE_ENV: process.env.NODE_ENV || null,
-    }),
-    new Dotenv({
-      path: path.resolve(process.cwd(), '.env.development'),
-      systemvars: true,
     }),
     new ReactRefreshWebpackPlugin(),
   ],

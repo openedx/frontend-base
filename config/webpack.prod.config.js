@@ -5,8 +5,6 @@ const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { merge } = require('webpack-merge');
 const CssNano = require('cssnano');
-const Dotenv = require('dotenv-webpack');
-const dotenv = require('dotenv');
 const NewRelicSourceMapPlugin = require('@edx/new-relic-source-map-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -16,24 +14,10 @@ const PostCssRTLCSS = require('postcss-rtlcss');
 const PostCssCustomMediaCSS = require('postcss-custom-media');
 const { transform } = require('@formatjs/ts-transformer');
 
-// Reduce CSS file size by ~70%
-const purgecss = require('@fullhuman/postcss-purgecss');
-
 const getLocalAliases = require('./getLocalAliases');
 const HtmlWebpackNewRelicPlugin = require('../cli/plugins/html-webpack-new-relic-plugin');
 const commonConfig = require('./webpack.common.config');
 
-// Add process env vars. Currently used only for setting the PUBLIC_PATH.
-dotenv.config({
-  path: path.resolve(process.cwd(), '.env'),
-});
-
-const extraPostCssPlugins = [];
-if (process.env.USE_PURGECSS) { // If USE_PURGECSS is set we append it.
-  extraPostCssPlugins.push(purgecss({
-    content: ['./**/*.html', './**/*.js', './**/*.jsx', './**/*.ts', './**/*.tsx'],
-  }));
-}
 const extraPlugins = [];
 if (process.env.ENABLE_NEW_RELIC !== 'false') {
   // Enable NewRelic logging only if the account ID is properly defined
@@ -136,7 +120,6 @@ module.exports = merge(commonConfig, {
                   PostCssRTLCSS(),
                   CssNano(),
                   PostCssCustomMediaCSS(),
-                  ...extraPostCssPlugins,
                 ],
               },
             },
@@ -218,10 +201,6 @@ module.exports = merge(commonConfig, {
       FAVICON_URL: process.env.FAVICON_URL || null,
       OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
       NODE_ENV: process.env.NODE_ENV || null,
-    }),
-    new Dotenv({
-      path: path.resolve(process.cwd(), '.env'),
-      systemvars: true,
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
