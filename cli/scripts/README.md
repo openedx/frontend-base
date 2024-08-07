@@ -2,7 +2,7 @@
 
 This directory contains the `transifex-utils.js` and `intl-imports.js` files which are shared across all micro-frontends.
 
-The package.json of `frontend-platform` includes the following sections:
+The package.json of `frontend-base` includes the following sections:
 
 ```
   "bin": {
@@ -11,7 +11,7 @@ The package.json of `frontend-platform` includes the following sections:
   },
 ```
 
-This config block causes boths scripts to be copied to the following path when `frontend-platform` is installed as a 
+This config block causes boths scripts to be copied to the following path when `frontend-base` is installed as a
 dependency of a micro-frontend:
 
 ```
