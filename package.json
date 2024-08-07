@@ -15,8 +15,8 @@
 		"/shell/**/*.scss"
 	],
 	"bin": {
-		"openedx": "dist/bin/openedx.js",
 		"intl-imports.js": "dist/cli/scripts/intl-imports.js",
+		"openedx": "dist/cli/scripts/openedx.js",
 		"transifex-utils.js": "dist/cli/scripts/transifex-utils.js"
 	},
 	"scripts": {

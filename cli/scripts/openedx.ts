@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+import chalk from 'chalk';
 
-const chalk = require('chalk');
+// const chalk = require('chalk');
 
-const presets = require('../cli/presets');
+const presets = require('../presets');
 
 /**
  * TLDR:
@@ -80,7 +81,7 @@ switch (commandName) {
     break;
   }
   case 'serve':
-    require('../cli/scripts/serve');
+    require('./serve');
     break;
   default:
     console.log(chalk.red(`[ERROR] openedx: The command ${chalk.bold.red(commandName)} is unsupported.`));
