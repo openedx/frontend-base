@@ -15,7 +15,6 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    'setupTest.js',
   ],
   transformIgnorePatterns: [
     '/node_modules/(?!(@openedx|@edx)/)',
