@@ -256,6 +256,16 @@ Remember to make the following substitution for these functions:
 + import { configureLogging } from '@openedx/frontend-base';
 ```
 
+### 12. Replace the .env.test file with configuration in env.test.config.tsx file
+
+We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect an env.test.config.tsx file.  If you're initializing an application in your tests, frontend-base will pick up this configuration and make it available to getConfig(), etc.  If you need to manually access the variables, you an import `env.config` in your test files:
+
+```diff
++ import config from 'env.config';
+```
+
+The Jest configuration has been set up to find `env.config` at an `env.test.config.tsx` file.
+
 ## Migrating to the frontend-base shell (:rotating_light: Work In Progress)
 
 This is an interim migration that helps prepare an MFE to be released as a set of modules suitable for module federation or being included as a plugin into the shell application.

@@ -1,25 +1,14 @@
 const path = require('path');
-const fs = require('fs');
-
-let envConfigPath = path.resolve(__dirname, './jest/fallback.env.config.js');
-const appEnvConfigPath = path.resolve(process.cwd(), './env.config.js');
-
-if (fs.existsSync(appEnvConfigPath)) {
-  envConfigPath = appEnvConfigPath;
-}
 
 module.exports = {
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
     url: 'http://localhost/',
   },
-  setupFiles: [
-    path.resolve(__dirname, 'jest/setupTest.js'),
-  ],
   rootDir: process.cwd(),
   moduleNameMapper: {
     '\\.(css|scss)$': require.resolve('identity-obj-proxy'),
-    'env.config': envConfigPath,
+    'env.config': path.resolve(process.cwd(), './env.test.config.tsx'),
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
