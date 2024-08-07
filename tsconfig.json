@@ -12,8 +12,6 @@
     "runtime/**/*",
     "shell/**/*",
     "index.ts",
-    "jest.config.js",
-    "babel.config.js",
   ],
   "exclude": [
     "test-app/**/*",
