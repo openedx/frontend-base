@@ -4,13 +4,13 @@ const searchFilepaths = [process.cwd()];
 
 const babel = new ConfigPreset({
   defaultFilename: 'babel.config.js',
-  searchFilenames: ['.babelrc', '.babelrc.js', 'babel.config.js'],
+  searchFilenames: ['babel.config.js'],
   searchFilepaths,
 });
 
 const eslint = new ConfigPreset({
   defaultFilename: '.eslintrc.js',
-  searchFilenames: ['.eslintrc', '.eslintrc.js'],
+  searchFilenames: ['.eslintrc.js'],
   searchFilepaths,
 });
 
