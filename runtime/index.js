@@ -98,11 +98,11 @@ export {
 } from './logging';
 
 export {
-  Plugin,
-  PluginSlot,
-  PLUGIN_OPERATIONS,
-  IFRAME_PLUGIN,
   DIRECT_PLUGIN,
+  IFRAME_PLUGIN,
+  PLUGIN_OPERATIONS,
+  Plugin,
+  PluginSlot
 } from './plugins';
 
 export {
