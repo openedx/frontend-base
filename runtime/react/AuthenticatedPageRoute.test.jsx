@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React from 'react';
 import { render } from '@testing-library/react';
-import { Route, Routes, MemoryRouter } from 'react-router-dom';
-import { getAuthenticatedUser, getLoginRedirectUrl } from '../auth';
-import AuthenticatedPageRoute from './AuthenticatedPageRoute';
-import AppContext from './AppContext';
-import { getConfig } from '../config';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { sendPageEvent } from '../analytics';
+import { getAuthenticatedUser, getLoginRedirectUrl } from '../auth';
+import { getConfig } from '../config';
+import AppContext from './AppContext';
+import AuthenticatedPageRoute from './AuthenticatedPageRoute';
 
+jest.mock('../pubSub');
 jest.mock('../analytics');
 jest.mock('../auth');
 
