@@ -16,7 +16,7 @@ jest.mock('./auth');
 jest.mock('./analytics');
 jest.mock('./i18n');
 jest.mock('./auth/LocalForageCache');
-jest.mock('env.config.js', () => async () => new Promise((resolve) => {
+jest.mock('env.config', () => async () => new Promise((resolve) => {
   resolve({
     JS_FILE_VAR: 'JS_FILE_VAR_VALUE_ASYNC_FUNCTION',
   });
