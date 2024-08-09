@@ -40,7 +40,7 @@
  *
  * ###### JavaScript File Configuration
  *
- * Configuration variables can be supplied in an optional file named env.config.js.  This file must
+ * Configuration variables can be supplied in an optional file named env.config.tsx.  This file must
  * export either an Object containing configuration variables or a function.  The function must
  * return an Object containing configuration variables or, alternately, a promise which resolves to
  * an Object.
@@ -123,54 +123,44 @@
  * @module Config
  */
 
+import merge from 'lodash.merge';
 import 'pubsub-js';
 import { APP_CONFIG_INITIALIZED, CONFIG_CHANGED } from './constants';
 
 import { ensureDefinedConfig } from './utils';
 
-function extractRegex(envVar) {
-  // Convert the environment variable string to a regex, while guarding
-  // against a non-string and an empty/whitespace-only string.
-  if (typeof envVar === 'string' && envVar.trim() !== '') {
-    return new RegExp(envVar);
-  }
-  return undefined;
-}
-
-const ENVIRONMENT = process.env.NODE_ENV;
 let config = {
-  ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
-  ACCOUNT_PROFILE_URL: process.env.ACCOUNT_PROFILE_URL,
-  ACCOUNT_SETTINGS_URL: process.env.ACCOUNT_SETTINGS_URL,
-  BASE_URL: process.env.BASE_URL,
-  PUBLIC_PATH: process.env.PUBLIC_PATH || '/',
-  CREDENTIALS_BASE_URL: process.env.CREDENTIALS_BASE_URL,
-  CSRF_TOKEN_API_PATH: process.env.CSRF_TOKEN_API_PATH,
-  DISCOVERY_API_BASE_URL: process.env.DISCOVERY_API_BASE_URL,
-  PUBLISHER_BASE_URL: process.env.PUBLISHER_BASE_URL,
-  ECOMMERCE_BASE_URL: process.env.ECOMMERCE_BASE_URL,
-  ENVIRONMENT,
-  IGNORED_ERROR_REGEX: extractRegex(process.env.IGNORED_ERROR_REGEX),
-  LANGUAGE_PREFERENCE_COOKIE_NAME: process.env.LANGUAGE_PREFERENCE_COOKIE_NAME,
-  LEARNING_BASE_URL: process.env.LEARNING_BASE_URL,
-  LMS_BASE_URL: process.env.LMS_BASE_URL,
-  LOGIN_URL: process.env.LOGIN_URL,
-  LOGOUT_URL: process.env.LOGOUT_URL,
-  STUDIO_BASE_URL: process.env.STUDIO_BASE_URL,
-  MARKETING_SITE_BASE_URL: process.env.MARKETING_SITE_BASE_URL,
-  ORDER_HISTORY_URL: process.env.ORDER_HISTORY_URL,
-  REFRESH_ACCESS_TOKEN_ENDPOINT: process.env.REFRESH_ACCESS_TOKEN_ENDPOINT,
-  SECURE_COOKIES: ENVIRONMENT !== 'development',
-  SEGMENT_KEY: process.env.SEGMENT_KEY,
-  SITE_NAME: process.env.SITE_NAME,
-  USER_INFO_COOKIE_NAME: process.env.USER_INFO_COOKIE_NAME,
-  LOGO_URL: process.env.LOGO_URL,
-  LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
-  LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
-  FAVICON_URL: process.env.FAVICON_URL,
-  MFE_CONFIG_API_URL: process.env.MFE_CONFIG_API_URL,
-  APP_ID: process.env.APP_ID,
-  SUPPORT_URL: process.env.SUPPORT_URL,
+  ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
+  ACCOUNT_PROFILE_URL: null,
+  ACCOUNT_SETTINGS_URL: null,
+  BASE_URL: null,
+  PUBLIC_PATH: '/',
+  CREDENTIALS_BASE_URL: null,
+  CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
+  DISCOVERY_API_BASE_URL: null,
+  PUBLISHER_BASE_URL: null,
+  ECOMMERCE_BASE_URL: null,
+  ENVIRONMENT: 'production',
+  IGNORED_ERROR_REGEX: null,
+  LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
+  LEARNING_BASE_URL: null,
+  LMS_BASE_URL: null,
+  LOGIN_URL: null,
+  LOGOUT_URL: null,
+  STUDIO_BASE_URL: null,
+  MARKETING_SITE_BASE_URL: null,
+  ORDER_HISTORY_URL: null,
+  REFRESH_ACCESS_TOKEN_ENDPOINT: null,
+  SEGMENT_KEY: null,
+  SITE_NAME: '',
+  USER_INFO_COOKIE_NAME: 'edx-user-info',
+  LOGO_URL: null,
+  LOGO_TRADEMARK_URL: null,
+  LOGO_WHITE_URL: null,
+  FAVICON_URL: null,
+  MFE_CONFIG_API_URL: null,
+  APP_ID: null,
+  SUPPORT_URL: null,
 };
 
 /**
@@ -229,11 +219,15 @@ export function setConfig(newConfig) {
  *
  * If any of the key values are `undefined`, an error will be logged to 'warn'.
  *
+ * This function uses lodash.merge internally to merge configuration objects
+ * which means they will be merged recursively.  See https://lodash.com/docs/latest#merge for
+ * documentation on the exact behavior.
+ *
  * @param {Object} newConfig
  */
 export function mergeConfig(newConfig) {
   ensureDefinedConfig(newConfig, 'ProcessEnvConfigService');
-  config = Object.assign(config, newConfig);
+  config = merge(config, newConfig);
   global.PubSub.publish(CONFIG_CHANGED);
 }
 
@@ -313,7 +307,6 @@ export function ensureConfig(keys, requester = 'unspecified application code') {
  * @property {string} MARKETING_SITE_BASE_URL
  * @property {string} ORDER_HISTORY_URL
  * @property {string} REFRESH_ACCESS_TOKEN_ENDPOINT
- * @property {boolean} SECURE_COOKIES
  * @property {string} SEGMENT_KEY
  * @property {string} SITE_NAME
  * @property {string} USER_INFO_COOKIE_NAME

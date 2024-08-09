@@ -23,7 +23,7 @@ import {
   hydrateAuthenticatedUser,
 } from './auth';
 import configureCache from './auth/LocalForageCache';
-import { getConfig } from './config';
+import { getConfig, mergeConfig } from './config';
 import { configure as configureI18n } from './i18n';
 import {
   configure as configureLogging,
@@ -276,8 +276,6 @@ describe('initialize', () => {
   });
 
   it('should initialize the app with runtime configuration', async () => {
-    config.MFE_CONFIG_API_URL = 'http://localhost:18000/api/mfe/v1/config';
-    config.APP_ID = 'auth';
     configureCache.mockReturnValueOnce(Promise.resolve({
       get: (url) => {
         const params = new URL(url).search;
@@ -287,49 +285,19 @@ describe('initialize', () => {
     }));
 
     const messages = { i_am: 'a message' };
-    await initialize({ messages });
-
-    expect(configureCache).toHaveBeenCalled();
-    expect(configureLogging).toHaveBeenCalledWith(NewRelicLoggingService, { config });
-    expect(configureAuth).toHaveBeenCalledWith(AxiosJwtAuthService, {
-      loggingService: getLoggingService(),
-      config,
-      middleware: [],
-    });
-    expect(configureAnalytics).toHaveBeenCalledWith(SegmentAnalyticsService, {
-      config,
-      loggingService: getLoggingService(),
-      httpClient: getAuthenticatedHttpClient(),
-    });
-    expect(configureI18n).toHaveBeenCalledWith({
-      messages,
-      config,
-      loggingService: getLoggingService(),
-    });
-
-    expect(fetchAuthenticatedUser).toHaveBeenCalled();
-    expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
-    expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
-    expect(logError).not.toHaveBeenCalled();
-    expect(config.SITE_NAME).toBe(newConfig.common.SITE_NAME);
-    expect(config.INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
-    expect(Object.values(config).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
-  });
-
-  it('should initialize the app with the build config when runtime configuration fails', async () => {
-    config.MFE_CONFIG_API_URL = 'http://localhost:18000/api/mfe/v1/config';
-    // eslint-disable-next-line no-console
-    console.error = jest.fn();
-    configureCache.mockReturnValueOnce(Promise.reject(new Error('Api fails')));
-
-    const messages = { i_am: 'a message' };
     await initialize({
       messages,
+      handlers: {
+        config: () => {
+          mergeConfig({
+            MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
+            APP_ID: 'auth',
+          });
+        }
+      }
     });
 
     expect(configureCache).toHaveBeenCalled();
-    // eslint-disable-next-line no-console
-    expect(console.error).toHaveBeenCalledWith('Error with config API', 'Api fails');
     expect(configureLogging).toHaveBeenCalledWith(NewRelicLoggingService, { config });
     expect(configureAuth).toHaveBeenCalledWith(AxiosJwtAuthService, {
       loggingService: getLoggingService(),
@@ -346,10 +314,64 @@ describe('initialize', () => {
       config,
       loggingService: getLoggingService(),
     });
+
     expect(fetchAuthenticatedUser).toHaveBeenCalled();
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
     expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
     expect(logError).not.toHaveBeenCalled();
+    expect(getConfig().SITE_NAME).toBe(newConfig.common.SITE_NAME);
+    expect(getConfig().INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
+    expect(Object.values(getConfig()).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
+  });
+
+  describe('with mocked console.error', () => {
+    beforeEach(() => {
+      console.error = jest.fn();
+    });
+
+    afterAll(() => {
+      console.error.mockRestore();
+    });
+
+    it('should initialize the app with the build config when runtime configuration fails', async () => {
+      configureCache.mockRejectedValueOnce(new Error('Api fails'));
+
+      const messages = { i_am: 'a message' };
+      await initialize({
+        messages,
+        handlers: {
+          config: () => {
+            mergeConfig({
+              MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
+              APP_ID: 'auth',
+            });
+          }
+        }
+      });
+
+      expect(configureCache).toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith('Error with config API', 'Api fails');
+      expect(configureLogging).toHaveBeenCalledWith(NewRelicLoggingService, { config });
+      expect(configureAuth).toHaveBeenCalledWith(AxiosJwtAuthService, {
+        loggingService: getLoggingService(),
+        config,
+        middleware: [],
+      });
+      expect(configureAnalytics).toHaveBeenCalledWith(SegmentAnalyticsService, {
+        config,
+        loggingService: getLoggingService(),
+        httpClient: getAuthenticatedHttpClient(),
+      });
+      expect(configureI18n).toHaveBeenCalledWith({
+        messages,
+        config,
+        loggingService: getLoggingService(),
+      });
+      expect(fetchAuthenticatedUser).toHaveBeenCalled();
+      expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
+      expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
+      expect(logError).not.toHaveBeenCalled();
+    });
   });
 });
 

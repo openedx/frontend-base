@@ -311,8 +311,8 @@ export async function initialize({
     global.PubSub.publish(APP_PUBSUB_INITIALIZED);
 
     // Configuration
-    await handlers.config();
     await jsFileConfig();
+    await handlers.config();
     await runtimeConfig();
     global.PubSub.publish(APP_CONFIG_INITIALIZED);
 

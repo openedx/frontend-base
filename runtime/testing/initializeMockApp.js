@@ -1,6 +1,8 @@
+import envConfig from 'env.config';
+
 import { configure as configureAnalytics, MockAnalyticsService } from '../analytics';
 import { configure as configureAuth, MockAuthService } from '../auth';
-import { getConfig } from '../config';
+import { getConfig, mergeConfig } from '../config';
 import { configure as configureI18n } from '../i18n';
 import { configure as configureLogging, MockLoggingService } from '../logging';
 import mockMessages from './mockMessages';
@@ -46,6 +48,9 @@ export default function initializeMockApp({
   messages = mockMessages,
   authenticatedUser = null,
 } = {}) {
+  const config = envConfig;
+  mergeConfig(config);
+
   const loggingService = configureLogging(MockLoggingService, {
     config: getConfig(),
   });
