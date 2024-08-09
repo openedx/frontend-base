@@ -11,12 +11,11 @@
 	"files": [
 		"/dist",
 		"/config",
-		"/cli",
 		"/shell/**/*.scss"
 	],
 	"bin": {
 		"intl-imports.js": "dist/cli/scripts/intl-imports.js",
-		"openedx": "dist/cli/scripts/openedx.js",
+		"openedx": "dist/tools/cli/openedx.js",
 		"transifex-utils.js": "dist/cli/scripts/transifex-utils.js"
 	},
 	"scripts": {

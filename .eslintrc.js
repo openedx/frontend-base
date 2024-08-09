@@ -1,8 +1,9 @@
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-const { createConfig } = require('./config');
+const config = require('./tools/eslint/.eslintrc.js');
 
-module.exports = createConfig('eslint', {
+module.exports = merge(config, {
   ignorePatterns: [
     'test-app',
     'docs',
@@ -11,6 +12,8 @@ module.exports = createConfig('eslint', {
     'coverage',
     'example',
     'example-plugin-app',
+    'tools',
+    'config',
   ],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),

@@ -4,6 +4,8 @@
 .vscode
 coverage
 dist
+config
+scss
 node_modules
 npm-debug.log
 docs/api

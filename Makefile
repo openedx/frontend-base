@@ -11,14 +11,18 @@ doc_command = ./node_modules/.bin/documentation build src -g -c ./docs/documenta
 cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 
 build:
-	rm -rf ./dist
-	tsc
-	mkdir -p ./scss/header/studio-header
-
-	cp shell/index.scss dist/shell/index.scss
-	cp shell/header/index.scss dist/shell/header/index.scss
-	cp shell/header/Menu/menu.scss dist/shell/header/Menu/menu.scss
-	cp shell/header/studio-header/StudioHeader.scss dist/shell/header/studio-header/StudioHeader.scss
+	rm -rf ./config ./dist
+	tsc --project tsconfig.build.json
+	mkdir -p ./config
+	cp tools/typescript/tsconfig.json config/tsconfig.json
+	tsc --project ./tools/tsconfig.json
+	cp -prf ./tools/dist ./dist
+	mv ./dist/dist ./dist/tools
+	cp -prf ./tools/dist/config-helpers ./config/config-helpers
+	cp -prf ./tools/dist/eslint ./config/eslint
+	cp -prf ./tools/dist/jest ./config/jest
+	cp -prf ./tools/dist/webpack ./config/webpack
+	cp -prf ./tools/dist/index.js ./config/index.js
 
 docs-build:
 	${doc_command}
@@ -31,7 +35,6 @@ docs-watch:
 
 docs-lint:
 	./node_modules/.bin/documentation lint src
-
 
 .PHONY: requirements
 requirements:  ## install ci requirements

@@ -1,3 +1,3 @@
-const { createConfig } = require('./config');
+const { createConfig } = require('./tools');
 
 module.exports = createConfig('jest');
