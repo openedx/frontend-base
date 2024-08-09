@@ -1,9 +1,8 @@
-module.exports = {
-  FALSE_VALUE: false,
-  CORRECT_BOOL_VALUE: 'Good, false meant false.  We did not cast a boolean to a string.',
-  INCORRECT_BOOL_VALUE: 'Why was a false boolean true?',
-  INTEGER_VALUE: 123,
-  EXAMPLE_VAR: 'Example Value',
+import { OpenedXConfig } from "@openedx/frontend-base";
+
+const config: OpenedXConfig = {
+  ENVIRONMENT: 'dev',
+  PUBLIC_PATH: '/',
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
@@ -22,7 +21,7 @@ module.exports = {
   MARKETING_SITE_BASE_URL: 'http://localhost:18000',
   ORDER_HISTORY_URL: 'http://localhost:1996/orders',
   REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login_refresh',
-  SEGMENT_KEY: null,
+  SEGMENT_KEY: 'segment_whoa',
   SITE_NAME: 'localhost',
   USER_INFO_COOKIE_NAME: 'edx-user-info',
   LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',
@@ -30,7 +29,16 @@ module.exports = {
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
   IGNORED_ERROR_REGEX: null,
-  MFE_CONFIG_API_URL: null,
-  APP_ID: null,
+  APP_ID: 'shell',
   SUPPORT_URL: 'https://support.edx.org',
+
+  custom: {
+    FALSE_VALUE: false,
+    CORRECT_BOOL_VALUE: 'Good, false meant false.  We did not cast a boolean to a string.',
+    INCORRECT_BOOL_VALUE: 'Why was a false boolean true?',
+    INTEGER_VALUE: 123,
+    EXAMPLE_VAR: 'Example Value',
+  }
 };
+
+export default config;

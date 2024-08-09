@@ -5,6 +5,7 @@ import {
   AuthenticatedPageRoute,
   ErrorPage,
   initialize,
+  mergeConfig,
   PageWrap,
   subscribe
 } from '@openedx/frontend-base';
@@ -45,5 +46,12 @@ initialize({
   hydrateAuthenticatedUser: true,
   handlers: {
     auth: () => { },
+    config: () => {
+      mergeConfig({
+        custom : {
+          MERGED_VAR: 'I was merged in.',
+        }
+      });
+    },
   }
 });
