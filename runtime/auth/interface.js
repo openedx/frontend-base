@@ -35,7 +35,6 @@
  * @module Auth
  */
 import PropTypes from 'prop-types';
-import { publish } from '../pubSub';
 
 /**
  * @constant
@@ -207,7 +206,7 @@ export function getAuthenticatedUser() {
  */
 export function setAuthenticatedUser(authUser) {
   service.setAuthenticatedUser(authUser);
-  publish(AUTHENTICATED_USER_CHANGED);
+  global.PubSub.publish(AUTHENTICATED_USER_CHANGED);
 }
 
 /**
@@ -248,7 +247,7 @@ export async function ensureAuthenticatedUser(redirectUrl) {
  */
 export async function hydrateAuthenticatedUser() {
   await service.hydrateAuthenticatedUser();
-  publish(AUTHENTICATED_USER_CHANGED);
+  global.PubSub.publish(AUTHENTICATED_USER_CHANGED);
 }
 
 /**

@@ -58,9 +58,6 @@ falls back to an empty object `{}` if the file doesn't exist.  This acts like an
 in a sense.
 */
 import envConfig from 'env.config';
-import {
-  publish,
-} from './pubSub';
 import { getPath } from './utils';
 // eslint-disable-next-line import/no-cycle
 import {
@@ -311,13 +308,13 @@ export async function initialize({
   try {
     // Pub/Sub
     await handlers.pubSub();
-    publish(APP_PUBSUB_INITIALIZED);
+    global.PubSub.publish(APP_PUBSUB_INITIALIZED);
 
     // Configuration
     await handlers.config();
     await jsFileConfig();
     await runtimeConfig();
-    publish(APP_CONFIG_INITIALIZED);
+    global.PubSub.publish(APP_CONFIG_INITIALIZED);
 
     loadExternalScripts(externalScripts, {
       config: getConfig(),
@@ -337,7 +334,7 @@ export async function initialize({
       config: getConfig(),
     });
     await handlers.logging();
-    publish(APP_LOGGING_INITIALIZED);
+    global.PubSub.publish(APP_LOGGING_INITIALIZED);
 
     // Internationalization
     configureI18n({
@@ -346,7 +343,7 @@ export async function initialize({
       loggingService: getLoggingService(),
     });
     await handlers.i18n();
-    publish(APP_I18N_INITIALIZED);
+    global.PubSub.publish(APP_I18N_INITIALIZED);
 
     // Authentication
     configureAuth(authServiceImpl, {
@@ -356,7 +353,7 @@ export async function initialize({
     });
 
     await handlers.auth(requireUser, hydrateUser);
-    publish(APP_AUTH_INITIALIZED);
+    global.PubSub.publish(APP_AUTH_INITIALIZED);
 
     // Analytics
     configureAnalytics(analyticsServiceImpl, {
@@ -365,16 +362,16 @@ export async function initialize({
       httpClient: getAuthenticatedHttpClient(),
     });
     await handlers.analytics();
-    publish(APP_ANALYTICS_INITIALIZED);
+    global.PubSub.publish(APP_ANALYTICS_INITIALIZED);
 
     // Application Ready
     await handlers.ready();
-    publish(APP_READY);
+    global.PubSub.publish(APP_READY);
   } catch (error) {
     if (!error.isRedirecting) {
       // Initialization Error
       await handlers.initError(error);
-      publish(APP_INIT_ERROR, error);
+      global.PubSub.publish(APP_INIT_ERROR, error);
     }
   }
 }

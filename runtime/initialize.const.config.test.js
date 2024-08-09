@@ -1,3 +1,4 @@
+import 'pubsub-js';
 import { initialize } from './initialize';
 
 import {

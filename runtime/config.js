@@ -123,9 +123,9 @@
  * @module Config
  */
 
+import 'pubsub-js';
 import { APP_CONFIG_INITIALIZED, CONFIG_CHANGED } from './constants';
 
-import { publish, subscribe } from './pubSub';
 import { ensureDefinedConfig } from './utils';
 
 function extractRegex(envVar) {
@@ -214,7 +214,7 @@ export function getConfig() {
 export function setConfig(newConfig) {
   ensureDefinedConfig(config, 'config');
   config = newConfig;
-  publish(CONFIG_CHANGED);
+  global.PubSub.publish(CONFIG_CHANGED);
 }
 
 /**
@@ -234,7 +234,7 @@ export function setConfig(newConfig) {
 export function mergeConfig(newConfig) {
   ensureDefinedConfig(newConfig, 'ProcessEnvConfigService');
   config = Object.assign(config, newConfig);
-  publish(CONFIG_CHANGED);
+  global.PubSub.publish(CONFIG_CHANGED);
 }
 
 /**
@@ -262,7 +262,7 @@ export function mergeConfig(newConfig) {
  * @param {string} [requester='unspecified application code']
  */
 export function ensureConfig(keys, requester = 'unspecified application code') {
-  subscribe(APP_CONFIG_INITIALIZED, () => {
+  global.PubSub.subscribe(APP_CONFIG_INITIALIZED, () => {
     keys.forEach((key) => {
       if (config[key] === undefined) {
         // eslint-disable-next-line no-console

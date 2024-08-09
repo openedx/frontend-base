@@ -1,4 +1,5 @@
 import { createBrowserHistory } from 'history';
+import 'pubsub-js';
 import {
   APP_ANALYTICS_INITIALIZED,
   APP_AUTH_INITIALIZED,
@@ -10,7 +11,6 @@ import {
   APP_READY,
 } from './constants';
 import { initialize } from './initialize';
-import { subscribe } from './pubSub';
 
 import { configure as configureAnalytics, SegmentAnalyticsService } from './analytics';
 import {
@@ -106,13 +106,13 @@ describe('initialize', () => {
       }
     }
 
-    subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_READY, checkDispatchedDone);
+    global.PubSub.subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_READY, checkDispatchedDone);
 
     const messages = { i_am: 'a message' };
     await initialize({ messages });
@@ -222,7 +222,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    subscribe(APP_INIT_ERROR, errorHandler);
+    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
@@ -258,7 +258,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    subscribe(APP_INIT_ERROR, errorHandler);
+    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
