@@ -111,5 +111,41 @@ export interface OpenedXConfig {
    * convert micro-frontends to plugins.  It must be a React functional component that takes no
    * arguments and returns JSX.
    */
-  app?: () => JSX.Element
+  app?: () => JSX.Element,
+
+  ACCESS_TOKEN_COOKIE_NAME?: string,
+  ACCOUNT_PROFILE_URL: string,
+  ACCOUNT_SETTINGS_URL: string,
+  APP_ID: string,
+  BASE_URL: string,
+  CREDENTIALS_BASE_URL: string,
+  CSRF_TOKEN_API_PATH?: string,
+  DISCOVERY_API_BASE_URL: string,
+  ECOMMERCE_BASE_URL: string,
+  ENVIRONMENT: string,
+  FAVICON_URL: string,
+  IGNORED_ERROR_REGEX: RegExp | null,
+  LANGUAGE_PREFERENCE_COOKIE_NAME?: string,
+  LEARNING_BASE_URL: string,
+  LMS_BASE_URL: string,
+  LOGIN_URL: string,
+  LOGO_TRADEMARK_URL: string,
+  LOGO_URL: string,
+  LOGO_WHITE_URL: string,
+  LOGOUT_URL: string,
+  MARKETING_SITE_BASE_URL: string,
+  MFE_CONFIG_API_URL?: string,
+  ORDER_HISTORY_URL: string,
+  PUBLIC_PATH: string,
+  PUBLISHER_BASE_URL: string,
+  REFRESH_ACCESS_TOKEN_ENDPOINT: string,
+  SEGMENT_KEY: string,
+  SITE_NAME: string,
+  STUDIO_BASE_URL: string,
+  SUPPORT_URL?: string,
+  USER_INFO_COOKIE_NAME?: string,
+
+  custom?: {
+    [key:string]: any,
+  }
 }
