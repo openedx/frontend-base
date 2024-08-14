@@ -8,7 +8,7 @@ module.exports = {
   rootDir: process.cwd(),
   moduleNameMapper: {
     '\\.(css|scss)$': require.resolve('identity-obj-proxy'),
-    'site.config': path.resolve(process.cwd(), './site.config.test.tsx'),
+    'site.config': path.resolve(process.cwd(), './test.site.config.tsx'),
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',

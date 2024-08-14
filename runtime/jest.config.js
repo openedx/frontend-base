@@ -6,7 +6,7 @@ module.exports = {
     '\\.svg$': '<rootDir>/runtime/__mocks__/svg.js',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/runtime/__mocks__/file.js',
     '\\.(css|scss)$': require.resolve('identity-obj-proxy'),
-    'site.config': '<rootDir>/runtime/site.config.test.tsx',
+    'site.config': '<rootDir>/runtime/test.site.config.tsx',
   },
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {

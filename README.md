@@ -256,15 +256,15 @@ Remember to make the following substitution for these functions:
 + import { configureLogging } from '@openedx/frontend-base';
 ```
 
-### 12. Replace the .env.test file with configuration in site.config.test.tsx file
+### 12. Replace the .env.test file with configuration in test.site.config.tsx file
 
-We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect an site.config.test.tsx file.  If you're initializing an application in your tests, frontend-base will pick up this configuration and make it available to getConfig(), etc.  If you need to manually access the variables, you an import `site.config` in your test files:
+We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect an test.site.config.tsx file.  If you're initializing an application in your tests, frontend-base will pick up this configuration and make it available to getConfig(), etc.  If you need to manually access the variables, you an import `site.config` in your test files:
 
 ```diff
 + import config from 'site.config';
 ```
 
-The Jest configuration has been set up to find `site.config` at an `site.config.test.tsx` file.
+The Jest configuration has been set up to find `site.config` at an `test.site.config.tsx` file.
 
 ## Migrating to the frontend-base shell (:rotating_light: Work In Progress)
 
