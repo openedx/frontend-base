@@ -211,10 +211,9 @@ export function mergeConfig(newConfig) {
 /**
  * A method allowing application code to indicate that particular ConfigDocument keys are required
  * for them to function.  This is useful for diagnosing development/deployment issues, primarily,
- * by surfacing misconfigurations early.  For instance, if the build process fails to supply an
- * environment variable on the command-line, it's possible that one of the `process.env` variables
- * will be undefined.  Should be used in conjunction with `mergeConfig` for custom `ConfigDocument`
- * properties.  Requester is for informational/error reporting purposes only.
+ * by surfacing misconfigurations early.  Should be used in conjunction with `mergeConfig` for
+ * custom `ConfigDocument` properties.  Requester is for informational/error reporting purposes
+ * only.
  *
  * ```
  * ensureConfig(['LMS_BASE_URL', 'LOGIN_URL'], 'MySpecialComponent');
@@ -246,21 +245,10 @@ export function ensureConfig(keys, requester = 'unspecified application code') {
 /**
  * An object describing the current application configuration.
  *
- * In its most basic form, the initialization process loads this document via `process.env`
- * variables.  There are other ways to add configuration variables to the ConfigDocument as
- * documented above (JavaScript File Configuration, Runtime Configuration, and the Initialization
- * Config Handler)
- *
- * ```
- * {
- *   BASE_URL: process.env.BASE_URL,
- *   // ... other vars
- * }
- * ```
- *
- * When using Webpack (i.e., normal usage), the build process is responsible for supplying these
- * variables via command-line environment variables.  That means they must be supplied at build
- * time.
+ * In its most basic form, this document contains some sensible defaults. The initialization
+ * process then merges additional configuration into this document using the configuration methods
+ * described above. (Site configuration file, initialization config handler, and runtime
+ * configuration)
  *
  * @name ConfigDocument
  * @memberof module:Config
