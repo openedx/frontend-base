@@ -14,10 +14,6 @@ import messages from './Header.messages';
 import { CaretIcon } from './Icons';
 
 class DesktopHeader extends React.Component {
-  constructor(props) { // eslint-disable-line no-useless-constructor
-    super(props);
-  }
-
   renderMenu(menu) {
     // Nodes are accepted as a prop
     if (!Array.isArray(menu)) {
