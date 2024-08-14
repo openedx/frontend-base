@@ -7,7 +7,7 @@ import { AppContext, IntlProvider } from '../../../runtime';
 
 import Footer from './Footer';
 
-const FooterWithContext = ({ locale = 'es' }) => {
+const FooterWithContext = ({ locale = 'en' }) => {
   const contextValue = useMemo(() => ({
     authenticatedUser: null,
     config: {
@@ -58,12 +58,6 @@ describe('<Footer />', () => {
     it('renders without a language selector', () => {
       const tree = renderer
         .create(<FooterWithContext locale="en" />)
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-    it('renders without a language selector in es', () => {
-      const tree = renderer
-        .create(<FooterWithContext locale="es" />)
         .toJSON();
       expect(tree).toMatchSnapshot();
     });

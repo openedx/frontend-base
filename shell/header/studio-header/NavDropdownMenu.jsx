@@ -1,9 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Dropdown,
   DropdownButton,
 } from '@openedx/paragon';
+import PropTypes from 'prop-types';
 
 const NavDropdownMenu = ({
   id,
@@ -30,7 +29,7 @@ const NavDropdownMenu = ({
 
 NavDropdownMenu.propTypes = {
   id: PropTypes.string.isRequired,
-  buttonTitle: PropTypes.string.isRequired,
+  buttonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({
     href: PropTypes.string,
     title: PropTypes.string,
