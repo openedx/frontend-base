@@ -3,13 +3,9 @@ import Responsive from 'react-responsive';
 
 import PropTypes from 'prop-types';
 import {
-  APP_CONFIG_INITIALIZED,
   AppContext,
   ensureConfig,
-  getConfig,
-  injectIntl, intlShape,
-  mergeConfig,
-  subscribe
+  injectIntl, intlShape
 } from '../../runtime';
 import DesktopHeader from './DesktopHeader';
 import MobileHeader from './MobileHeader';
@@ -24,12 +20,6 @@ ensureConfig([
   'LOGO_URL',
   'ORDER_HISTORY_URL',
 ], 'Header component');
-
-subscribe(APP_CONFIG_INITIALIZED, () => {
-  mergeConfig({
-    AUTHN_MINIMAL_HEADER: !!process.env.AUTHN_MINIMAL_HEADER,
-  }, 'Header additional config');
-});
 
 /**
  * Header component for the application.
@@ -114,10 +104,10 @@ const Header = ({
     loggedIn: authenticatedUser !== null,
     username: authenticatedUser !== null ? authenticatedUser.username : null,
     avatar: authenticatedUser !== null ? authenticatedUser.avatar : null,
-    mainMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : mainMenu,
-    secondaryMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : secondaryMenu,
-    userMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : userMenu,
-    loggedOutItems: getConfig().AUTHN_MINIMAL_HEADER ? [] : loggedOutItems,
+    mainMenu,
+    secondaryMenu,
+    userMenu,
+    loggedOutItems,
   };
 
   return (

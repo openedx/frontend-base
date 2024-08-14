@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getConfig, injectIntl, intlShape } from '../../runtime';
+import { injectIntl, intlShape } from '../../runtime';
 
 // Local Components
 import Avatar from './Avatar';
@@ -137,12 +137,11 @@ class DesktopHeader extends React.Component {
       intl,
     } = this.props;
     const logoProps = { src: logo, alt: logoAltText, href: logoDestination };
-    const logoClasses = getConfig().AUTHN_MINIMAL_HEADER ? 'mw-100' : null;
 
     return (
       <header className="site-header-desktop">
         <a className="nav-skip sr-only sr-only-focusable" href="#main">{intl.formatMessage(messages['header.label.skip.nav'])}</a>
-        <div className={`container-fluid ${logoClasses}`}>
+        <div className="container-fluid">
           <div className="nav-container position-relative d-flex align-items-center">
             {logoDestination === null ? <Logo className="logo" src={logo} alt={logoAltText} /> : <LinkedLogo className="logo" {...logoProps} />}
             <nav
