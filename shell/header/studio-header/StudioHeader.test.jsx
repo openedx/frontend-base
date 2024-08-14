@@ -7,6 +7,9 @@ import {
 import { useMemo } from 'react';
 
 import { Context as ResponsiveContext } from 'react-responsive';
+// eslint-disable-next-line import/no-unresolved
+import siteConfig from 'site.config';
+
 import { AppContext, IntlProvider } from '../../../runtime';
 
 import StudioHeader from './StudioHeader';
@@ -28,11 +31,11 @@ const RootWrapper = ({
   const appContextValue = useMemo(() => ({
     authenticatedUser: currentUser,
     config: {
-      LOGOUT_URL: process.env.LOGOUT_URL,
-      LOGO_URL: process.env.LOGO_URL,
-      SITE_NAME: process.env.SITE_NAME,
-      STUDIO_BASE_URL: process.env.STUDIO_BASE_URL,
-      LOGIN_URL: process.env.LOGIN_URL,
+      LOGOUT_URL: siteConfig.LOGOUT_URL,
+      LOGO_URL: siteConfig.LOGO_URL,
+      SITE_NAME: siteConfig.SITE_NAME,
+      STUDIO_BASE_URL: siteConfig.STUDIO_BASE_URL,
+      LOGIN_URL: siteConfig.LOGIN_URL,
     },
   }), []);
   const responsiveContextValue = useMemo(() => ({ width: screenWidth }), []);

@@ -1,3 +1,5 @@
+import { getConfig } from '../config';
+
 /**
  * NewRelic will not log an error if it is too long.
  *
@@ -22,7 +24,7 @@ const pageActionNameInfo = 'INFO';
 const pageActionNameIgnoredError = 'IGNORED_ERROR';
 
 function sendPageAction(actionName, message, customAttributes) {
-  if (process.env.NODE_ENV === 'development') {
+  if (getConfig().ENVIRONMENT === 'development') {
     console.log(actionName, message, customAttributes); // eslint-disable-line
   }
   if (window && typeof window.newrelic !== 'undefined') {
@@ -32,7 +34,7 @@ function sendPageAction(actionName, message, customAttributes) {
 }
 
 function sendError(error, customAttributes) {
-  if (process.env.NODE_ENV === 'development') {
+  if (getConfig().ENVIRONMENT === 'development') {
     console.error(error, customAttributes); // eslint-disable-line
   }
   if (window && typeof window.newrelic !== 'undefined') {
@@ -42,7 +44,7 @@ function sendError(error, customAttributes) {
 }
 
 function setCustomAttribute(name, value) {
-  if (process.env.NODE_ENV === 'development') {
+  if (getConfig().ENVIRONMENT === 'development') {
     console.log(name, value); // eslint-disable-line
   }
   if (window && typeof window.newrelic !== 'undefined') {
