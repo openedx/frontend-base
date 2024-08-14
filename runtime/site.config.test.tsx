@@ -26,7 +26,6 @@ const config: SiteConfig = {
   LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  MFE_CONFIG_API_URL: null,
   APP_ID: 'runtime',
   SUPPORT_URL: 'https://support.edx.org',
   ENVIRONMENT: 'test',
