@@ -1,6 +1,6 @@
-import { OpenedXConfig } from "@openedx/frontend-base";
+import { SiteConfig } from "@openedx/frontend-base";
 
-const config: OpenedXConfig = {
+const config: SiteConfig = {
   ENVIRONMENT: 'dev',
   PUBLIC_PATH: '/',
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',

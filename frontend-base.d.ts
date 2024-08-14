@@ -1,7 +1,7 @@
-import { OpenedXConfig } from "./";
+import { SiteConfig } from "./";
 
 declare module 'site.config' {
-  export default OpenedXConfig;
+  export default SiteConfig;
 }
 
 declare module '*.svg' {
