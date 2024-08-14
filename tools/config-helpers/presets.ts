@@ -12,8 +12,6 @@ const babel = createConfigPreset({
   searchFilepaths,
 });
 
-console.log('booyah', path.resolve(__dirname, '../eslint'));
-
 const eslint = createConfigPreset({
   defaultDir: path.resolve(__dirname, '../eslint'),
   defaultFilename: '.eslintrc.js',
