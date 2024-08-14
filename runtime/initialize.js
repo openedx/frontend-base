@@ -52,12 +52,10 @@ import {
   createMemoryHistory
 } from 'history';
 /*
-This 'env.config' package is a special 'magic' alias in our webpack configuration in the `config`
-folder. It points at an `env.config.js` file in the root of an MFE's repository if it exists and
-falls back to an empty object `{}` if the file doesn't exist.  This acts like an 'optional' import,
-in a sense.
+This 'site.config' package is a special 'magic' alias in our webpack configuration in the `config`
+folder. It points at an `site.config.tsx` file in the root of an project's repository.
 */
-import envConfig from 'env.config';
+import siteConfig from 'site.config';
 import { getPath } from './utils';
 // eslint-disable-next-line import/no-cycle
 import {
@@ -162,8 +160,8 @@ export async function auth(requireUser, hydrateUser) {
 }
 
 /**
- * Set or overrides configuration via an env.config.js file in the consuming application.
- * This env.config.js is loaded at runtime and must export one of two things:
+ * Set or overrides configuration via an site.config.tsx file in the consuming application.
+ * This site.config.tsx is loaded at runtime and must export one of two things:
  *
  * - An object which will be merged into the application config via `mergeConfig`.
  * - A function which returns an object which will be merged into the application config via
@@ -171,10 +169,10 @@ export async function auth(requireUser, hydrateUser) {
  */
 async function jsFileConfig() {
   let config = {};
-  if (typeof envConfig === 'function') {
-    config = await envConfig();
+  if (typeof siteConfig === 'function') {
+    config = await siteConfig();
   } else {
-    config = envConfig;
+    config = siteConfig;
   }
 
   mergeConfig(config);

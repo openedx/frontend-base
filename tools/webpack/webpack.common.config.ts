@@ -11,7 +11,7 @@ const config: Configuration = {
   },
   resolve: {
     alias: {
-      'env.config': path.resolve(process.cwd(), './env.config'),
+      'site.config': path.resolve(process.cwd(), './site.config'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },

@@ -34,7 +34,7 @@ const config = merge(commonConfig, {
         test: /\.(js|jsx|ts|tsx)$/,
         include: [
           /src/,
-          path.resolve(process.cwd(), './env.config.tsx'),
+          path.resolve(process.cwd(), './site.config.tsx'),
         ],
         use: {
           loader: require.resolve('ts-loader'),

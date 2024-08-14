@@ -3,44 +3,20 @@
  *
  * The configuration module provides utilities for working with an application's configuration
  * document (ConfigDocument).  Configuration variables can be supplied to the
- * application in four different ways.  They are applied in the following order:
+ * application in three different ways.  They are applied in the following order:
  *
- * - Build-time Configuration
- *   - Environment Variables
- *   - JavaScript File
+ * - Site Configuration File (site.config.tsx)
+ * - Initialization Config Handler
  * - Runtime Configuration
  *
- * Last one in wins.  Variables with the same name defined via the later methods will override any
- * defined using an earlier method.  i.e., if a variable is defined in Runtime Configuration, that
- * will override the same variable defined in either Build-time Configuration method (environment
- * variables or JS file).  Configuration defined in a JS file will override environment variables.
+ * Last one in wins, and are deep merged together.  Variables with the same name defined via the
+ * later methods will override any defined using an earlier method.  i.e., if a variable is defined
+ * in Runtime Configuration, that will override the same variable defined in either of the earlier
+ * methods.  Configuration defined in a JS file will override any default values below.
  *
- * ##### Build-time Configuration
+ * ##### Site Configuration File
  *
- * Build-time configuration methods add config variables into the app when it is built by webpack.
- * This saves the app an API call and means it has all the information it needs to initialize right
- * away.  There are two methods of supplying build-time configuration: environment variables and a
- * JavaScript file.
- *
- * ###### Environment Variables
- *
- * A set list of required config variables can be supplied as
- * command-line environment variables during the build process.
- *
- * As a simple example, these are supplied on the command-line before invoking `npm run build`:
- *
- * ```
- * LMS_BASE_URL=http://localhost:18000 npm run build
- * ```
- *
- * Note that additional variables _cannot_ be supplied via this method without using the `config`
- * initialization handler.  The app won't pick them up and they'll appear `undefined`.
- *
- * This configuration method is being deprecated in favor of JavaScript File Configuration.
- *
- * ###### JavaScript File Configuration
- *
- * Configuration variables can be supplied in an optional file named env.config.tsx.  This file must
+ * Configuration variables can be supplied in a file named site.config.tsx.  This file must
  * export either an Object containing configuration variables or a function.  The function must
  * return an Object containing configuration variables or, alternately, a promise which resolves to
  * an Object.
@@ -49,7 +25,7 @@
  * the function will be executed at runtime).  This is not common, and the capability is included
  * for the sake of flexibility.
  *
- * JavaScript File Configuration is well-suited to extensibility use cases or component overrides,
+ * The Site Configuration File is well-suited to extensibility use cases or component overrides,
  * in that the configuration file can depend on any installed JavaScript module.  It is also the
  * preferred way of doing build-time configuration if runtime configuration isn't used by your
  * deployment of the platform.
@@ -85,22 +61,6 @@
  * export default getAsyncConfig;
  * ```
  *
- * ##### Runtime Configuration
- *
- * Configuration variables can also be supplied using the "runtime configuration" method, taking
- * advantage of the Micro-frontend Config API in edx-platform. More information on this API can be
- * found in the ADR which introduced it:
- *
- * https://github.com/openedx/edx-platform/blob/master/lms/djangoapps/mfe_config_api/docs/decisions/0001-mfe-config-api.rst
- *
- * The runtime configuration method can be enabled by supplying a MFE_CONFIG_API_URL via one of the other
- * two configuration methods above.
- *
- * Runtime configuration is particularly useful if you need to supply different configurations to
- * a single deployment of a micro-frontend, for instance.  It is also a perfectly valid alternative
- * to build-time configuration, though it introduces an additional API call to edx-platform on MFE
- * initialization.
- *
  * ##### Initialization Config Handler
  *
  * The configuration document can be extended by
@@ -119,6 +79,23 @@
  *   },
  * });
  * ```
+ *
+ * ##### Runtime Configuration
+ *
+ * Configuration variables can also be supplied using the "runtime configuration" method, taking
+ * advantage of the Micro-frontend Config API in edx-platform. More information on this API can be
+ * found in the ADR which introduced it:
+ *
+ * https://github.com/openedx/edx-platform/blob/master/lms/djangoapps/mfe_config_api/docs/decisions/0001-mfe-config-api.rst
+ *
+ * The runtime configuration method can be enabled by supplying a MFE_CONFIG_API_URL via one of the other
+ * two configuration methods above.
+ *
+ * Runtime configuration is particularly useful if you need to supply different configurations to
+ * a single deployment of a micro-frontend, for instance.  It is also a perfectly valid alternative
+ * to build-time configuration, though it introduces an additional API call to edx-platform on MFE
+ * initialization.
+ *
  *
  * @module Config
  */

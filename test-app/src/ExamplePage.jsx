@@ -72,10 +72,10 @@ export default function ExamplePage() {
       <h2>Config tests</h2>
       <p>Non-existent config variable: {printTestResult(getConfig().custom.I_AM_NOT_HERE === undefined)}</p>
       <p>Merged var: {printTestResult(getConfig().custom.MERGED_VAR === 'I was merged in.')}</p>
-      <p><span>env.config.js boolean test: </span>
+      <p><span>site.config boolean test: </span>
         {printTestResult(getConfig().custom.FALSE_VALUE === false)}
       </p>
-      <p>env.config.js integer test: {printTestResult(Number.isInteger(getConfig().custom.INTEGER_VALUE))}</p>
+      <p>site.config integer test: {printTestResult(Number.isInteger(getConfig().custom.INTEGER_VALUE))}</p>
 
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>

@@ -148,7 +148,7 @@ Create a tsconfig.json file and add the following contents to it:
   "include": [
     ".eslintrc.js",
     "jest.config.js",
-    "env.config.js",
+    "site.config.tsx",
     "src/**/*",
     "app.d.ts",
   ]
@@ -256,15 +256,15 @@ Remember to make the following substitution for these functions:
 + import { configureLogging } from '@openedx/frontend-base';
 ```
 
-### 12. Replace the .env.test file with configuration in env.test.config.tsx file
+### 12. Replace the .env.test file with configuration in site.config.test.tsx file
 
-We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect an env.test.config.tsx file.  If you're initializing an application in your tests, frontend-base will pick up this configuration and make it available to getConfig(), etc.  If you need to manually access the variables, you an import `env.config` in your test files:
+We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect an site.config.test.tsx file.  If you're initializing an application in your tests, frontend-base will pick up this configuration and make it available to getConfig(), etc.  If you need to manually access the variables, you an import `site.config` in your test files:
 
 ```diff
-+ import config from 'env.config';
++ import config from 'site.config';
 ```
 
-The Jest configuration has been set up to find `env.config` at an `env.test.config.tsx` file.
+The Jest configuration has been set up to find `site.config` at an `site.config.test.tsx` file.
 
 ## Migrating to the frontend-base shell (:rotating_light: Work In Progress)
 
@@ -278,11 +278,11 @@ In spirit, in this migration we remove the initialization and header/footer code
 
 ### 1. Remove initialization
 
-In your index.(jsx|tsx) file, you need to remove the subscribe and initialization code.  If you have customizations here, they will need to migrate to your env.config.tsx file instead and take advantage of the shell's provided customization mechanisms.
+In your index.(jsx|tsx) file, you need to remove the subscribe and initialization code.  If you have customizations here, they will need to migrate to your site.config.tsx file instead and take advantage of the shell's provided customization mechanisms.
 
 ### 2. Migrate header/footer dependencies
 
-If your application uses a custom header or footer, you can use the shell's header and footer plugin slots to provide your custom header/footer components.  This is done through the env.config.tsx file.
+If your application uses a custom header or footer, you can use the shell's header and footer plugin slots to provide your custom header/footer components.  This is done through the site.config.tsx file.
 
 ### 3. Export the modules of your app as a component.
 
@@ -296,7 +296,7 @@ Create a new project.scss file at the top of your application.  It's responsible
 2. Importing your brand stylesheet.
 3. Importing the stylesheets from your application.
 
-You must then import this new stylesheet into your env.config.tsx file:
+You must then import this new stylesheet into your site.config.tsx file:
 
 ```diff
 + import './project.scss';

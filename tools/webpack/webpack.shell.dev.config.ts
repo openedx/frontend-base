@@ -24,7 +24,7 @@ const config: Configuration = {
   resolve: {
     alias: {
       ...aliases,
-      'env.config': path.resolve(process.cwd(), './env.config'),
+      'site.config': path.resolve(process.cwd(), './site.config'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
@@ -49,7 +49,7 @@ const config: Configuration = {
         include: [
           [
             /src/,
-            path.resolve(process.cwd(), './env.config.tsx'),
+            path.resolve(process.cwd(), './site.config.tsx'),
           ]
         ],
         use: {

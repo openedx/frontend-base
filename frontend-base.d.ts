@@ -1,6 +1,6 @@
 import { OpenedXConfig } from "./";
 
-declare module 'env.config' {
+declare module 'site.config' {
   export default OpenedXConfig;
 }
 

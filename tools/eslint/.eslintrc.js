@@ -71,7 +71,7 @@ module.exports = {
       'error',
       {
         ignore: [
-          'env.config',
+          'site.config',
         ],
       },
     ],

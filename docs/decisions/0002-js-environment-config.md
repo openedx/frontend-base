@@ -28,20 +28,20 @@ We will still support `process.env`-based configuration for the time being.  Tod
 
 # Implementation
 
-This new mechanism is done via webpack's `resolve` rules, specifically `alias` and `fallback`.  We use the first rule to set up an alias for `"env.config"` and point it at a `env.config.js` file we expect to be in the root of the application being built with frontend-build.  If that file is not present, `fallback` is responsible for resolving it with an empty `env.config.js` file here in frontend-build, which provides an empty object of configuration values.
+This new mechanism is done via webpack's `resolve` rules, specifically `alias` and `fallback`.  We use the first rule to set up an alias for `"site.config"` and point it at a `site.config.tsx` file we expect to be in the root of the application being built with frontend-build.  If that file is not present, `fallback` is responsible for resolving it with an empty `site.config.tsx` file here in frontend-build, which provides an empty object of configuration values.
 
-In this way, if an application doesn't know about or doesn't use `env.config.js`, it will seamlessly fallback to be a no-op.
+In this way, if an application doesn't know about or doesn't use `site.config.tsx`, it will seamlessly fallback to be a no-op.
 
 Once in place, an application can do:
 
 ```
-import config from 'env.config';
+import config from 'site.config';
 ```
 
-And it'll import the code from `env.config.js` if it's present, or the frontend-build version (which is an empty object `{}`) if it is not.
+And it'll import the code from `site.config.tsx` if it's present, or the frontend-build version (which is an empty object `{}`) if it is not.
 
 # Follow-on work
 
-After getting this code committed to frontend-build, we'll want to consume it in frontend-platform.  This will probably take the form of a new "configuration service" interface with two implementations: the existing `process.env`-based implementation packaged into a class, and a new `env.config`-based implementation.  Cutting over from one to the other over time will have to be done in a backwards compatible way so that we can continue to support existing MFE builds.
+After getting this code committed to frontend-build, we'll want to consume it in frontend-platform.  This will probably take the form of a new "configuration service" interface with two implementations: the existing `process.env`-based implementation packaged into a class, and a new `site.config`-based implementation.  Cutting over from one to the other over time will have to be done in a backwards compatible way so that we can continue to support existing MFE builds.
 
 We expect that we'll also want to update https://github.com/openedx/tubular to support this new mechanism.  Operators who want to take advantage of it may need to update any repositories that contain their environment-specific configurations as well.

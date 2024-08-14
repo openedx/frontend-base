@@ -1,4 +1,4 @@
-import { OpenedXConfig } from '..';
+import { OpenedXConfig } from '../dist';
 
 const config: OpenedXConfig = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',

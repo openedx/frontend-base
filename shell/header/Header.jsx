@@ -76,7 +76,7 @@ const Header = ({
         href: config.ACCOUNT_SETTINGS_URL,
         content: intl.formatMessage(messages['header.user.menu.account.settings']),
       },
-      // Users should only see Order History if have a ORDER_HISTORY_URL define in the environment.
+      // Users should only see Order History if have a ORDER_HISTORY_URL define in the site config.
       ...(config.ORDER_HISTORY_URL ? [{
         type: 'item',
         href: config.ORDER_HISTORY_URL,

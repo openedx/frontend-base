@@ -1,4 +1,4 @@
-import envConfig from 'env.config';
+import siteConfig from 'site.config';
 
 import { configure as configureAnalytics, MockAnalyticsService } from '../analytics';
 import { configure as configureAuth, MockAuthService } from '../auth';
@@ -48,7 +48,7 @@ export default function initializeMockApp({
   messages = mockMessages,
   authenticatedUser = null,
 } = {}) {
-  const config = envConfig;
+  const config = siteConfig;
   mergeConfig(config);
 
   const loggingService = configureLogging(MockLoggingService, {
