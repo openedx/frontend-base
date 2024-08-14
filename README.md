@@ -329,3 +329,11 @@ git merge other-repo-remote/master --allow-unrelated-histories
 Then work through the conflicts and use a merge commit to add the history into the frontend-base.
 
 Then move the files out of the way (move src to some other sub-dir, mostly) to make room for the next repo.
+
+# Other notable changes
+
+- Cease using `AUTHN_MINIMAL_HEADER`, replace it with an actual minimal header.
+- No more using `process.env` in runtime code.
+- `SUPPORT_URL` is now optional and the support link in the header is hidden if it's not present.
+- Removed dotenv.  Use site.config.tsx.
+- Removed Purge CSS.  We do not believe that Purge CSS works properly with Paragon in general, and it is also fundamentally incompatible with module federation as an architecture.
