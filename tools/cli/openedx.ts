@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
+import { execSync } from 'child_process';
+import path from 'path';
 
+import { existsSync } from 'fs';
 import presets from '../config-helpers/presets';
 import { ConfigPreset, ConfigPresetTypes } from '../types';
 
@@ -47,6 +50,20 @@ const commandName = process.argv[2];
 process.argv.splice(1, 1);
 
 switch (commandName) {
+  case 'release':
+    const tsconfigPath = path.resolve(process.cwd(), './tsconfig.build.json');
+    if (!existsSync(tsconfigPath)) {
+      console.error(chalk.red('openedx release: the library must include a tsconfig.build.json. Aborting.'))
+      process.exit(1);
+    }
+    execSync(`tsc --project ${path.resolve(process.cwd(), './tsconfig.build.json')}`, { stdio: 'inherit'});
+    break;
+  case 'pack':
+    const destination = process.argv[2];
+    execSync('npm run release', { stdio: 'inherit'});
+    const { filename } = JSON.parse(execSync('npm pack --json').toString())[0];
+    execSync(`npm --prefix ../${destination} install ${path.resolve(process.cwd(), filename)}`, { stdio: 'inherit'})
+    break;
   case 'eslint':
     ensureConfigOption(presets[ConfigPresetTypes.ESLINT]);
     require('.bin/eslint');
