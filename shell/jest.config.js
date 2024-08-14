@@ -25,6 +25,7 @@ module.exports = {
   ],
   modulePathIgnorePatterns: [
     '<rootDir>/dist/',
+    '<rootDir>/runtime',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
