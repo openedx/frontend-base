@@ -1,4 +1,4 @@
-import { SiteConfig } from '../dist';
+import { SiteConfig } from '..';
 
 const config: SiteConfig = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
