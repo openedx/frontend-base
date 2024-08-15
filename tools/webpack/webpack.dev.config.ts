@@ -1,5 +1,3 @@
-// This is the dev Webpack config. All settings here should prefer a fast build
-// time at the expense of creating larger, unoptimized bundles.
 import { transform } from '@formatjs/ts-transformer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import PostCssAutoprefixerPlugin from 'autoprefixer';
@@ -8,33 +6,52 @@ import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
-import { merge } from 'webpack-merge';
+import { Configuration, WebpackError } from 'webpack';
+import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
 import getLocalAliases from './getLocalAliases';
-import commonConfig from './webpack.common.config';
 
 const aliases = getLocalAliases();
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
-
-const config = merge(commonConfig, {
-  mode: 'development',
-  devtool: 'eval-source-map',
+const config: Configuration = {
+  entry: {
+    app: path.resolve(__dirname, '../../shell/index'),
+  },
   output: {
+    path: path.resolve(process.cwd(), './dist'),
     publicPath: PUBLIC_PATH,
   },
   resolve: {
-    alias: aliases,
+    alias: {
+      ...aliases,
+      'site.config': path.resolve(process.cwd(), './site.config.dev'),
+    },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+  ignoreWarnings: [
+    // Ignore warnings raised by source-map-loader.
+    // some third party packages may ship miss-configured sourcemaps, that interrupts the build
+    // See: https://github.com/facebook/create-react-app/discussions/11278#discussioncomment-1780169
+    (warning: WebpackError) => !!(
+      warning.module
+      // @ts-ignore
+      && warning.module.resource.includes('node_modules')
+      && warning.details
+      && warning.details.includes('source-map-loader')),
+  ],
+  mode: 'development',
+  devtool: 'eval-source-map',
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
         include: [
-          /src/,
-          path.resolve(process.cwd(), './site.config.tsx'),
+          [
+            /src/,
+            path.resolve(process.cwd(), './site.config.dev.tsx'),
+          ]
         ],
         use: {
           loader: require.resolve('ts-loader'),
@@ -46,6 +63,7 @@ const config = merge(commonConfig, {
             getCustomTransformers() {
               return {
                 before: [
+                  // require('react-refresh-typescript')(),
                   transform({
                     overrideIdFn: '[sha512:contenthash:base64:6]',
                   }),
@@ -155,6 +173,7 @@ const config = merge(commonConfig, {
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live
   // reloading.
+
   devServer: {
     host: '0.0.0.0',
     port: process.env.PORT || 8080,
@@ -173,6 +192,6 @@ const config = merge(commonConfig, {
       publicPath: PUBLIC_PATH,
     },
   },
-});
+};
 
 export default config;

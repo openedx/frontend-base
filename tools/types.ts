@@ -6,13 +6,12 @@ export interface ConfigPreset {
 
 export enum ConfigPresetTypes {
   BABEL = 'babel',
-  ESLINT = 'eslint',
-  JEST = 'jest',
-  WEBPACK = 'webpack',
-  WEBPACK_DEV_SERVER = 'webpack-dev-server',
-  SHELL_DEV_SERVER = 'shell-dev-server',
-  WEBPACK_DEV_SERVER_STAGE = 'webpack-dev-server-stage',
-  WEBPACK_PROD = 'webpack-prod',
+  BUILD = 'build',
+  BUILD_MODULE = 'build:module',
+  DEV = 'dev',
+  DEV_MODULE = 'dev:module',
+  LINT = 'lint',
+  TEST = 'test',
 }
 
 export type ConfigPresets = {

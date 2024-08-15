@@ -64,24 +64,28 @@ switch (commandName) {
     const { filename } = JSON.parse(execSync('npm pack --json').toString())[0];
     execSync(`npm --prefix ../${destination} install ${path.resolve(process.cwd(), filename)}`, { stdio: 'inherit'})
     break;
-  case 'eslint':
-    ensureConfigOption(presets[ConfigPresetTypes.ESLINT]);
+  case 'lint':
+    ensureConfigOption(presets[ConfigPresetTypes.LINT]);
     require('.bin/eslint');
     break;
-  case 'jest':
-    ensureConfigOption(presets[ConfigPresetTypes.JEST]);
+  case 'test':
+    ensureConfigOption(presets[ConfigPresetTypes.TEST]);
     require('jest/bin/jest');
     break;
-  case 'webpack':
-    ensureConfigOption(presets[ConfigPresetTypes.WEBPACK]);
+  case 'build':
+    ensureConfigOption(presets[ConfigPresetTypes.BUILD]);
     require('webpack/bin/webpack');
     break;
-  case 'webpack-dev-server':
-    ensureConfigOption(presets[ConfigPresetTypes.WEBPACK_DEV_SERVER]);
+  case 'build:module':
+    ensureConfigOption(presets[ConfigPresetTypes.BUILD_MODULE]);
+    require('webpack/bin/webpack');
+    break;
+  case 'dev:module':
+    ensureConfigOption(presets[ConfigPresetTypes.DEV_MODULE]);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
-  case 'shell-dev-server':
-    ensureConfigOption(presets[ConfigPresetTypes.SHELL_DEV_SERVER]);
+  case 'dev':
+    ensureConfigOption(presets[ConfigPresetTypes.DEV]);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
   case 'formatjs': {

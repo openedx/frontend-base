@@ -12,56 +12,56 @@ const babel = createConfigPreset({
   searchFilepaths,
 });
 
-const eslint = createConfigPreset({
-  defaultDir: path.resolve(__dirname, '../eslint'),
-  defaultFilename: '.eslintrc.js',
-  searchFilenames: ['.eslintrc.js'],
+const build = createConfigPreset({
+  defaultDir: path.resolve(__dirname, '../webpack'),
+  defaultFilename: 'webpack.build.config.js',
+  searchFilenames: ['webpack.build.config.js'],
   searchFilepaths,
 });
 
-const jest = createConfigPreset({
-  defaultDir: path.resolve(__dirname, '../jest'),
-  defaultFilename: 'jest.config.js',
-  searchFilenames: ['jest.config.js'],
+const buildModule = createConfigPreset({
+  defaultDir: path.resolve(__dirname, '../webpack'),
+  defaultFilename: 'webpack.build.module.config.js',
+  searchFilenames: ['webpack.build.module.config.js'],
   searchFilepaths,
 });
 
-const webpackDevServer = createConfigPreset({
+const dev = createConfigPreset({
   defaultDir: path.resolve(__dirname, '../webpack'),
   defaultFilename: 'webpack.dev.config.js',
   searchFilenames: ['webpack.dev.config.js'],
   searchFilepaths,
 });
 
-const shellDevServer = createConfigPreset({
+const devModule = createConfigPreset({
   defaultDir: path.resolve(__dirname, '../webpack'),
-  defaultFilename: 'webpack.shell.dev.config.js',
-  searchFilenames: ['webpack.shell.dev.config.js'],
+  defaultFilename: 'webpack.dev.module.config.js',
+  searchFilenames: ['webpack.dev.module.config.js'],
   searchFilepaths,
 });
 
-const webpackDevServerStage = createConfigPreset({
-  defaultDir: path.resolve(__dirname, '../webpack'),
-  defaultFilename: 'webpack.dev-stage.config.js',
-  searchFilenames: ['webpack.dev-stage.config.js'],
+const lint = createConfigPreset({
+  defaultDir: path.resolve(__dirname, '../eslint'),
+  defaultFilename: '.eslintrc.js',
+  searchFilenames: ['.eslintrc.js'],
   searchFilepaths,
 });
 
-const webpack = createConfigPreset({
-  defaultDir: path.resolve(__dirname, '../webpack'),
-  defaultFilename: 'webpack.prod.config.js',
-  searchFilenames: ['webpack.prod.config.js'],
+const test = createConfigPreset({
+  defaultDir: path.resolve(__dirname, '../jest'),
+  defaultFilename: 'jest.config.js',
+  searchFilenames: ['jest.config.js'],
   searchFilepaths,
 });
+
 
 const presets: ConfigPresets = {
   babel,
-  eslint,
-  jest,
-  webpack,
-  'webpack-dev-server': webpackDevServer,
-  'shell-dev-server': shellDevServer,
-  'webpack-dev-server-stage': webpackDevServerStage,
-  'webpack-prod': webpack,
+  build,
+  'build:module': buildModule,
+  dev,
+  'dev:module': devModule,
+  lint,
+  test,
 }
 export default presets;

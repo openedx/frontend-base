@@ -1,30 +1,39 @@
-// This is the dev Webpack config. All settings here should prefer a fast build
-// time at the expense of creating larger, unoptimized bundles.
+// This is the prod Webpack config. All settings here should prefer smaller,
+// optimized bundles at the expense of a longer build time.
+
 import { transform } from '@formatjs/ts-transformer';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import PostCssAutoprefixerPlugin from 'autoprefixer';
+import CssNano from 'cssnano';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
+import { Configuration } from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 import { merge } from 'webpack-merge';
 
 import getLocalAliases from './getLocalAliases';
 import commonConfig from './webpack.common.config';
 
-const aliases = getLocalAliases();
-const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+const packageJson = require(path.resolve(process.cwd(), 'package.json'));
 
-const config = merge(commonConfig, {
-  mode: 'development',
-  devtool: 'eval-source-map',
+const aliases = getLocalAliases();
+
+const config: Configuration = merge(commonConfig, {
+  mode: 'production',
+  devtool: 'source-map',
   output: {
-    publicPath: PUBLIC_PATH,
+    filename: '[name].[chunkhash].js',
+    path: path.resolve(process.cwd(), 'dist'),
+    publicPath: process.env.PUBLIC_PATH || '/',
+    clean: true, // Clean the output directory before emit.
   },
   resolve: {
     alias: aliases,
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
@@ -54,13 +63,27 @@ const config = merge(commonConfig, {
           },
         },
       },
-      // We are not extracting CSS from the javascript bundles in development because extracting
-      // prevents hot-reloading from working, it increases build time, and we don't care about
-      // flash-of-unstyled-content issues in development.
+      {
+        test: /\.js$/,
+        use: [
+          require.resolve('source-map-loader'),
+        ],
+        enforce: 'pre',
+      },
+      // Webpack, by default, includes all CSS in the javascript bundles. Unfortunately, that means:
+      // a) The CSS won't be cached by browsers separately (a javascript change will force CSS
+      // re-download).  b) Since CSS is applied asynchronously, it causes an ugly
+      // flash-of-unstyled-content.
+      //
+      // To avoid these problems, we extract the CSS from the bundles into separate CSS files that
+      // can be included as <link> tags in the HTML <head> manually.
+      //
+      // We will not do this in development because it prevents hot-reloading from working and it
+      // increases build time.
       {
         test: /(.scss|.css)$/,
         use: [
-          require.resolve('style-loader'), // creates style nodes from JS strings
+          MiniCssExtractPlugin.loader,
           {
             loader: require.resolve('css-loader'), // translates CSS into CommonJS
             options: {
@@ -77,6 +100,7 @@ const config = merge(commonConfig, {
                 plugins: [
                   PostCssAutoprefixerPlugin(),
                   PostCssRTLCSS(),
+                  CssNano(),
                   PostCssCustomMediaCSS(),
                 ],
               },
@@ -120,7 +144,13 @@ const config = merge(commonConfig, {
       },
     ],
   },
+  // New in Webpack 4. Replaces CommonChunksPlugin. Extract common modules among all chunks to one
+  // common chunk and extract the Webpack runtime to a single runtime chunk.
   optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+    },
     minimizer: [
       '...',
       new ImageMinimizerPlugin({
@@ -142,6 +172,10 @@ const config = merge(commonConfig, {
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
+    // Writes the extracted CSS from each entry to a file in the output directory.
+    new MiniCssExtractPlugin({
+    filename: '[name].[chunkhash].css',
+    }),
     // Generates an HTML file in the output directory.
     new HtmlWebpackPlugin({
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
@@ -149,30 +183,47 @@ const config = merge(commonConfig, {
       FAVICON_URL: process.env.FAVICON_URL || null,
       OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
       NODE_ENV: process.env.NODE_ENV || null,
+      SITE_NAME: process.env.SITE_NAME || '',
     }),
-    new ReactRefreshWebpackPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+    }),
+    new ModuleFederationPlugin({
+      name: packageJson.config.name,
+      filename: 'remoteEntry.js',
+      exposes: packageJson.exports,
+      shared: {
+        react: {
+          singleton: true,
+          requiredVersion: '^17.0.0',
+        },
+        'react-dom': {
+          singleton: true,
+          requiredVersion: '^17.0.0',
+        },
+        '@openedx/paragon': {
+          requiredVersion: '^22.0.0',
+        },
+        '@openedx/frontend-base': {
+          singleton: true,
+          requiredVersion: '^1',
+        },
+        'react-redux': {
+          requiredVersion: '^7.2.9',
+        },
+        'react-router': {
+          requiredVersion: '^6.22.3',
+        },
+        'react-router-dom': {
+          requiredVersion: '^6.22.3',
+        },
+        redux: {
+          requiredVersion: '^4.2.1',
+        },
+      },
+    }),
   ],
-  // This configures webpack-dev-server which serves bundles from memory and provides live
-  // reloading.
-  devServer: {
-    host: '0.0.0.0',
-    port: process.env.PORT || 8080,
-    https: true,
-    historyApiFallback: {
-      index: path.join(PUBLIC_PATH, 'index.html'),
-      disableDotRule: true,
-    },
-    // Enable hot reloading server. It will provide WDS_SOCKET_PATH endpoint
-    // for the WebpackDevServer client so it can learn when the files were
-    // updated. The WebpackDevServer client is included as an entry point
-    // in the webpack development configuration. Note that only changes
-    // to CSS are currently hot reloaded. JS changes will refresh the browser.
-    hot: true,
-    webSocketServer: 'ws',
-    devMiddleware: {
-      publicPath: PUBLIC_PATH,
-    },
-  },
 });
 
 export default config;
