@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import '@testing-library/jest-dom';
 import siteConfig from 'site.config';
-import { setConfig } from './config';
+import { mergeConfig } from './config';
 
 jest.mock('universal-cookie', () => {
   const mCookie = {
@@ -11,4 +11,4 @@ jest.mock('universal-cookie', () => {
   return jest.fn(() => mCookie);
 });
 
-setConfig(siteConfig);
+mergeConfig(siteConfig);
