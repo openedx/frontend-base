@@ -105,10 +105,9 @@ import { GoogleAnalyticsLoader } from './scripts';
  * in environments where browser history may be inaccessible due to `window` being undefined, this
  * falls back to memory history.
  */
-export const history = (typeof window !== 'undefined')
-  ? createBrowserHistory({
-    basename: getPath(getConfig().PUBLIC_PATH),
-  }) : createMemoryHistory();
+export const getHistory = () => ((typeof window !== 'undefined')
+  ? createBrowserHistory({ basename: getPath(getConfig().PUBLIC_PATH) })
+  : createMemoryHistory());
 
 /**
  * The string basename that is the root directory of this MFE.

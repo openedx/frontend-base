@@ -10,7 +10,7 @@ import {
   APP_PUBSUB_INITIALIZED,
   APP_READY,
 } from './constants';
-import { initialize } from './initialize';
+import { getHistory, initialize } from './initialize';
 
 import { configure as configureAnalytics, SegmentAnalyticsService } from './analytics';
 import {
@@ -377,6 +377,7 @@ describe('initialize', () => {
 
 describe('history', () => {
   it('browser history called by default path', async () => {
+    getHistory();
     // import history from initialize;
     expect(createBrowserHistory).toHaveBeenCalledWith({
       basename: '/',
