@@ -102,21 +102,25 @@
 
 import merge from 'lodash.merge';
 import 'pubsub-js';
+import { SiteConfig } from '..';
 import { CONFIG_CHANGED } from './constants';
-
-import { SiteConfig } from '../dist';
 
 export const configDefaults: Partial<SiteConfig> = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-  LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-  USER_INFO_COOKIE_NAME: 'edx-user-info',
-  PUBLIC_PATH: '/',
   ENVIRONMENT: 'production',
+  IGNORED_ERROR_REGEX: null,
+  LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
+  PUBLIC_PATH: '/',
   REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
+  USER_INFO_COOKIE_NAME: 'edx-user-info',
+  ORDER_HISTORY_URL: null,
+  MFE_CONFIG_API_URL: null,
+  SUPPORT_URL: null,
+  SEGMENT_KEY: null,
 };
 
-let config: SiteConfig | null = null;
+let config: SiteConfig | {} = {};
 
 /**
  * Getter for the application configuration document.  This is synchronous and merely returns a
