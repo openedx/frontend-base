@@ -26,6 +26,7 @@ module.exports = {
   modulePathIgnorePatterns: [
     '<rootDir>/dist',
     '<rootDir>/shell',
+    '<rootDir>/tools',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',

@@ -9,16 +9,19 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    'setupTest.js',
   ],
   transformIgnorePatterns: [
     '/node_modules/(?!(@openedx|@edx)/)',
   ],
   modulePathIgnorePatterns: [
-    '<rootDir>/dist/',
+    '<rootDir>/dist',
+    '<rootDir>/runtime',
+    '<rootDir>/shell',
+    '<rootDir>/tools/dist',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '<rootDir>/dist/',
+    '<rootDir>/dist',
+    '<rootDir>/tools/dist',
   ],
 };

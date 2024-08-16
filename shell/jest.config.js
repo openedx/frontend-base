@@ -24,8 +24,9 @@ module.exports = {
     '/node_modules/(?!(@openedx|@edx)/)',
   ],
   modulePathIgnorePatterns: [
-    '<rootDir>/dist/',
+    '<rootDir>/dist',
     '<rootDir>/runtime',
+    '<rootDir>/tools',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
