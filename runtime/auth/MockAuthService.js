@@ -83,8 +83,6 @@ class MockAuthService {
    * @param {string} options.config.REFRESH_ACCESS_TOKEN_API_PATH
    * @param {string} options.config.ACCESS_TOKEN_COOKIE_NAME
    * @param {string} options.config.CSRF_TOKEN_API_PATH
-   * @param {Object} options.config.hydratedAuthenticatedUser
-   * @param {Object} options.config.authenticatedUser
    * @param {Object} options.loggingService requires logError and logInfo methods
    */
   constructor(options) {
@@ -97,10 +95,8 @@ class MockAuthService {
     this.loggingService = options.loggingService;
 
     // Mock user
-    this.authenticatedUser = this.config.authenticatedUser ? this.config.authenticatedUser : null;
-    this.hydratedAuthenticatedUser = this.config.hydratedAuthenticatedUser
-      ? this.config.hydratedAuthenticatedUser
-      : {};
+    this.authenticatedUser = null;
+    this.hydratedAuthenticatedUser = {};
 
     this.authenticatedHttpClient = axios.create();
     this.httpClient = axios.create();

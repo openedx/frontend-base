@@ -53,6 +53,8 @@ function initializeMockApp() {
     loggingService,
   });
 
+  setAuthenticatedUser(authenticatedUser);
+
   // i18n doesn't have a service class to return.
   configureI18n({
     config: getConfig(),

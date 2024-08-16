@@ -346,4 +346,5 @@ Then move the files out of the way (move src to some other sub-dir, mostly) to m
   - USER_INFO_COOKIE_NAME: 'edx-user-info',
   - PUBLIC_PATH: '/',
   - ENVIRONMENT: 'production',
+- When using MockAuthService, set the authenticated user by calling setAuthenticatedUser after instantiating the service.  It's not okay for us to add arbitrary config values to the site config.
 - `REFRESH_ACCESS_TOKEN_ENDPOINT` has been replaced with `REFRESH_ACCESS_TOKEN_API_PATH`.  It is now a path that defaults to '/login_refresh'.  The Auth service assumes it is an endpoint on the LMS, and joins the path with `LMS_BASE_URL`.  This change creates more parity with other paths such as `CSRF_TOKEN_API_PATH`.
