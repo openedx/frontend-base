@@ -167,7 +167,7 @@ export async function auth(requireUser, hydrateUser) {
  * - A function which returns an object which will be merged into the application config via
  * `mergeConfig`.  This function can return a promise.
  */
-async function jsFileConfig() {
+async function fileConfig() {
   let config = {};
   if (typeof siteConfig === 'function') {
     config = await siteConfig();
@@ -309,7 +309,7 @@ export async function initialize({
     global.PubSub.publish(APP_PUBSUB_INITIALIZED);
 
     // Configuration
-    await jsFileConfig();
+    await fileConfig();
     await handlers.config();
     await runtimeConfig();
     global.PubSub.publish(APP_CONFIG_INITIALIZED);
