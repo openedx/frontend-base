@@ -11,7 +11,7 @@ import {
   IntlProvider,
   LOCALE_CHANGED,
 } from '../i18n';
-import { basename } from '../initialize';
+import { getBasename } from '../initialize';
 
 import AppContext from './AppContext';
 import ErrorBoundary from './ErrorBoundary';
@@ -73,7 +73,7 @@ export default function AppProvider({ store, children, wrapWithRouter }) {
         >
           <OptionalReduxProvider store={store}>
             {wrapWithRouter ? (
-              <Router basename={basename}>
+              <Router basename={getBasename()}>
                 <div data-testid="browser-router">
                   {children}
                 </div>
