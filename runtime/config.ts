@@ -113,6 +113,7 @@ export const configDefaults: Partial<SiteConfig> = {
   USER_INFO_COOKIE_NAME: 'edx-user-info',
   PUBLIC_PATH: '/',
   ENVIRONMENT: 'production',
+  REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
 };
 
 let config: SiteConfig | null = null;
@@ -207,7 +208,7 @@ export function mergeConfig(newConfig: Partial<SiteConfig>) {
  * @property {string} STUDIO_BASE_URL
  * @property {string} MARKETING_SITE_BASE_URL
  * @property {string} ORDER_HISTORY_URL
- * @property {string} REFRESH_ACCESS_TOKEN_ENDPOINT
+ * @property {string} REFRESH_ACCESS_TOKEN_API_PATH
  * @property {string} SEGMENT_KEY
  * @property {string} SITE_NAME
  * @property {string} USER_INFO_COOKIE_NAME

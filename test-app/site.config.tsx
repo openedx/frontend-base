@@ -20,7 +20,7 @@ const config: SiteConfig = {
   STUDIO_BASE_URL: 'http://localhost:18010',
   MARKETING_SITE_BASE_URL: 'http://localhost:18000',
   ORDER_HISTORY_URL: 'http://localhost:1996/orders',
-  REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login_refresh',
+  REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
   SEGMENT_KEY: 'segment_whoa',
   SITE_NAME: 'localhost',
   USER_INFO_COOKIE_NAME: 'edx-user-info',

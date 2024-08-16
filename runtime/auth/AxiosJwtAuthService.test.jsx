@@ -2,6 +2,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Cookies from 'universal-cookie';
+import { getConfig } from '../config';
 import AxiosJwtAuthService from './AxiosJwtAuthService';
 
 const mockLoggingService = {
@@ -11,15 +12,7 @@ const mockLoggingService = {
 };
 
 const authOptions = {
-  config: {
-    BASE_URL: 'http://localhost:8080',
-    ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-    CSRF_TOKEN_API_PATH: '/get-csrf-token',
-    LMS_BASE_URL: 'http://localhost:18000',
-    LOGIN_URL: 'http://localhost:18000/login',
-    LOGOUT_URL: 'http://localhost:18000/logout',
-    REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login_refresh',
-  },
+  config: getConfig(),
   loggingService: mockLoggingService,
 };
 

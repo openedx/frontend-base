@@ -15,7 +15,7 @@ const optionsPropTypes = {
     LMS_BASE_URL: PropTypes.string.isRequired,
     LOGIN_URL: PropTypes.string.isRequired,
     LOGOUT_URL: PropTypes.string.isRequired,
-    REFRESH_ACCESS_TOKEN_ENDPOINT: PropTypes.string.isRequired,
+    REFRESH_ACCESS_TOKEN_API_PATH: PropTypes.string.isRequired,
     ACCESS_TOKEN_COOKIE_NAME: PropTypes.string.isRequired,
     CSRF_TOKEN_API_PATH: PropTypes.string.isRequired,
   }).isRequired,
@@ -37,7 +37,7 @@ class AxiosJwtAuthService {
    * @param {string} options.config.LMS_BASE_URL
    * @param {string} options.config.LOGIN_URL
    * @param {string} options.config.LOGOUT_URL
-   * @param {string} options.config.REFRESH_ACCESS_TOKEN_ENDPOINT
+   * @param {string} options.config.REFRESH_ACCESS_TOKEN_API_PATH
    * @param {string} options.config.ACCESS_TOKEN_COOKIE_NAME
    * @param {string} options.config.CSRF_TOKEN_API_PATH
    * @param {Object} options.loggingService requires logError and logInfo methods
@@ -56,7 +56,8 @@ class AxiosJwtAuthService {
     this.jwtTokenService = new AxiosJwtTokenService(
       this.loggingService,
       this.config.ACCESS_TOKEN_COOKIE_NAME,
-      this.config.REFRESH_ACCESS_TOKEN_ENDPOINT,
+      this.config.LMS_BASE_URL,
+      this.config.REFRESH_ACCESS_TOKEN_API_PATH,
     );
     this.csrfTokenService = new AxiosCsrfTokenService(this.config.CSRF_TOKEN_API_PATH);
     this.authenticatedHttpClient = this.addAuthenticationToHttpClient(axios.create());
@@ -304,7 +305,7 @@ class AxiosJwtAuthService {
  *
  * @param {HttpClient} newHttpClient
  * @param {Object} config
- * @param {string} [config.REFRESH_ACCESS_TOKEN_ENDPOINT]
+ * @param {string} [config.REFRESH_ACCESS_TOKEN_API_PATH]
  * @param {string} [config.ACCESS_TOKEN_COOKIE_NAME]
  * @param {string} [config.CSRF_TOKEN_API_PATH]
  * @returns {HttpClient} A configured Axios HTTP client.

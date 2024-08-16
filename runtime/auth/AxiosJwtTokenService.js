@@ -9,10 +9,11 @@ export default class AxiosJwtTokenService {
     return !token || token.exp < Date.now() / 1000;
   }
 
-  constructor(loggingService, tokenCookieName, tokenRefreshEndpoint) {
+  constructor(loggingService, tokenCookieName, tokenRefreshBaseUrl, tokenRefreshPath) {
     this.loggingService = loggingService;
     this.tokenCookieName = tokenCookieName;
-    this.tokenRefreshEndpoint = tokenRefreshEndpoint;
+    this.tokenRefreshBaseUrl = tokenRefreshBaseUrl;
+    this.tokenRefreshPath = tokenRefreshPath;
 
     this.httpClient = axios.create();
     // Set withCredentials to true. Enables cross-site Access-Control requests
@@ -59,7 +60,7 @@ export default class AxiosJwtTokenService {
         let axiosResponse;
         try {
           try {
-            axiosResponse = await this.httpClient.post(this.tokenRefreshEndpoint);
+            axiosResponse = await this.httpClient.post(`${this.tokenRefreshBaseUrl}${this.tokenRefreshPath}`);
             // eslint-disable-next-line max-len
             if (axiosResponse.data && axiosResponse.data.response_epoch_seconds) {
               responseServerEpochSeconds = axiosResponse.data.response_epoch_seconds;

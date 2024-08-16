@@ -59,7 +59,7 @@ const optionsShape = {
     LMS_BASE_URL: PropTypes.string.isRequired,
     LOGIN_URL: PropTypes.string.isRequired,
     LOGOUT_URL: PropTypes.string.isRequired,
-    REFRESH_ACCESS_TOKEN_ENDPOINT: PropTypes.string.isRequired,
+    REFRESH_ACCESS_TOKEN_API_PATH: PropTypes.string.isRequired,
     ACCESS_TOKEN_COOKIE_NAME: PropTypes.string.isRequired,
     CSRF_TOKEN_API_PATH: PropTypes.string.isRequired,
   }).isRequired,
