@@ -75,7 +75,6 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import {
-  configDefaults,
   getConfig, mergeConfig
 } from './config';
 import {
@@ -175,7 +174,6 @@ async function fileConfig() {
     config = siteConfig;
   }
 
-  mergeConfig(configDefaults);
   mergeConfig(config);
 }
 

@@ -105,7 +105,7 @@ import 'pubsub-js';
 import { SiteConfig } from '..';
 import { CONFIG_CHANGED } from './constants';
 
-export const configDefaults: Partial<SiteConfig> = {
+let config: SiteConfig = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
   ENVIRONMENT: 'production',
@@ -118,9 +118,27 @@ export const configDefaults: Partial<SiteConfig> = {
   MFE_CONFIG_API_URL: null,
   SUPPORT_URL: null,
   SEGMENT_KEY: null,
+  apps: {},
+  APP_ID: '',
+  BASE_URL: '',
+  SITE_NAME: '',
+  ACCOUNT_PROFILE_URL: '',
+  ACCOUNT_SETTINGS_URL: '',
+  LEARNING_BASE_URL: '',
+  LOGIN_URL: '',
+  LOGOUT_URL: '',
+  MARKETING_SITE_BASE_URL: '',
+  CREDENTIALS_BASE_URL: '',
+  DISCOVERY_API_BASE_URL: '',
+  ECOMMERCE_BASE_URL: '',
+  LMS_BASE_URL: '',
+  PUBLISHER_BASE_URL: '',
+  STUDIO_BASE_URL: '',
+  FAVICON_URL: '',
+  LOGO_TRADEMARK_URL: '',
+  LOGO_URL: '',
+  LOGO_WHITE_URL: ''
 };
-
-let config: SiteConfig | {} = {};
 
 /**
  * Getter for the application configuration document.  This is synchronous and merely returns a
