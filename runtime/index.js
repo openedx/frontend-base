@@ -81,7 +81,7 @@ export {
 
 export {
   auth,
-  history,
+  getHistory,
   initError,
   initialize
 } from './initialize';
