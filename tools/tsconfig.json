@@ -4,7 +4,6 @@
     "rootDir": ".",
     "outDir": "dist",
     "noEmit": false,
-    "composite": true,
     "allowJs": true,
   },
   "include": [

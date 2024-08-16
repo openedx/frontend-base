@@ -21,7 +21,4 @@
     "example/**/*",
     "example-plugin-app/**/*",
   ],
-  "references": [
-    { "path": "./tools" },
-  ]
 }

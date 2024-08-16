@@ -15,8 +15,5 @@
     "**/jest.config.js",
     "**/.eslintrc.js",
     "**/__mocks__",
-  ],
-  "references": [
-    { "path": "./tools" },
   ]
 }
