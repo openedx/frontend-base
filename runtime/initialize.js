@@ -75,7 +75,9 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import {
+  configDefaults,
   getConfig, mergeConfig,
+  setConfig,
 } from './config';
 import {
   APP_ANALYTICS_INITIALIZED,
@@ -175,7 +177,7 @@ async function fileConfig() {
     config = siteConfig;
   }
 
-  mergeConfig(config);
+  setConfig(...configDefaults, ...config);
 }
 
 /*

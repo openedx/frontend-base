@@ -104,41 +104,19 @@ import merge from 'lodash.merge';
 import 'pubsub-js';
 import { CONFIG_CHANGED } from './constants';
 
+import { SiteConfig } from '../dist';
 import { ensureDefinedConfig } from './utils';
 
-let config = {
+export const configDefaults: Partial<SiteConfig> = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-  ACCOUNT_PROFILE_URL: null,
-  ACCOUNT_SETTINGS_URL: null,
-  BASE_URL: null,
-  PUBLIC_PATH: '/',
-  CREDENTIALS_BASE_URL: null,
   CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-  DISCOVERY_API_BASE_URL: null,
-  PUBLISHER_BASE_URL: null,
-  ECOMMERCE_BASE_URL: null,
-  ENVIRONMENT: 'production',
-  IGNORED_ERROR_REGEX: null,
   LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-  LEARNING_BASE_URL: null,
-  LMS_BASE_URL: null,
-  LOGIN_URL: null,
-  LOGOUT_URL: null,
-  STUDIO_BASE_URL: null,
-  MARKETING_SITE_BASE_URL: null,
-  ORDER_HISTORY_URL: null,
-  REFRESH_ACCESS_TOKEN_ENDPOINT: null,
-  SEGMENT_KEY: null,
-  SITE_NAME: '',
   USER_INFO_COOKIE_NAME: 'edx-user-info',
-  LOGO_URL: null,
-  LOGO_TRADEMARK_URL: null,
-  LOGO_WHITE_URL: null,
-  FAVICON_URL: null,
-  MFE_CONFIG_API_URL: null,
-  APP_ID: null,
-  SUPPORT_URL: null,
+  PUBLIC_PATH: '/',
+  ENVIRONMENT: 'production',
 };
+
+let config: SiteConfig | null = null;
 
 /**
  * Getter for the application configuration document.  This is synchronous and merely returns a
