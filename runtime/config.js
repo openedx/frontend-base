@@ -102,7 +102,7 @@
 
 import merge from 'lodash.merge';
 import 'pubsub-js';
-import { APP_CONFIG_INITIALIZED, CONFIG_CHANGED } from './constants';
+import { CONFIG_CHANGED } from './constants';
 
 import { ensureDefinedConfig } from './utils';
 
@@ -206,40 +206,6 @@ export function mergeConfig(newConfig) {
   ensureDefinedConfig(newConfig, 'ProcessEnvConfigService');
   config = merge(config, newConfig);
   global.PubSub.publish(CONFIG_CHANGED);
-}
-
-/**
- * A method allowing application code to indicate that particular ConfigDocument keys are required
- * for them to function.  This is useful for diagnosing development/deployment issues, primarily,
- * by surfacing misconfigurations early.  Should be used in conjunction with `mergeConfig` for
- * custom `ConfigDocument` properties.  Requester is for informational/error reporting purposes
- * only.
- *
- * ```
- * ensureConfig(['LMS_BASE_URL', 'LOGIN_URL'], 'MySpecialComponent');
- *
- * // Will log a warning with:
- * // "App configuration error: LOGIN_URL is required by MySpecialComponent."
- * // if LOGIN_URL is undefined, for example.
- * ```
- *
- * *NOTE*: `ensureConfig` waits until `APP_CONFIG_INITIALIZED` is published to verify the existence
- * of the specified properties.  This means that this function is compatible with custom `config`
- * phase handlers responsible for loading additional configuration data in the initialization
- * sequence.
- *
- * @param {Array} keys
- * @param {string} [requester='unspecified application code']
- */
-export function ensureConfig(keys, requester = 'unspecified application code') {
-  global.PubSub.subscribe(APP_CONFIG_INITIALIZED, () => {
-    keys.forEach((key) => {
-      if (config[key] === undefined) {
-        // eslint-disable-next-line no-console
-        console.warn(`App configuration error: ${key} is required by ${requester}.`);
-      }
-    });
-  });
 }
 
 /**

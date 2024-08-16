@@ -49,7 +49,6 @@ export {
   createIntl,
   defineMessages,
   ensureAuthenticatedUser,
-  ensureConfig,
   ensureDefinedConfig,
   fetchAuthenticatedUser,
   getAnalyticsService,

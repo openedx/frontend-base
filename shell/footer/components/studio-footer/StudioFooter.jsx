@@ -11,23 +11,12 @@ import isEmpty from 'lodash.isempty';
 import { useContext, useState } from 'react';
 
 import {
-  AppContext, ensureConfig,
+  AppContext,
   FormattedMessage,
   injectIntl,
   intlShape
 } from '../../../../runtime';
 import messages from './messages';
-
-ensureConfig([
-  'LMS_BASE_URL',
-  'MARKETING_SITE_BASE_URL',
-  'TERMS_OF_SERVICE_URL',
-  'PRIVACY_POLICY_URL',
-  'SUPPORT_EMAIL',
-  'SITE_NAME',
-  'STUDIO_BASE_URL',
-  'ENABLE_ACCESSIBILITY_PAGE',
-], 'Studio Footer component');
 
 const StudioFooter = ({
   // injected

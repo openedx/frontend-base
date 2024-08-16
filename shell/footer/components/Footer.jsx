@@ -3,7 +3,6 @@ import React from 'react';
 
 import {
   AppContext,
-  ensureConfig,
   injectIntl,
   intlShape,
   sendTrackEvent
@@ -11,11 +10,6 @@ import {
 
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
-
-ensureConfig([
-  'LMS_BASE_URL',
-  'LOGO_TRADEMARK_URL',
-], 'Footer component');
 
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',

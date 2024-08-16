@@ -1,18 +1,10 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import Responsive from 'react-responsive';
-import { AppContext, ensureConfig } from '../../../runtime';
+import { AppContext } from '../../../runtime';
 
 import HeaderBody from './HeaderBody';
 import MobileHeader from './MobileHeader';
-
-ensureConfig([
-  'STUDIO_BASE_URL',
-  'SITE_NAME',
-  'LOGOUT_URL',
-  'LOGIN_URL',
-  'LOGO_URL',
-], 'Studio Header component');
 
 const StudioHeader = ({
   number, org, title, isHiddenMainMenu, mainMenuDropdowns, outlineLink, searchButtonAction,

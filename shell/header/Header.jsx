@@ -4,22 +4,12 @@ import Responsive from 'react-responsive';
 import PropTypes from 'prop-types';
 import {
   AppContext,
-  ensureConfig,
   injectIntl, intlShape
 } from '../../runtime';
 import DesktopHeader from './DesktopHeader';
 import MobileHeader from './MobileHeader';
 
 import messages from './Header.messages';
-
-ensureConfig([
-  'LMS_BASE_URL',
-  'LOGOUT_URL',
-  'LOGIN_URL',
-  'SITE_NAME',
-  'LOGO_URL',
-  'ORDER_HISTORY_URL',
-], 'Header component');
 
 /**
  * Header component for the application.

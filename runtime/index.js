@@ -32,7 +32,6 @@ export {
 } from './auth';
 
 export {
-  ensureConfig,
   getConfig,
   mergeConfig,
   setConfig
