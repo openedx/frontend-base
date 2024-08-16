@@ -105,7 +105,6 @@ import 'pubsub-js';
 import { CONFIG_CHANGED } from './constants';
 
 import { SiteConfig } from '../dist';
-import { ensureDefinedConfig } from './utils';
 
 export const configDefaults: Partial<SiteConfig> = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
@@ -141,9 +140,6 @@ export function getConfig() {
 /**
  * Replaces the existing ConfigDocument.  This is not commonly used, but can be helpful for tests.
  *
- * The supplied config document will be tested with `ensureDefinedConfig` to ensure it does not
- * have any `undefined` keys.
- *
  * Example:
  *
  * ```
@@ -156,14 +152,13 @@ export function getConfig() {
  *
  * @param {ConfigDocument} newConfig
  */
-export function setConfig(newConfig) {
-  ensureDefinedConfig(config, 'config');
+export function setConfig(newConfig: SiteConfig) {
   config = newConfig;
   global.PubSub.publish(CONFIG_CHANGED);
 }
 
 /**
- * Merges additional configuration values into the ConfigDocument returned by `getConfig`.  Will
+ * Merges additional configuration values into the site config returned by `getConfig`.  Will
  * override any values that exist with the same keys.
  *
  * ```
@@ -172,16 +167,13 @@ export function setConfig(newConfig) {
  *   OTHER_NEW_KEY: 'other new value',
  * });
  *
- * If any of the key values are `undefined`, an error will be logged to 'warn'.
- *
  * This function uses lodash.merge internally to merge configuration objects
  * which means they will be merged recursively.  See https://lodash.com/docs/latest#merge for
  * documentation on the exact behavior.
  *
  * @param {Object} newConfig
  */
-export function mergeConfig(newConfig) {
-  ensureDefinedConfig(newConfig, 'ProcessEnvConfigService');
+export function mergeConfig(newConfig: Partial<SiteConfig>) {
   config = merge(config, newConfig);
   global.PubSub.publish(CONFIG_CHANGED);
 }

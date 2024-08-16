@@ -1,6 +1,5 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { ensureDefinedConfig } from '../utils';
 
 const userPropTypes = PropTypes.shape({
   userId: PropTypes.string.isRequired,
@@ -92,7 +91,6 @@ class MockAuthService {
     this.authenticatedHttpClient = null;
     this.httpClient = null;
 
-    ensureDefinedConfig(options, 'AuthService');
     PropTypes.checkPropTypes(optionsPropTypes, options, 'options', 'AuthService');
 
     this.config = options.config;

@@ -337,7 +337,8 @@ Then move the files out of the way (move src to some other sub-dir, mostly) to m
 - `SUPPORT_URL` is now optional and the support link in the header is hidden if it's not present.
 - Removed dotenv.  Use site.config.tsx.
 - Removed Purge CSS.  We do not believe that Purge CSS works properly with Paragon in general, and it is also fundamentally incompatible with module federation as an architecture.
-- Removed ensureConfig() function.  This sort of type safety should happen with TypeScript types in the site config file.
+- Removed `ensureConfig` function.  This sort of type safety should happen with TypeScript types in the site config file.
+- Removed `ensureDefinedConfig` function.  Similar to ensureConfig, this sort of type safety should be handled by TypeScript.
 - A number of site config variables now have sensible defaults:
   - ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   - CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',

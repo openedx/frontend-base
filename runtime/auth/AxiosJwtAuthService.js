@@ -1,7 +1,7 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { logFrontendAuthError } from './utils';
-import { camelCaseObject, ensureDefinedConfig } from '../utils';
+import { camelCaseObject } from '../utils';
 import createJwtTokenProviderInterceptor from './interceptors/createJwtTokenProviderInterceptor';
 import createCsrfTokenProviderInterceptor from './interceptors/createCsrfTokenProviderInterceptor';
 import createProcessAxiosRequestErrorInterceptor from './interceptors/createProcessAxiosRequestErrorInterceptor';
@@ -49,7 +49,6 @@ class AxiosJwtAuthService {
     this.cachedHttpClient = null;
     this.authenticatedUser = null;
 
-    ensureDefinedConfig(options, 'AuthService');
     PropTypes.checkPropTypes(optionsPropTypes, options, 'options', 'AuthService');
 
     this.config = options.config;

@@ -129,7 +129,6 @@ export {
 export {
   camelCaseObject,
   convertKeyNames,
-  ensureDefinedConfig,
   getPath,
   getQueryParameters,
   modifyObjectKeys,
