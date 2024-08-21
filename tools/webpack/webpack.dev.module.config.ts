@@ -3,7 +3,6 @@
 import { transform } from '@formatjs/ts-transformer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import PostCssAutoprefixerPlugin from 'autoprefixer';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
@@ -170,14 +169,6 @@ const config = {
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
-    // Generates an HTML file in the output directory.
-    new HtmlWebpackPlugin({
-      inject: true, // Appends script tags linking to the webpack bundles at the end of the body
-      template: path.resolve(process.cwd(), 'public/index.html'),
-      FAVICON_URL: process.env.FAVICON_URL || null,
-      OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
-      NODE_ENV: process.env.NODE_ENV || null,
-    }),
     new ReactRefreshWebpackPlugin(),
     new ModuleFederationPlugin({
       name: packageJson.config.name,

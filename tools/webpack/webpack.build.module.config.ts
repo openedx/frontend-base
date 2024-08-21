@@ -5,7 +5,6 @@ import { transform } from '@formatjs/ts-transformer';
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import PostCssAutoprefixerPlugin from 'autoprefixer';
 import CssNano from 'cssnano';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
@@ -175,15 +174,6 @@ const config: Configuration = merge(commonConfig, {
     // Writes the extracted CSS from each entry to a file in the output directory.
     new MiniCssExtractPlugin({
     filename: '[name].[chunkhash].css',
-    }),
-    // Generates an HTML file in the output directory.
-    new HtmlWebpackPlugin({
-      inject: true, // Appends script tags linking to the webpack bundles at the end of the body
-      template: path.resolve(process.cwd(), 'public/index.html'),
-      FAVICON_URL: process.env.FAVICON_URL || null,
-      OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
-      NODE_ENV: process.env.NODE_ENV || null,
-      SITE_NAME: process.env.SITE_NAME || '',
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
