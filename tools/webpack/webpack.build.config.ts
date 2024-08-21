@@ -11,20 +11,21 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
-import { Configuration } from 'webpack';
+import { Configuration, WebpackError } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
-import { merge } from 'webpack-merge';
 
 import getLocalAliases from './getLocalAliases';
-import commonConfig from './webpack.common.config';
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const aliases = getLocalAliases();
 
-const config: Configuration = merge(commonConfig, {
+const config: Configuration = {
   mode: 'production',
   devtool: 'source-map',
+  entry: {
+    app: path.resolve(__dirname, '../../shell/index'),
+  },
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
@@ -32,8 +33,23 @@ const config: Configuration = merge(commonConfig, {
     clean: true, // Clean the output directory before emit.
   },
   resolve: {
-    alias: aliases,
+    alias: {
+      ...aliases,
+      'site.config': path.resolve(process.cwd(), './site.config.prod'),
+    },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+  ignoreWarnings: [
+    // Ignore warnings raised by source-map-loader.
+    // some third party packages may ship miss-configured sourcemaps, that interrupts the build
+    // See: https://github.com/facebook/create-react-app/discussions/11278#discussioncomment-1780169
+    (warning: WebpackError) => !!(
+      warning.module
+      // @ts-ignore
+      && warning.module.resource.includes('node_modules')
+      && warning.details
+      && warning.details.includes('source-map-loader')),
+  ],
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
@@ -41,7 +57,7 @@ const config: Configuration = merge(commonConfig, {
         test: /\.(js|jsx|ts|tsx)$/,
         include: [
           /src/,
-          path.resolve(process.cwd(), './site.config.tsx'),
+          path.resolve(process.cwd(), './site.config.prod.tsx'),
         ],
         use: {
           loader: require.resolve('ts-loader'),
@@ -63,7 +79,7 @@ const config: Configuration = merge(commonConfig, {
         },
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         use: [
           require.resolve('source-map-loader'),
         ],
