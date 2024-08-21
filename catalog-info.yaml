@@ -1,0 +1,17 @@
+# This file records information about this repo. Its use is described in OEP-55:
+# https://open-edx-proposals.readthedocs.io/en/latest/processes/oep-0055-proc-project-maintainers.html
+#
+# If you're thinking about copying this, check out the sample file in the relevant ADR instead:
+# https://open-edx-proposals.readthedocs.io/en/latest/processes/oep-0055/decisions/0001-use-backstage-to-support-maintainers.html#references
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: frontend-base
+  annotations:
+    openedx.org/arch-interest-groups: ""
+  links: []
+spec:
+  type: 'library'
+  lifecycle: 'experimental'
+  owner: 'group:axim-engineering'
