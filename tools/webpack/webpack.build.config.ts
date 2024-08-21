@@ -16,6 +16,8 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
 import getLocalAliases from './getLocalAliases';
+import getSharedDependencies from './getSharedDependencies';
+
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const aliases = getLocalAliases();
@@ -31,6 +33,7 @@ const config: Configuration = {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: PUBLIC_PATH,
     clean: true, // Clean the output directory before emit.
+    uniqueName: 'shell',
   },
   resolve: {
     alias: {
@@ -206,37 +209,9 @@ const config: Configuration = {
     }),
     new ModuleFederationPlugin({
       name: 'shell',
-      shared: {
-        react: {
-          singleton: true,
-          requiredVersion: '^17.0.0',
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: '^17.0.0',
-        },
-        '@openedx/paragon': {
-          requiredVersion: '^22.0.0',
-        },
-        '@openedx/frontend-base': {
-          singleton: true,
-          requiredVersion: '^1',
-        },
-        'react-redux': {
-          requiredVersion: '^7.2.9',
-        },
-        'react-router': {
-          requiredVersion: '^6.22.3',
-        },
-        'react-router-dom': {
-          requiredVersion: '^6.22.3',
-        },
-        redux: {
-          requiredVersion: '^4.2.1',
-        },
-      },
+      shared: getSharedDependencies()
     })
   ],
-});
+};
 
 export default config;

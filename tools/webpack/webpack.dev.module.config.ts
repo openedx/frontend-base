@@ -1,21 +1,23 @@
 // This is the dev Webpack config. All settings here should prefer a fast build
 // time at the expense of creating larger, unoptimized bundles.
 import { transform } from '@formatjs/ts-transformer';
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import PostCssAutoprefixerPlugin from 'autoprefixer';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
-
-import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import { WebpackError } from 'webpack';
-import getLocalAliases from './getLocalAliases';
 
-const aliases = getLocalAliases();
+import getLocalAliases from './getLocalAliases';
+import getModuleBuildConfig from './getModuleBuildConfig';
+import getSharedDependencies from './getSharedDependencies';
+
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
-const packageJson = require(path.resolve(process.cwd(), 'package.json'));
+const aliases = getLocalAliases();
+const buildConfig = getModuleBuildConfig('build.dev.config.js');
 
 const config = {
   mode: 'development',
@@ -26,6 +28,7 @@ const config = {
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: PUBLIC_PATH,
+    uniqueName: buildConfig.name,
   },
   resolve: {
     alias: {
@@ -171,38 +174,10 @@ const config = {
   plugins: [
     new ReactRefreshWebpackPlugin(),
     new ModuleFederationPlugin({
-      name: packageJson.config.name,
+      name: buildConfig.name,
       filename: 'remoteEntry.js',
-      exposes: packageJson.exports,
-      shared: {
-        react: {
-          singleton: true,
-          requiredVersion: '^17.0.0',
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: '^17.0.0',
-        },
-        '@openedx/paragon': {
-          requiredVersion: '^22.0.0',
-        },
-        '@openedx/frontend-base': {
-          singleton: true,
-          requiredVersion: '^1',
-        },
-        'react-redux': {
-          requiredVersion: '^7.2.9',
-        },
-        'react-router': {
-          requiredVersion: '^6.22.3',
-        },
-        'react-router-dom': {
-          requiredVersion: '^6.22.3',
-        },
-        redux: {
-          requiredVersion: '^4.2.1',
-        },
-      },
+      exposes: buildConfig.exposes,
+      shared: getSharedDependencies()
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live

@@ -15,11 +15,13 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
 import getLocalAliases from './getLocalAliases';
+import getModuleBuildConfig from './getModuleBuildConfig';
+import getSharedDependencies from './getSharedDependencies';
 
-const packageJson = require(path.resolve(process.cwd(), 'package.json'));
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const aliases = getLocalAliases();
+const buildConfig = getModuleBuildConfig('build.prod.config.js');
 
 const config: Configuration = {
   mode: 'production',
@@ -32,6 +34,7 @@ const config: Configuration = {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: PUBLIC_PATH,
     clean: true, // Clean the output directory before emit.
+    uniqueName: buildConfig.name,
   },
   resolve: {
     alias: {
@@ -197,40 +200,12 @@ const config: Configuration = {
       openAnalyzer: false,
     }),
     new ModuleFederationPlugin({
-      name: packageJson.config.name,
+      name: buildConfig.name,
       filename: 'remoteEntry.js',
-      exposes: packageJson.exports,
-      shared: {
-        react: {
-          singleton: true,
-          requiredVersion: '^17.0.0',
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: '^17.0.0',
-        },
-        '@openedx/paragon': {
-          requiredVersion: '^22.0.0',
-        },
-        '@openedx/frontend-base': {
-          singleton: true,
-          requiredVersion: '^1',
-        },
-        'react-redux': {
-          requiredVersion: '^7.2.9',
-        },
-        'react-router': {
-          requiredVersion: '^6.22.3',
-        },
-        'react-router-dom': {
-          requiredVersion: '^6.22.3',
-        },
-        redux: {
-          requiredVersion: '^4.2.1',
-        },
-      },
+      exposes: buildConfig.exposes,
+      shared: getSharedDependencies()
     }),
   ],
-});
+};
 
 export default config;

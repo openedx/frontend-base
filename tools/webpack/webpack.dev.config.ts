@@ -9,7 +9,9 @@ import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import getLocalAliases from './getLocalAliases';
+import getSharedDependencies from './getSharedDependencies';
 
 const aliases = getLocalAliases();
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
@@ -21,6 +23,7 @@ const config: Configuration = {
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: PUBLIC_PATH,
+    uniqueName: 'shell',
   },
   resolve: {
     alias: {
@@ -170,6 +173,10 @@ const config: Configuration = {
       NODE_ENV: process.env.NODE_ENV || null,
     }),
     new ReactRefreshWebpackPlugin(),
+    new ModuleFederationPlugin({
+      name: 'shell',
+      shared: getSharedDependencies(),
+    })
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live
   // reloading.
