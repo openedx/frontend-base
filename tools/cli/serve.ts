@@ -1,7 +1,8 @@
-import express from 'express';
-import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
+import compression from 'compression';
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
 
 function isDirectoryEmpty(directoryPath: string) {
   try {
@@ -50,6 +51,7 @@ if (isDirectoryEmpty(buildPath)) {
   // Fallback to standard example port if no PORT config is set.
   const PORT = configuredPort || fallbackPort;
 
+  app.use(compression());
   app.use(express.static(buildPath));
 
   app.use('*', (req, res) => {
