@@ -1,6 +1,7 @@
 import { init } from '@module-federation/runtime';
 import ReactDOM from 'react-dom';
 
+import { Container } from '@openedx/paragon';
 import {
   APP_INIT_ERROR, APP_READY,
   AppProvider,
@@ -8,24 +9,22 @@ import {
   initialize,
   subscribe
 } from '../runtime';
-
 import { ExternalAppConfig, FederatedAppConfig, InternalAppConfig } from '../types';
+import FederatedComponent from './FederatedComponent';
 import Footer from './footer';
 import Header from './header';
-import useFederatedComponent from './utils';
-import { Suspense } from 'react';
 
 const messages = [];
 
 function getFederatedApps() {
   const { apps } = getConfig();
 
-  return apps.filter((app: InternalAppConfig | ExternalAppConfig | FederatedAppConfig) => 'remoteUrl' in app && 'moduleId' in app);
+  return apps.filter((app: InternalAppConfig | ExternalAppConfig | FederatedAppConfig) => 'remoteUrl' in app && 'appId' in app);
 }
 
 function getFederationRemotes(apps) {
   return apps.map(app => ({
-    name: app.moduleId,
+    name: app.appId,
     entry: app.remoteUrl
   }));
 }
@@ -50,27 +49,18 @@ subscribe(APP_READY, () => {
   ReactDOM.render(
     <AppProvider wrapWithRouter>
       <Header />
-      <div>Okay what?</div>
-      {internalApps.map((internalApp: InternalAppConfig) => {
-        const AppComponent = internalApp.component;
-        return (
-          <AppComponent key={internalApp.appId} />
-        );
-      })}
-      {federatedApps.map((federatedApp: FederatedAppConfig) => {
-        const { Component: FederatedComponent, errorLoading } = useFederatedComponent(
-          federatedApp.remoteUrl,
-          federatedApp.appId,
-          federatedApp.moduleId
-        );
-        return (
-          <Suspense fallback="Loading...">
-            {errorLoading
-              ? `Error loading module "${module}"`
-              : FederatedComponent && <FederatedComponent />}
-          </Suspense>
-        );
-      })}
+      <Container className="p-5">
+        <div>Okay what?</div>
+        {internalApps.map((internalApp: InternalAppConfig) => {
+          const AppComponent = internalApp.component;
+          return (
+            <AppComponent key={`${internalApp.appId}-${internalApp.path}`} />
+          );
+        })}
+        {federatedApps.map((federatedApp: FederatedAppConfig) => (
+          <FederatedComponent key={`${federatedApp.appId}-${federatedApp.moduleId}`} federatedApp={federatedApp} />
+        ))}
+      </Container>
       <Footer />
     </AppProvider>,
     document.getElementById('root'),
