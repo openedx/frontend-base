@@ -33,7 +33,7 @@ const config: Configuration = {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: PUBLIC_PATH,
     clean: true, // Clean the output directory before emit.
-    uniqueName: 'shell',
+    uniqueName: 'mf-shell',
   },
   resolve: {
     alias: {

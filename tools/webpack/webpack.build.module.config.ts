@@ -32,9 +32,9 @@ const config: Configuration = {
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath: PUBLIC_PATH,
+    publicPath: 'auto',
     clean: true, // Clean the output directory before emit.
-    uniqueName: buildConfig.name,
+    uniqueName: `mf-${buildConfig.name}`,
   },
   resolve: {
     alias: {
@@ -61,7 +61,7 @@ const config: Configuration = {
         test: /\.(js|jsx|ts|tsx)$/,
         include: [
           /src/,
-          path.resolve(process.cwd(), './site.config.tsx'),
+          path.resolve(process.cwd(), './site.config.prod.tsx'),
         ],
         use: {
           loader: require.resolve('ts-loader'),

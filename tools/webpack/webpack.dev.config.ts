@@ -23,7 +23,7 @@ const config: Configuration = {
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: PUBLIC_PATH,
-    uniqueName: 'shell',
+    uniqueName: 'mf-shell',
   },
   resolve: {
     alias: {
@@ -66,7 +66,6 @@ const config: Configuration = {
             getCustomTransformers() {
               return {
                 before: [
-                  // require('react-refresh-typescript')(),
                   transform({
                     overrideIdFn: '[sha512:contenthash:base64:6]',
                   }),

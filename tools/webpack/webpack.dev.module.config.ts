@@ -8,7 +8,7 @@ import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
-import { WebpackError } from 'webpack';
+import { Configuration, WebpackError } from 'webpack';
 
 import getLocalAliases from './getLocalAliases';
 import getModuleBuildConfig from './getModuleBuildConfig';
@@ -19,7 +19,7 @@ const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const aliases = getLocalAliases();
 const buildConfig = getModuleBuildConfig('build.dev.config.js');
 
-const config = {
+const config: Configuration = {
   mode: 'development',
   devtool: 'eval-source-map',
   entry: {
@@ -27,8 +27,8 @@ const config = {
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
-    publicPath: PUBLIC_PATH,
-    uniqueName: buildConfig.name,
+    publicPath: 'auto',
+    uniqueName: `mf-${buildConfig.name}`,
   },
   resolve: {
     alias: {
@@ -188,6 +188,11 @@ const config = {
     historyApiFallback: {
       index: path.join(PUBLIC_PATH, 'index.html'),
       disableDotRule: true,
+    },
+    // Setting the Access-Control-Allow-Origin header is required to get module federation to work
+    // locally.
+    headers: {
+      'Access-Control-Allow-Origin': '*',
     },
     // Enable hot reloading server. It will provide WDS_SOCKET_PATH endpoint
     // for the WebpackDevServer client so it can learn when the files were
