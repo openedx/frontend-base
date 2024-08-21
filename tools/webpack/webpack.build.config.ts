@@ -18,6 +18,7 @@ import { merge } from 'webpack-merge';
 
 import getLocalAliases from './getLocalAliases';
 import commonConfig from './webpack.common.config';
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const aliases = getLocalAliases();
 
@@ -27,7 +28,7 @@ const config: Configuration = merge(commonConfig, {
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath: process.env.PUBLIC_PATH || '/',
+    publicPath: PUBLIC_PATH,
     clean: true, // Clean the output directory before emit.
   },
   resolve: {
