@@ -175,7 +175,7 @@ const config: Configuration = {
     new ReactRefreshWebpackPlugin(),
     new ModuleFederationPlugin({
       name: 'shell',
-      shared: getSharedDependencies(),
+      shared: getSharedDependencies({ isShell: true }),
     })
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live

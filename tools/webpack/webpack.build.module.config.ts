@@ -203,7 +203,7 @@ const config: Configuration = {
       name: buildConfig.name,
       filename: 'remoteEntry.js',
       exposes: buildConfig.exposes,
-      shared: getSharedDependencies()
+      shared: getSharedDependencies({ isShell: false })
     }),
   ],
 };

@@ -209,7 +209,7 @@ const config: Configuration = {
     }),
     new ModuleFederationPlugin({
       name: 'shell',
-      shared: getSharedDependencies()
+      shared: getSharedDependencies({ isShell: true })
     })
   ],
 };

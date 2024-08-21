@@ -177,7 +177,7 @@ const config = {
       name: buildConfig.name,
       filename: 'remoteEntry.js',
       exposes: buildConfig.exposes,
-      shared: getSharedDependencies()
+      shared: getSharedDependencies({ isShell: false })
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live
