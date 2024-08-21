@@ -118,7 +118,9 @@ let config: SiteConfig = {
   MFE_CONFIG_API_URL: null,
   SUPPORT_URL: null,
   SEGMENT_KEY: null,
-  apps: {},
+
+  apps: [],
+
   APP_ID: '',
   BASE_URL: '',
   SITE_NAME: '',

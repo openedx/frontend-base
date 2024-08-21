@@ -1,6 +1,7 @@
 import { SiteConfig } from '..';
 
 const config: SiteConfig = {
+  apps: [],
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',

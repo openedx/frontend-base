@@ -103,50 +103,10 @@ export {
   useIntl
 } from './runtime';
 
-export interface SiteConfig {
-  /**
-   * The application content for the shell.  This is a temporary configuration option while we
-   * convert micro-frontends to plugins.  It must be a React functional component that takes no
-   * arguments and returns JSX.
-   */
-  app?: () => JSX.Element,
-
-  ACCESS_TOKEN_COOKIE_NAME?: string,
-  CSRF_TOKEN_API_PATH?: string,
-  ENVIRONMENT?: string,
-  IGNORED_ERROR_REGEX?: RegExp | null,
-  LANGUAGE_PREFERENCE_COOKIE_NAME?: string,
-  PUBLIC_PATH?: string,
-  USER_INFO_COOKIE_NAME?: string,
-  SEGMENT_KEY?: string | null,
-
-  APP_ID: string,
-  BASE_URL: string,
-  REFRESH_ACCESS_TOKEN_API_PATH?: string,
-  SITE_NAME: string,
-
-  ACCOUNT_PROFILE_URL: string,
-  ACCOUNT_SETTINGS_URL: string,
-  CREDENTIALS_BASE_URL: string,
-  DISCOVERY_API_BASE_URL: string,
-  ECOMMERCE_BASE_URL: string,
-  FAVICON_URL: string,
-  LEARNING_BASE_URL: string,
-  LMS_BASE_URL: string,
-  LOGIN_URL: string,
-  LOGO_TRADEMARK_URL: string,
-  LOGO_URL: string,
-  LOGO_WHITE_URL: string,
-  LOGOUT_URL: string,
-  MARKETING_SITE_BASE_URL: string,
-  PUBLISHER_BASE_URL: string,
-  STUDIO_BASE_URL: string,
-
-  ORDER_HISTORY_URL?: string | null,
-  MFE_CONFIG_API_URL?: string | null,
-  SUPPORT_URL?: string | null,
-
-  custom?: {
-    [key:string]: any,
-  }
-}
+export type {
+  ExternalAppConfig,
+  FederatedAppConfig,
+  InternalAppConfig,
+  SiteConfig,
+  ModuleConfig
+} from './types';

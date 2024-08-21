@@ -1,6 +1,7 @@
 import { SiteConfig } from '@openedx/frontend-base';
 
 const config: SiteConfig = {
+  apps: [],
   ENVIRONMENT: 'dev',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
