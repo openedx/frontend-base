@@ -2,6 +2,7 @@ import { init } from '@module-federation/runtime';
 import ReactDOM from 'react-dom';
 
 import { Container } from '@openedx/paragon';
+import { Route, Routes } from 'react-router';
 import {
   APP_INIT_ERROR, APP_READY,
   AppProvider,
@@ -49,17 +50,24 @@ subscribe(APP_READY, () => {
   ReactDOM.render(
     <AppProvider wrapWithRouter>
       <Header />
-      <Container className="p-5">
-        <div>Okay what?</div>
-        {internalApps.map((internalApp: InternalAppConfig) => {
-          const AppComponent = internalApp.component;
-          return (
-            <AppComponent key={`${internalApp.appId}-${internalApp.path}`} />
-          );
-        })}
-        {federatedApps.map((federatedApp: FederatedAppConfig) => (
-          <FederatedComponent key={`${federatedApp.appId}-${federatedApp.moduleId}`} federatedApp={federatedApp} />
-        ))}
+      <Container className="m-2">
+        <Routes>
+          {internalApps.map((internalApp: InternalAppConfig) => {
+            const AppComponent = internalApp.component;
+            return (
+              <Route
+                path={internalApp.path}
+                element={<AppComponent key={`${internalApp.appId}-${internalApp.path}`} />}
+              />
+            );
+          })}
+          {federatedApps.map((federatedApp: FederatedAppConfig) => (
+            <Route
+              path={federatedApp.path}
+              element={<FederatedComponent key={`${federatedApp.appId}-${federatedApp.moduleId}`} federatedApp={federatedApp} />}
+            />
+          ))}
+        </Routes>
       </Container>
       <Footer />
     </AppProvider>,
