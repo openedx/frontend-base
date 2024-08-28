@@ -22,6 +22,7 @@ It will enable Open edX frontends to be loaded as "module plugins" via Webpack m
 
 ## Further reading
 
+- [Frontend Glossary](./docs/frontend-glossary.md)
 - [OEP-65: Frontend composability](https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0065-arch-frontend-composability.html)
 - [ADR 0001: Create a unified platform library](https://github.com/openedx/open-edx-proposals/pull/598)
 - [Discourse discussion on frontend projects](https://discuss.openedx.org/t/oep-65-adjacent-a-frontend-architecture-vision/13223)
