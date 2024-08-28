@@ -102,7 +102,7 @@
 
 import merge from 'lodash.merge';
 import 'pubsub-js';
-import { SiteConfig } from '..';
+import { SiteConfig } from '../types';
 import { CONFIG_CHANGED } from './constants';
 
 let config: SiteConfig = {
