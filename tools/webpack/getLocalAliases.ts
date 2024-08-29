@@ -32,7 +32,7 @@ export default function getLocalAliases() {
   try {
     const moduleConfigPath = path.resolve(process.cwd(), 'module.config.js');
     if (!fs.existsSync(moduleConfigPath)) {
-      console.log('No local module configuration file found. This is fine.');
+      console.log('No local module configuration file found. This is fine.\n');
       return aliases;
     }
     // eslint-disable-next-line import/no-dynamic-require, global-require

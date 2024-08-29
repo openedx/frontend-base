@@ -5,6 +5,7 @@
     "outDir": "dist",
     "noEmit": false,
     "allowJs": true,
+    "resolveJsonModule": true
   },
   "include": [
     "babel/**/*",
