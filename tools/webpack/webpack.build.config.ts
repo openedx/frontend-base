@@ -38,7 +38,7 @@ const config: Configuration = {
   resolve: {
     alias: {
       ...aliases,
-      'site.config': path.resolve(process.cwd(), './site.config.prod'),
+      'site.config': path.resolve(process.cwd(), './site.config.build'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
@@ -60,7 +60,7 @@ const config: Configuration = {
         test: /\.(js|jsx|ts|tsx)$/,
         include: [
           /src/,
-          path.resolve(process.cwd(), './site.config.prod.tsx'),
+          path.resolve(process.cwd(), './site.config.build.tsx'),
         ],
         use: {
           loader: require.resolve('ts-loader'),
