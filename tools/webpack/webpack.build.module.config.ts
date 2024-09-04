@@ -15,26 +15,21 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
 import getLocalAliases from './getLocalAliases';
-import getModuleBuildConfig from './getModuleBuildConfig';
+import getModuleFederationConfig from './getModuleFederationConfig';
 import getSharedDependencies from './getSharedDependencies';
 
-const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
-
 const aliases = getLocalAliases();
-const buildConfig = getModuleBuildConfig('build.prod.config.js');
+const moduleFederationConfig = getModuleFederationConfig();
 
 const config: Configuration = {
   mode: 'production',
   devtool: 'source-map',
-  entry: {
-    app: path.resolve(__dirname, '../../shell/index'),
-  },
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: 'auto',
     clean: true, // Clean the output directory before emit.
-    uniqueName: `mf-${buildConfig.name}`,
+    uniqueName: `mf-${moduleFederationConfig.name}`,
   },
   resolve: {
     alias: {
@@ -200,9 +195,9 @@ const config: Configuration = {
       openAnalyzer: false,
     }),
     new ModuleFederationPlugin({
-      name: buildConfig.name,
+      name: moduleFederationConfig.name,
       filename: 'remoteEntry.js',
-      exposes: buildConfig.exposes,
+      exposes: moduleFederationConfig.exposes,
       shared: getSharedDependencies({ isShell: false })
     }),
   ],

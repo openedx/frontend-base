@@ -11,24 +11,21 @@ import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 
 import getLocalAliases from './getLocalAliases';
-import getModuleBuildConfig from './getModuleBuildConfig';
+import getModuleFederationConfig from './getModuleFederationConfig';
 import getSharedDependencies from './getSharedDependencies';
 
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const aliases = getLocalAliases();
-const buildConfig = getModuleBuildConfig('build.dev.config.js');
+const moduleFederationConfig = getModuleFederationConfig();
 
 const config: Configuration = {
   mode: 'development',
   devtool: 'eval-source-map',
-  entry: {
-    // app: path.resolve(process.cwd(), './src/index'),
-  },
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: 'auto',
-    uniqueName: `mf-${buildConfig.name}`,
+    uniqueName: `mf-${moduleFederationConfig.name}`,
   },
   resolve: {
     alias: {
@@ -174,9 +171,9 @@ const config: Configuration = {
   plugins: [
     new ReactRefreshWebpackPlugin(),
     new ModuleFederationPlugin({
-      name: buildConfig.name,
+      name: moduleFederationConfig.name,
       filename: 'remoteEntry.js',
-      exposes: buildConfig.exposes,
+      exposes: moduleFederationConfig.exposes,
       shared: getSharedDependencies({ isShell: false })
     }),
   ],
