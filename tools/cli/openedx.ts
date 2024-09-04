@@ -112,6 +112,9 @@ switch (commandName) {
   case 'serve':
     require('./commands/serve');
     break;
+  case 'help':
+    printUsage();
+    break;
   default:
     console.log(`The command ${chalk.bold(commandName)} doesn't exist.`);
     console.log('');
