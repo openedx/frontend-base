@@ -1,6 +1,8 @@
+import siteConfig from 'site.config';
+
 import { configure as configureAnalytics, MockAnalyticsService } from '../analytics';
-import { configure as configureAuth, MockAuthService } from '../auth';
-import { getConfig } from '../config';
+import { configure as configureAuth, MockAuthService, setAuthenticatedUser } from '../auth';
+import { getConfig, mergeConfig } from '../config';
 import { configure as configureI18n } from '../i18n';
 import { configure as configureLogging, MockLoggingService } from '../logging';
 import mockMessages from './mockMessages';
@@ -46,14 +48,19 @@ export default function initializeMockApp({
   messages = mockMessages,
   authenticatedUser = null,
 } = {}) {
+  const config = siteConfig;
+  mergeConfig(config);
+
   const loggingService = configureLogging(MockLoggingService, {
     config: getConfig(),
   });
 
   const authService = configureAuth(MockAuthService, {
-    config: { ...getConfig(), authenticatedUser },
+    config: getConfig(),
     loggingService,
   });
+
+  setAuthenticatedUser(authenticatedUser);
 
   const analyticsService = configureAnalytics(MockAnalyticsService, {
     config: getConfig(),

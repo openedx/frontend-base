@@ -105,6 +105,7 @@ const HeaderBody = ({
         {searchButtonAction && (
           <Nav>
             <IconButton
+              alt={intl.formatMessage(messages['header.label.search.nav'])}
               src={Search}
               iconAs={Icon}
               onClick={searchButtonAction}

@@ -1,0 +1,19 @@
+{
+  "extends": "./tools/typescript/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "noEmit": false,
+  },
+  "include": [
+    "runtime/**/*",
+    "shell/**/*",
+    "index.ts",
+  ],
+  "exclude": [
+    "**/*.test.*",
+    "**/jest.config.js",
+    "**/.eslintrc.js",
+    "**/__mocks__",
+  ]
+}

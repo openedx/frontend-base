@@ -1,6 +1,7 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import { getLoggingService, intlShape } from './lib';
+import { getConfig } from '../config';
 
 /**
  * This function wraps react-intl's injectIntl function in order to add error logging to the intl
@@ -17,7 +18,7 @@ const injectIntlWithShim = (WrappedComponent) => {
           value: (definition, ...args) => {
             if (definition === undefined || definition.id === undefined) {
               const error = new Error('i18n error: An undefined message was supplied to intl.formatMessage.');
-              if (process.env.NODE_ENV !== 'production') {
+              if (getConfig().ENVIRONMENT !== 'production') {
                 console.error(error); // eslint-disable-line no-console
                 return '!!! Missing message supplied to intl.formatMessage !!!';
               }

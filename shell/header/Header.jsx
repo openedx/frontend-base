@@ -3,33 +3,13 @@ import Responsive from 'react-responsive';
 
 import PropTypes from 'prop-types';
 import {
-  APP_CONFIG_INITIALIZED,
   AppContext,
-  ensureConfig,
-  getConfig,
-  injectIntl, intlShape,
-  mergeConfig,
-  subscribe
+  injectIntl, intlShape
 } from '../../runtime';
 import DesktopHeader from './DesktopHeader';
 import MobileHeader from './MobileHeader';
 
 import messages from './Header.messages';
-
-ensureConfig([
-  'LMS_BASE_URL',
-  'LOGOUT_URL',
-  'LOGIN_URL',
-  'SITE_NAME',
-  'LOGO_URL',
-  'ORDER_HISTORY_URL',
-], 'Header component');
-
-subscribe(APP_CONFIG_INITIALIZED, () => {
-  mergeConfig({
-    AUTHN_MINIMAL_HEADER: !!process.env.AUTHN_MINIMAL_HEADER,
-  }, 'Header additional config');
-});
 
 /**
  * Header component for the application.
@@ -76,7 +56,7 @@ const Header = ({
         href: config.ACCOUNT_SETTINGS_URL,
         content: intl.formatMessage(messages['header.user.menu.account.settings']),
       },
-      // Users should only see Order History if have a ORDER_HISTORY_URL define in the environment.
+      // Users should only see Order History if have a ORDER_HISTORY_URL define in the site config.
       ...(config.ORDER_HISTORY_URL ? [{
         type: 'item',
         href: config.ORDER_HISTORY_URL,
@@ -114,10 +94,10 @@ const Header = ({
     loggedIn: authenticatedUser !== null,
     username: authenticatedUser !== null ? authenticatedUser.username : null,
     avatar: authenticatedUser !== null ? authenticatedUser.avatar : null,
-    mainMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : mainMenu,
-    secondaryMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : secondaryMenu,
-    userMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : userMenu,
-    loggedOutItems: getConfig().AUTHN_MINIMAL_HEADER ? [] : loggedOutItems,
+    mainMenu,
+    secondaryMenu,
+    userMenu,
+    loggedOutItems,
   };
 
   return (

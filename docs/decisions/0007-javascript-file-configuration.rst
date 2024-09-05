@@ -72,7 +72,7 @@ Decision
 For the above reasons, we will deprecate environment variable configuration in
 favor of JavaScript file configuration.
 
-This method makes use of an ``env.config.js`` file to supply configuration
+This method makes use of an ``site.config.tsx`` file to supply configuration
 variables to an application::
 
     const config = {

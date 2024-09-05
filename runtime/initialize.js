@@ -52,15 +52,10 @@ import {
   createMemoryHistory
 } from 'history';
 /*
-This 'env.config' package is a special 'magic' alias in our webpack configuration in the `config`
-folder. It points at an `env.config.js` file in the root of an MFE's repository if it exists and
-falls back to an empty object `{}` if the file doesn't exist.  This acts like an 'optional' import,
-in a sense.
+This 'site.config' package is a special 'magic' alias in our webpack configuration in the `config`
+folder. It points at an `site.config.tsx` file in the root of an project's repository.
 */
-import envConfig from 'env.config'; // eslint-disable-line import/no-unresolved
-import {
-  publish,
-} from './pubSub';
+import siteConfig from 'site.config';
 import { getPath } from './utils';
 // eslint-disable-next-line import/no-cycle
 import {
@@ -80,7 +75,7 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import {
-  getConfig, mergeConfig,
+  getConfig, mergeConfig
 } from './config';
 import {
   APP_ANALYTICS_INITIALIZED,
@@ -108,10 +103,9 @@ import { GoogleAnalyticsLoader } from './scripts';
  * in environments where browser history may be inaccessible due to `window` being undefined, this
  * falls back to memory history.
  */
-export const history = (typeof window !== 'undefined')
-  ? createBrowserHistory({
-    basename: getPath(getConfig().PUBLIC_PATH),
-  }) : createMemoryHistory();
+export const getHistory = () => ((typeof window !== 'undefined')
+  ? createBrowserHistory({ basename: getPath(getConfig().PUBLIC_PATH) })
+  : createMemoryHistory());
 
 /**
  * The string basename that is the root directory of this MFE.
@@ -123,7 +117,7 @@ export const history = (typeof window !== 'undefined')
  * as an ENV variable in the Docker file, and we read it here from that configuration so that it
  * can be passed into a Router later.
  */
-export const basename = getPath(getConfig().PUBLIC_PATH);
+export const getBasename = () => getPath(getConfig().PUBLIC_PATH);
 
 /**
  * The default handler for the initialization lifecycle's `initError` phase.  Logs the error to the
@@ -165,19 +159,19 @@ export async function auth(requireUser, hydrateUser) {
 }
 
 /**
- * Set or overrides configuration via an env.config.js file in the consuming application.
- * This env.config.js is loaded at runtime and must export one of two things:
+ * Set or overrides configuration via an site.config.tsx file in the consuming application.
+ * This site.config.tsx is loaded at runtime and must export one of two things:
  *
  * - An object which will be merged into the application config via `mergeConfig`.
  * - A function which returns an object which will be merged into the application config via
  * `mergeConfig`.  This function can return a promise.
  */
-async function jsFileConfig() {
+async function fileConfig() {
   let config = {};
-  if (typeof envConfig === 'function') {
-    config = await envConfig();
+  if (typeof siteConfig === 'function') {
+    config = await siteConfig();
   } else {
-    config = envConfig;
+    config = siteConfig;
   }
 
   mergeConfig(config);
@@ -311,13 +305,13 @@ export async function initialize({
   try {
     // Pub/Sub
     await handlers.pubSub();
-    publish(APP_PUBSUB_INITIALIZED);
+    global.PubSub.publish(APP_PUBSUB_INITIALIZED);
 
     // Configuration
+    await fileConfig();
     await handlers.config();
-    await jsFileConfig();
     await runtimeConfig();
-    publish(APP_CONFIG_INITIALIZED);
+    global.PubSub.publish(APP_CONFIG_INITIALIZED);
 
     loadExternalScripts(externalScripts, {
       config: getConfig(),
@@ -337,7 +331,7 @@ export async function initialize({
       config: getConfig(),
     });
     await handlers.logging();
-    publish(APP_LOGGING_INITIALIZED);
+    global.PubSub.publish(APP_LOGGING_INITIALIZED);
 
     // Internationalization
     configureI18n({
@@ -346,7 +340,7 @@ export async function initialize({
       loggingService: getLoggingService(),
     });
     await handlers.i18n();
-    publish(APP_I18N_INITIALIZED);
+    global.PubSub.publish(APP_I18N_INITIALIZED);
 
     // Authentication
     configureAuth(authServiceImpl, {
@@ -356,7 +350,7 @@ export async function initialize({
     });
 
     await handlers.auth(requireUser, hydrateUser);
-    publish(APP_AUTH_INITIALIZED);
+    global.PubSub.publish(APP_AUTH_INITIALIZED);
 
     // Analytics
     configureAnalytics(analyticsServiceImpl, {
@@ -365,16 +359,16 @@ export async function initialize({
       httpClient: getAuthenticatedHttpClient(),
     });
     await handlers.analytics();
-    publish(APP_ANALYTICS_INITIALIZED);
+    global.PubSub.publish(APP_ANALYTICS_INITIALIZED);
 
     // Application Ready
     await handlers.ready();
-    publish(APP_READY);
+    global.PubSub.publish(APP_READY);
   } catch (error) {
     if (!error.isRedirecting) {
       // Initialization Error
       await handlers.initError(error);
-      publish(APP_INIT_ERROR, error);
+      global.PubSub.publish(APP_INIT_ERROR, error);
     }
   }
 }

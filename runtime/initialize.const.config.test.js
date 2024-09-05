@@ -1,3 +1,4 @@
+import 'pubsub-js';
 import { initialize } from './initialize';
 
 import {
@@ -15,7 +16,7 @@ jest.mock('./auth');
 jest.mock('./analytics');
 jest.mock('./i18n');
 jest.mock('./auth/LocalForageCache');
-jest.mock('env.config.js', () => ({
+jest.mock('site.config', () => ({
   JS_FILE_VAR: 'JS_FILE_VAR_VALUE_CONSTANT',
 }));
 

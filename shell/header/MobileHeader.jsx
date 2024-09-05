@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getConfig, injectIntl, intlShape } from '../../runtime';
+import { injectIntl, intlShape } from '../../runtime';
 
 // Local Components
 import Avatar from './Avatar';
@@ -14,10 +14,6 @@ import messages from './Header.messages';
 import { MenuIcon } from './Icons';
 
 class MobileHeader extends React.Component {
-  constructor(props) { // eslint-disable-line no-useless-constructor
-    super(props);
-  }
-
   renderMenu(menu) {
     // Nodes are accepted as a prop
     if (!Array.isArray(menu)) {
@@ -122,7 +118,6 @@ class MobileHeader extends React.Component {
     } = this.props;
     const logoProps = { src: logo, alt: logoAltText, href: logoDestination };
     const stickyClassName = stickyOnMobile ? 'sticky-top' : '';
-    const logoClasses = getConfig().AUTHN_MINIMAL_HEADER ? 'justify-content-left pl-3' : 'justify-content-center';
 
     return (
       <header
@@ -153,7 +148,7 @@ class MobileHeader extends React.Component {
             </Menu>
           </div>
         ) : null}
-        <div className={`w-100 d-flex ${logoClasses}`}>
+        <div className="w-100 d-flex justify-content-center">
           { logoDestination === null ? <Logo className="logo" src={logo} alt={logoAltText} /> : <LinkedLogo className="logo" {...logoProps} itemType="http://schema.org/Organization" />}
         </div>
         {userMenu.length > 0 || loggedOutItems.length > 0 ? (

@@ -4,21 +4,22 @@
   "description": "",
   "main": "src/index.jsx",
   "scripts": {
-    "build": "openedx webpack",
-    "lint": "openedx eslint . --no-eslintrc -c .eslintrc.js",
-    "start": "openedx webpack-dev-server --progress",
+    "build": "openedx build",
+    "lint": "openedx lint . --no-eslintrc -c .eslintrc.js",
+    "dev": "openedx dev --progress",
     "serve": "openedx serve"
   },
   "keywords": [],
   "author": "Open edX Community",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@openedx/frontend-base": "file:..",
+    "@openedx/frontend-base": "file:../openedx-frontend-base.tgz",
     "@openedx/paragon": "^22.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^8.1.3",
-    "react-router-dom": "^6.24.1",
+    "react-router": "^6.26.1",
+    "react-router-dom": "^6.26.1",
     "redux": "^4.2.1"
   },
   "devDependencies": {

@@ -1,6 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Collapsible } from '@openedx/paragon';
+import PropTypes from 'prop-types';
 
 const MobileMenu = ({
   mainMenuDropdowns,
@@ -20,7 +19,7 @@ const MobileMenu = ({
           >
             <ul className="p-0" style={{ listStyleType: 'none' }}>
               {items.map(item => (
-                <li className="mobile-menu-item">
+                <li key={item.href} className="mobile-menu-item">
                   <a href={item.href}>
                     {item.title}
                   </a>

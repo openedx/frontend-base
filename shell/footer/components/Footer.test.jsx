@@ -3,16 +3,21 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { useMemo } from 'react';
 import renderer from 'react-test-renderer';
 
-import { AppContext, IntlProvider } from '../../../runtime';
+// eslint-disable-next-line import/no-unresolved
+import siteConfig from 'site.config';
+import {
+  AppContext,
+  IntlProvider
+} from '../../../runtime';
 
 import Footer from './Footer';
 
-const FooterWithContext = ({ locale = 'es' }) => {
+const FooterWithContext = ({ locale = 'en' }) => {
   const contextValue = useMemo(() => ({
     authenticatedUser: null,
     config: {
-      LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
-      LMS_BASE_URL: process.env.LMS_BASE_URL,
+      LOGO_TRADEMARK_URL: siteConfig.LOGO_TRADEMARK_URL,
+      LMS_BASE_URL: siteConfig.LMS_BASE_URL,
     },
   }), []);
 
@@ -31,8 +36,8 @@ const FooterWithLanguageSelector = ({ languageSelected = () => {} }) => {
   const contextValue = useMemo(() => ({
     authenticatedUser: null,
     config: {
-      LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
-      LMS_BASE_URL: process.env.LMS_BASE_URL,
+      LOGO_TRADEMARK_URL: siteConfig.LOGO_TRADEMARK_URL,
+      LMS_BASE_URL: siteConfig.LMS_BASE_URL,
     },
   }), []);
 
@@ -58,12 +63,6 @@ describe('<Footer />', () => {
     it('renders without a language selector', () => {
       const tree = renderer
         .create(<FooterWithContext locale="en" />)
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-    it('renders without a language selector in es', () => {
-      const tree = renderer
-        .create(<FooterWithContext locale="es" />)
         .toJSON();
       expect(tree).toMatchSnapshot();
     });

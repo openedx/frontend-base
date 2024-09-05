@@ -1,4 +1,4 @@
-import { initialize } from './initialize';
+import 'pubsub-js';
 
 import {
   ensureAuthenticatedUser,
@@ -6,6 +6,7 @@ import {
   hydrateAuthenticatedUser,
 } from './auth';
 import { getConfig } from './config';
+import { initialize } from './initialize';
 import {
   logError,
 } from './logging';
@@ -15,7 +16,7 @@ jest.mock('./auth');
 jest.mock('./analytics');
 jest.mock('./i18n');
 jest.mock('./auth/LocalForageCache');
-jest.mock('env.config.js', () => () => ({
+jest.mock('site.config', () => () => ({
   JS_FILE_VAR: 'JS_FILE_VAR_VALUE_FUNCTION',
 }));
 

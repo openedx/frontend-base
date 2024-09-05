@@ -32,7 +32,6 @@ export {
 } from './auth';
 
 export {
-  ensureConfig,
   getConfig,
   mergeConfig,
   setConfig
@@ -82,7 +81,7 @@ export {
 
 export {
   auth,
-  history,
+  getHistory,
   initError,
   initialize
 } from './initialize';
@@ -98,11 +97,11 @@ export {
 } from './logging';
 
 export {
-  Plugin,
-  PluginSlot,
-  PLUGIN_OPERATIONS,
-  IFRAME_PLUGIN,
   DIRECT_PLUGIN,
+  IFRAME_PLUGIN,
+  PLUGIN_OPERATIONS,
+  Plugin,
+  PluginSlot
 } from './plugins';
 
 export {
@@ -130,7 +129,6 @@ export {
 export {
   camelCaseObject,
   convertKeyNames,
-  ensureDefinedConfig,
   getPath,
   getQueryParameters,
   modifyObjectKeys,

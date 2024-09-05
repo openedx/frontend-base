@@ -49,8 +49,6 @@ export {
   createIntl,
   defineMessages,
   ensureAuthenticatedUser,
-  ensureConfig,
-  ensureDefinedConfig,
   fetchAuthenticatedUser,
   getAnalyticsService,
   getAuthService,
@@ -59,6 +57,7 @@ export {
   getConfig,
   getCountryList,
   getCountryMessages,
+  getHistory,
   getHttpClient,
   getLanguageList,
   getLanguageMessages,
@@ -71,7 +70,6 @@ export {
   getPrimaryLanguageSubtag,
   getQueryParameters,
   handleRtl,
-  history,
   hydrateAuthenticatedUser,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
@@ -105,11 +103,10 @@ export {
   useIntl
 } from './runtime';
 
-export interface OpenedXConfig {
-  /**
-   * The application content for the shell.  This is a temporary configuration option while we
-   * convert micro-frontends to plugins.  It must be a React functional component that takes no
-   * arguments and returns JSX.
-   */
-  app?: () => JSX.Element
-}
+export type {
+  ExternalAppConfig,
+  FederatedAppConfig,
+  InternalAppConfig,
+  SiteConfig,
+  ModuleConfig
+} from './types';

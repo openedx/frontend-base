@@ -67,10 +67,12 @@ const TestPluginSlot = (
 describe('PluginSlot', () => {
   beforeEach(() => {
     usePluginSlot.mockReturnValue(defaultSlotConfig);
+    console.error = jest.fn();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    console.error.mockRestore();
   });
 
   it('should render multiple types of Plugin in a single slot config', () => {

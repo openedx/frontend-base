@@ -1,15 +1,14 @@
 'use client';
 
-import React from 'react';
 import PropTypes from 'prop-types';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-import PluginContainerIframe from './PluginContainerIframe';
 import PluginContainerDirect from './PluginContainerDirect';
+import PluginContainerIframe from './PluginContainerIframe';
 
 import {
-  IFRAME_PLUGIN,
   DIRECT_PLUGIN,
+  IFRAME_PLUGIN,
 } from './data/constants';
 import { pluginConfigShape } from './data/shapes';
 

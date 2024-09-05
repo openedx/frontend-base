@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Context as ResponsiveContext } from 'react-responsive';
 import TestRenderer from 'react-test-renderer';
+// eslint-disable-next-line import/no-unresolved
+import siteConfig from 'site.config';
+
 import { AppContext, IntlProvider } from '../../runtime';
 
 import Header from './index';
@@ -22,11 +25,11 @@ describe('<Header />', () => {
     const contextValue = {
       authenticatedUser: null,
       config: {
-        LMS_BASE_URL: process.env.LMS_BASE_URL,
-        SITE_NAME: process.env.SITE_NAME,
-        LOGIN_URL: process.env.LOGIN_URL,
-        LOGOUT_URL: process.env.LOGOUT_URL,
-        LOGO_URL: process.env.LOGO_URL,
+        LMS_BASE_URL: siteConfig.LMS_BASE_URL,
+        SITE_NAME: siteConfig.SITE_NAME,
+        LOGIN_URL: siteConfig.LOGIN_URL,
+        LOGOUT_URL: siteConfig.LOGOUT_URL,
+        LOGO_URL: siteConfig.LOGO_URL,
       },
     };
     const component = <HeaderComponent width={{ width: 1280 }} contextValue={contextValue} />;
@@ -45,11 +48,11 @@ describe('<Header />', () => {
         administrator: false,
       },
       config: {
-        LMS_BASE_URL: process.env.LMS_BASE_URL,
-        SITE_NAME: process.env.SITE_NAME,
-        LOGIN_URL: process.env.LOGIN_URL,
-        LOGOUT_URL: process.env.LOGOUT_URL,
-        LOGO_URL: process.env.LOGO_URL,
+        LMS_BASE_URL: siteConfig.LMS_BASE_URL,
+        SITE_NAME: siteConfig.SITE_NAME,
+        LOGIN_URL: siteConfig.LOGIN_URL,
+        LOGOUT_URL: siteConfig.LOGOUT_URL,
+        LOGO_URL: siteConfig.LOGO_URL,
       },
     };
     const component = <HeaderComponent width={{ width: 1280 }} contextValue={contextValue} />;
@@ -63,11 +66,11 @@ describe('<Header />', () => {
     const contextValue = {
       authenticatedUser: null,
       config: {
-        LMS_BASE_URL: process.env.LMS_BASE_URL,
-        SITE_NAME: process.env.SITE_NAME,
-        LOGIN_URL: process.env.LOGIN_URL,
-        LOGOUT_URL: process.env.LOGOUT_URL,
-        LOGO_URL: process.env.LOGO_URL,
+        LMS_BASE_URL: siteConfig.LMS_BASE_URL,
+        SITE_NAME: siteConfig.SITE_NAME,
+        LOGIN_URL: siteConfig.LOGIN_URL,
+        LOGOUT_URL: siteConfig.LOGOUT_URL,
+        LOGO_URL: siteConfig.LOGO_URL,
       },
     };
     const component = <HeaderComponent width={{ width: 500 }} contextValue={contextValue} />;
@@ -86,11 +89,11 @@ describe('<Header />', () => {
         administrator: false,
       },
       config: {
-        LMS_BASE_URL: process.env.LMS_BASE_URL,
-        SITE_NAME: process.env.SITE_NAME,
-        LOGIN_URL: process.env.LOGIN_URL,
-        LOGOUT_URL: process.env.LOGOUT_URL,
-        LOGO_URL: process.env.LOGO_URL,
+        LMS_BASE_URL: siteConfig.LMS_BASE_URL,
+        SITE_NAME: siteConfig.SITE_NAME,
+        LOGIN_URL: siteConfig.LOGIN_URL,
+        LOGOUT_URL: siteConfig.LOGOUT_URL,
+        LOGO_URL: siteConfig.LOGO_URL,
       },
     };
     const component = <HeaderComponent width={{ width: 500 }} contextValue={contextValue} />;

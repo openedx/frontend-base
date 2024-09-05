@@ -1,9 +1,7 @@
-/// <reference types="./index.d.ts" />
+import { SiteConfig } from "./";
 
-import { OpenedXConfig } from "./dist";
-
-declare module 'env.config' {
-  export default OpenedXConfig;
+declare module 'site.config' {
+  export default SiteConfig;
 }
 
 declare module '*.svg' {

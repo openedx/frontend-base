@@ -1,6 +1,5 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { ensureDefinedConfig } from '../utils';
 
 const userPropTypes = PropTypes.shape({
   userId: PropTypes.string.isRequired,
@@ -15,7 +14,7 @@ const optionsPropTypes = {
     LMS_BASE_URL: PropTypes.string.isRequired,
     LOGIN_URL: PropTypes.string.isRequired,
     LOGOUT_URL: PropTypes.string.isRequired,
-    REFRESH_ACCESS_TOKEN_ENDPOINT: PropTypes.string.isRequired,
+    REFRESH_ACCESS_TOKEN_API_PATH: PropTypes.string.isRequired,
     ACCESS_TOKEN_COOKIE_NAME: PropTypes.string.isRequired,
     CSRF_TOKEN_API_PATH: PropTypes.string.isRequired,
   }).isRequired,
@@ -81,28 +80,23 @@ class MockAuthService {
    * @param {string} options.config.LMS_BASE_URL
    * @param {string} options.config.LOGIN_URL
    * @param {string} options.config.LOGOUT_URL
-   * @param {string} options.config.REFRESH_ACCESS_TOKEN_ENDPOINT
+   * @param {string} options.config.REFRESH_ACCESS_TOKEN_API_PATH
    * @param {string} options.config.ACCESS_TOKEN_COOKIE_NAME
    * @param {string} options.config.CSRF_TOKEN_API_PATH
-   * @param {Object} options.config.hydratedAuthenticatedUser
-   * @param {Object} options.config.authenticatedUser
    * @param {Object} options.loggingService requires logError and logInfo methods
    */
   constructor(options) {
     this.authenticatedHttpClient = null;
     this.httpClient = null;
 
-    ensureDefinedConfig(options, 'AuthService');
     PropTypes.checkPropTypes(optionsPropTypes, options, 'options', 'AuthService');
 
     this.config = options.config;
     this.loggingService = options.loggingService;
 
     // Mock user
-    this.authenticatedUser = this.config.authenticatedUser ? this.config.authenticatedUser : null;
-    this.hydratedAuthenticatedUser = this.config.hydratedAuthenticatedUser
-      ? this.config.hydratedAuthenticatedUser
-      : {};
+    this.authenticatedUser = null;
+    this.hydratedAuthenticatedUser = {};
 
     this.authenticatedHttpClient = axios.create();
     this.httpClient = axios.create();

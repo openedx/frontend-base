@@ -1,4 +1,5 @@
 import { createBrowserHistory } from 'history';
+import 'pubsub-js';
 import {
   APP_ANALYTICS_INITIALIZED,
   APP_AUTH_INITIALIZED,
@@ -9,8 +10,7 @@ import {
   APP_PUBSUB_INITIALIZED,
   APP_READY,
 } from './constants';
-import { initialize } from './initialize';
-import { subscribe } from './pubSub';
+import { getHistory, initialize } from './initialize';
 
 import { configure as configureAnalytics, SegmentAnalyticsService } from './analytics';
 import {
@@ -23,7 +23,7 @@ import {
   hydrateAuthenticatedUser,
 } from './auth';
 import configureCache from './auth/LocalForageCache';
-import { getConfig } from './config';
+import { getConfig, mergeConfig } from './config';
 import { configure as configureI18n } from './i18n';
 import {
   configure as configureLogging,
@@ -60,7 +60,7 @@ const newConfig = {
     STUDIO_BASE_URL: 'http://studio.example.com:18010',
     MARKETING_SITE_BASE_URL: 'http://test.example.com:18000',
     ORDER_HISTORY_URL: 'http://test.example.com:1996/orders',
-    REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://test.example.com:18000/login_refresh',
+    REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
     SEGMENT_KEY: '',
     USER_INFO_COOKIE_NAME: 'edx-user-info',
     IGNORED_ERROR_REGEX: '',
@@ -106,13 +106,13 @@ describe('initialize', () => {
       }
     }
 
-    subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_READY, checkDispatchedDone);
+    global.PubSub.subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
+    global.PubSub.subscribe(APP_READY, checkDispatchedDone);
 
     const messages = { i_am: 'a message' };
     await initialize({ messages });
@@ -222,7 +222,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    subscribe(APP_INIT_ERROR, errorHandler);
+    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
@@ -258,7 +258,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    subscribe(APP_INIT_ERROR, errorHandler);
+    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
@@ -276,8 +276,6 @@ describe('initialize', () => {
   });
 
   it('should initialize the app with runtime configuration', async () => {
-    config.MFE_CONFIG_API_URL = 'http://localhost:18000/api/mfe/v1/config';
-    config.APP_ID = 'auth';
     configureCache.mockReturnValueOnce(Promise.resolve({
       get: (url) => {
         const params = new URL(url).search;
@@ -287,49 +285,19 @@ describe('initialize', () => {
     }));
 
     const messages = { i_am: 'a message' };
-    await initialize({ messages });
-
-    expect(configureCache).toHaveBeenCalled();
-    expect(configureLogging).toHaveBeenCalledWith(NewRelicLoggingService, { config });
-    expect(configureAuth).toHaveBeenCalledWith(AxiosJwtAuthService, {
-      loggingService: getLoggingService(),
-      config,
-      middleware: [],
-    });
-    expect(configureAnalytics).toHaveBeenCalledWith(SegmentAnalyticsService, {
-      config,
-      loggingService: getLoggingService(),
-      httpClient: getAuthenticatedHttpClient(),
-    });
-    expect(configureI18n).toHaveBeenCalledWith({
-      messages,
-      config,
-      loggingService: getLoggingService(),
-    });
-
-    expect(fetchAuthenticatedUser).toHaveBeenCalled();
-    expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
-    expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
-    expect(logError).not.toHaveBeenCalled();
-    expect(config.SITE_NAME).toBe(newConfig.common.SITE_NAME);
-    expect(config.INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
-    expect(Object.values(config).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
-  });
-
-  it('should initialize the app with the build config when runtime configuration fails', async () => {
-    config.MFE_CONFIG_API_URL = 'http://localhost:18000/api/mfe/v1/config';
-    // eslint-disable-next-line no-console
-    console.error = jest.fn();
-    configureCache.mockReturnValueOnce(Promise.reject(new Error('Api fails')));
-
-    const messages = { i_am: 'a message' };
     await initialize({
       messages,
+      handlers: {
+        config: () => {
+          mergeConfig({
+            MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
+            APP_ID: 'auth',
+          });
+        }
+      }
     });
 
     expect(configureCache).toHaveBeenCalled();
-    // eslint-disable-next-line no-console
-    expect(console.error).toHaveBeenCalledWith('Error with config API', 'Api fails');
     expect(configureLogging).toHaveBeenCalledWith(NewRelicLoggingService, { config });
     expect(configureAuth).toHaveBeenCalledWith(AxiosJwtAuthService, {
       loggingService: getLoggingService(),
@@ -346,15 +314,70 @@ describe('initialize', () => {
       config,
       loggingService: getLoggingService(),
     });
+
     expect(fetchAuthenticatedUser).toHaveBeenCalled();
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
     expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
     expect(logError).not.toHaveBeenCalled();
+    expect(getConfig().SITE_NAME).toBe(newConfig.common.SITE_NAME);
+    expect(getConfig().INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
+    expect(Object.values(getConfig()).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
+  });
+
+  describe('with mocked console.error', () => {
+    beforeEach(() => {
+      console.error = jest.fn();
+    });
+
+    afterAll(() => {
+      console.error.mockRestore();
+    });
+
+    it('should initialize the app with the build config when runtime configuration fails', async () => {
+      configureCache.mockRejectedValueOnce(new Error('Api fails'));
+
+      const messages = { i_am: 'a message' };
+      await initialize({
+        messages,
+        handlers: {
+          config: () => {
+            mergeConfig({
+              MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
+              APP_ID: 'auth',
+            });
+          }
+        }
+      });
+
+      expect(configureCache).toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith('Error with config API', 'Api fails');
+      expect(configureLogging).toHaveBeenCalledWith(NewRelicLoggingService, { config });
+      expect(configureAuth).toHaveBeenCalledWith(AxiosJwtAuthService, {
+        loggingService: getLoggingService(),
+        config,
+        middleware: [],
+      });
+      expect(configureAnalytics).toHaveBeenCalledWith(SegmentAnalyticsService, {
+        config,
+        loggingService: getLoggingService(),
+        httpClient: getAuthenticatedHttpClient(),
+      });
+      expect(configureI18n).toHaveBeenCalledWith({
+        messages,
+        config,
+        loggingService: getLoggingService(),
+      });
+      expect(fetchAuthenticatedUser).toHaveBeenCalled();
+      expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
+      expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
+      expect(logError).not.toHaveBeenCalled();
+    });
   });
 });
 
 describe('history', () => {
   it('browser history called by default path', async () => {
+    getHistory();
     // import history from initialize;
     expect(createBrowserHistory).toHaveBeenCalledWith({
       basename: '/',

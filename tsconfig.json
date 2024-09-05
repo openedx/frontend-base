@@ -1,27 +1,24 @@
 {
-  "extends": "./config/tsconfig.json",
+  "extends": "./tools/typescript/tsconfig.json",
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist",
-    "noEmit": false,
-    "declaration": true,
   },
   "include": [
-    "bin/**/*",
-    "cli/**/*",
-    "config/**/*",
     "runtime/**/*",
     "shell/**/*",
     "index.ts",
     "jest.config.js",
     "babel.config.js",
+    ".eslintrc.js",
   ],
   "exclude": [
     "test-app/**/*",
     "dist/**/*",
     "coverage/**/*",
-    "cli/coverage",
+    "tools/**/*",
+    "config/**/*",
     "example/**/*",
     "example-plugin-app/**/*",
-  ]
+  ],
 }

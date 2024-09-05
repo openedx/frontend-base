@@ -1,8 +1,7 @@
-import React from 'react';
-import { createStore } from 'redux';
 import { render } from '@testing-library/react';
-import AppProvider from './AppProvider';
+import { createStore } from 'redux';
 import { initialize } from '../initialize';
+import AppProvider from './AppProvider';
 
 jest.mock('../auth', () => ({
   configure: () => {},
@@ -44,6 +43,8 @@ describe('AppProvider', () => {
         ru: {},
         th: {},
         uk: {},
+        'fa-ir': {},
+        fa: {},
       },
     });
   });

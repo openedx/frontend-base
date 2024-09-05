@@ -7,7 +7,8 @@
   "include": [
     ".eslintrc.js",
     "jest.config.js",
-    "env.config.js",
+    "site.config.dev.tsx",
+    "site.config.prod.tsx",
     "src/**/*",
     "app.d.ts",
   ],

@@ -35,7 +35,6 @@
  * @module Auth
  */
 import PropTypes from 'prop-types';
-import { publish } from '../pubSub';
 
 /**
  * @constant
@@ -60,7 +59,7 @@ const optionsShape = {
     LMS_BASE_URL: PropTypes.string.isRequired,
     LOGIN_URL: PropTypes.string.isRequired,
     LOGOUT_URL: PropTypes.string.isRequired,
-    REFRESH_ACCESS_TOKEN_ENDPOINT: PropTypes.string.isRequired,
+    REFRESH_ACCESS_TOKEN_API_PATH: PropTypes.string.isRequired,
     ACCESS_TOKEN_COOKIE_NAME: PropTypes.string.isRequired,
     CSRF_TOKEN_API_PATH: PropTypes.string.isRequired,
   }).isRequired,
@@ -207,7 +206,7 @@ export function getAuthenticatedUser() {
  */
 export function setAuthenticatedUser(authUser) {
   service.setAuthenticatedUser(authUser);
-  publish(AUTHENTICATED_USER_CHANGED);
+  global.PubSub.publish(AUTHENTICATED_USER_CHANGED);
 }
 
 /**
@@ -248,7 +247,7 @@ export async function ensureAuthenticatedUser(redirectUrl) {
  */
 export async function hydrateAuthenticatedUser() {
   await service.hydrateAuthenticatedUser();
-  publish(AUTHENTICATED_USER_CHANGED);
+  global.PubSub.publish(AUTHENTICATED_USER_CHANGED);
 }
 
 /**

@@ -1,0 +1,21 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "noEmit": false,
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "babel/**/*",
+    "cli/**/*",
+    "config-helpers/**/*",
+    "eslint/.eslintrc.js",
+    "jest/jest.config.js",
+    "typescript/tsconfig.json",
+    "webpack/**/*",
+    "types.ts",
+    "index.ts",
+  ],
+}
