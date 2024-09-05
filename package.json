@@ -20,11 +20,12 @@
 	},
 	"scripts": {
 		"build": "make build",
-		"temp:pack-it": "npm run temp:prep-pack && npm run temp:pack-base-test && npm run temp:pack-project && npm run temp:pack-project-module",
+		"temp:pack-it": "npm run temp:prep-pack && npm run temp:pack-base-test && npm run temp:pack-project && npm run temp:pack-project-module && npm run temp:pack-test-app",
 		"temp:prep-pack": "npm run build && npm pack",
 		"temp:pack-base-test": "cd ../frontend-app-base-test && npm i --save-peer ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
 		"temp:pack-project": "cd ../frontend-project-test && npm i ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
 		"temp:pack-project-module": "cd ../frontend-project-module-test && npm i ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
+		"temp:pack-test-app": "cd test-app && npm i ../openedx-frontend-base-1.0.0.tgz && cd ../",
 		"clean": "rm -rf dist",
 		"docs": "jsdoc -c jsdoc.json",
 		"docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",

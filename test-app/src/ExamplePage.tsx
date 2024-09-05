@@ -3,6 +3,7 @@ import {
   getAuthenticatedUser,
   getConfig,
   logInfo,
+  mergeConfig,
   useIntl
 } from '@openedx/frontend-base';
 import { Container } from '@openedx/paragon';
@@ -17,6 +18,12 @@ import messages from './messages';
 function printTestResult(value) {
   return value ? '✅' : '❌';
 }
+
+mergeConfig({
+  custom: {
+    MERGED_VAR: 'I was merged in.',
+  }
+});
 
 export default function ExamplePage() {
   const context = useContext(AppContext);
@@ -61,7 +68,7 @@ export default function ExamplePage() {
           <p>Authenticated Username: <strong>{context.authenticatedUser.username}</strong></p>
           <p>
             Authenticated user&apos;s name:
-            <strong>{context.authenticatedUser.name}</strong>
+            <strong>{context.authenticatedUser.username}</strong>
             (Only available if user account has been fetched)
           </p>
         </div>
@@ -70,12 +77,12 @@ export default function ExamplePage() {
       )}
 
       <h2>Config tests</h2>
-      <p>Non-existent config variable: {printTestResult(getConfig().custom.I_AM_NOT_HERE === undefined)}</p>
-      <p>Merged var: {printTestResult(getConfig().custom.MERGED_VAR === 'I was merged in.')}</p>
+      <p>Non-existent config variable: {printTestResult(getConfig().custom?.I_AM_NOT_HERE === undefined)}</p>
+      <p>Merged var: {printTestResult(getConfig().custom?.MERGED_VAR === 'I was merged in.')}</p>
       <p><span>site.config boolean test: </span>
-        {printTestResult(getConfig().custom.FALSE_VALUE === false)}
+        {printTestResult(getConfig().custom?.FALSE_VALUE === false)}
       </p>
-      <p>site.config integer test: {printTestResult(Number.isInteger(getConfig().custom.INTEGER_VALUE))}</p>
+      <p>site.config integer test: {printTestResult(Number.isInteger(getConfig().custom?.INTEGER_VALUE))}</p>
 
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>

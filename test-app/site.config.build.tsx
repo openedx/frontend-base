@@ -1,7 +1,21 @@
 import { SiteConfig } from '@openedx/frontend-base';
+import { AuthenticatedPage, ExamplePage } from './src';
+
+import './src/project.scss';
 
 const config: SiteConfig = {
-  apps: [],
+  apps: [
+    {
+      appId: 'examplePage',
+      component: ExamplePage,
+      path: '/',
+    },
+    {
+      appId: 'authenticatedPage',
+      component: AuthenticatedPage,
+      path: '/authenticated',
+    },
+  ],
   ENVIRONMENT: 'dev',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
