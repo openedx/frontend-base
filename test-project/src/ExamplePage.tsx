@@ -60,7 +60,7 @@ export default function ExamplePage() {
       <p>Photo by Louis Hansel @shotsoflouis on Unsplash</p>
 
       <h2>i18n formatMessage test</h2>
-      <p>{intl.formatMessage(messages['test-app.message'])}</p>
+      <p>{intl.formatMessage(messages['test-project.message'])}</p>
 
       <h2>Authenticated User Test</h2>
       {context.authenticatedUser !== null ? (

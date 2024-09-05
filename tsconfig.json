@@ -13,7 +13,7 @@
     ".eslintrc.js",
   ],
   "exclude": [
-    "test-app/**/*",
+    "test-project/**/*",
     "dist/**/*",
     "coverage/**/*",
     "tools/**/*",

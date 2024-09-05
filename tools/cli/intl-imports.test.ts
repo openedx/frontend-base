@@ -3,7 +3,7 @@
 import path from 'path';
 import { main as realMain } from './intl-imports';
 
-const sampleAppDirectory = path.join(__dirname, '../../test-app');
+const sampleAppDirectory = path.join(__dirname, '../../test-project');
 
 // History for `process.stdout.write` mock calls.
 const logHistory: { log: string[], latest: string | null } = {
