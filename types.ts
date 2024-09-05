@@ -85,3 +85,10 @@ export interface ModuleConfig {
     [key:string]: any,
   }
 }
+
+export interface User {
+  username: string,
+  userId: string,
+  roles: Array<string>,
+  administrator: boolean,
+}
