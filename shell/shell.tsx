@@ -56,15 +56,17 @@ subscribe(APP_READY, () => {
             const AppComponent = internalApp.component;
             return (
               <Route
+                key={`${internalApp.appId}-${internalApp.path}`}
                 path={internalApp.path}
-                element={<AppComponent key={`${internalApp.appId}-${internalApp.path}`} />}
+                element={<AppComponent />}
               />
             );
           })}
           {federatedApps.map((federatedApp: FederatedAppConfig) => (
             <Route
+              key={`${federatedApp.appId}-${federatedApp.moduleId}`}
               path={federatedApp.path}
-              element={<FederatedComponent key={`${federatedApp.appId}-${federatedApp.moduleId}`} federatedApp={federatedApp} />}
+              element={<FederatedComponent federatedApp={federatedApp} />}
             />
           ))}
         </Routes>
