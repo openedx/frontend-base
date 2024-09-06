@@ -1,5 +1,3 @@
-import React from 'react';
-
 import PluginSlotWithInsert from './pluginSlots/PluginSlotWithInsert';
 import PluginSlotWithModifyWrapHide from './pluginSlots/PluginSlotWithModifyWrapHide';
 import PluginSlotWithModularPlugins from './pluginSlots/PluginSlotWithModularPlugins';

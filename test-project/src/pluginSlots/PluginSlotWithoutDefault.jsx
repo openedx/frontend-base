@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { PluginSlot } from '@openedx/frontend-plugin-framework';
+import { PluginSlot } from '@openedx/frontend-base';
 
 function PluginSlotWithoutDefault() {
   return (

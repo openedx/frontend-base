@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function PluginDirect() {
   return (
     <section className="bg-warning p-3">

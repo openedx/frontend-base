@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function DefaultDirectWidget() {
   return (
     <section className="bg-success p-3 text-light">
