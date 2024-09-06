@@ -107,8 +107,6 @@ export interface SiteConfig {
     },
   },
 
-  chromeless
-
   // Cookies
   ACCESS_TOKEN_COOKIE_NAME?: string,
   LANGUAGE_PREFERENCE_COOKIE_NAME?: string,
