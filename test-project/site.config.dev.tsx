@@ -1,7 +1,27 @@
-import { SiteConfig } from '@openedx/frontend-base';
-import { AuthenticatedPage, ExamplePage } from './src';
+import { PluginOperations, PluginTypes, SiteConfig } from '@openedx/frontend-base';
+import { AuthenticatedPage, ExamplePage, PluginPage } from './src';
 
+import { InsertDirectPluginWidget } from '@openedx/frontend-base/dist/types';
+import ModularComponent from './src/components/ModularComponent';
+import PluginDirect from './src/components/PluginDirect';
 import './src/project.scss';
+
+const modifyWidget = (widget: InsertDirectPluginWidget) => {
+  widget.content = {
+    title: 'Modified Modular Plugin',
+    uniqueText: 'Note that the original text defined in the JS config is replaced by this modified one.',
+  };
+  return widget;
+};
+
+const wrapWidget = ({ component, idx }) => (
+  <div className="bg-warning" data-testid={`wrapper${idx + 1}`} key={idx}>
+    <p>This is a wrapper component that is placed around the default content.</p>
+    {component}
+    <p>With this wrapper, you can add anything before or after a component.</p>
+    <p>Note in the JS config that an iFrame plugin was Inserted, but a Hide operation was also used to hide it!</p>
+  </div>
+);
 
 const config: SiteConfig = {
   apps: [
@@ -14,6 +34,11 @@ const config: SiteConfig = {
       appId: 'authenticatedPage',
       component: AuthenticatedPage,
       path: '/authenticated',
+    },
+    {
+      appId: 'pluginPage',
+      component: PluginPage,
+      path: '/plugins',
     },
   ],
   ENVIRONMENT: 'dev',
@@ -38,6 +63,130 @@ const config: SiteConfig = {
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
   APP_ID: 'shell',
+
+  pluginSlots: {
+    'slot_with_insert_operation': {
+      keepDefault: true,
+      plugins: [
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'inserted_direct_plugin',
+            type: PluginTypes.DIRECT,
+            priority: 10,
+            RenderWidget: PluginDirect,
+          },
+        },
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'inserted_iframe_plugin',
+            type: PluginTypes.IFRAME,
+            priority: 30,
+            url: 'http://localhost:8081/plugin_iframe',
+            title: 'The iFrame plugin that is inserted in the slot',
+          },
+        },
+      ],
+    },
+    slot_with_modify_wrap_hidden_operations: {
+      keepDefault: true,
+      plugins: [
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'inserted_plugin',
+            type: PluginTypes.DIRECT,
+            priority: 10,
+            RenderWidget: ModularComponent,
+            content: {
+              title: 'Modular Direct Plugin',
+              uniqueText: 'This is some text that will be replaced by the Modify operation below.',
+            },
+          },
+        },
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'inserted_iframe_plugin',
+            type: PluginTypes.IFRAME,
+            priority: 30,
+            url: 'http://localhost:8081/plugin_iframe',
+            title: 'This iFrame plugin will be hidden due to the Hide operation in this config.',
+          },
+        },
+        {
+          op: PluginOperations.WRAP,
+          widgetId: 'default_contents',
+          wrapper: wrapWidget,
+        },
+        {
+          op: PluginOperations.MODIFY,
+          widgetId: 'inserted_plugin',
+          fn: modifyWidget,
+        },
+        {
+          op: PluginOperations.HIDE,
+          widgetId: "inserted_iframe_plugin",
+        },
+      ],
+    },
+    slot_with_modular_plugins: {
+      keepDefault: true,
+      plugins: [
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'insert_modular_direct_plugin',
+            type: PluginTypes.DIRECT,
+            priority: 1,
+            RenderWidget: ModularComponent,
+            content: {
+              title: 'Modular Direct Plugin',
+              uniqueText: 'This is a direct plugin with priority of 1, which is why it appears first in this slot.',
+            },
+          },
+        },
+      ],
+    },
+    slot_without_default: {
+      keepDefault: false,
+      plugins: [
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'insert_direct_plugin',
+            type: PluginTypes.DIRECT,
+            priority: 1,
+            RenderWidget: ModularComponent,
+            content: {
+              title: 'Modular Direct Plugin With Content Defined in JS Config',
+              uniqueText: 'This modular component receives some of its content from the JS config (such as this text).',
+            },
+          },
+        },
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'insert_another_direct_plugin',
+            type: PluginTypes.DIRECT,
+            priority: 10,
+            RenderWidget: PluginDirect,
+          },
+        },
+        {
+          op: PluginOperations.INSERT,
+          widget: {
+            id: 'inserted_iframe_plugin',
+            type: PluginTypes.IFRAME,
+            priority: 30,
+            url: 'http://localhost:8081/plugin_iframe',
+            title: 'The iFrame plugin that is inserted in the slot',
+          },
+        },
+      ],
+    }
+  },
 
   custom: {
     FALSE_VALUE: false,

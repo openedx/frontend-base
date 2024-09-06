@@ -9,7 +9,7 @@ import {
   getConfigSlots, organizePlugins, validatePlugin, wrapComponent,
 } from './utils';
 
-import { DIRECT_PLUGIN, IFRAME_PLUGIN, PLUGIN_OPERATIONS } from './constants';
+import { PluginOperations, PluginTypes } from '../../../types';
 
 const mockModifyWidget = (widget) => {
   const modifiedWidget = widget;
@@ -38,26 +38,26 @@ const mockRenderWidget = () => (
 
 const mockSlotChanges = [
   {
-    op: PLUGIN_OPERATIONS.Insert,
+    op: PluginOperations.INSERT,
     widget: {
       id: 'login',
       priority: 50,
-      type: IFRAME_PLUGIN,
+      type: PluginTypes.IFRAME,
       url: '/login',
       title: 'Login',
     },
   },
   {
-    op: PLUGIN_OPERATIONS.Wrap,
+    op: PluginOperations.WRAP,
     widgetId: 'login',
     wrapper: mockIsAdminWrapper,
   },
   {
-    op: PLUGIN_OPERATIONS.Hide,
+    op: PluginOperations.HIDE,
     widgetId: 'default_contents',
   },
   {
-    op: PLUGIN_OPERATIONS.Modify,
+    op: PluginOperations.MODIFY,
     widgetId: 'login',
     fn: mockModifyWidget,
   },
@@ -143,7 +143,7 @@ describe('organizePlugins', () => {
         return isStudent ? null : widget;
       };
       const newPluginChange = {
-        op: PLUGIN_OPERATIONS.Wrap,
+        op: PluginOperations.WRAP,
         widgetId: 'login',
         wrapper: newMockWrapComponent,
       };
@@ -158,11 +158,11 @@ describe('organizePlugins', () => {
 
     it('should return plugins arranged by priority', () => {
       const newPluginChange = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           id: 'profile',
           priority: 1,
-          type: IFRAME_PLUGIN,
+          type: PluginTypes.IFRAME,
           url: '/profile',
           title: 'Profile',
         },
@@ -231,29 +231,29 @@ describe('validatePlugin', () => {
   describe('insert plugin configuration', () => {
     it('returns true if the plugin config is correctly configured', () => {
       const insertDirectConfig = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           id: 'new_plugin',
           priority: 10,
-          type: DIRECT_PLUGIN,
+          type: PluginTypes.DIRECT,
           RenderWidget: mockRenderWidget,
         },
       };
       const insertIFrameConfig = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           id: 'new_plugin',
           priority: 10,
-          type: IFRAME_PLUGIN,
+          type: PluginTypes.IFRAME,
           title: 'iframe plugin',
           url: 'example.url.com',
         },
       };
       const insertDirectModularConfig = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           id: 'inserted_plugin',
-          type: DIRECT_PLUGIN,
+          type: PluginTypes.DIRECT,
           priority: 10,
           RenderWidget: mockRenderWidget,
           content: {
@@ -271,43 +271,43 @@ describe('validatePlugin', () => {
     it('returns error message if the plugin config is incorrectly configured', () => {
       // missing id for Direct Plugin
       const insertBrokenDirectConfig = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           priority: 10,
-          type: DIRECT_PLUGIN,
+          type: PluginTypes.DIRECT,
           RenderWidget: mockRenderWidget,
         },
       };
       // missing RenderWidget for Direct Plugin
       const insertBrokenDirectConfig2 = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           id: 'new_plugin',
           priority: 10,
-          type: DIRECT_PLUGIN,
+          type: PluginTypes.DIRECT,
         },
       };
       // properties need to be wrapped in widget key
       const insertBrokenDirectConfig3 = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         id: 'new_plugin',
         priority: 10,
-        type: DIRECT_PLUGIN,
+        type: PluginTypes.DIRECT,
         RenderWidget: mockRenderWidget,
       };
       // missing title for iFrame Plugin
       const insertBrokenIFrameConfig = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           id: 'new_iframe_plugin',
           priority: 10,
-          type: IFRAME_PLUGIN,
+          type: PluginTypes.IFRAME,
           url: 'www.example_url.com',
         },
       };
       // missing plugin type
       const insertBrokenIFrameConfig2 = {
-        op: PLUGIN_OPERATIONS.Insert,
+        op: PluginOperations.INSERT,
         widget: {
           id: 'new_iframe_plugin',
           priority: 10,
@@ -349,14 +349,14 @@ describe('validatePlugin', () => {
   describe('hide plugin configuration', () => {
     it('returns true if the Hidden operation is configured', () => {
       const validHideConfig = {
-        op: PLUGIN_OPERATIONS.Hide,
+        op: PluginOperations.HIDE,
         widgetId: 'default_content',
       };
       expect(validatePlugin(validHideConfig)).toBe(true);
     });
     it('returns an error if the Hidden operation is configured incorrectly', () => {
       const invalidHideConfig = {
-        op: PLUGIN_OPERATIONS.Hide,
+        op: PluginOperations.HIDE,
       };
 
       try {
@@ -369,7 +369,7 @@ describe('validatePlugin', () => {
   describe('modify plugin configuration', () => {
     it('returns true if the Modify operation is configured correctly', () => {
       const validModifyConfig = {
-        op: PLUGIN_OPERATIONS.Modify,
+        op: PluginOperations.MODIFY,
         widgetId: 'random_plugin',
         fn: mockModifyWidget,
       };
@@ -377,11 +377,11 @@ describe('validatePlugin', () => {
     });
     it('returns an error if the Modify operation is configured incorrectly', () => {
       const invalidModifyConfig1 = {
-        op: PLUGIN_OPERATIONS.Modify,
+        op: PluginOperations.MODIFY,
         widgetId: 'random_plugin',
       };
       const invalidModifyConfig2 = {
-        op: PLUGIN_OPERATIONS.Modify,
+        op: PluginOperations.MODIFY,
         fn: mockModifyWidget,
       };
 
@@ -400,7 +400,7 @@ describe('validatePlugin', () => {
   describe('wrap plugin configuration', () => {
     it('returns true if the Wrap operation is configured correctly', () => {
       const validWrapConfig = {
-        op: PLUGIN_OPERATIONS.Wrap,
+        op: PluginOperations.WRAP,
         widgetId: 'random_plugin',
         wrapper: mockElementWrapper,
       };
@@ -408,11 +408,11 @@ describe('validatePlugin', () => {
     });
     it('returns an error if the Wrap operation is configured incorrectly', () => {
       const invalidWrapConfig1 = {
-        op: PLUGIN_OPERATIONS.Wrap,
+        op: PluginOperations.WRAP,
         widgetId: 'random_plugin',
       };
       const invalidWrapConfig2 = {
-        op: PLUGIN_OPERATIONS.Wrap,
+        op: PluginOperations.WRAP,
         wrapper: mockElementWrapper,
       };
 
@@ -431,7 +431,7 @@ describe('validatePlugin', () => {
   describe('an invalid plugin configuration', () => {
     it('should raise an error for an operation that does not exist', () => {
       const invalidPluginConfig = {
-        op: PLUGIN_OPERATIONS.Destroy,
+        op: PluginOperations.INVALID,
         widgetId: 'drafts',
       };
 

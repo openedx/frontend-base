@@ -40,6 +40,7 @@ export default function ExamplePage() {
 
       <h2>Links</h2>
       <p>Visit <Link to="/authenticated">authenticated page</Link>.</p>
+      <p>Visit <Link to="/plugins">plugins page</Link>.</p>
       <p>Visit <Link to="/error">error page</Link>.</p>
 
       <h2>Context Config Test</h2>

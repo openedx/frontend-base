@@ -6,16 +6,16 @@ import { fireEvent, render } from '@testing-library/react';
 import { IntlProvider } from '../i18n';
 import { logError } from '../logging';
 
+import { PluginOperations, PluginTypes } from '../../types';
 import PluginSlot from './PluginSlot';
-import { PLUGIN_OPERATIONS } from './data/constants';
 import { usePluginSlot } from './data/hooks';
 
 const iframePluginConfig = {
-  op: PLUGIN_OPERATIONS.Insert,
+  op: PluginOperations.INSERT,
   widget: {
     id: 'iframe_config',
     url: 'http://localhost/plugin1',
-    type: 'IFRAME_PLUGIN',
+    type: PluginTypes.IFRAME,
     title: 'test iframe plugin',
     priority: 1,
   },
@@ -48,7 +48,6 @@ global.ResizeObserver = jest.fn(function mockResizeObserver() {
   this.disconnect = jest.fn();
 });
 
-// TODO: APER-3119 — Write unit tests for plugin scenarios not already tested for https://2u-internal.atlassian.net/browse/APER-3119
 const content = { text: 'This is a widget.' };
 const TestPluginSlot = (
   <IntlProvider locale="en">
@@ -107,7 +106,7 @@ describe('PluginSlot', () => {
     usePluginSlot.mockReturnValueOnce({
       plugins: [
         {
-          op: PLUGIN_OPERATIONS.Wrap,
+          op: PluginOperations.WRAP,
           widgetId: 'default_contents',
           wrapper: ({ component, idx }) => (
             <div key={idx} data-testid={`wrapper${idx + 1}`}>
@@ -131,7 +130,7 @@ describe('PluginSlot', () => {
       plugins: [
         iframePluginConfig,
         {
-          op: PLUGIN_OPERATIONS.Hide,
+          op: PluginOperations.HIDE,
           widgetId: 'iframe_config',
         },
       ],
@@ -147,7 +146,7 @@ describe('PluginSlot', () => {
     usePluginSlot.mockReturnValueOnce({
       plugins: [
         {
-          op: PLUGIN_OPERATIONS.Insert,
+          op: PluginOperations.INSERT,
           widget: {
             id: 'invalid_config',
             type: 'INVALID_TYPE',

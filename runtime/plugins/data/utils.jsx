@@ -1,7 +1,8 @@
 import React from 'react';
+import { PluginOperations } from '../../../types';
 import { getConfig } from '../../config';
 import { logError } from '../../logging';
-import { PLUGIN_OPERATIONS, requiredPluginTypes } from './constants';
+import { requiredPluginTypes } from './constants';
 
 /**
  * Called by validatePlugin to compare plugin config to the required data and data types
@@ -22,7 +23,7 @@ export const validatePlugin = (pluginConfig) => {
   let { op, ...config } = pluginConfig;
   if (!op) { logError('There is a config with an invalid PLUGIN_OPERATION. Check to make sure it is configured correctly.'); }
 
-  if (op === PLUGIN_OPERATIONS.Insert) {
+  if (op === PluginOperations.INSERT) {
     config = config.widget;
     if (!config) { logError('insert operation config is missing widget object'); }
 
@@ -52,18 +53,18 @@ export const organizePlugins = (defaultContents, plugins) => {
 
   plugins.forEach(change => {
     validatePlugin(change);
-    if (change.op === PLUGIN_OPERATIONS.Insert) {
+    if (change.op === PluginOperations.INSERT) {
       newContents.push(change.widget);
-    } else if (change.op === PLUGIN_OPERATIONS.Hide) {
+    } else if (change.op === PluginOperations.HIDE) {
       const widget = newContents.find((w) => w.id === change.widgetId);
       if (widget) { widget.hidden = true; }
-    } else if (change.op === PLUGIN_OPERATIONS.Modify) {
+    } else if (change.op === PluginOperations.MODIFY) {
       const widgetIdx = newContents.findIndex((w) => w.id === change.widgetId);
       if (widgetIdx >= 0) {
         const widget = { ...newContents[widgetIdx] };
         newContents[widgetIdx] = change.fn(widget);
       }
-    } else if (change.op === PLUGIN_OPERATIONS.Wrap) {
+    } else if (change.op === PluginOperations.WRAP) {
       const widgetIdx = newContents.findIndex((w) => w.id === change.widgetId);
       if (widgetIdx >= 0) {
         const newWidget = { wrappers: [], ...newContents[widgetIdx] };

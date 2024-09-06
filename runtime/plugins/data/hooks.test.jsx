@@ -2,16 +2,16 @@ import '@testing-library/jest-dom';
 
 import { getConfig } from '../../config';
 
-import { IFRAME_PLUGIN, PLUGIN_OPERATIONS } from './constants';
+import { PluginOperations, PluginTypes } from '../../../types';
 import { usePluginSlot } from './hooks';
 
 const mockSlotChanges = [
   {
-    op: PLUGIN_OPERATIONS.Insert,
+    op: PluginOperations.INSERT,
     widget: {
       id: 'login',
       priority: 50,
-      type: IFRAME_PLUGIN,
+      type: PluginTypes.IFRAME,
       url: '/login',
       title: 'Login',
     },

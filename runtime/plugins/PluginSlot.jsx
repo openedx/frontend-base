@@ -33,8 +33,6 @@ const PluginSlot = forwardRef(({
 
   const finalPlugins = React.useMemo(() => organizePlugins(defaultContents, plugins), [defaultContents, plugins]);
 
-  // TODO: APER-3178 — Unique plugin props
-  // https://2u-internal.atlassian.net/browse/APER-3178
   const { loadingFallback } = pluginProps;
 
   const defaultLoadingFallback = (

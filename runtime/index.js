@@ -97,9 +97,6 @@ export {
 } from './logging';
 
 export {
-  DIRECT_PLUGIN,
-  IFRAME_PLUGIN,
-  PLUGIN_OPERATIONS,
   Plugin,
   PluginSlot
 } from './plugins';

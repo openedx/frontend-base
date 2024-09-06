@@ -1,13 +1,13 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable import/prefer-default-export */
 import PropTypes from 'prop-types';
-import { DIRECT_PLUGIN, IFRAME_PLUGIN } from './constants';
+import { PluginTypes } from '../../../types';
 
 export const pluginConfigShape = {
   /** Id for the plugin */
   id: PropTypes.string.isRequired,
   /** Plugin type */
-  type: PropTypes.oneOf([IFRAME_PLUGIN, DIRECT_PLUGIN]).isRequired,
+  type: PropTypes.oneOf([PluginTypes.IFRAME, PluginTypes.DIRECT]).isRequired,
   /** Priority of the plugin — ordered low-to-high */
   priority: PropTypes.number,
 };

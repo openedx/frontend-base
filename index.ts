@@ -16,7 +16,6 @@ export {
   AxiosJwtAuthService,
   CONFIG_CHANGED,
   CONFIG_TOPIC,
-  DIRECT_PLUGIN,
   ErrorBoundary,
   ErrorPage,
   FormattedDate,
@@ -25,7 +24,6 @@ export {
   FormattedPlural,
   FormattedRelativeTime,
   FormattedTime,
-  IFRAME_PLUGIN,
   IntlProvider,
   LOCALE_CHANGED,
   LOCALE_TOPIC,
@@ -34,7 +32,6 @@ export {
   MockAuthService,
   MockLoggingService,
   NewRelicLoggingService,
-  PLUGIN_OPERATIONS,
   PageWrap,
   Plugin,
   PluginSlot,
@@ -107,6 +104,11 @@ export type {
   ExternalAppConfig,
   FederatedAppConfig,
   InternalAppConfig,
-  SiteConfig,
-  ModuleConfig
+  ModuleConfig,
+  SiteConfig
+} from './types';
+
+export {
+  PluginOperations,
+  PluginTypes
 } from './types';

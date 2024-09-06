@@ -11,8 +11,9 @@ import {
 } from '../i18n';
 import { initializeMockApp } from '../testing';
 
+import { PluginTypes } from '../../types';
 import {
-  DIRECT_PLUGIN, IFRAME_PLUGIN, PLUGIN_MOUNTED, PLUGIN_READY, PLUGIN_RESIZE,
+  PLUGIN_MOUNTED, PLUGIN_READY, PLUGIN_RESIZE
 } from './data/constants';
 import Plugin from './Plugin';
 import PluginContainer from './PluginContainer';
@@ -21,14 +22,14 @@ import { IFRAME_FEATURE_POLICY } from './PluginContainerIframe';
 const iframeConfig = {
   id: 'iframe_plugin',
   url: 'http://localhost/plugin1',
-  type: IFRAME_PLUGIN,
+  type: PluginTypes.IFRAME,
   title: 'test iframe plugin',
   priority: 1,
 };
 
 const directConfig = {
   id: 'direct_plugin',
-  type: DIRECT_PLUGIN,
+  type: PluginTypes.DIRECT,
   RenderWidget: ({ id, content }) => (<div data-testid={id}>{content.text}</div>),
   priority: 2,
   content: { text: 'This is a direct plugin.' },

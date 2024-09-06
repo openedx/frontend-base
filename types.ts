@@ -23,9 +23,91 @@ export interface FederatedAppConfig {
     [key: string]: any,
   }
 }
+/**
+ * Defines the changes to be made to either the default widget(s) or to any
+ * that are inserted.
+ */
+export enum PluginOperations {
+  /**
+   * Inserts a new widget into the DirectPluginSlot.
+   */
+  INSERT = 'insert',
+  /**
+   * Used to hide a default widget based on the widgetId.
+   */
+  HIDE = 'hide',
+  /**
+   * Used to modify/replace a widget's content.
+   */
+  MODIFY = 'modify',
+  /**
+   * Wraps a widget with a React element or fragment.
+   */
+  WRAP = 'wrap',
+}
+
+export enum PluginTypes {
+  IFRAME = 'iframe',
+  DIRECT = 'direct',
+}
+
+export interface InsertDirectPluginWidget {
+  id: string,
+  type: PluginTypes.DIRECT,
+  priority: number,
+  RenderWidget: ElementType,
+  content?: {
+    [propName: string]: any,
+  }
+}
+
+export interface InsertIframePluginWidget {
+  id: string,
+  type: PluginTypes.IFRAME,
+  priority: number,
+  url: string,
+  title: string,
+}
+
+export type InsertPluginWidget = InsertDirectPluginWidget | InsertIframePluginWidget;
+
+export type PluginWidget = InsertPluginWidget;
+
+export interface ModifyPlugin {
+  op: PluginOperations.MODIFY,
+  widgetId: string,
+  fn: (InsertDirectPluginWidget) => InsertDirectPluginWidget,
+}
+
+export interface InsertPlugin {
+  op: PluginOperations.INSERT,
+  widget: PluginWidget,
+}
+
+export interface WrapPlugin {
+  op: PluginOperations.WRAP,
+  widgetId: string,
+  wrapper: ElementType
+}
+
+export interface HidePlugin {
+  op: PluginOperations.HIDE,
+  widgetId: string
+}
+
+export type Plugin = HidePlugin | InsertPlugin | ModifyPlugin | WrapPlugin;
 
 export interface SiteConfig {
   apps: Array<ExternalAppConfig | InternalAppConfig | FederatedAppConfig>,
+
+  pluginSlots?: {
+    [slotName: string]: {
+      keepDefault: boolean,
+      plugins: Array<Plugin>,
+    },
+  },
+
+  chromeless
 
   // Cookies
   ACCESS_TOKEN_COOKIE_NAME?: string,

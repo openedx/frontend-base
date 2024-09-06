@@ -5,7 +5,7 @@ export default function PluginDirect() {
       <p>
         This plugin is a component that lives in the example app and is directly inserted via JS configuration.
         What makes this unique is that it isn&apos;t part of the default content defined for this slot, but is instead
-        inserted as a plugin slot change &quot;PLUGIN_OPERATIONS.Insert&quot;.
+        inserted as a plugin slot change &quot;PluginOperations.INSERT&quot;.
       </p>
     </section>
   );

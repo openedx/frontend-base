@@ -6,10 +6,7 @@ import PropTypes from 'prop-types';
 import PluginContainerDirect from './PluginContainerDirect';
 import PluginContainerIframe from './PluginContainerIframe';
 
-import {
-  DIRECT_PLUGIN,
-  IFRAME_PLUGIN,
-} from './data/constants';
+import { PluginTypes } from '../../types';
 import { pluginConfigShape } from './data/shapes';
 
 function PluginContainer({ config, ...props }) {
@@ -20,12 +17,12 @@ function PluginContainer({ config, ...props }) {
   // this will allow for future plugin types to be inserted in the PluginErrorBoundary
   let renderer = null;
   switch (config.type) {
-    case IFRAME_PLUGIN:
+    case PluginTypes.IFRAME:
       renderer = (
         <PluginContainerIframe config={config} {...props} />
       );
       break;
-    case DIRECT_PLUGIN:
+    case PluginTypes.DIRECT:
       renderer = (
         <PluginContainerDirect config={config} {...props} />
       );
