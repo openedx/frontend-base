@@ -1,3 +1,5 @@
+import { ElementType } from 'react';
+
 export interface ExternalAppConfig {
   appId: string,
   url: string,
@@ -5,7 +7,7 @@ export interface ExternalAppConfig {
 
 export interface InternalAppConfig {
   appId: string,
-  component: () => JSX.Element,
+  component: ElementType,
   path: string,
   config?: {
     [key: string]: any,
