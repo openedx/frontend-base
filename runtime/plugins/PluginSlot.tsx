@@ -1,7 +1,6 @@
 import { Spinner } from '@openedx/paragon';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { forwardRef } from 'react';
+import React, { ElementType, ReactNode } from 'react';
 
 import { useIntl } from '../i18n';
 
@@ -10,9 +9,23 @@ import PluginContainer from './PluginContainer';
 import { usePluginSlot } from './data/hooks';
 import { organizePlugins, wrapComponent } from './data/utils';
 
-const PluginSlot = forwardRef(({
-  as, children, id, pluginProps, ...props
-}, ref) => {
+interface PluginSlotProps {
+  /** Element type for the PluginSlot wrapper component */
+  as?: ElementType,
+  /** Default children for the PluginSlot */
+  children?: ReactNode,
+  /** ID of the PluginSlot configuration */
+  id: string,
+  /** Props that are passed down to each Plugin in the Slot */
+  pluginProps?: {
+    [prop: string]: any,
+  },
+  ref: React.ForwardedRef<unknown>
+}
+
+export default function PluginSlot({
+  as = React.Fragment, children = null, id, pluginProps = {}, ref, ...props
+}: PluginSlotProps) {
   /** the plugins below are obtained by the id passed into PluginSlot by the Host MFE. See example/src/PluginsPage.jsx
   for an example of how PluginSlot is populated, and example/src/index.jsx for a dummy JS config that holds all plugins
   */
@@ -45,7 +58,7 @@ const PluginSlot = forwardRef(({
     ? loadingFallback
     : defaultLoadingFallback;
 
-  const finalChildren = [];
+  const finalChildren: Array<ReactNode> = [];
   if (finalPlugins.length > 0) {
     finalPlugins.forEach((pluginConfig) => {
       // If hidden, don't push to finalChildren
@@ -87,23 +100,4 @@ const PluginSlot = forwardRef(({
     },
     finalChildren,
   );
-});
-
-export default PluginSlot;
-
-PluginSlot.propTypes = {
-  /** Element type for the PluginSlot wrapper component */
-  as: PropTypes.elementType,
-  /** Default children for the PluginSlot */
-  children: PropTypes.node,
-  /** ID of the PluginSlot configuration */
-  id: PropTypes.string.isRequired,
-  /** Props that are passed down to each Plugin in the Slot */
-  pluginProps: PropTypes.object, // eslint-disable-line
-};
-
-PluginSlot.defaultProps = {
-  as: React.Fragment,
-  children: null,
-  pluginProps: {},
-};
+}
