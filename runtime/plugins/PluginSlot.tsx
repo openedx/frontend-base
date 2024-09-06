@@ -20,7 +20,7 @@ interface PluginSlotProps {
   pluginProps?: {
     [prop: string]: any,
   },
-  ref: React.ForwardedRef<unknown>
+  ref?: React.ForwardedRef<unknown>
 }
 
 export default function PluginSlot({
