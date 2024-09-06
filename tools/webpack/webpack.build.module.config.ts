@@ -24,6 +24,9 @@ const moduleFederationConfig = getModuleFederationConfig();
 const config: Configuration = {
   mode: 'production',
   devtool: 'source-map',
+  entry: {
+    app: path.resolve(process.cwd(), 'src/index.ts'),
+  },
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),

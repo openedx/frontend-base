@@ -22,6 +22,9 @@ const moduleFederationConfig = getModuleFederationConfig();
 const config: Configuration = {
   mode: 'development',
   devtool: 'eval-source-map',
+  entry: {
+    app: path.resolve(process.cwd(), 'src/index.ts'),
+  },
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: 'auto',
