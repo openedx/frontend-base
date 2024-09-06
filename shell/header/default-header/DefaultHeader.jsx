@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import {
   AppContext,
   injectIntl, intlShape
-} from '../../runtime';
+} from '../../../runtime';
 import DesktopHeader from './DesktopHeader';
 import MobileHeader from './MobileHeader';
 
-import messages from './Header.messages';
+import messages from './DefaultHeader.messages';
 
 /**
  * Header component for the application.

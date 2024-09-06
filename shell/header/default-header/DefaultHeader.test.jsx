@@ -4,9 +4,9 @@ import TestRenderer from 'react-test-renderer';
 // eslint-disable-next-line import/no-unresolved
 import siteConfig from 'site.config';
 
-import { AppContext, IntlProvider } from '../../runtime';
+import { AppContext, IntlProvider } from '../../../runtime';
 
-import Header from './index';
+import Header from './DefaultHeader';
 
 const HeaderComponent = ({ width, contextValue }) => (
   <ResponsiveContext.Provider value={width}>

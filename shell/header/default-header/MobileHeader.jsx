@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { injectIntl, intlShape } from '../../runtime';
+import { injectIntl, intlShape } from '../../../runtime';
 
 // Local Components
 import Avatar from './Avatar';
@@ -8,7 +8,7 @@ import { LinkedLogo, Logo } from './Logo';
 import { Menu, MenuContent, MenuTrigger } from './Menu';
 
 // i18n
-import messages from './Header.messages';
+import messages from './DefaultHeader.messages';
 
 // Assets
 import { MenuIcon } from './Icons';

@@ -3,7 +3,7 @@ import {
   getConfig, getLoginRedirectUrl, injectIntl, intlShape
 } from '../../../runtime';
 
-import genericMessages from '../generic/messages';
+import messages from './messages';
 
 const AnonymousUserMenu = ({ intl }) => (
   <div>
@@ -12,13 +12,13 @@ const AnonymousUserMenu = ({ intl }) => (
       variant="outline-primary"
       href={`${getConfig().LMS_BASE_URL}/register?next=${encodeURIComponent(global.location.href)}`}
     >
-      {intl.formatMessage(genericMessages.registerSentenceCase)}
+      {intl.formatMessage(messages.registerSentenceCase)}
     </Button>
     <Button
       variant="primary"
       href={`${getLoginRedirectUrl(global.location.href)}`}
     >
-      {intl.formatMessage(genericMessages.signInSentenceCase)}
+      {intl.formatMessage(messages.signInSentenceCase)}
     </Button>
   </div>
 );

@@ -1,4 +1,4 @@
-import { defineMessages } from '../../runtime';
+import { defineMessages } from '../../../runtime';
 
 const messages = defineMessages({
   'header.links.courses': {
@@ -111,6 +111,7 @@ const messages = defineMessages({
     defaultMessage: 'App',
     description: 'The aria label for the app Nav',
   },
+
 });
 
 export default messages;

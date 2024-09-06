@@ -1,8 +1,4 @@
-import Header from './Header';
-import LearningHeader from './learning-header/LearningHeader';
-import messages from './i18n/index';
-import StudioHeader from './studio-header';
-
-export { LearningHeader, messages, StudioHeader };
-
-export default Header;
+export { default as DefaultHeader } from './default-header/DefaultHeader';
+export { default as messages } from './i18n/index';
+export { default as LearningHeader } from './learning-header/LearningHeader';
+export { default as StudioHeader } from './studio-header';

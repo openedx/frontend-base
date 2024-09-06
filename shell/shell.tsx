@@ -13,7 +13,7 @@ import {
 import { ExternalAppConfig, FederatedAppConfig, InternalAppConfig } from '../types';
 import FederatedComponent from './FederatedComponent';
 import Footer from './footer';
-import Header from './header';
+import { DefaultHeader } from './header';
 
 const messages = [];
 
@@ -49,7 +49,7 @@ subscribe(APP_READY, () => {
 
   ReactDOM.render(
     <AppProvider wrapWithRouter>
-      <Header />
+      <DefaultHeader />
       <Container className="m-2">
         <Routes>
           {internalApps.map((internalApp: InternalAppConfig) => {

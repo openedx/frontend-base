@@ -115,6 +115,7 @@
 		"react-intl": "^6.6.6",
 		"react-refresh": "0.14.2",
 		"react-responsive": "^10.0.0",
+		"react-transition-group": "^4.4.5",
 		"resolve-url-loader": "5.0.0",
 		"sass": "1.69.7",
 		"sass-loader": "13.3.3",
