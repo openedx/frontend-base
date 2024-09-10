@@ -25,7 +25,7 @@ const config: Configuration = {
   mode: 'production',
   devtool: 'source-map',
   entry: {
-    app: path.resolve(process.cwd(), 'src/index.ts'),
+    app: path.resolve(process.cwd(), 'src/index'),
   },
   output: {
     filename: '[name].[chunkhash].js',

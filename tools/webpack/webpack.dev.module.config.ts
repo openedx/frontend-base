@@ -23,7 +23,7 @@ const config: Configuration = {
   mode: 'development',
   devtool: 'eval-source-map',
   entry: {
-    app: path.resolve(process.cwd(), 'src/index.ts'),
+    app: path.resolve(process.cwd(), 'src/index'),
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
