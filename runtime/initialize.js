@@ -20,7 +20,7 @@
  *
  * subscribe(APP_READY, () => {
  *   ReactDOM.render(
- *     <AppProvider store={configureStore()}>
+ *     <AppProvider>
  *       <Header />
  *       <main>
  *         <Routes>
