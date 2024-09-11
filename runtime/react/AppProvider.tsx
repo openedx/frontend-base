@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
-import { useMemo, useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { ReactNode, useMemo, useState } from 'react';
 
 import { AUTHENTICATED_USER_CHANGED, getAuthenticatedUser } from '../auth';
 import { getConfig } from '../config';
@@ -11,12 +9,14 @@ import {
   IntlProvider,
   LOCALE_CHANGED,
 } from '../i18n';
-import { getBasename } from '../initialize';
 
 import AppContext from './AppContext';
 import ErrorBoundary from './ErrorBoundary';
 import { useAppEvent, useTrackColorSchemeChoice } from './hooks';
-import OptionalReduxProvider from './OptionalReduxProvider';
+
+interface AppProviderProps {
+  children: ReactNode,
+}
 
 /**
  * A wrapper component for React-based micro-frontends to initialize a number of common data/
@@ -36,15 +36,12 @@ import OptionalReduxProvider from './OptionalReduxProvider';
  * - An error boundary as described above.
  * - An `AppContext` provider for React context data.
  * - IntlProvider for @edx/frontend-i18n internationalization
- * - Optionally a redux `Provider`. Will only be included if a `store` property is passed to
- * `AppProvider`.
  * - A `Router` for react-router.
  *
  * @param {Object} props
- * @param {Object} [props.store] A redux store.
  * @memberof module:React
  */
-export default function AppProvider({ store, children, wrapWithRouter }) {
+export default function AppProvider({ children }: AppProviderProps) {
   const [config, setConfig] = useState(getConfig());
   const [authenticatedUser, setAuthenticatedUser] = useState(getAuthenticatedUser());
   const [locale, setLocale] = useState(getLocale());
@@ -71,29 +68,9 @@ export default function AppProvider({ store, children, wrapWithRouter }) {
         <AppContext.Provider
           value={appContextValue}
         >
-          <OptionalReduxProvider store={store}>
-            {wrapWithRouter ? (
-              <Router basename={getBasename()}>
-                <div data-testid="browser-router">
-                  {children}
-                </div>
-              </Router>
-            ) : children}
-          </OptionalReduxProvider>
+          {children}
         </AppContext.Provider>
       </ErrorBoundary>
     </IntlProvider>
   );
 }
-
-AppProvider.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  store: PropTypes.object,
-  children: PropTypes.node.isRequired,
-  wrapWithRouter: PropTypes.bool,
-};
-
-AppProvider.defaultProps = {
-  store: null,
-  wrapWithRouter: true,
-};

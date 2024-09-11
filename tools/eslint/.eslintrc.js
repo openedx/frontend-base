@@ -88,5 +88,6 @@ module.exports = {
       classes: 'defaultProps',
       functions: 'ignore',
     }],
+    'no-param-reassign': 'off',
   },
 };
