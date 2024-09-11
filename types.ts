@@ -1,27 +1,38 @@
 import { ElementType } from 'react';
+import { RouteObject } from 'react-router';
+
+export type AppConfig = ExternalAppConfig | InternalAppConfig | FederatedAppConfig;
+
+export enum AppConfigTypes {
+  EXTERNAL = 'external',
+  INTERNAL = 'internal',
+  FEDERATED = 'federated',
+}
 
 export interface ExternalAppConfig {
+  type: AppConfigTypes.EXTERNAL,
   appId: string,
+  moduleId: string,
   url: string,
 }
 
+export interface ApplicationModuleConfig {
+  routes: Array<RouteObject>
+}
+
 export interface InternalAppConfig {
+  type: AppConfigTypes.INTERNAL,
   appId: string,
-  component: ElementType,
-  path: string,
-  config?: {
-    [key: string]: any,
-  }
+  config: ApplicationModuleConfig,
+  path?: string,
 }
 
 export interface FederatedAppConfig {
+  type: AppConfigTypes.FEDERATED,
   appId: string,
   remoteUrl: string,
   moduleId: string,
   path: string,
-  config?: {
-    [key: string]: any,
-  }
 }
 /**
  * Defines the changes to be made to either the default widget(s) or to any
@@ -181,4 +192,10 @@ export interface User {
   userId: string,
   roles: Array<string>,
   administrator: boolean,
+}
+
+export enum HeaderTypes {
+  DEFAULT = 'default',
+  STUDIO = 'studio',
+  LEARNING = 'learning',
 }

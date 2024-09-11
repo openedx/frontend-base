@@ -101,14 +101,17 @@ export {
 } from './runtime';
 
 export type {
+  ApplicationModuleConfig,
   ExternalAppConfig,
   FederatedAppConfig,
+  InsertDirectPluginWidget,
+  InsertIframePluginWidget,
   InternalAppConfig,
   ModuleConfig,
   ProjectSiteConfig
 } from './types';
 
 export {
-  PluginOperations,
+  AppConfigTypes, HeaderTypes, PluginOperations,
   PluginTypes
 } from './types';
