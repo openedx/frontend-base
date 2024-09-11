@@ -422,7 +422,7 @@ You must then import this new stylesheet into your `site.config` file:
 ```diff
 + import './project.scss';
 
-const config: SiteConfig = {
+const config: ProjectSiteConfig = {
   // config document
 }
 

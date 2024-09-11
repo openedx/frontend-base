@@ -1,6 +1,6 @@
-import { SiteConfig } from '..';
+import { ProjectSiteConfig } from '../types';
 
-const config: SiteConfig = {
+const config: ProjectSiteConfig = {
   apps: [],
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
