@@ -105,7 +105,7 @@ export type {
   FederatedAppConfig,
   InternalAppConfig,
   ModuleConfig,
-  SiteConfig
+  ProjectSiteConfig
 } from './types';
 
 export {
