@@ -1,14 +1,16 @@
-import PropTypes from 'prop-types';
-import Cookies from 'universal-cookie';
 import merge from 'lodash.merge';
+import PropTypes from 'prop-types';
+import { MessageDescriptor, MessageFormatElement } from 'react-intl';
+import Cookies from 'universal-cookie';
 
 import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-relativetimeformat/polyfill';
+
 import '@formatjs/intl-pluralrules/locale-data/ar';
+import '@formatjs/intl-pluralrules/locale-data/ca';
 import '@formatjs/intl-pluralrules/locale-data/en';
 import '@formatjs/intl-pluralrules/locale-data/es';
 import '@formatjs/intl-pluralrules/locale-data/fr';
-import '@formatjs/intl-pluralrules/locale-data/zh';
-import '@formatjs/intl-pluralrules/locale-data/ca';
 import '@formatjs/intl-pluralrules/locale-data/he';
 import '@formatjs/intl-pluralrules/locale-data/id';
 import '@formatjs/intl-pluralrules/locale-data/ko';
@@ -17,14 +19,13 @@ import '@formatjs/intl-pluralrules/locale-data/pt';
 import '@formatjs/intl-pluralrules/locale-data/ru';
 import '@formatjs/intl-pluralrules/locale-data/th';
 import '@formatjs/intl-pluralrules/locale-data/uk';
+import '@formatjs/intl-pluralrules/locale-data/zh';
 
-import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/locale-data/ar';
+import '@formatjs/intl-relativetimeformat/locale-data/ca';
 import '@formatjs/intl-relativetimeformat/locale-data/en';
 import '@formatjs/intl-relativetimeformat/locale-data/es';
 import '@formatjs/intl-relativetimeformat/locale-data/fr';
-import '@formatjs/intl-relativetimeformat/locale-data/zh';
-import '@formatjs/intl-relativetimeformat/locale-data/ca';
 import '@formatjs/intl-relativetimeformat/locale-data/he';
 import '@formatjs/intl-relativetimeformat/locale-data/id';
 import '@formatjs/intl-relativetimeformat/locale-data/ko';
@@ -33,6 +34,10 @@ import '@formatjs/intl-relativetimeformat/locale-data/pt';
 import '@formatjs/intl-relativetimeformat/locale-data/ru';
 import '@formatjs/intl-relativetimeformat/locale-data/th';
 import '@formatjs/intl-relativetimeformat/locale-data/uk';
+import '@formatjs/intl-relativetimeformat/locale-data/zh';
+
+import { SiteConfig } from '../../types';
+import { LoggingService } from '../logging/types';
 
 const cookies = new Cookies();
 const supportedLocales = [
@@ -61,9 +66,9 @@ const rtlLocales = [
   'ur', // Urdu (not currently supported)
 ];
 
-let config = null;
-let loggingService = null;
-let messages = null;
+let config: SiteConfig | null = null;
+let loggingService: LoggingService | null = null;
+let messages: { [locale: string]: Record<string, string> | Record<string, MessageFormatElement[]> | undefined };
 
 /**
  * @memberof module:Internationalization
@@ -128,6 +133,10 @@ export function getPrimaryLanguageSubtag(code) {
  * @memberof module:Internationalization
  */
 export function findSupportedLocale(locale) {
+  if (messages === undefined) {
+    throw new Error('findSupportedLocale called before configuring i18n. Call configure with messages first.');
+  }
+
   if (messages[locale] !== undefined) {
     return locale;
   }
@@ -144,15 +153,16 @@ export function findSupportedLocale(locale) {
  * Gracefully fall back to a more general primary language subtag or to English (en)
  * if we don't support that language.
  *
- * @param {string} locale If a locale is provided, returns the closest supported locale. Optional.
+ * @param {string|undefined} locale If a locale is provided, returns the closest supported locale. Optional.
  * @throws An error if i18n has not yet been configured.
  * @returns {string}
  * @memberof module:Internationalization
  */
-export function getLocale(locale) {
-  if (messages === null) {
+export function getLocale(locale?: string) {
+  if (messages === null || config === null) {
     throw new Error('getLocale called before configuring i18n. Call configure with messages first.');
   }
+
   // 1. Explicit application request
   if (locale !== undefined) {
     return findSupportedLocale(locale);
@@ -178,6 +188,10 @@ export function getLocale(locale) {
  * @memberof module:Internationalization
  */
 export function getMessages(locale = getLocale()) {
+  if (messages === undefined) {
+    throw new Error('getMessages called before configuring i18n. Call configure with messages first.');
+  }
+
   return messages[locale];
 }
 
@@ -247,6 +261,12 @@ export function mergeMessages(newMessages) {
   return messages;
 }
 
+interface ConfigureI18nOptions {
+  loggingService: LoggingService,
+  messages: Array<MessageDescriptor> | { [locale: string] : Array<MessageDescriptor> },
+  config: SiteConfig,
+}
+
 /**
  * Configures the i18n library with messages for your application.
  *
@@ -259,7 +279,7 @@ export function mergeMessages(newMessages) {
  * @param {Object} options.messages
  * @memberof module:Internationalization
  */
-export function configure(options) {
+export function configure(options: ConfigureI18nOptions) {
   PropTypes.checkPropTypes(optionsShape, options, 'property', 'i18n');
   // eslint-disable-next-line prefer-destructuring
   loggingService = options.loggingService;
@@ -267,7 +287,7 @@ export function configure(options) {
   config = options.config;
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
 
-  if (config.ENVIRONMENT !== 'production') {
+  if (config.ENVIRONMENT !== 'production' && messages !== undefined) {
     Object.keys(messages).forEach((key) => {
       if (supportedLocales.indexOf(key) < 0) {
         console.warn(`Unexpected locale: ${key}`); // eslint-disable-line no-console
@@ -275,7 +295,7 @@ export function configure(options) {
     });
 
     supportedLocales.forEach((key) => {
-      if (messages[key] === undefined) {
+      if (messages === undefined || messages[key] === undefined) {
         console.warn(`Missing locale: ${key}`); // eslint-disable-line no-console
       }
     });
