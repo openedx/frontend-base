@@ -1,9 +1,9 @@
-import { SiteConfig } from '@openedx/frontend-base';
 import { AuthenticatedPage, ExamplePage } from './src';
 
+import { ProjectSiteConfig } from '@openedx/frontend-base';
 import './src/project.scss';
 
-const config: SiteConfig = {
+const config: ProjectSiteConfig = {
   apps: [
     {
       appId: 'examplePage',

@@ -1,7 +1,7 @@
-import { PluginOperations, PluginTypes, SiteConfig } from '@openedx/frontend-base';
+import { PluginOperations, PluginTypes } from '@openedx/frontend-base';
 import { AuthenticatedPage, ExamplePage, PluginPage } from './src';
 
-import { InsertDirectPluginWidget } from '@openedx/frontend-base/dist/types';
+import { InsertDirectPluginWidget, ProjectSiteConfig } from '@openedx/frontend-base';
 import ModularComponent from './src/components/ModularComponent';
 import PluginDirect from './src/components/PluginDirect';
 import './src/project.scss';
@@ -23,7 +23,7 @@ const wrapWidget = ({ component, idx }) => (
   </div>
 );
 
-const config: SiteConfig = {
+const config: ProjectSiteConfig = {
   apps: [
     {
       appId: 'examplePage',
