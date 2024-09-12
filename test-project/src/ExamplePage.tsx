@@ -14,6 +14,7 @@ import appleImg from './apple.jpg';
 import appleUrl from './apple.svg';
 import Image from './Image';
 import messages from './messages';
+import ParagonPreview from './ParagonPreview';
 
 function printTestResult(value) {
   return value ? '✅' : '❌';
@@ -87,6 +88,7 @@ export default function ExamplePage() {
 
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>
+      <ParagonPreview />
     </Container>
   )
 }

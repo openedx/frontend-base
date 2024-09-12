@@ -16,6 +16,7 @@ module.exports = {
   ],
   globals: {
     newrelic: false,
+    PARAGON_THEME: false,
   },
   ignorePatterns: [
     'module.config.js',
