@@ -1,5 +1,7 @@
-const path = require('path');
-const fs = require('fs');
+import fs from 'fs';
+import path from 'path';
+import { Chunk } from 'webpack';
+import { ParagonThemeCss, ParagonThemeUrlsFile } from './types';
 
 /**
  * Retrieves the name of the brand package from the given directory.
@@ -7,7 +9,7 @@ const fs = require('fs');
  * @param {string} dir - The directory path containing the package.json file.
  * @return {string} The name of the brand package, or an empty string if not found.
  */
-function getBrandPackageName(dir) {
+function getBrandPackageName(dir: string) {
   const appDependencies = JSON.parse(fs.readFileSync(path.resolve(dir, 'package.json'), 'utf-8')).dependencies;
   return Object.keys(appDependencies).find((key) => key.match(/@(open)?edx\/brand/)) || '';
 }
@@ -19,7 +21,7 @@ function getBrandPackageName(dir) {
  * @param {string} dir Path to directory containing `node_modules`.
  * @returns {string} Paragon dependency version of the consuming application
  */
-function getParagonVersion(dir, { isBrandOverride = false } = {}) {
+export function getParagonVersion(dir: string, { isBrandOverride = false } = {}) {
   const npmPackageName = isBrandOverride ? getBrandPackageName(dir) : '@openedx/paragon';
   const pathToPackageJson = `${dir}/node_modules/${npmPackageName}/package.json`;
   if (!fs.existsSync(pathToPackageJson)) {
@@ -28,25 +30,9 @@ function getParagonVersion(dir, { isBrandOverride = false } = {}) {
   return JSON.parse(fs.readFileSync(pathToPackageJson, 'utf-8')).version;
 }
 
-/**
- * @typedef {Object} ParagonThemeCssAsset
- * @property {string} filePath
- * @property {string} entryName
- * @property {string} outputChunkName
- */
 
-/**
- * @typedef {Object} ParagonThemeVariantCssAsset
- * @property {string} filePath
- * @property {string} entryName
- * @property {string} outputChunkName
- */
 
-/**
- * @typedef {Object} ParagonThemeCss
- * @property {ParagonThemeCssAsset} core The metadata about the core Paragon theme CSS
- * @property {Object.<string, ParagonThemeVariantCssAsset>} variants A collection of theme variants.
- */
+
 
 /**
  * Attempts to extract the Paragon theme CSS from the locally installed `@openedx/paragon` package.
@@ -54,14 +40,14 @@ function getParagonVersion(dir, { isBrandOverride = false } = {}) {
  * @param {boolean} isBrandOverride
  * @returns {ParagonThemeCss}
  */
-function getParagonThemeCss(dir, { isBrandOverride = false } = {}) {
+export function getParagonThemeCss(dir: string, { isBrandOverride = false } = {}): ParagonThemeCss | undefined {
   const npmPackageName = isBrandOverride ? getBrandPackageName(dir) : '@openedx/paragon';
   const pathToParagonThemeOutput = path.resolve(dir, 'node_modules', npmPackageName, 'dist', 'theme-urls.json');
 
   if (!fs.existsSync(pathToParagonThemeOutput)) {
     return undefined;
   }
-  const paragonConfig = JSON.parse(fs.readFileSync(pathToParagonThemeOutput, 'utf-8'));
+  const paragonConfig: ParagonThemeUrlsFile = JSON.parse(fs.readFileSync(pathToParagonThemeOutput, 'utf-8'));
   const {
     core: themeCore,
     variants: themeVariants,
@@ -89,7 +75,7 @@ function getParagonThemeCss(dir, { isBrandOverride = false } = {}) {
     });
   }, {});
 
-  if (!coreCssExists || themeVariantResults.length === 0) {
+  if (!coreCssExists || Object.keys(themeVariantResults).length === 0) {
     return undefined;
   }
 
@@ -118,24 +104,27 @@ function getParagonThemeCss(dir, { isBrandOverride = false } = {}) {
  * @param {ParagonThemeCss} paragonThemeCss The Paragon theme CSS metadata.
  * @returns {Object.<string, CacheGroup>} The cache groups for the Paragon theme CSS.
  */
-function getParagonCacheGroups(paragonThemeCss) {
+export function getParagonCacheGroups(paragonThemeCss: ParagonThemeCss | undefined) {
   if (!paragonThemeCss) {
     return {};
   }
-  const cacheGroups = {
-    [paragonThemeCss.core.outputChunkName]: {
+  const cacheGroups: { [index: string]: { type: string, name: string, chunks: (chunk: Chunk) => boolean, enforce: boolean } } = {};
+
+  if (paragonThemeCss.core !== undefined) {
+    const { core } = paragonThemeCss;
+    cacheGroups[paragonThemeCss.core.outputChunkName] = {
       type: 'css/mini-extract',
       name: paragonThemeCss.core.outputChunkName,
-      chunks: chunk => chunk.name === paragonThemeCss.core.entryName,
+      chunks: (chunk: Chunk) => chunk.name === core.entryName,
       enforce: true,
-    },
-  };
+    }
+  }
 
   Object.values(paragonThemeCss.variants).forEach(({ entryName, outputChunkName }) => {
     cacheGroups[outputChunkName] = {
       type: 'css/mini-extract',
       name: outputChunkName,
-      chunks: chunk => chunk.name === entryName,
+      chunks: (chunk: Chunk) => chunk.name === entryName,
       enforce: true,
     };
   });
@@ -151,21 +140,17 @@ function getParagonCacheGroups(paragonThemeCss) {
  * }
  * ```
  */
-function getParagonEntryPoints(paragonThemeCss) {
+export function getParagonEntryPoints(paragonThemeCss: ParagonThemeCss | undefined) {
   if (!paragonThemeCss) {
     return {};
   }
 
-  const entryPoints = { [paragonThemeCss.core.entryName]: path.resolve(process.cwd(), paragonThemeCss.core.filePath) };
+  const entryPoints: { [entryName: string]: string } = {};
+  if (paragonThemeCss.core !== undefined) {
+    entryPoints[paragonThemeCss.core.entryName] = path.resolve(process.cwd(), paragonThemeCss.core.filePath);
+  }
   Object.values(paragonThemeCss.variants).forEach(({ filePath, entryName }) => {
     entryPoints[entryName] = path.resolve(process.cwd(), filePath);
   });
   return entryPoints;
 }
-
-module.exports = {
-  getParagonVersion,
-  getParagonThemeCss,
-  getParagonCacheGroups,
-  getParagonEntryPoints,
-};

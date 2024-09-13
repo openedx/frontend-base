@@ -1,7 +1,7 @@
-const { sources } = require('webpack');
+import { Compilation, sources } from "webpack";
 
-const { getCssAssetsFromCompilation } = require('./assetUtils');
-const { generateScriptContents, insertScriptContentsIntoDocument } = require('./scriptUtils');
+import { getCssAssetsFromCompilation } from './assetUtils';
+import { generateScriptContents, insertScriptContentsIntoDocument } from './scriptUtils';
 
 /**
  * Injects metadata into the HTML document by modifying the 'index.html' asset in the compilation.
@@ -14,11 +14,16 @@ const { generateScriptContents, insertScriptContentsIntoDocument } = require('./
  * @param {string} options.brandVersion - The version of the brand theme.
  * @return {Object|undefined} The script contents object if the 'index.html' asset exists, otherwise undefined.
  */
-function injectMetadataIntoDocument(compilation, {
+export function injectMetadataIntoDocument(compilation: Compilation, {
   paragonThemeCss,
   paragonVersion,
   brandThemeCss,
   brandVersion,
+}: {
+  paragonThemeCss: any,
+  paragonVersion: string,
+  brandThemeCss: any,
+  brandVersion: string,
 }) {
   const file = compilation.getAsset('index.html');
   if (!file) {
@@ -51,10 +56,13 @@ function injectMetadataIntoDocument(compilation, {
     brandVersion,
   });
 
-  const originalSource = file.source.source();
+  // We expect this to be a string at all times.
+  const originalSource = file.source.source() as string;
   const newSource = insertScriptContentsIntoDocument({
     originalSource,
+    // @ts-ignore This parameter doesn't exist in the function.
     coreCssAsset: paragonCoreCssAsset,
+    // @ts-ignore This parameter doesn't exist in the function.
     themeVariantCssAssets: paragonThemeVariantCssAssets,
     scriptContents,
   });
@@ -63,7 +71,3 @@ function injectMetadataIntoDocument(compilation, {
 
   return scriptContents;
 }
-
-module.exports = {
-  injectMetadataIntoDocument,
-};

@@ -1,5 +1,7 @@
-const { insertStylesheetsIntoDocument } = require('./stylesheetUtils');
-const { handleVersionSubstitution } = require('./tagUtils');
+import { sources } from 'webpack';
+import { ParagonThemeUrls } from '../../../types';
+import { insertStylesheetsIntoDocument } from './stylesheetUtils';
+import { handleVersionSubstitution } from './tagUtils';
 
 /**
  * Injects Paragon core stylesheets into the document.
@@ -11,15 +13,21 @@ const { handleVersionSubstitution } = require('./tagUtils');
  * @param {Object} options.brandThemeCss - The brand theme CSS object.
  * @return {string|object} The modified HTML document with Paragon core stylesheets injected.
  */
-function injectParagonCoreStylesheets({
+export function injectParagonCoreStylesheets({
   source,
   paragonCoreCss,
   paragonThemeCss,
   brandThemeCss,
+}: {
+  source: string,
+  paragonCoreCss: any,
+  paragonThemeCss: any,
+  brandThemeCss: any,
 }) {
   return insertStylesheetsIntoDocument({
     source,
     urls: paragonCoreCss.urls,
+    // @ts-ignore These two parameters don't exist on insertStylesheetsIntoDocument
     paragonThemeCss,
     brandThemeCss,
   });
@@ -35,17 +43,18 @@ function injectParagonCoreStylesheets({
  * @param {Object} options.brandThemeCss - The brand theme CSS object.
  * @return {string|object} The modified HTML document with Paragon theme variant stylesheets injected.
  */
-function injectParagonThemeVariantStylesheets({
+export function injectParagonThemeVariantStylesheets({
   source,
   paragonThemeVariantCss,
   paragonThemeCss,
   brandThemeCss,
-}) {
-  let newSource = source;
-  Object.values(paragonThemeVariantCss).forEach(({ urls }) => {
+}: { source: sources.ReplaceSource | undefined, paragonThemeVariantCss: any, paragonThemeCss: any, brandThemeCss: any }) {
+  let newSource: sources.ReplaceSource | undefined = source;
+  Object.values(paragonThemeVariantCss).forEach(({ urls }: any) => {
     newSource = insertStylesheetsIntoDocument({
-      source: typeof newSource === 'object' ? newSource.source() : newSource,
+      source: (typeof newSource === 'object' ? newSource.source() : newSource) as string,
       urls,
+      // @ts-ignore These two parameters don't exist on insertStylesheetsIntoDocument
       paragonThemeCss,
       brandThemeCss,
     });
@@ -61,23 +70,31 @@ function injectParagonThemeVariantStylesheets({
  * @param {string} options.brandVersion - The version of the brand theme.
  * @return {Object} An object containing the URLs of the Paragon stylesheets.
  */
-function getParagonStylesheetUrls({ paragonThemeUrls, paragonVersion, brandVersion }) {
-  const paragonCoreCssUrl = typeof paragonThemeUrls.core.urls === 'object' ? paragonThemeUrls.core.urls.default : paragonThemeUrls.core.url;
-  const brandCoreCssUrl = typeof paragonThemeUrls.core.urls === 'object' ? paragonThemeUrls.core.urls.brandOverride : undefined;
+export function getParagonStylesheetUrls({ paragonThemeUrls, paragonVersion, brandVersion }: { paragonThemeUrls: ParagonThemeUrls, paragonVersion: string, brandVersion: string }): ParagonThemeUrls {
+  const paragonCoreCssUrl = 'urls' in paragonThemeUrls.core && paragonThemeUrls.core.urls !== undefined ? paragonThemeUrls.core.urls.default : paragonThemeUrls.core.url;
+  const brandCoreCssUrl = 'urls' in paragonThemeUrls.core && paragonThemeUrls.core.urls !== undefined ? paragonThemeUrls.core.urls.brandOverride : undefined;
 
   const defaultThemeVariants = paragonThemeUrls.defaults || {};
 
   const coreCss = {
     urls: {
-      default: handleVersionSubstitution({ url: paragonCoreCssUrl, wildcardKeyword: '$paragonVersion', localVersion: paragonVersion }),
-      brandOverride: handleVersionSubstitution({ url: brandCoreCssUrl, wildcardKeyword: '$brandVersion', localVersion: brandVersion }),
+      default: handleVersionSubstitution({
+        url: paragonCoreCssUrl,
+        wildcardKeyword: '$paragonVersion',
+        localVersion: paragonVersion
+      }),
+      brandOverride: handleVersionSubstitution({
+        url: brandCoreCssUrl,
+        wildcardKeyword: '$brandVersion',
+        localVersion: brandVersion
+      }),
     },
   };
 
-  const themeVariantsCss = {};
+  const themeVariantsCss: any = {};
   const themeVariantsEntries = Object.entries(paragonThemeUrls.variants || {});
   themeVariantsEntries.forEach(([themeVariant, { url, urls }]) => {
-    const themeVariantMetadata = { urls: null };
+    const themeVariantMetadata = { urls: {} };
     if (url) {
       themeVariantMetadata.urls = {
         default: handleVersionSubstitution({
@@ -89,7 +106,7 @@ function getParagonStylesheetUrls({ paragonThemeUrls, paragonVersion, brandVersi
         // but we still need to return the property.
         brandOverride: undefined,
       };
-    } else {
+    } else if (urls) {
       themeVariantMetadata.urls = {
         default: handleVersionSubstitution({
           url: urls.default,
@@ -112,9 +129,3 @@ function getParagonStylesheetUrls({ paragonThemeUrls, paragonVersion, brandVersi
     defaults: defaultThemeVariants,
   };
 }
-
-module.exports = {
-  injectParagonCoreStylesheets,
-  injectParagonThemeVariantStylesheets,
-  getParagonStylesheetUrls,
-};

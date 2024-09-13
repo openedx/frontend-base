@@ -443,6 +443,14 @@ Then work through the conflicts and use a merge commit to add the history into t
 
 Then move the files out of the way (move src to some other sub-dir, mostly) to make room for the next repo.
 
+### Latest repository merges
+
+- frontend-component-header - Up to date as of 9/12/2024
+- frontend-component-footer - Up to date as of 9/12/2024
+- frontend-platform
+- frontend-build - Up to date as of 9/12/2024
+- frontend-plugin-framework
+
 # Other notable changes
 
 - Cease using `AUTHN_MINIMAL_HEADER`, replace it with an actual minimal header.

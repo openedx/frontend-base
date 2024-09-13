@@ -1,14 +1,16 @@
-const { Compilation, sources } = require('webpack');
-const {
-  getParagonVersion,
+import { Compilation, Compiler, WebpackPluginInstance, sources } from "webpack";
+
+import {
   getParagonThemeCss,
-} = require('../../../config/data/paragonUtils');
-const {
-  injectMetadataIntoDocument,
+  getParagonVersion,
+} from '../../paragonUtils';
+import { ParagonThemeUrls } from "../../types";
+import {
   getParagonStylesheetUrls,
+  injectMetadataIntoDocument,
   injectParagonCoreStylesheets,
   injectParagonThemeVariantStylesheets,
-} = require('./utils');
+} from './utils';
 
 // Get Paragon and brand versions / CSS files from disk.
 const paragonVersion = getParagonVersion(process.cwd());
@@ -20,7 +22,12 @@ const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true 
  * 1. Injects `PARAGON_THEME` global variable into the HTML document during the Webpack compilation process.
  * 2. Injects `<link rel="preload" as="style">` element(s) for the Paragon and brand CSS into the HTML document.
  */
-class ParagonWebpackPlugin {
+export default class ParagonWebpackPlugin implements WebpackPluginInstance {
+  pluginName: string;
+  paragonThemeUrlsConfig: ParagonThemeUrls | {};
+  processAssetsHandlers: ((compilation: any) => void)[];
+  paragonMetadata: any;
+
   constructor({ processAssetsHandlers = [] } = {}) {
     this.pluginName = 'ParagonWebpackPlugin';
     this.paragonThemeUrlsConfig = {};
@@ -42,7 +49,7 @@ class ParagonWebpackPlugin {
    */
   async resolveParagonThemeUrlsFromConfig() {
     try {
-      this.paragonThemeUrlsConfig = JSON.parse(process.env.PARAGON_THEME_URLS);
+      this.paragonThemeUrlsConfig = JSON.parse(process.env.PARAGON_THEME_URLS || '{}');
     } catch (error) {
       console.info('Paragon Plugin cannot load PARAGON_THEME_URLS env variable, skipping.');
     }
@@ -52,7 +59,7 @@ class ParagonWebpackPlugin {
    * Generates `PARAGON_THEME` global variable in HTML document.
    * @param {Object} compilation Webpack compilation object.
    */
-  injectParagonMetadataIntoDocument(compilation) {
+  injectParagonMetadataIntoDocument(compilation: Compilation) {
     const paragonMetadata = injectMetadataIntoDocument(compilation, {
       paragonThemeCss,
       paragonVersion,
@@ -64,7 +71,7 @@ class ParagonWebpackPlugin {
     }
   }
 
-  injectParagonStylesheetsIntoDocument(compilation) {
+  injectParagonStylesheetsIntoDocument(compilation: Compilation) {
     const file = compilation.getAsset('index.html');
 
     // If the `index.html` hasn't loaded yet, or there are no Paragon theme URLs, then there is nothing to do yet.
@@ -74,7 +81,7 @@ class ParagonWebpackPlugin {
 
     // Generates `<link rel="preload" as="style">` element(s) for the Paragon and brand CSS files.
     const paragonStylesheetUrls = getParagonStylesheetUrls({
-      paragonThemeUrls: this.paragonThemeUrlsConfig,
+      paragonThemeUrls: this.paragonThemeUrlsConfig as ParagonThemeUrls,
       paragonVersion,
       brandVersion,
     });
@@ -83,7 +90,8 @@ class ParagonWebpackPlugin {
       variants: paragonThemeVariantCss,
     } = paragonStylesheetUrls;
 
-    const originalSource = file.source.source();
+    // We do not expect to have a Buffer here, ever.
+    const originalSource = file.source.source() as string;
 
     // Inject core CSS
     let newSource = injectParagonCoreStylesheets({
@@ -95,16 +103,18 @@ class ParagonWebpackPlugin {
 
     // Inject theme variant CSS
     newSource = injectParagonThemeVariantStylesheets({
+      // @ts-ignore newSource is possibly undefined here.
       source: newSource.source(),
       paragonThemeVariantCss,
       paragonThemeCss,
       brandThemeCss,
     });
 
+    // @ts-ignore newSource is possibly undefined here.
     compilation.updateAsset('index.html', new sources.RawSource(newSource.source()));
   }
 
-  apply(compiler) {
+  apply(compiler: Compiler) {
     compiler.hooks.thisCompilation.tap(this.pluginName, (compilation) => {
       compilation.hooks.processAssets.tap(
         {
@@ -122,5 +132,3 @@ class ParagonWebpackPlugin {
     });
   }
 }
-
-module.exports = ParagonWebpackPlugin;
