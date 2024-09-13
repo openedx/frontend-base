@@ -1,7 +1,8 @@
-const { sources } = require('webpack');
-const parse5 = require('parse5');
+import * as parse5 from 'parse5';
+import { sources } from 'webpack';
 
-const { getDescendantByTag, minifyScript } = require('./tagUtils');
+import { ParagonScriptContents } from '../../../types';
+import { getDescendantByTag, minifyScript } from './tagUtils';
 
 /**
  * Finds the insertion point for a script in an HTML document.
@@ -12,7 +13,7 @@ const { getDescendantByTag, minifyScript } = require('./tagUtils');
  * @throws {Error} If the body element is missing in the HTML document.
  * @return {number} The insertion point for the script in the HTML document.
  */
-function findScriptInsertionPoint({ document, originalSource }) {
+function findScriptInsertionPoint({ document, originalSource }: { document: any, originalSource: string }) {
   const bodyElement = getDescendantByTag(document, 'body');
   if (!bodyElement) {
     throw new Error('Missing body element in index.html.');
@@ -35,10 +36,10 @@ function findScriptInsertionPoint({ document, originalSource }) {
  * @param {Object} options.scriptContents - The contents of the script to be inserted.
  * @return {sources.ReplaceSource} The new source with the modified HTML content.
  */
-function insertScriptContentsIntoDocument({
+export function insertScriptContentsIntoDocument({
   originalSource,
   scriptContents,
-}) {
+}: { originalSource: string, scriptContents: ParagonScriptContents }) {
   // parse file as html document
   const document = parse5.parse(originalSource, {
     sourceCodeLocationInfo: true,
@@ -81,11 +82,16 @@ function insertScriptContentsIntoDocument({
  * @param {Object} options.themeVariantCssAssets - The themeVariantCssAssets to be added to the returned object.
  * @return {Object} The object with the provided version, defaults, coreCssAsset, and themeVariantCssAssets.
  */
-function addToScriptContents({
+export function addToScriptContents({
   version,
   defaults,
   coreCssAsset,
   themeVariantCssAssets,
+}: {
+  defaults: any,
+  coreCssAsset: any,
+  themeVariantCssAssets: any,
+  version: string,
 }) {
   return {
     version,
@@ -111,7 +117,7 @@ function addToScriptContents({
  * @param {string} options.brandVersion - The version of the brand theme.
  * @return {Object} The script contents object.
  */
-function generateScriptContents({
+export function generateScriptContents({
   paragonCoreCssAsset,
   paragonThemeVariantCssAssets,
   brandCoreCssAsset,
@@ -120,8 +126,8 @@ function generateScriptContents({
   paragonVersion,
   brandThemeCss,
   brandVersion,
-}) {
-  const scriptContents = {};
+}: { paragonCoreCssAsset: any, paragonThemeVariantCssAssets: any, brandCoreCssAsset: any, brandThemeVariantCssAssets: any, paragonThemeCss: any, paragonVersion: string, brandThemeCss: any, brandVersion: string }) {
+  const scriptContents: ParagonScriptContents = {};
   scriptContents.paragon = addToScriptContents({
     version: paragonVersion,
     coreCssAsset: paragonCoreCssAsset,
@@ -136,9 +142,3 @@ function generateScriptContents({
   });
   return scriptContents;
 }
-
-module.exports = {
-  addToScriptContents,
-  insertScriptContentsIntoDocument,
-  generateScriptContents,
-};

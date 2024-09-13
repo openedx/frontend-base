@@ -1,26 +1,25 @@
 import { transform } from '@formatjs/ts-transformer';
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import PostCssAutoprefixerPlugin from 'autoprefixer';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
-
-import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
-import ParagonWebpackPlugin from '../lib/plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
-import {
-  getParagonThemeCss,
-  getParagonCacheGroups,
-  getParagonEntryPoints,
-} from './data/paragonUtils';
 import getLocalAliases from './getLocalAliases';
 import getSharedDependencies from './getSharedDependencies';
+import {
+  getParagonCacheGroups,
+  getParagonEntryPoints,
+  getParagonThemeCss,
+} from './paragonUtils';
+import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
 
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });

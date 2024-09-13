@@ -14,24 +14,21 @@ import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
-
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
-import ParagonWebpackPlugin from '../lib/plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
+import getLocalAliases from './getLocalAliases';
+import getSharedDependencies from './getSharedDependencies';
 import {
   getParagonCacheGroups,
   getParagonEntryPoints,
   getParagonThemeCss,
-} from './data/paragonUtils';
-import getLocalAliases from './getLocalAliases';
-import getSharedDependencies from './getSharedDependencies';
+} from './paragonUtils';
+import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
 
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
-
-const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
-
 const aliases = getLocalAliases();
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const config: Configuration = {
   mode: 'production',

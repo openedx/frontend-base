@@ -5,7 +5,7 @@
  * @param {string} tag - The tag name to search for.
  * @return {Object|null} The first descendant node with the specified tag name, or null if not found.
  */
-function getDescendantByTag(node, tag) {
+export function getDescendantByTag(node: any, tag: string): any {
   for (let i = 0; i < node.childNodes?.length; i++) {
     if (node.childNodes[i].tagName === tag) {
       return node.childNodes[i];
@@ -28,7 +28,7 @@ function getDescendantByTag(node, tag) {
  * @return {string} The URL with the wildcard keyword substituted with the local version,
  *                 or the original URL if no substitution is needed.
  */
-function handleVersionSubstitution({ url, wildcardKeyword, localVersion }) {
+export function handleVersionSubstitution({ url, wildcardKeyword, localVersion }: { url: string | undefined, wildcardKeyword: string, localVersion: string }) {
   if (!url || !url.includes(wildcardKeyword) || !localVersion) {
     return url;
   }
@@ -41,7 +41,7 @@ function handleVersionSubstitution({ url, wildcardKeyword, localVersion }) {
  * @param {string} script - The script to be minified.
  * @return {string} The minified script.
  */
-function minifyScript(script) {
+export function minifyScript(script: string) {
   return script
     .replace(/>[\r\n ]+</g, '><')
     .replace(/(<.*?>)|\s+/g, (m, $1) => {
@@ -50,9 +50,3 @@ function minifyScript(script) {
     })
     .trim();
 }
-
-module.exports = {
-  getDescendantByTag,
-  handleVersionSubstitution,
-  minifyScript,
-};
