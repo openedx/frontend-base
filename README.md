@@ -447,8 +447,9 @@ Then move the files out of the way (move src to some other sub-dir, mostly) to m
 
 - frontend-component-header - Up to date as of 9/12/2024
 - frontend-component-footer - Up to date as of 9/12/2024
-- frontend-platform         -
 - frontend-build            - Up to date as of 9/12/2024
+
+- frontend-platform         - Up to date as of 9/13/2024
 - frontend-plugin-framework - Up to date as of 9/13/2024
 
 # Other notable changes
