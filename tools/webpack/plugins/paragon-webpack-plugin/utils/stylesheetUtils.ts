@@ -1,7 +1,7 @@
-const parse5 = require('parse5');
-const { sources } = require('webpack');
+import parse5 from 'parse5';
+import { sources } from 'webpack';
 
-const { getDescendantByTag } = require('./tagUtils');
+import { getDescendantByTag } from './tagUtils';
 
 /**
  * Finds the insertion point for a stylesheet in an HTML document.
@@ -12,7 +12,7 @@ const { getDescendantByTag } = require('./tagUtils');
  * @throws {Error} If the head element is missing in the HTML document.
  * @return {number} The insertion point for the stylesheet in the HTML document.
  */
-function findStylesheetInsertionPoint({ document, source }) {
+export function findStylesheetInsertionPoint({ document, source }: { document: Document, source: string}) {
   const headElement = getDescendantByTag(document, 'head');
   if (!headElement) {
     throw new Error('Missing head element in index.html.');
@@ -37,12 +37,12 @@ function findStylesheetInsertionPoint({ document, source }) {
  * @param {object} options.urls - The URLs of the stylesheets to be inserted.
  * @param {string} options.urls.default - The URL of the default stylesheet.
  * @param {string} options.urls.brandOverride - The URL of the brand override stylesheet.
- * @return {object} The new source code with the stylesheets inserted.
+ * @return {object|undefined} The new source code with the stylesheets inserted.
  */
-function insertStylesheetsIntoDocument({
+export function insertStylesheetsIntoDocument({
   source,
   urls,
-}) {
+}: { source: string, urls: any }) {
   // parse file as html document
   const document = parse5.parse(source, {
     sourceCodeLocationInfo: true,
@@ -58,7 +58,9 @@ function insertStylesheetsIntoDocument({
 
   // insert the brand overrides styles into the HTML document
   const stylesheetInsertionPoint = findStylesheetInsertionPoint({
+    // @ts-ignore Typescript complains this document instance is missing properties.  Is parse5.parse not returning a valid Document instance?
     document,
+    // @ts-ignore We're passing a ReplaceSource here, when we expect a string in the function.
     source: newSource,
   });
 
@@ -68,7 +70,7 @@ function insertStylesheetsIntoDocument({
    * @param {string} url - The URL of the stylesheet.
    * @return {string} The HTML code for the stylesheet link element.
    */
-  function createNewStylesheet(url) {
+  function createNewStylesheet(url: string) {
     const baseLink = `<link
       type="text/css"
       rel="preload"
@@ -81,6 +83,7 @@ function insertStylesheetsIntoDocument({
   }
 
   if (urls.default) {
+    // @ts-ignore getDescendantByTag requires two parameters.
     const existingDefaultLink = getDescendantByTag(`link[href='${urls.default}']`);
     if (!existingDefaultLink) {
       // create link to inject into the HTML document
@@ -90,6 +93,7 @@ function insertStylesheetsIntoDocument({
   }
 
   if (urls.brandOverride) {
+    // @ts-ignore getDescendantByTag requires two parameters.
     const existingBrandLink = getDescendantByTag(`link[href='${urls.brandOverride}']`);
     if (!existingBrandLink) {
       // create link to inject into the HTML document
@@ -100,8 +104,3 @@ function insertStylesheetsIntoDocument({
 
   return newSource;
 }
-
-module.exports = {
-  findStylesheetInsertionPoint,
-  insertStylesheetsIntoDocument,
-};

@@ -1,11 +1,13 @@
+import { Compilation } from "webpack";
+
 /**
  * Finds the core CSS asset from the given array of Paragon assets.
  *
  * @param {Array} paragonAssets - An array of Paragon assets.
  * @return {Object|undefined} The core CSS asset, or undefined if not found.
  */
-function findCoreCssAsset(paragonAssets) {
-  return paragonAssets?.find((asset) => asset.name.includes('core') && asset.name.endsWith('.css'));
+export function findCoreCssAsset(paragonAssets: any) {
+  return paragonAssets?.find((asset: any) => asset.name.includes('core') && asset.name.endsWith('.css'));
 }
 
 /**
@@ -18,14 +20,14 @@ function findCoreCssAsset(paragonAssets) {
  * @param {Object} [options.paragonThemeCss] - The Paragon theme CSS object.
  * @return {Object} - The theme variant CSS assets.
  */
-function findThemeVariantCssAssets(paragonAssets, {
+export function findThemeVariantCssAssets(paragonAssets: Array<any>, {
   isBrandOverride = false,
   brandThemeCss,
   paragonThemeCss,
-}) {
+}: { isBrandOverride: boolean, brandThemeCss: any, paragonThemeCss: any }) {
   const themeVariantsSource = isBrandOverride ? brandThemeCss?.variants : paragonThemeCss?.variants;
-  const themeVariantCssAssets = {};
-  Object.entries(themeVariantsSource || {}).forEach(([themeVariant, value]) => {
+  const themeVariantCssAssets: any = {};
+  Object.entries(themeVariantsSource || {}).forEach(([themeVariant, value]: any) => {
     const foundThemeVariantAsset = paragonAssets.find((asset) => asset.name.includes(value.outputChunkName));
     if (!foundThemeVariantAsset) {
       return;
@@ -47,11 +49,11 @@ function findThemeVariantCssAssets(paragonAssets, {
  * @param {Object} [options.paragonThemeCss] - The Paragon theme CSS object.
  * @return {Object} - The CSS assets, including the core CSS asset and theme variant CSS assets.
  */
-function getCssAssetsFromCompilation(compilation, {
+export function getCssAssetsFromCompilation(compilation: Compilation, {
   isBrandOverride = false,
   brandThemeCss,
   paragonThemeCss,
-}) {
+}: { isBrandOverride?: boolean, brandThemeCss: any, paragonThemeCss: any }) {
   const assetSubstring = isBrandOverride ? 'brand' : 'paragon';
   const paragonAssets = compilation.getAssets().filter(asset => asset.name.includes(assetSubstring) && asset.name.endsWith('.css'));
   const coreCssAsset = findCoreCssAsset(paragonAssets);
@@ -67,9 +69,3 @@ function getCssAssetsFromCompilation(compilation, {
     themeVariantCssAssets,
   };
 }
-
-module.exports = {
-  findCoreCssAsset,
-  findThemeVariantCssAssets,
-  getCssAssetsFromCompilation,
-};
