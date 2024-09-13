@@ -5,7 +5,7 @@ const config = require('./tools/eslint/.eslintrc.js');
 
 module.exports = merge(config, {
   ignorePatterns: [
-    'test-app',
+    'test-project',
     'docs',
     '.eslintrc.js',
     'frontend-base.d.ts',

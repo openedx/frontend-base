@@ -2,7 +2,7 @@ $spacer: 1rem;
 $blue: #007db8;
 $white: #fff;
 
-@import './Menu/menu.scss';
+@import './default-header/Menu/menu.scss';
 @import './studio-header/StudioHeader.scss';
 
 .dropdown-item a {

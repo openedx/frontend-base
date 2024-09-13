@@ -1,24 +1,91 @@
 import { transform } from '@formatjs/ts-transformer';
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import PostCssAutoprefixerPlugin from 'autoprefixer';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
+import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
-import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import getLocalAliases from './getLocalAliases';
 import getSharedDependencies from './getSharedDependencies';
+import {
+  getParagonCacheGroups,
+  getParagonEntryPoints,
+  getParagonThemeCss,
+} from './paragonUtils';
+import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
 
+const paragonThemeCss = getParagonThemeCss(process.cwd());
+const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+
+function getStyleUseConfig() {
+  return [
+    {
+      loader: require.resolve('css-loader'), // translates CSS into CommonJS
+      options: {
+        sourceMap: true,
+        modules: {
+          compileType: 'icss',
+        },
+      },
+    },
+    {
+      loader: require.resolve('postcss-loader'),
+      options: {
+        postcssOptions: {
+          plugins: [
+            PostCssAutoprefixerPlugin(),
+            PostCssRTLCSS(),
+            PostCssCustomMediaCSS(),
+          ],
+        },
+      },
+    },
+    require.resolve('resolve-url-loader'),
+    {
+      loader: require.resolve('sass-loader'), // compiles Sass to CSS
+      options: {
+        sourceMap: true,
+        sassOptions: {
+          includePaths: [
+            path.join(process.cwd(), 'node_modules'),
+            path.join(process.cwd(), 'src'),
+          ],
+          // silences compiler warnings regarding deprecation warnings
+          quietDeps: true,
+        },
+      },
+    },
+  ];
+}
 
 const config: Configuration = {
   entry: {
     app: path.resolve(__dirname, '../../shell/index'),
+    /**
+     * The entry points for the Paragon theme CSS. Example: ```
+     * {
+     *   "paragon.theme.core": "/path/to/node_modules/@openedx/paragon/dist/core.min.css",
+     *   "paragon.theme.variants.light": "/path/to/node_modules/@openedx/paragon/dist/light.min.css"
+     * }
+     */
+    ...getParagonEntryPoints(paragonThemeCss),
+    /**
+     * The entry points for the brand theme CSS. Example: ```
+     * {
+     *   "paragon.theme.core": "/path/to/node_modules/@(open)edx/brand/dist/core.min.css",
+     *   "paragon.theme.variants.light": "/path/to/node_modules/@(open)edx/brand/dist/light.min.css"
+     * }
+     */
+    ...getParagonEntryPoints(brandThemeCss),
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
@@ -80,43 +147,19 @@ const config: Configuration = {
       // flash-of-unstyled-content issues in development.
       {
         test: /(.scss|.css)$/,
-        use: [
-          require.resolve('style-loader'), // creates style nodes from JS strings
+	oneOf: [
           {
-            loader: require.resolve('css-loader'), // translates CSS into CommonJS
-            options: {
-              sourceMap: true,
-              modules: {
-                compileType: 'icss',
-              },
-            },
+            resource: /(@openedx\/paragon|@(open)?edx\/brand)/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              ...getStyleUseConfig(),
+            ],
           },
           {
-            loader: require.resolve('postcss-loader'),
-            options: {
-              postcssOptions: {
-                plugins: [
-                  PostCssAutoprefixerPlugin(),
-                  PostCssRTLCSS(),
-                  PostCssCustomMediaCSS(),
-                ],
-              },
-            },
-          },
-          require.resolve('resolve-url-loader'),
-          {
-            loader: require.resolve('sass-loader'), // compiles Sass to CSS
-            options: {
-              sourceMap: true,
-              sassOptions: {
-                includePaths: [
-                  path.join(process.cwd(), 'node_modules'),
-                  path.join(process.cwd(), 'src'),
-                ],
-                // silences compiler warnings regarding deprecation warnings
-                quietDeps: true,
-              },
-            },
+            use: [
+              require.resolve('style-loader'), // creates style nodes from JS strings
+              ...getStyleUseConfig(),
+            ],
           },
         ],
       },
@@ -142,6 +185,13 @@ const config: Configuration = {
     ],
   },
   optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        ...getParagonCacheGroups(paragonThemeCss),
+        ...getParagonCacheGroups(brandThemeCss),
+      },
+    },
     minimizer: [
       '...',
       new ImageMinimizerPlugin({
@@ -163,10 +213,21 @@ const config: Configuration = {
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
+    // RemoveEmptyScriptsPlugin get rid of empty scripts generated by webpack when using mini-css-extract-plugin
+    // This helps to clean up the final bundle application
+    // See: https://www.npmjs.com/package/webpack-remove-empty-scripts#usage-with-mini-css-extract-plugin
+
+    new RemoveEmptyScriptsPlugin(),
+    new ParagonWebpackPlugin(),
+    // Writes the extracted CSS from each entry to a file in the output directory.
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
     // Generates an HTML file in the output directory.
     new HtmlWebpackPlugin({
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(process.cwd(), 'public/index.html'),
+      chunks: ['app'],
       FAVICON_URL: process.env.FAVICON_URL || null,
       OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
       NODE_ENV: process.env.NODE_ENV || null,

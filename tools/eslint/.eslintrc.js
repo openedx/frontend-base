@@ -16,6 +16,7 @@ module.exports = {
   ],
   globals: {
     newrelic: false,
+    PARAGON_THEME: false,
   },
   ignorePatterns: [
     'module.config.js',
@@ -84,5 +85,10 @@ module.exports = {
     'import/no-import-module-export': 'off',
     'react/function-component-definition': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
+    'react/require-default-props': ['error', {
+      classes: 'defaultProps',
+      functions: 'ignore',
+    }],
+    'no-param-reassign': 'off',
   },
 };

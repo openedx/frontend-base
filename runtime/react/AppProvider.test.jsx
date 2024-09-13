@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-import { createStore } from 'redux';
 import { initialize } from '../initialize';
 import AppProvider from './AppProvider';
 
@@ -51,45 +50,6 @@ describe('AppProvider', () => {
 
   it('should render its children with a router', () => {
     const component = (
-      <AppProvider store={createStore(state => state)}>
-        <div className="child">Child One</div>
-        <div className="child">Child Two</div>
-      </AppProvider>
-    );
-
-    const wrapper = render(component);
-    const list = wrapper.container.querySelectorAll('div.child');
-
-    expect(wrapper.getByTestId('browser-router')).toBeInTheDocument();
-    expect(list.length).toEqual(2);
-    expect(list[0].textContent).toEqual('Child One');
-    expect(list[1].textContent).toEqual('Child Two');
-
-    const reduxProvider = wrapper.getByTestId('redux-provider');
-    expect(reduxProvider).toBeInTheDocument();
-  });
-
-  it('should render its children without a router', () => {
-    const component = (
-      <AppProvider store={createStore(state => state)} wrapWithRouter={false}>
-        <div className="child">Child One</div>
-        <div className="child">Child Two</div>
-      </AppProvider>
-    );
-
-    const wrapper = render(component);
-    const list = wrapper.container.querySelectorAll('div.child');
-    expect(wrapper.queryByTestId('browser-router')).not.toBeInTheDocument();
-    expect(list.length).toEqual(2);
-    expect(list[0].textContent).toEqual('Child One');
-    expect(list[1].textContent).toEqual('Child Two');
-
-    const reduxProvider = wrapper.getByTestId('redux-provider');
-    expect(reduxProvider).toBeInTheDocument();
-  });
-
-  it('should skip redux Provider if not given a store', () => {
-    const component = (
       <AppProvider>
         <div className="child">Child One</div>
         <div className="child">Child Two</div>
@@ -98,11 +58,9 @@ describe('AppProvider', () => {
 
     const wrapper = render(component);
     const list = wrapper.container.querySelectorAll('div.child');
+
     expect(list.length).toEqual(2);
     expect(list[0].textContent).toEqual('Child One');
     expect(list[1].textContent).toEqual('Child Two');
-
-    const reduxProvider = wrapper.queryByTestId('redux-provider');
-    expect(reduxProvider).not.toBeInTheDocument();
   });
 });

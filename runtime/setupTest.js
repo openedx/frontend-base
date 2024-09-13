@@ -12,3 +12,38 @@ jest.mock('universal-cookie', () => {
 });
 
 mergeConfig(siteConfig);
+
+global.PARAGON_THEME = {
+  paragon: {
+    version: '1.0.0',
+    themeUrls: {
+      core: {
+        fileName: 'core.min.css',
+      },
+      defaults: {
+        light: 'light',
+      },
+      variants: {
+        light: {
+          fileName: 'light.min.css',
+        },
+      },
+    },
+  },
+  brand: {
+    version: '1.0.0',
+    themeUrls: {
+      core: {
+        fileName: 'core.min.css',
+      },
+      defaults: {
+        light: 'light',
+      },
+      variants: {
+        light: {
+          fileName: 'light.min.css',
+        },
+      },
+    },
+  },
+};

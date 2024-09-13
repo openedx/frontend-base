@@ -343,7 +343,7 @@ Description fields are now required on all i18n messages in the repository.  Thi
 
 ### 12. SVGR "ReactComponent" imports have been removed.
 
-We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `test-app/src/App.jsx`.
+We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `test-project/src/ExamplePage.tsx`.
 
 ### 13. Import `createConfig` and `getBaseConfig` from `@openedx/frontend-base/config`
 
@@ -422,7 +422,7 @@ You must then import this new stylesheet into your `site.config` file:
 ```diff
 + import './project.scss';
 
-const config: SiteConfig = {
+const config: ProjectSiteConfig = {
   // config document
 }
 
@@ -442,6 +442,15 @@ git merge other-repo-remote/master --allow-unrelated-histories
 Then work through the conflicts and use a merge commit to add the history into the frontend-base.
 
 Then move the files out of the way (move src to some other sub-dir, mostly) to make room for the next repo.
+
+### Latest repository merges
+
+- frontend-component-header - Up to date as of 9/12/2024
+- frontend-component-footer - Up to date as of 9/12/2024
+- frontend-build            - Up to date as of 9/12/2024
+
+- frontend-platform         - Up to date as of 9/13/2024
+- frontend-plugin-framework - Up to date as of 9/13/2024
 
 # Other notable changes
 

@@ -1,16 +1,17 @@
 import React from 'react';
+import { PluginOperations } from '../../../types';
 import { getConfig } from '../../config';
 import { logError } from '../../logging';
-import { PLUGIN_OPERATIONS, requiredPluginTypes } from './constants';
+import { requiredPluginTypes } from './constants';
 
 /**
  * Called by validatePlugin to compare plugin config to the required data and data types
  * @returns {Boolean} - returns true if all types are correct and present according to the plugin operation
  */
-const validateRequirements = (requiredTypes, widgetConfig) => (Object.keys(requiredTypes).every(
+const validateRequirements = (requiredTypes, widgetConfig) => Object.keys(requiredTypes).every(
   // eslint-disable-next-line valid-typeof
   (field) => (widgetConfig[field] && (typeof widgetConfig[field] === requiredTypes[field])),
-));
+);
 
 /**
  * Called by organizePlugins to validate plugin configurations
@@ -18,11 +19,12 @@ const validateRequirements = (requiredTypes, widgetConfig) => (Object.keys(requi
  */
 export const validatePlugin = (pluginConfig) => {
   let requiredTypes = {};
-  // eslint-disable-next-line prefer-const
-  let { op, ...config } = pluginConfig;
+  const { op } = pluginConfig;
+  let config = pluginConfig;
+
   if (!op) { logError('There is a config with an invalid PLUGIN_OPERATION. Check to make sure it is configured correctly.'); }
 
-  if (op === PLUGIN_OPERATIONS.Insert) {
+  if (op === PluginOperations.INSERT) {
     config = config.widget;
     if (!config) { logError('insert operation config is missing widget object'); }
 
@@ -37,6 +39,7 @@ export const validatePlugin = (pluginConfig) => {
   if (!validateRequirements(requiredTypes, config)) {
     logError(`the ${op} operation config is invalid for widget id: ${config.widgetId || config.id || 'MISSING ID'}`);
   }
+
   return true;
 };
 
@@ -49,21 +52,20 @@ export const validatePlugin = (pluginConfig) => {
  */
 export const organizePlugins = (defaultContents, plugins) => {
   const newContents = [...defaultContents];
-
   plugins.forEach(change => {
     validatePlugin(change);
-    if (change.op === PLUGIN_OPERATIONS.Insert) {
+    if (change.op === PluginOperations.INSERT) {
       newContents.push(change.widget);
-    } else if (change.op === PLUGIN_OPERATIONS.Hide) {
+    } else if (change.op === PluginOperations.HIDE) {
       const widget = newContents.find((w) => w.id === change.widgetId);
       if (widget) { widget.hidden = true; }
-    } else if (change.op === PLUGIN_OPERATIONS.Modify) {
+    } else if (change.op === PluginOperations.MODIFY) {
       const widgetIdx = newContents.findIndex((w) => w.id === change.widgetId);
       if (widgetIdx >= 0) {
-        const widget = { ...newContents[widgetIdx] };
+        const widget = { content: {}, ...newContents[widgetIdx] };
         newContents[widgetIdx] = change.fn(widget);
       }
-    } else if (change.op === PLUGIN_OPERATIONS.Wrap) {
+    } else if (change.op === PluginOperations.WRAP) {
       const widgetIdx = newContents.findIndex((w) => w.id === change.widgetId);
       if (widgetIdx >= 0) {
         const newWidget = { wrappers: [], ...newContents[widgetIdx] };
@@ -87,19 +89,84 @@ export const wrapComponent = (renderComponent, wrappers) => wrappers.reduce(
   // Disabled lint because currently we don't have a unique identifier for this
   // The "component" and "wrapper" are both functions
   // eslint-disable-next-line react/no-array-index-key
-  (component, wrapper, idx) => React.createElement(wrapper, { component, idx }),
+  (component, wrapper, idx) => React.createElement(wrapper, { component, key: idx }),
   renderComponent(),
 );
 
 /**
  * Called by usePluginSlot to retrieve the most up-to-date Config Document*
- * @returns {Object} - The pluginSlots object in Config Document
+ * @returns {object|undefined} - The pluginSlots object in Config Document
  */
 export const getConfigSlots = () => getConfig()?.pluginSlots;
 
-export default {
-  getConfigSlots,
-  organizePlugins,
-  validatePlugin,
-  wrapComponent,
+/**
+ * @param {object} [originalProps]
+ * @param {object} [newProps]
+ * @returns {object} Original props merged with new props.
+ */
+const mergeProps = (originalProps = {}, newProps = {}) => {
+  const updatedProps = { ...originalProps };
+  Object.entries(newProps).forEach(([attributeName, attributeValue]) => {
+    let transformedAttributeValue = !attributeValue ? '' : attributeValue;
+    if (attributeName === 'className') {
+      // Append the `className` to the existing `className` prop value (if any)
+      transformedAttributeValue = [updatedProps.className, attributeValue].join(' ').trim();
+    } else if (attributeName === 'style') {
+      // Only update `style` prop if attributeValue is an object
+      if (typeof attributeValue !== 'object') {
+        return;
+      }
+      // Merge the `style` object with the existing `style` prop object (if any)
+      transformedAttributeValue = { ...updatedProps.style, ...attributeValue };
+    } else if (typeof attributeValue === 'function') {
+      // Merge the function with the existing prop's function
+      const oldFn = updatedProps[attributeName];
+      transformedAttributeValue = oldFn ? (...args) => {
+        oldFn(...args);
+        attributeValue(...args);
+      } : attributeValue;
+    }
+    updatedProps[attributeName] = transformedAttributeValue;
+  });
+  return updatedProps;
+};
+
+/**
+ * Merges the plugin content with the RenderWidget props, if any. Handles special cases
+ * like merging `className`, `style`, and functions.
+ * @param {object} [pluginSlotOptions]
+ * @param {object} pluginConfig
+ * @param {object} pluginProps
+ * @param {object} renderWidgetProps
+ * @returns {object} - Updated RenderWidget props merged with custom pluginConfig.content.
+ */
+export const mergeRenderWidgetPropsWithPluginContent = ({
+  pluginSlotOptions,
+  pluginConfig,
+  pluginProps,
+  renderWidgetProps,
+}) => {
+  // Always merge RenderWidget props and pluginProps and provide a `key`.
+  const renderWidgetPropsWithPluginProps = mergeProps(renderWidgetProps, pluginProps);
+  let updatedRenderWidgetProps = { key: pluginConfig.id, ...renderWidgetPropsWithPluginProps };
+
+  // No custom plugin content; return updated props;
+  if (!pluginConfig.content) {
+    return updatedRenderWidgetProps;
+  }
+
+  // Handle custom plugin content
+  const { mergeProps: shouldMergeProps } = pluginSlotOptions;
+
+  if (shouldMergeProps) {
+    updatedRenderWidgetProps = mergeProps(updatedRenderWidgetProps, pluginConfig.content);
+  } else {
+    updatedRenderWidgetProps = {
+      ...updatedRenderWidgetProps,
+      // pass custom props contained with `content` prop
+      content: pluginConfig.content,
+    };
+  }
+
+  return updatedRenderWidgetProps;
 };

@@ -64,14 +64,13 @@ function initializeMockApp() {
 function render(
   ui,
   {
-    store = null,
     ...renderOptions
   } = {},
 ) {
   const Wrapper = ({ children }) => (
     // eslint-disable-next-line react/jsx-filename-extension
     <IntlProvider locale="en">
-      <AppProvider store={store}>
+      <AppProvider>
         {children}
       </AppProvider>
     </IntlProvider>

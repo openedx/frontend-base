@@ -120,6 +120,8 @@ let config: SiteConfig = {
   SEGMENT_KEY: null,
 
   apps: [],
+  pluginSlots: {},
+  custom: {},
 
   APP_ID: '',
   BASE_URL: '',

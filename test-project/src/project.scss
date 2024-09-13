@@ -1,0 +1,11 @@
+@import '@openedx/frontend-base/shell/index.scss';
+
+$h3-color: red;
+
+.red-text {
+  color: $h3-color;
+}
+
+.text-align-right {
+  text-align: right;
+}

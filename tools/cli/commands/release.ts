@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { execSync } from "child_process";
-import { existsSync, rmdirSync } from "fs";
+import { existsSync, rmSync } from "fs";
 import path from "path";
 
 export default function release() {
@@ -12,7 +12,7 @@ export default function release() {
   }
 
   // Clean up our dist folder.
-  rmdirSync(path.resolve(process.cwd(), 'dist'));
+  rmSync(path.resolve(process.cwd(), 'dist'), { recursive: true, force: true });
 
   execSync(`tsc --project ${path.resolve(process.cwd(), './tsconfig.build.json')}`, { stdio: 'inherit'});
 

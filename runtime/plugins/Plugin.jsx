@@ -13,7 +13,6 @@ import {
 } from './data/hooks';
 import messages from './Plugin.messages';
 
-// TODO: create example-plugin-app/src/PluginOne.jsx for example of customizing errorFallback as part of APER-3042 https://2u-internal.atlassian.net/browse/APER-3042
 const ErrorFallbackDefault = () => {
   const { formatMessage } = useIntl();
   return (
@@ -92,7 +91,7 @@ Plugin.propTypes = {
 };
 
 Plugin.defaultProps = {
-  className: null,
+  className: undefined,
   ErrorFallbackComponent: null,
   style: {},
   ready: true,

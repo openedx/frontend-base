@@ -9,7 +9,10 @@
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ESNext"
+      "ESNext",
+      "esnext.intl",
+      "es2017.intl",
+      "es2018.intl"
     ],
     "isolatedModules": true,
     "module": "ESNext",
