@@ -4,10 +4,10 @@ import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import classNames from 'classnames';
-import { IntlProvider } from '../i18n';
-import { logError } from '../logging';
 
 import { PluginOperations, PluginTypes } from '../../types';
+import { IntlProvider } from '../i18n';
+import { logError } from '../logging';
 import PluginSlot from './PluginSlot';
 import { usePluginSlot } from './data/hooks';
 
@@ -254,7 +254,7 @@ describe('PluginSlot', () => {
           op: PluginOperations.INSERT,
           widget: {
             id: 'inserted_direct_plugin',
-            type: 'DIRECT_PLUGIN',
+            type: PluginTypes.DIRECT,
             priority: 1,
             RenderWidget: () => <div data-testid="inserted_direct_plugin">Inserted Direct Plugin</div>,
           },

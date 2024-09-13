@@ -1,8 +1,10 @@
 import {
-  Container, Row, Col, Stack,
-import React from 'react';
-import PluginSlotWithModifyDefaultContents from './pluginSlots/PluginSlotWithModifyDefaultContents';
+  Col,
+  Container, Row,
+  Stack,
+} from '@openedx/paragon';
 import PluginSlotWithInsert from './pluginSlots/PluginSlotWithInsert';
+import PluginSlotWithModifyDefaultContents from './pluginSlots/PluginSlotWithModifyDefaultContents';
 import PluginSlotWithModifyWrapHide from './pluginSlots/PluginSlotWithModifyWrapHide';
 import PluginSlotWithModularPlugins from './pluginSlots/PluginSlotWithModularPlugins';
 import PluginSlotWithoutDefault from './pluginSlots/PluginSlotWithoutDefault';
