@@ -1,4 +1,4 @@
-import parse5 from 'parse5';
+import * as parse5 from 'parse5';
 import { sources } from 'webpack';
 
 import { getDescendantByTag } from './tagUtils';
