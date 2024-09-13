@@ -1,12 +1,12 @@
 import { PluginOperations, PluginTypes } from '@openedx/frontend-base';
-import { AuthenticatedPage, ExamplePage, PluginPage } from './src';
+import DefaultDirectWidget from './src/components/DefaultDirectWidget';
 
 import { InsertDirectPluginWidget, ProjectSiteConfig } from '@openedx/frontend-base';
 import ModularComponent from './src/components/ModularComponent';
 import PluginDirect from './src/components/PluginDirect';
 import './src/project.scss';
 
-const modifyWidget = (widget: InsertDirectPluginWidget) => {
+const modifyWidget = (widget) => {
   widget.content = {
     title: 'Modified Modular Plugin',
     uniqueText: 'Note that the original text defined in the JS config is replaced by this modified one.',
@@ -14,12 +14,33 @@ const modifyWidget = (widget: InsertDirectPluginWidget) => {
   return widget;
 };
 
-const wrapWidget = ({ component, idx }) => (
-  <div className="bg-warning" data-testid={`wrapper${idx + 1}`} key={idx}>
-    <p>This is a wrapper component that is placed around the default content.</p>
+const modifyWidgetDefaultContentsUsernamePII = (widget) => {
+  widget.content = {
+    'data-custom-attr': 'customValue',
+    'data-another-custom-attr': '',
+    className: 'font-weight-bold',
+    style: { color: 'blue' },
+    onClick: (e) => { console.log('Username clicked!', 'custom', e); },
+  };
+  return widget;
+};
+
+const modifyWidgetDefaultContentsLink = (widget) => {
+  widget.content.href = 'https://openedx.org';
+  return widget;
+};
+
+
+const wrapWidget = ({ component }) => (
+  <div className="bg-warning" data-testid="wrapper">
+    <div className="px-3">
+      <p className="mb-0">This is a wrapper component that is placed around the default content.</p>
+    </div>
     {component}
-    <p>With this wrapper, you can add anything before or after a component.</p>
-    <p>Note in the JS config that an iFrame plugin was Inserted, but a Hide operation was also used to hide it!</p>
+    <div className="px-3">
+      <p>With this wrapper, you can add anything before or after a component.</p>
+      <p className="mb-0">Note in the JS config that an iFrame plugin was Inserted, but a Hide operation was also used to hide it!</p>
+    </div>
   </div>
 );
 
@@ -185,7 +206,27 @@ const config: ProjectSiteConfig = {
           },
         },
       ],
-    }
+    },
+    slot_with_username_pii: {
+      keepDefault: true,
+      plugins: [
+        {
+          op: PluginOperations.MODIFIY,
+          widgetId: 'default_contents',
+          fn: modifyWidgetDefaultContentsUsernamePII,
+        },
+      ],
+    },
+    slot_with_hyperlink: {
+      keepDefault: true,
+      plugins: [
+        {
+          op: PluginOperations.MODIFY,
+          widgetId: 'default_contents',
+          fn: modifyWidgetDefaultContentsLink,
+        },
+      ],
+    },
   },
 
   custom: {

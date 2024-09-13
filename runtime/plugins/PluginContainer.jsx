@@ -2,15 +2,14 @@
 
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PluginContainerDirect from './PluginContainerDirect';
 import PluginContainerIframe from './PluginContainerIframe';
 
 import { PluginTypes } from '../../types';
-import { pluginConfigShape } from './data/shapes';
+import { pluginConfigShape, slotOptionsShape } from './data/shapes';
 
-function PluginContainer({ config, ...props }) {
-  if (config === null) {
+function PluginContainer({ config, slotOptions, ...props }) {
+  if (!config) {
     return null;
   }
 
@@ -19,21 +18,26 @@ function PluginContainer({ config, ...props }) {
   switch (config.type) {
     case PluginTypes.IFRAME:
       renderer = (
-        <PluginContainerIframe config={config} {...props} />
+        <PluginContainerIframe
+          config={config}
+          {...props}
+        />
       );
       break;
     case PluginTypes.DIRECT:
       renderer = (
-        <PluginContainerDirect config={config} {...props} />
+        <PluginContainerDirect
+          config={config}
+          slotOptions={slotOptions}
+          {...props}
+        />
       );
       break;
     default:
       break;
   }
 
-  return (
-    renderer
-  );
+  return renderer;
 }
 
 export default PluginContainer;
@@ -41,8 +45,11 @@ export default PluginContainer;
 PluginContainer.propTypes = {
   /** Configuration for the Plugin in this container — i.e pluginSlot[id].example_plugin */
   config: PropTypes.shape(pluginConfigShape),
+  /** Options passed to the PluginSlot */
+  slotOptions: PropTypes.shape(slotOptionsShape),
 };
 
 PluginContainer.defaultProps = {
   config: null,
+  slotOptions: {},
 };
