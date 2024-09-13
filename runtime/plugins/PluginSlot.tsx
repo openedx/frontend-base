@@ -20,7 +20,7 @@ interface PluginSlotProps {
   pluginProps?: {
     [prop: string]: any,
   },
-  slotOptions: {
+  slotOptions?: {
     mergeProps?: boolean,
   },
   ref?: React.ForwardedRef<unknown>
