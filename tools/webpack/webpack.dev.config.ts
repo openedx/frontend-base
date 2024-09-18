@@ -13,6 +13,7 @@ import 'webpack-dev-server'; // Required to get devServer types added to Configu
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
 import {
+  getIgnoreWarnings,
   getImageMinimizer,
 } from './common-config';
 import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
@@ -102,17 +103,7 @@ const config: Configuration = {
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
-  ignoreWarnings: [
-    // Ignore warnings raised by source-map-loader.
-    // some third party packages may ship miss-configured sourcemaps, that interrupts the build
-    // See: https://github.com/facebook/create-react-app/discussions/11278#discussioncomment-1780169
-    (warning: WebpackError) => !!(
-      warning.module
-      // @ts-ignore
-      && warning.module.resource.includes('node_modules')
-      && warning.details
-      && warning.details.includes('source-map-loader')),
-  ],
+  ignoreWarnings: getIgnoreWarnings(),
   mode: 'development',
   devtool: 'eval-source-map',
   module: {
