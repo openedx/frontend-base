@@ -18,6 +18,7 @@ import {
 } from './common-config';
 import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
 import getLocalAliases from './utils/getLocalAliases';
+import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 import getSharedDependencies from './utils/getSharedDependencies';
 import {
   getParagonCacheGroups,
@@ -29,6 +30,7 @@ const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
 
 function getStyleUseConfig() {
   return [
@@ -85,7 +87,7 @@ const config: Configuration = {
   resolve: {
     alias: {
       ...aliases,
-      'site.config': path.resolve(process.cwd(), './site.config.dev'),
+      'site.config': resolvedSiteConfigPath,
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },

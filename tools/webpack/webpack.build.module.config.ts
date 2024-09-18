@@ -20,10 +20,12 @@ import {
 } from './common-config';
 import getLocalAliases from './utils/getLocalAliases';
 import getModuleFederationConfig from './utils/getModuleFederationConfig';
+import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 import getSharedDependencies from './utils/getSharedDependencies';
 
 const aliases = getLocalAliases();
 const moduleFederationConfig = getModuleFederationConfig();
+const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.build.module.tsx');
 
 const config: Configuration = {
   mode: 'production',
@@ -41,7 +43,7 @@ const config: Configuration = {
   resolve: {
     alias: {
       ...aliases,
-      'site.config': path.resolve(process.cwd(), './site.config.build.module'),
+      'site.config': resolvedSiteConfigPath,
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },

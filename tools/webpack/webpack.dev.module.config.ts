@@ -18,10 +18,12 @@ import {
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 import getLocalAliases from './utils/getLocalAliases';
 import getModuleFederationConfig from './utils/getModuleFederationConfig';
+import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 import getSharedDependencies from './utils/getSharedDependencies';
 
 const aliases = getLocalAliases();
 const moduleFederationConfig = getModuleFederationConfig();
+const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.module.tsx');
 
 const config: Configuration = {
   mode: 'development',
@@ -37,7 +39,7 @@ const config: Configuration = {
   resolve: {
     alias: {
       ...aliases,
-      'site.config': path.resolve(process.cwd(), './site.config.dev.module'),
+      'site.config': resolvedSiteConfigPath,
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
