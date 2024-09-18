@@ -12,14 +12,14 @@ import { Configuration, WebpackError } from 'webpack';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
+import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
 import getLocalAliases from './utils/getLocalAliases';
 import getSharedDependencies from './utils/getSharedDependencies';
 import {
   getParagonCacheGroups,
   getParagonEntryPoints,
   getParagonThemeCss,
-} from './paragonUtils';
-import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
+} from './utils/paragonUtils';
 
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });

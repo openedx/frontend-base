@@ -1,10 +1,10 @@
 import { Compilation, Compiler, WebpackPluginInstance, sources } from "webpack";
 
+import { ParagonThemeUrls } from "../../types";
 import {
   getParagonThemeCss,
   getParagonVersion,
-} from '../../paragonUtils';
-import { ParagonThemeUrls } from "../../types";
+} from '../../utils/paragonUtils';
 import {
   getParagonStylesheetUrls,
   injectMetadataIntoDocument,

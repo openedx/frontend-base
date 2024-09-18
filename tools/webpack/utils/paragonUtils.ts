@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Chunk } from 'webpack';
-import { ParagonThemeCss, ParagonThemeUrlsFile } from './types';
+import { ParagonThemeCss, ParagonThemeUrlsFile } from '../types';
 
 /**
  * Retrieves the name of the brand package from the given directory.
@@ -29,10 +29,6 @@ export function getParagonVersion(dir: string, { isBrandOverride = false } = {})
   }
   return JSON.parse(fs.readFileSync(pathToPackageJson, 'utf-8')).version;
 }
-
-
-
-
 
 /**
  * Attempts to extract the Paragon theme CSS from the locally installed `@openedx/paragon` package.
