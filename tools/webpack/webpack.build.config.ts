@@ -22,6 +22,7 @@ import {
 import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
 
 import getLocalAliases from './utils/getLocalAliases';
+import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 import getSharedDependencies from './utils/getSharedDependencies';
 import {
@@ -33,7 +34,7 @@ import {
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
-const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+const publicPath = getPublicPath();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.build.tsx');
 
 const config: Configuration = {
@@ -47,7 +48,7 @@ const config: Configuration = {
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath: PUBLIC_PATH,
+    publicPath,
     clean: true, // Clean the output directory before emit.
     uniqueName: 'mf-shell', // Needed for module federation.
   },

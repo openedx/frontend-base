@@ -15,12 +15,13 @@ import {
   getImageMinimizer,
 } from './common-config';
 
-const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 import getLocalAliases from './utils/getLocalAliases';
 import getModuleFederationConfig from './utils/getModuleFederationConfig';
+import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 import getSharedDependencies from './utils/getSharedDependencies';
 
+const publicPath = getPublicPath();
 const aliases = getLocalAliases();
 const moduleFederationConfig = getModuleFederationConfig();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.module.tsx');
@@ -33,7 +34,7 @@ const config: Configuration = {
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
-    publicPath: 'auto',
+    publicPath,
     uniqueName: `mf-${moduleFederationConfig.name}`, // Needed for module federation.
   },
   resolve: {
