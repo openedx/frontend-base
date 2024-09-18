@@ -1,6 +1,3 @@
-// This is the prod Webpack config. All settings here should prefer smaller,
-// optimized bundles at the expense of a longer build time.
-
 import { transform } from '@formatjs/ts-transformer';
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import PostCssAutoprefixerPlugin from 'autoprefixer';

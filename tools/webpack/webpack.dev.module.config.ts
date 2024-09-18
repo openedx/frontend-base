@@ -1,5 +1,3 @@
-// This is the dev Webpack config. All settings here should prefer a fast build
-// time at the expense of creating larger, unoptimized bundles.
 import { transform } from '@formatjs/ts-transformer';
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
