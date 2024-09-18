@@ -1,18 +1,12 @@
-import { transform } from '@formatjs/ts-transformer';
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
-import PostCssAutoprefixerPlugin from 'autoprefixer';
-import CssNano from 'cssnano';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
-import PostCssCustomMediaCSS from 'postcss-custom-media';
-import PostCssRTLCSS from 'postcss-rtlcss';
-import { Configuration, WebpackError } from 'webpack';
+import { Configuration } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
 import {
+  getCodeRules,
   getFileLoaderRules,
   getHtmlWebpackPlugin,
   getIgnoreWarnings,
@@ -63,31 +57,7 @@ const config: Configuration = {
   ignoreWarnings: getIgnoreWarnings(),
   module: {
     rules: [
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        include: [
-          /src/,
-          path.resolve(process.cwd(), './site.config.build.tsx'),
-        ],
-        use: {
-          loader: require.resolve('ts-loader'),
-          options: {
-            transpileOnly: true,
-            compilerOptions: {
-              noEmit: false,
-            },
-            getCustomTransformers() {
-              return {
-                before: [
-                  transform({
-                    overrideIdFn: '[sha512:contenthash:base64:6]',
-                  }),
-                ],
-              };
-            },
-          },
-        },
-      },
+      ...getCodeRules('production', resolvedSiteConfigPath),
       getStylesheetRule('production'),
       ...getFileLoaderRules(),
     ],

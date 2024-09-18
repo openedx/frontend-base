@@ -1,14 +1,10 @@
-import { transform } from '@formatjs/ts-transformer';
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import PostCssAutoprefixerPlugin from 'autoprefixer';
-import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'path';
-import PostCssCustomMediaCSS from 'postcss-custom-media';
-import PostCssRTLCSS from 'postcss-rtlcss';
-import { Configuration, WebpackError } from 'webpack';
+import { Configuration } from 'webpack';
 
 import {
+  getCodeRules,
   getDevServer,
   getFileLoaderRules,
   getIgnoreWarnings,
@@ -48,31 +44,7 @@ const config: Configuration = {
   ignoreWarnings: getIgnoreWarnings(),
   module: {
     rules: [
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        include: [
-          /src/,
-          path.resolve(process.cwd(), './site.config.dev.module.tsx'),
-        ],
-        use: {
-          loader: require.resolve('ts-loader'),
-          options: {
-            transpileOnly: true,
-            compilerOptions: {
-              noEmit: false,
-            },
-            getCustomTransformers() {
-              return {
-                before: [
-                  transform({
-                    overrideIdFn: '[sha512:contenthash:base64:6]',
-                  }),
-                ],
-              };
-            },
-          },
-        },
-      },
+      ...getCodeRules('dev', resolvedSiteConfigPath),
       getStylesheetRule('dev'),
        ...getFileLoaderRules(),
     ],
