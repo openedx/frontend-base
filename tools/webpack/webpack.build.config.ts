@@ -17,6 +17,7 @@ import {
   getHtmlWebpackPlugin,
   getIgnoreWarnings,
   getImageMinimizer,
+  getStylesheetRule
 } from './common-config';
 
 import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
@@ -87,66 +88,7 @@ const config: Configuration = {
           },
         },
       },
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        use: [
-          require.resolve('source-map-loader'),
-        ],
-        enforce: 'pre',
-      },
-      // Webpack, by default, includes all CSS in the javascript bundles. Unfortunately, that means:
-      // a) The CSS won't be cached by browsers separately (a javascript change will force CSS
-      // re-download).  b) Since CSS is applied asynchronously, it causes an ugly
-      // flash-of-unstyled-content.
-      //
-      // To avoid these problems, we extract the CSS from the bundles into separate CSS files that
-      // can be included as <link> tags in the HTML <head> manually.
-      //
-      // We will not do this in development because it prevents hot-reloading from working and it
-      // increases build time.
-      {
-        test: /(.scss|.css)$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: require.resolve('css-loader'), // translates CSS into CommonJS
-            options: {
-              sourceMap: true,
-              modules: {
-                compileType: 'icss',
-              },
-            },
-          },
-          {
-            loader: require.resolve('postcss-loader'),
-            options: {
-              postcssOptions: {
-                plugins: [
-                  PostCssAutoprefixerPlugin(),
-                  PostCssRTLCSS(),
-                  PostCssCustomMediaCSS(),
-                  CssNano(),
-                ],
-              },
-            },
-          },
-          require.resolve('resolve-url-loader'),
-          {
-            loader: require.resolve('sass-loader'), // compiles Sass to CSS
-            options: {
-              sourceMap: true,
-              sassOptions: {
-                includePaths: [
-                  path.join(process.cwd(), 'node_modules'),
-                  path.join(process.cwd(), 'src'),
-                ],
-                // silences compiler warnings regarding deprecation warnings
-                quietDeps: true,
-              },
-            },
-          },
-        ],
-      },
+      getStylesheetRule('production'),
       ...getFileLoaderRules(),
     ],
   },

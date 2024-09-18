@@ -17,6 +17,7 @@ import {
   getHtmlWebpackPlugin,
   getIgnoreWarnings,
   getImageMinimizer,
+  getStylesheetRule
 } from './common-config';
 
 import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
@@ -37,46 +38,6 @@ const aliases = getLocalAliases();
 const publicPath = getPublicPath();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
 
-function getStyleUseConfig() {
-  return [
-    {
-      loader: require.resolve('css-loader'), // translates CSS into CommonJS
-      options: {
-        sourceMap: true,
-        modules: {
-          compileType: 'icss',
-        },
-      },
-    },
-    {
-      loader: require.resolve('postcss-loader'),
-      options: {
-        postcssOptions: {
-          plugins: [
-            PostCssAutoprefixerPlugin(),
-            PostCssRTLCSS(),
-            PostCssCustomMediaCSS(),
-          ],
-        },
-      },
-    },
-    require.resolve('resolve-url-loader'),
-    {
-      loader: require.resolve('sass-loader'), // compiles Sass to CSS
-      options: {
-        sourceMap: true,
-        sassOptions: {
-          includePaths: [
-            path.join(process.cwd(), 'node_modules'),
-            path.join(process.cwd(), 'src'),
-          ],
-          // silences compiler warnings regarding deprecation warnings
-          quietDeps: true,
-        },
-      },
-    },
-  ];
-}
 
 const config: Configuration = {
   entry: {
@@ -128,27 +89,7 @@ const config: Configuration = {
           },
         },
       },
-      // We are not extracting CSS from the javascript bundles in development because extracting
-      // prevents hot-reloading from working, it increases build time, and we don't care about
-      // flash-of-unstyled-content issues in development.
-      {
-        test: /(.scss|.css)$/,
-	oneOf: [
-          {
-            resource: /(@openedx\/paragon|@(open)?edx\/brand)/,
-            use: [
-              MiniCssExtractPlugin.loader,
-              ...getStyleUseConfig(),
-            ],
-          },
-          {
-            use: [
-              require.resolve('style-loader'), // creates style nodes from JS strings
-              ...getStyleUseConfig(),
-            ],
-          },
-        ],
-      },
+      getStylesheetRule('dev'),
       ...getFileLoaderRules(),
     ],
   },
