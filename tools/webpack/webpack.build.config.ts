@@ -17,6 +17,7 @@ import 'webpack-dev-server'; // Required to get devServer types added to Configu
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
 import {
+  getHtmlWebpackPlugin,
   getIgnoreWarnings,
   getImageMinimizer,
 } from './common-config';
@@ -193,16 +194,7 @@ const config: Configuration = {
     new MiniCssExtractPlugin({
       filename: '[name].[chunkhash].css',
     }),
-    // Generates an HTML file in the output directory.
-    new HtmlWebpackPlugin({
-      inject: true, // Appends script tags linking to the webpack bundles at the end of the body
-      template: path.resolve(process.cwd(), 'public/index.html'),
-      chunks: ['app'],
-      FAVICON_URL: process.env.FAVICON_URL || null,
-      OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
-      NODE_ENV: process.env.NODE_ENV || null,
-      SITE_NAME: process.env.SITE_NAME || '',
-    }),
+    getHtmlWebpackPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
