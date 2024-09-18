@@ -16,6 +16,9 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
+import {
+  getImageMinimizer,
+} from './common-config';
 import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
 import getLocalAliases from './utils/getLocalAliases';
 import getSharedDependencies from './utils/getSharedDependencies';
@@ -197,24 +200,7 @@ const config: Configuration = {
         ...getParagonCacheGroups(brandThemeCss),
       },
     },
-    minimizer: [
-      '...',
-      new ImageMinimizerPlugin({
-        minimizer: {
-          implementation: ImageMinimizerPlugin.sharpMinify,
-          options: {
-            encodeOptions: {
-              ...['png', 'jpeg', 'jpg'].reduce((accumulator, value) => (
-                { ...accumulator, [value]: { progressive: true, quality: 65 } }
-              ), {}),
-              gif: {
-                effort: 5,
-              },
-            },
-          },
-        },
-      }),
-    ],
+    minimizer: getImageMinimizer(),
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [

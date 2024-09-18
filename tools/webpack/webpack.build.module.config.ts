@@ -14,6 +14,9 @@ import { Configuration, WebpackError } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
+import {
+  getImageMinimizer,
+} from './common-config';
 import getLocalAliases from './utils/getLocalAliases';
 import getModuleFederationConfig from './utils/getModuleFederationConfig';
 import getSharedDependencies from './utils/getSharedDependencies';
@@ -168,24 +171,7 @@ const config: Configuration = {
     splitChunks: {
       chunks: 'all',
     },
-    minimizer: [
-      '...',
-      new ImageMinimizerPlugin({
-        minimizer: {
-          implementation: ImageMinimizerPlugin.sharpMinify,
-          options: {
-            encodeOptions: {
-              ...['png', 'jpeg', 'jpg'].reduce((accumulator, value) => (
-                { ...accumulator, [value]: { progressive: true, quality: 65 } }
-              ), {}),
-              gif: {
-                effort: 5,
-              },
-            },
-          },
-        },
-      }),
-    ],
+    minimizer: getImageMinimizer(),
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [

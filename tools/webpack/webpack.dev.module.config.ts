@@ -10,6 +10,9 @@ import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 
+import {
+  getImageMinimizer,
+} from './common-config';
 
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 import getLocalAliases from './utils/getLocalAliases';
@@ -151,24 +154,7 @@ const config: Configuration = {
     ],
   },
   optimization: {
-    minimizer: [
-      '...',
-      new ImageMinimizerPlugin({
-        minimizer: {
-          implementation: ImageMinimizerPlugin.sharpMinify,
-          options: {
-            encodeOptions: {
-              ...['png', 'jpeg', 'jpg'].reduce((accumulator, value) => (
-                { ...accumulator, [value]: { progressive: true, quality: 65 } }
-              ), {}),
-              gif: {
-                effort: 5,
-              },
-            },
-          },
-        },
-      }),
-    ],
+    minimizer: getImageMinimizer(),
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
