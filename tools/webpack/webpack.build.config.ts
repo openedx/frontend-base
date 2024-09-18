@@ -21,7 +21,9 @@ import {
   getIgnoreWarnings,
   getImageMinimizer,
 } from './common-config';
+
 import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
+
 import getLocalAliases from './utils/getLocalAliases';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 import getSharedDependencies from './utils/getSharedDependencies';
@@ -50,7 +52,7 @@ const config: Configuration = {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: PUBLIC_PATH,
     clean: true, // Clean the output directory before emit.
-    uniqueName: 'mf-shell',
+    uniqueName: 'mf-shell', // Needed for module federation.
   },
   resolve: {
     alias: {
@@ -61,7 +63,6 @@ const config: Configuration = {
   },
   ignoreWarnings: getIgnoreWarnings(),
   module: {
-    // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
@@ -169,8 +170,7 @@ const config: Configuration = {
       },
     ],
   },
-  // New in Webpack 4. Replaces CommonChunksPlugin. Extract common modules among all chunks to one
-  // common chunk and extract the Webpack runtime to a single runtime chunk.
+  // Extract common modules among all chunks to one common chunk and extract the Webpack runtime to a single runtime chunk.
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {

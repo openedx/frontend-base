@@ -35,7 +35,7 @@ const config: Configuration = {
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: 'auto',
-    uniqueName: `mf-${moduleFederationConfig.name}`,
+    uniqueName: `mf-${moduleFederationConfig.name}`, // Needed for module federation.
   },
   resolve: {
     alias: {
@@ -46,7 +46,6 @@ const config: Configuration = {
   },
   ignoreWarnings: getIgnoreWarnings(),
   module: {
-    // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
