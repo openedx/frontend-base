@@ -10,11 +10,11 @@ import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 
-import getLocalAliases from './getLocalAliases';
-import getModuleFederationConfig from './getModuleFederationConfig';
-import getSharedDependencies from './getSharedDependencies';
 
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+import getLocalAliases from './utils/getLocalAliases';
+import getModuleFederationConfig from './utils/getModuleFederationConfig';
+import getSharedDependencies from './utils/getSharedDependencies';
 
 const aliases = getLocalAliases();
 const moduleFederationConfig = getModuleFederationConfig();

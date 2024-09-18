@@ -14,9 +14,9 @@ import { Configuration, WebpackError } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
-import getLocalAliases from './getLocalAliases';
-import getModuleFederationConfig from './getModuleFederationConfig';
-import getSharedDependencies from './getSharedDependencies';
+import getLocalAliases from './utils/getLocalAliases';
+import getModuleFederationConfig from './utils/getModuleFederationConfig';
+import getSharedDependencies from './utils/getSharedDependencies';
 
 const aliases = getLocalAliases();
 const moduleFederationConfig = getModuleFederationConfig();
