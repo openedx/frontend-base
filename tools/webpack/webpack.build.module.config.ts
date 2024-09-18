@@ -9,7 +9,6 @@ import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 
 import {
   getIgnoreWarnings,

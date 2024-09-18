@@ -9,7 +9,6 @@ import path from 'path';
 import PostCssCustomMediaCSS from 'postcss-custom-media';
 import PostCssRTLCSS from 'postcss-rtlcss';
 import { Configuration, WebpackError } from 'webpack';
-import 'webpack-dev-server'; // Required to get devServer types added to Configuration
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
 import {
