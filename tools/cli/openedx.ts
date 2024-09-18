@@ -7,8 +7,8 @@ import presets from '../config-helpers/presets';
 import { ConfigPreset, ConfigPresetTypes } from '../types';
 import pack from './commands/pack';
 import release from './commands/release';
-import prettyPrintTitle from './prettyPrintTitle';
-import printUsage from './printUsage';
+import prettyPrintTitle from './utils/prettyPrintTitle';
+import printUsage from './utils/printUsage';
 
 /**
  * TLDR:
