@@ -101,7 +101,7 @@ switch (commandName) {
     break;
   case 'formatjs':
     const commonArgs = [
-      '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/formatter.js',
+      '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/utils/formatter.js',
       '--ignore', 'src/**/*.json',
       '--out-file', './temp/formatjs/Default.messages.json',
       '--', 'src/**/*.js*',
