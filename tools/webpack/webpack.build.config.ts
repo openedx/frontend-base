@@ -39,21 +39,7 @@ const config: Configuration = {
   devtool: 'source-map',
   entry: {
     app: path.resolve(__dirname, '../../shell/index'),
-    /**
-     * The entry points for the Paragon theme CSS. Example: ```
-     * {
-     *   "paragon.theme.core": "/path/to/node_modules/@openedx/paragon/dist/core.min.css",
-     *   "paragon.theme.variants.light": "/path/to/node_modules/@openedx/paragon/dist/light.min.css"
-     * }
-     */
     ...getParagonEntryPoints(paragonThemeCss),
-    /**
-     * The entry points for the brand theme CSS. Example: ```
-     * {
-     *   "paragon.theme.core": "/path/to/node_modules/@(open)edx/brand/dist/core.min.css",
-     *   "paragon.theme.variants.light": "/path/to/node_modules/@(open)edx/brand/dist/light.min.css"
-     * }
-     */
     ...getParagonEntryPoints(brandThemeCss),
   },
   output: {
