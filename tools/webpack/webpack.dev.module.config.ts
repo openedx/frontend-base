@@ -1,5 +1,6 @@
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import { Configuration } from 'webpack';
 
@@ -54,6 +55,10 @@ const config: Configuration = {
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
     new ReactRefreshWebpackPlugin(),
+    // Writes the extracted CSS from each entry to a file in the output directory.
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
     new ModuleFederationPlugin({
       name: moduleFederationConfig.name,
       filename: 'remoteEntry.js',
