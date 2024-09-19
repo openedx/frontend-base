@@ -10,6 +10,7 @@ export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteCon
       test: /\.(js|jsx|ts|tsx)$/,
       include: [
         /src/,
+        /node_modules\/@openedx\/frontend-base/,
         resolvedSiteConfigPath,
       ],
       use: {
@@ -21,9 +22,9 @@ export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteCon
           },
           getCustomTransformers() {
             const before = [
-                transform({
-                  overrideIdFn: '[sha512:contenthash:base64:6]',
-                }),
+              transform({
+                overrideIdFn: '[sha512:contenthash:base64:6]',
+              }),
             ]
             if (mode === 'dev') {
               before.push(ReactRefreshTypeScript());
