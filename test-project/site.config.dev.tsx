@@ -1,7 +1,7 @@
 import { AppConfigTypes, PluginOperations, PluginTypes } from '@openedx/frontend-base';
 
 import { ProjectSiteConfig } from '@openedx/frontend-base';
-import { authenticatedPageConfig, examplePageConfig, pluginPageConfig } from './src';
+import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
 import ModularComponent from './src/plugin-page/components/ModularComponent';
 import PluginDirect from './src/plugin-page/components/PluginDirect';
 import './src/project.scss';
@@ -64,6 +64,15 @@ const config: ProjectSiteConfig = {
       config: pluginPageConfig,
       path: '/plugins',
     },
+    // This site is serving its own iframe plugin and embedding it in the PluginPage.  This is
+    // obviously not quite like a real world use case, but it helps us test the mechanism without
+    // adding another test project to the library.
+    {
+      type: AppConfigTypes.INTERNAL,
+      appId: 'iframePlugin',
+      config: iframePluginConfig,
+      path: '/plugins',
+    },
   ],
   ENVIRONMENT: 'dev',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
@@ -107,7 +116,7 @@ const config: ProjectSiteConfig = {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
             priority: 30,
-            url: 'http://localhost:8081/plugin_iframe',
+            url: 'http://localhost:8080/iframe-plugin',
             title: 'The iFrame plugin that is inserted in the slot',
           },
         },
@@ -135,7 +144,7 @@ const config: ProjectSiteConfig = {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
             priority: 30,
-            url: 'http://localhost:8081/plugin_iframe',
+            url: 'http://localhost:8080/iframe-plugin',
             title: 'This iFrame plugin will be hidden due to the Hide operation in this config.',
           },
         },
@@ -204,7 +213,7 @@ const config: ProjectSiteConfig = {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
             priority: 30,
-            url: 'http://localhost:8081/plugin_iframe',
+            url: 'http://localhost:8080/iframe-plugin',
             title: 'The iFrame plugin that is inserted in the slot',
           },
         },

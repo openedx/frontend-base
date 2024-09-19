@@ -10,7 +10,6 @@ const LazyStudioHeader = lazy(() => import('./studio-header/StudioHeader'));
 
 export default function ActiveHeader() {
   const activeHeaderId = useActiveHeaderId();
-  console.log(activeHeaderId);
 
   let lazyHeader: React.ReactNode = null;
 
