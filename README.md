@@ -49,7 +49,7 @@ To start the whole thing together:
 
 - Check out https://github.com/davidjoy/frontend-base and the above three repositories as siblings.
 - Run `npm install` on all of them.
-- Run `npm run temp:pack-it` in frontend-base.
+- Run `npm run temp:refresh-all` in frontend-base.
 - Run `npm run pack frontend-project-test` in frontend-app-base-test.
 - Run `npm run pack frontend-project-module-test` in frontend-app-base-test.
 - You'll need 3 terminal windows.
