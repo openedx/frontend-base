@@ -1,9 +1,9 @@
-import { PluginOperations, PluginTypes } from '@openedx/frontend-base';
-import DefaultDirectWidget from './src/components/DefaultDirectWidget';
+import { AppConfigTypes, PluginOperations, PluginTypes } from '@openedx/frontend-base';
 
-import { InsertDirectPluginWidget, ProjectSiteConfig } from '@openedx/frontend-base';
-import ModularComponent from './src/components/ModularComponent';
-import PluginDirect from './src/components/PluginDirect';
+import { ProjectSiteConfig } from '@openedx/frontend-base';
+import { authenticatedPageConfig, examplePageConfig, pluginPageConfig } from './src';
+import ModularComponent from './src/plugin-page/components/ModularComponent';
+import PluginDirect from './src/plugin-page/components/PluginDirect';
 import './src/project.scss';
 
 const modifyWidget = (widget) => {
@@ -47,18 +47,21 @@ const wrapWidget = ({ component }) => (
 const config: ProjectSiteConfig = {
   apps: [
     {
+      type: AppConfigTypes.INTERNAL,
       appId: 'examplePage',
-      component: ExamplePage,
+      config: examplePageConfig,
       path: '/',
     },
     {
+      type: AppConfigTypes.INTERNAL,
       appId: 'authenticatedPage',
-      component: AuthenticatedPage,
+      config: authenticatedPageConfig,
       path: '/authenticated',
     },
     {
+      type: AppConfigTypes.INTERNAL,
       appId: 'pluginPage',
-      component: PluginPage,
+      config: pluginPageConfig,
       path: '/plugins',
     },
   ],
@@ -211,7 +214,7 @@ const config: ProjectSiteConfig = {
       keepDefault: true,
       plugins: [
         {
-          op: PluginOperations.MODIFIY,
+          op: PluginOperations.MODIFY,
           widgetId: 'default_contents',
           fn: modifyWidgetDefaultContentsUsernamePII,
         },

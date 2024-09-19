@@ -29,7 +29,6 @@ import {
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
-const publicPath = getPublicPath();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.build.tsx');
 
 const config: Configuration = {
@@ -43,7 +42,7 @@ const config: Configuration = {
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath,
+    publicPath: getPublicPath('auto'),
     clean: true, // Clean the output directory before emit.
     uniqueName: 'mf-shell', // Needed for module federation.
   },

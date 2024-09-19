@@ -30,9 +30,7 @@ import {
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
-const publicPath = getPublicPath();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
-
 
 const config: Configuration = {
   entry: {
@@ -42,7 +40,7 @@ const config: Configuration = {
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
-    publicPath,
+    publicPath: getPublicPath('auto'),
     uniqueName: 'mf-shell', // Needed for module federation.
   },
   resolve: {

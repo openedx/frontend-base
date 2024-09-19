@@ -21,7 +21,6 @@ import getSharedDependencies from './utils/getSharedDependencies';
 const aliases = getLocalAliases();
 const moduleFederationConfig = getModuleFederationConfig();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.build.module.tsx');
-const publicPath = getPublicPath();
 
 const config: Configuration = {
   mode: 'production',
@@ -32,7 +31,7 @@ const config: Configuration = {
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath,
+    publicPath: getPublicPath('auto'),
     clean: true, // Clean the output directory before emit.
     uniqueName: `mf-${moduleFederationConfig.name}`, // Needed for module federation.
   },

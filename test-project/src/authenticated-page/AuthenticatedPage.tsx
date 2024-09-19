@@ -6,15 +6,11 @@ import { AppContext } from '@openedx/frontend-base';
 export default function AuthenticatedPage() {
   const { authenticatedUser, config } = useContext(AppContext);
 
-  if (authenticatedUser === null) {
-    return <></>;
-  }
-
   return (
-    <div>
+    <main className="p-3">
       <h1>{config.SITE_NAME} authenticated page.</h1>
-      <p>Hi there, {authenticatedUser.username}.</p>
+      <p>{authenticatedUser === null ? "You are not authenticated." : `Hi there, ${authenticatedUser.username}.`}</p>
       <p>Visit <Link to="/">public page</Link>.</p>
-    </div>
+    </main>
   );
 }

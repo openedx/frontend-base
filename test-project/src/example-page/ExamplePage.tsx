@@ -10,11 +10,11 @@ import { Container } from '@openedx/paragon';
 import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import messages from '../messages';
+import Image from './Image';
+import ParagonPreview from './ParagonPreview';
 import appleImg from './apple.jpg';
 import appleUrl from './apple.svg';
-import Image from './Image';
-import messages from './messages';
-import ParagonPreview from './ParagonPreview';
 
 function printTestResult(value) {
   return value ? '✅' : '❌';

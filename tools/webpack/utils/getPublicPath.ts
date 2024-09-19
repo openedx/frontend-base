@@ -1,3 +1,3 @@
-export default function getPublicPath() {
-  return process.env.PUBLIC_PATH || 'auto';
+export default function getPublicPath(defaultPath: string = '/') {
+  return process.env.PUBLIC_PATH || defaultPath;
 }
