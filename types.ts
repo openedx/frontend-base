@@ -24,7 +24,6 @@ export interface InternalAppConfig {
   type: AppConfigTypes.INTERNAL,
   appId: string,
   config: ApplicationModuleConfig,
-  path?: string,
 }
 
 export interface FederatedAppConfig {

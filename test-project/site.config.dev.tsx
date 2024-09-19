@@ -50,19 +50,16 @@ const config: ProjectSiteConfig = {
       type: AppConfigTypes.INTERNAL,
       appId: 'examplePage',
       config: examplePageConfig,
-      path: '/',
     },
     {
       type: AppConfigTypes.INTERNAL,
       appId: 'authenticatedPage',
       config: authenticatedPageConfig,
-      path: '/authenticated',
     },
     {
       type: AppConfigTypes.INTERNAL,
       appId: 'pluginPage',
       config: pluginPageConfig,
-      path: '/plugins',
     },
     // This site is serving its own iframe plugin and embedding it in the PluginPage.  This is
     // obviously not quite like a real world use case, but it helps us test the mechanism without
@@ -71,7 +68,6 @@ const config: ProjectSiteConfig = {
       type: AppConfigTypes.INTERNAL,
       appId: 'iframePlugin',
       config: iframePluginConfig,
-      path: '/plugins',
     },
   ],
   ENVIRONMENT: 'dev',

@@ -8,12 +8,10 @@ const config: ProjectSiteConfig = {
     {
       appId: 'examplePage',
       component: ExamplePage,
-      path: '/',
     },
     {
       appId: 'authenticatedPage',
       component: AuthenticatedPage,
-      path: '/authenticated',
     },
   ],
   ENVIRONMENT: 'dev',
