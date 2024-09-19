@@ -1,7 +1,7 @@
-import { SiteConfig } from "./";
+import { ProjectSiteConfig } from "./index";
 
 declare module 'site.config' {
-  export default SiteConfig;
+  export default ProjectSiteConfig;
 }
 
 declare module '*.svg' {
