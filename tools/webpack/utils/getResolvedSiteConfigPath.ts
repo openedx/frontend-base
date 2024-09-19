@@ -5,10 +5,7 @@ export default function getResolvedSiteConfigPath(defaultFilename: string) {
   let siteConfigPath = process.env.SITE_CONFIG_PATH;
 
   if (siteConfigPath !== undefined) {
-    if (fs.existsSync(siteConfigPath)) {
-      // If this is a valid absolute path, return it.
-      return siteConfigPath;
-    }
+    // We assume siteConfigPath is a relative path.
     const absolutePath = path.resolve(process.cwd(), siteConfigPath);
     if (fs.existsSync(absolutePath)) {
       // If it's a valid absolute path when joined with the current working directory, return that.
