@@ -11,13 +11,10 @@ doc_command = ./node_modules/.bin/documentation build src -g -c ./docs/documenta
 cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 
 build:
-	rm -rf ./config ./dist
-	tsc --project tsconfig.build.json
+	rm -rf ./config ./tools/dist
 	mkdir -p ./config
 	cp tools/typescript/tsconfig.json config/tsconfig.json
 	tsc --project ./tools/tsconfig.json
-	cp -prf ./tools/dist ./dist
-	mv ./dist/dist ./dist/tools
 	cp -prf ./tools/dist/config-helpers ./config/config-helpers
 	cp -prf ./tools/dist/eslint ./config/eslint
 	cp -prf ./tools/dist/jest ./config/jest

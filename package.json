@@ -5,18 +5,12 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"main": "dist/index.js",
-	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"files": [
-		"/dist",
-		"/config",
-		"/shell/**/*.scss"
-	],
+	"main": "index.ts",
+	"module": "index.ts",
 	"bin": {
-		"intl-imports.js": "dist/tools/cli/scripts/intl-imports.js",
-		"openedx": "dist/tools/cli/openedx.js",
-		"transifex-utils.js": "dist/tools/cli/scripts/transifex-utils.js"
+		"intl-imports.js": "tools/dist/cli/scripts/intl-imports.js",
+		"openedx": "tools/dist/cli/openedx.js",
+		"transifex-utils.js": "tools/dist/cli/scripts/transifex-utils.js"
 	},
 	"scripts": {
 		"build": "make build",
