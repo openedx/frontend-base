@@ -1,4 +1,5 @@
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import { Configuration } from 'webpack';
@@ -74,6 +75,7 @@ const config: Configuration = {
       exposes: moduleFederationConfig.exposes,
       shared: getSharedDependencies({ isShell: false })
     }),
+    new ForkTsCheckerWebpackPlugin(),
   ],
 };
 

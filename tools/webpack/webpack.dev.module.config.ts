@@ -1,5 +1,6 @@
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import { Configuration } from 'webpack';
@@ -65,6 +66,7 @@ const config: Configuration = {
       exposes: moduleFederationConfig.exposes,
       shared: getSharedDependencies({ isShell: false })
     }),
+    new ForkTsCheckerWebpackPlugin(),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live
   // reloading.

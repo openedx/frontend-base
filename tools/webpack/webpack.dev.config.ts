@@ -1,5 +1,6 @@
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import { Configuration } from 'webpack';
@@ -83,6 +84,7 @@ const config: Configuration = {
     }),
     getHtmlWebpackPlugin(),
     new ReactRefreshWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
     new ModuleFederationPlugin({
       name: 'shell',
       shared: getSharedDependencies({ isShell: true }),

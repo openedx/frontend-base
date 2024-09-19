@@ -1,4 +1,5 @@
 import { ModuleFederationPlugin } from '@module-federation/enhanced';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import { Configuration } from 'webpack';
@@ -86,6 +87,7 @@ const config: Configuration = {
       filename: '[name].[chunkhash].css',
     }),
     getHtmlWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,

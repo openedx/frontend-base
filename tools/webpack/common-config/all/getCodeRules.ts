@@ -1,4 +1,6 @@
 import { transform } from '@formatjs/ts-transformer';
+import ReactRefreshTypeScript from 'react-refresh-typescript';
+
 import { RuleSetRule } from 'webpack';
 
 export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteConfigPath: string) {
@@ -18,12 +20,16 @@ export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteCon
             noEmit: false,
           },
           getCustomTransformers() {
-            return {
-              before: [
+            const before = [
                 transform({
                   overrideIdFn: '[sha512:contenthash:base64:6]',
                 }),
-              ],
+            ]
+            if (mode === 'dev') {
+              before.push(ReactRefreshTypeScript());
+            }
+            return {
+              before,
             };
           },
         },
