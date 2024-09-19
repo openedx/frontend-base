@@ -5,7 +5,7 @@ const config: ApplicationModuleConfig = {
     {
       path: '/iframe-plugin',
       lazy: async () => {
-        const { default: Component } = await import('./PluginIframe');
+        const { default: Component } = await import('./IframePlugin');
         return {
           Component,
           handle: {

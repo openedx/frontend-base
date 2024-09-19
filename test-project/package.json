@@ -4,17 +4,20 @@
   "description": "",
   "main": "src/index.jsx",
   "config": {
-    "name": "testApp",
+    "name": "testProject",
     "exposes": {
-      "./AuthenticatedPage": "./src/AuthenticatedPage",
-      "./ExamplePage": "./src/ExamplePage",
-      "./PluginPage": "./src/PluginPage"
+      "./AuthenticatedPage": "./src/authenticated-page",
+      "./ExamplePage": "./src/example-page",
+      "./IframePlugin": "./src/iframe-plugin/IframePlugin",
+      "./PluginPage": "./src/plugin-page"
     }
   },
   "scripts": {
     "build": "openedx build",
     "lint": "openedx lint . --no-eslintrc -c .eslintrc.js",
     "dev": "openedx dev",
+    "dev:module": "PORT=8081 openedx dev:module",
+    "build:module": "PORT=8081 openedx build:module",
     "serve": "openedx serve"
   },
   "keywords": [],
