@@ -27,7 +27,7 @@ mergeConfig({
 });
 
 export default function ExamplePage() {
-  const context = useContext(AppContext);
+  const context = useContext<AppContext>(AppContext);
 
   const intl = useIntl();
 
