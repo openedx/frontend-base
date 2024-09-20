@@ -15,7 +15,7 @@ const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
 };
 
-class SiteFooter extends React.Component {
+class DefaultFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
@@ -71,9 +71,9 @@ class SiteFooter extends React.Component {
   }
 }
 
-SiteFooter.contextType = AppContext;
+DefaultFooter.contextType = AppContext;
 
-SiteFooter.propTypes = {
+DefaultFooter.propTypes = {
   intl: intlShape.isRequired,
   logo: PropTypes.string,
   onLanguageSelected: PropTypes.func,
@@ -83,11 +83,11 @@ SiteFooter.propTypes = {
   })),
 };
 
-SiteFooter.defaultProps = {
+DefaultFooter.defaultProps = {
   logo: undefined,
   onLanguageSelected: undefined,
   supportedLanguages: [],
 };
 
-export default injectIntl(SiteFooter);
+export default injectIntl(DefaultFooter);
 export { EVENT_NAMES };
