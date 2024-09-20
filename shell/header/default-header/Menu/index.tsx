@@ -1,3 +1,5 @@
-import { Menu, MenuTrigger, MenuContent } from './Menu';
+import { Menu, MenuTrigger } from './Menu';
 
-export { Menu, MenuTrigger, MenuContent };
+export { default as MenuContent } from './MenuContent';
+
+export { Menu, MenuTrigger };

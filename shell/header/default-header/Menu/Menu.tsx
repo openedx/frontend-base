@@ -17,19 +17,6 @@ MenuTrigger.defaultProps = {
 const MenuTriggerComp = <MenuTrigger />;
 const MenuTriggerType = MenuTriggerComp.type;
 
-const MenuContent = ({ tag, className, ...attributes }) => React.createElement(tag, {
-  className: ['menu-content', className].join(' '),
-  ...attributes,
-});
-MenuContent.propTypes = {
-  tag: PropTypes.string,
-  className: PropTypes.string,
-};
-MenuContent.defaultProps = {
-  tag: 'div',
-  className: null,
-};
-
 const menuPropTypes = {
   tag: PropTypes.string,
   onClose: PropTypes.func,
@@ -273,4 +260,4 @@ Menu.defaultProps = {
   transitionClassName: 'menu-content',
 };
 
-export { Menu, MenuContent, MenuTrigger };
+export { Menu, MenuTrigger };
