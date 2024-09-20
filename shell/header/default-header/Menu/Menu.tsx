@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactNode, RefObject } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import MenuTrigger from './MenuTrigger';
 
@@ -18,11 +18,45 @@ const menuPropTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
 
-export default class Menu extends React.Component {
-  constructor(props) {
-    super(props);
+interface MenuProps {
+  children: ReactNode,
+  className?: string,
+  closeOnDocumentClick?: boolean,
+  onClose?: (() => void) | null,
+  onOpen?: (() => void) | null,
+  respondToPointerEvents?: boolean,
+  tag?: string,
+  transitionClassName?: string,
+  transitionTimeout?: number,
+}
 
-    this.menu = React.createRef();
+export default class Menu extends React.Component<MenuProps, { expanded: boolean }> {
+  menu: RefObject<HTMLElement>;
+
+  constructor({
+    children,
+    className,
+    closeOnDocumentClick = true,
+    onClose = null,
+    onOpen = null,
+    respondToPointerEvents = false,
+    tag = 'div',
+    transitionClassName = 'menu-content',
+    transitionTimeout = 250,
+  }) {
+    super({
+      children,
+      className,
+      closeOnDocumentClick,
+      onClose,
+      onOpen,
+      respondToPointerEvents,
+      tag,
+      transitionClassName,
+      transitionTimeout,
+    });
+
+    this.menu = React.createRef<HTMLElement>();
     this.state = {
       expanded: false,
     };
@@ -52,7 +86,8 @@ export default class Menu extends React.Component {
       return;
     }
 
-    const clickIsInMenu = this.menu.current === e.target || this.menu.current.contains(e.target);
+    const clickIsInMenu = this.menu.current === e.target
+      || (this.menu.current !== null && this.menu.current.contains(e.target));
     if (clickIsInMenu) {
       return;
     }
@@ -137,7 +172,10 @@ export default class Menu extends React.Component {
   // Internal functions
 
   getFocusableElements() {
-    return this.menu.current.querySelectorAll('button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])');
+    if (this.menu.current === null) {
+      return [];
+    }
+    return this.menu.current.querySelectorAll<HTMLElement>('button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])');
   }
 
   getAttributesFromProps() {
@@ -153,14 +191,18 @@ export default class Menu extends React.Component {
 
   focusNext() {
     const focusableElements = Array.from(this.getFocusableElements());
-    const activeIndex = focusableElements.indexOf(document.activeElement);
-    const nextIndex = (activeIndex + 1) % focusableElements.length;
+    const activeIndex = document.activeElement !== null
+      ? focusableElements.indexOf(document.activeElement as HTMLElement)
+      : null;
+    const nextIndex = ((activeIndex || 0) + 1) % focusableElements.length;
     focusableElements[nextIndex].focus();
   }
 
   focusPrevious() {
     const focusableElements = Array.from(this.getFocusableElements());
-    const activeIndex = focusableElements.indexOf(document.activeElement);
+    const activeIndex = document.activeElement !== null
+      ? focusableElements.indexOf(document.activeElement as HTMLElement)
+      : null;
     const previousIndex = (activeIndex || focusableElements.length) - 1;
     focusableElements[previousIndex].focus();
   }
@@ -208,6 +250,7 @@ export default class Menu extends React.Component {
         timeout={this.props.transitionTimeout}
         classNames={this.props.transitionClassName}
         unmountOnExit
+        addEndListener={() => {}}
       >
         {node}
       </CSSTransition>
@@ -218,7 +261,7 @@ export default class Menu extends React.Component {
     const { className } = this.props;
 
     const wrappedChildren = React.Children.map(this.props.children, (child) => {
-      if (child.type === MenuTriggerType) {
+      if (child && typeof child === 'object' && 'type' in child && child.type === MenuTriggerType) {
         return this.renderTrigger(child);
       }
       return this.renderMenuContent(child);
@@ -226,7 +269,7 @@ export default class Menu extends React.Component {
 
     const rootClassName = this.state.expanded ? 'menu expanded' : 'menu';
 
-    return React.createElement(this.props.tag, {
+    return React.createElement(this.props.tag || 'div', {
       className: `${rootClassName} ${className}`,
       ref: this.menu,
       onKeyDown: this.onKeyDown,
@@ -236,15 +279,3 @@ export default class Menu extends React.Component {
     }, wrappedChildren);
   }
 }
-
-Menu.propTypes = menuPropTypes;
-Menu.defaultProps = {
-  tag: 'div',
-  className: null,
-  onClose: null,
-  onOpen: null,
-  respondToPointerEvents: false,
-  closeOnDocumentClick: true,
-  transitionTimeout: 250,
-  transitionClassName: 'menu-content',
-};
