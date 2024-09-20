@@ -1,6 +1,6 @@
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
-import { MessageDescriptor, MessageFormatElement } from 'react-intl';
+import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
 
 import '@formatjs/intl-pluralrules/polyfill';
@@ -263,7 +263,7 @@ export function mergeMessages(newMessages) {
 
 interface ConfigureI18nOptions {
   loggingService: LoggingService,
-  messages: Array<MessageDescriptor> | { [locale: string] : Array<MessageDescriptor> },
+  messages: Array<{ [locale: string] : { [key: string]: string } }> | { [locale: string] : { [key: string]: string } },
   config: SiteConfig,
 }
 
