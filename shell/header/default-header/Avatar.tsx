@@ -1,14 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
+import classNames from 'classnames';
 import { AvatarIcon } from './Icons';
 
-const Avatar = ({
-  size,
+interface AvatarProps {
+  size?: string
+  src?: string,
+  alt?: string,
+  className?: string,
+}
+
+export default function Avatar({
+  size = '2rem',
   src,
   alt,
   className,
-}) => {
+}: AvatarProps) {
   const avatar = src ? (
     <img className="d-block w-100 h-100" src={src} alt={alt} />
   ) : (
@@ -18,25 +23,12 @@ const Avatar = ({
   return (
     <span
       style={{ height: size, width: size }}
-      className={`avatar overflow-hidden d-inline-flex rounded-circle ${className}`}
+      className={classNames(
+        'avatar overflow-hidden d-inline-flex rounded-circle',
+        className
+      )}
     >
       {avatar}
     </span>
   );
-};
-
-Avatar.propTypes = {
-  src: PropTypes.string,
-  size: PropTypes.string,
-  alt: PropTypes.string,
-  className: PropTypes.string,
-};
-
-Avatar.defaultProps = {
-  src: null,
-  size: '2rem',
-  alt: null,
-  className: null,
-};
-
-export default Avatar;
+}
