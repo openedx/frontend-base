@@ -6,10 +6,10 @@ import {
   InternalAppConfig
 } from '../../types';
 
-export function getFederatedModules(): Array<FederatedAppConfig> {
+export function getFederatedModules() {
   const { apps } = getConfig();
 
-  return apps.filter((app: AppConfig) => app.type === AppConfigTypes.FEDERATED);
+  return apps.filter((app: AppConfig) => app.type === AppConfigTypes.FEDERATED) as Array<FederatedAppConfig>;
 }
 
 export function getFederationRemotes() {
