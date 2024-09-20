@@ -7,7 +7,7 @@ import {
   injectIntl, intlShape
 } from '../../../runtime';
 import DesktopHeader from './DesktopHeader';
-import MobileHeader from './MobileHeader';
+import MobileHeader from './mobile/MobileHeader';
 
 import messages from './DefaultHeader.messages';
 

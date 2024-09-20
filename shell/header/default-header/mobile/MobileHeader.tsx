@@ -1,14 +1,14 @@
 import { MenuIcon } from '@openedx/paragon/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { injectIntl, intlShape } from '../../../runtime';
+import { injectIntl, intlShape } from '../../../../runtime';
 
 // Local Components
-import Avatar from './Avatar';
-import messages from './DefaultHeader.messages';
-import LinkedLogo from './LinkedLogo';
-import Logo from './Logo';
-import { Menu, MenuContent, MenuTrigger } from './menu';
+import Avatar from '../Avatar';
+import messages from '../DefaultHeader.messages';
+import LinkedLogo from '../LinkedLogo';
+import Logo from '../Logo';
+import { Menu, MenuContent, MenuTrigger } from '../menu';
 
 class MobileHeader extends React.Component {
   renderMenu(menu) {
