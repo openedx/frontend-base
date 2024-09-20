@@ -1,20 +1,48 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useToggle, ModalPopup } from '@openedx/paragon';
+import { ModalPopup, useToggle } from '@openedx/paragon';
+import { useState } from 'react';
 import HeaderBody from './HeaderBody';
 import MobileMenu from './MobileMenu';
 
-const MobileHeader = ({
-  mainMenuDropdowns,
+interface MobileHeaderProps {
+  studioBaseUrl: string,
+  logoutUrl: string,
+  number?: string,
+  org?: string,
+  title?: string,
+  logo?: string,
+  logoAltText?: string,
+  authenticatedUserAvatar?: string,
+  username?: string,
+  isAdmin?: boolean,
+  mainMenuDropdowns?: Array<{
+    id: string,
+    buttonTitle: string,
+    items: Array<{
+      href: string,
+      title: string,
+    }>,
+  }>,
+  outlineLink?: string,
+}
+
+export default function MobileHeader({
+  mainMenuDropdowns = [],
+  isAdmin = false,
   ...props
-}) => {
-  const [isOpen, , close, toggle] = useToggle(false);
+}: MobileHeaderProps) {
+  const [
+    isOpen,
+    open, // eslint-disable-line @typescript-eslint/no-unused-vars
+    close,
+    toggle
+  ] = useToggle(false);
   const [target, setTarget] = useState(null);
 
   return (
     <>
       <HeaderBody
         {...props}
+        isAdmin={isAdmin}
         isMobile
         setModalPopupTarget={setTarget}
         toggleModalPopup={toggle}
@@ -33,41 +61,4 @@ const MobileHeader = ({
       </ModalPopup>
     </>
   );
-};
-
-MobileHeader.propTypes = {
-  studioBaseUrl: PropTypes.string.isRequired,
-  logoutUrl: PropTypes.string.isRequired,
-  number: PropTypes.string,
-  org: PropTypes.string,
-  title: PropTypes.string,
-  logo: PropTypes.string,
-  logoAltText: PropTypes.string,
-  authenticatedUserAvatar: PropTypes.string,
-  username: PropTypes.string,
-  isAdmin: PropTypes.bool,
-  mainMenuDropdowns: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    buttonTitle: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      href: PropTypes.string,
-      title: PropTypes.string,
-    })),
-  })),
-  outlineLink: PropTypes.string,
-};
-
-MobileHeader.defaultProps = {
-  logo: null,
-  logoAltText: null,
-  number: null,
-  org: null,
-  title: null,
-  authenticatedUserAvatar: null,
-  username: null,
-  isAdmin: false,
-  mainMenuDropdowns: [],
-  outlineLink: null,
-};
-
-export default MobileHeader;
+}
