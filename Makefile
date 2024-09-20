@@ -12,6 +12,7 @@ cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 
 build:
 	rm -rf ./config ./tools/dist
+	tsc --project ./tsconfig.json
 	mkdir -p ./config
 	cp tools/typescript/tsconfig.json config/tsconfig.json
 	tsc --project ./tools/tsconfig.json
