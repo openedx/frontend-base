@@ -1,4 +1,4 @@
-import Footer, { EVENT_NAMES } from './components/Footer';
+import Footer, { EVENT_NAMES } from './default-footer/Footer';
 import messages from './i18n/index';
 import StudioFooter from './studio-footer';
 
