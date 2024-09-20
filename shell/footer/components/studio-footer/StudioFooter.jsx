@@ -98,9 +98,9 @@ const StudioFooter = ({
               {intl.formatMessage(messages.privacyPolicyLinkLabel)}
             </Hyperlink>
           )}
-          {config.ENABLE_ACCESSIBILITY_PAGE === 'true' && (
+          {config.ACCESSIBILITY_URL !== null && (
             <Hyperlink
-              destination={`${config.STUDIO_BASE_URL}/accessibility`}
+              destination={config.ACCESSIBILITY_URL}
               data-testid="accessibilityRequest"
             >
               {intl.formatMessage(messages.accessibilityRequestLinkLabel)}

@@ -16,7 +16,7 @@ const config = {
   SUPPORT_EMAIL: siteConfig.SUPPORT_EMAIL,
   SITE_NAME: siteConfig.SITE_NAME,
   STUDIO_BASE_URL: siteConfig.STUDIO_BASE_URL,
-  ENABLE_ACCESSIBILITY_PAGE: siteConfig.ENABLE_ACCESSIBILITY_PAGE,
+  ACCESSIBILITY_URL: siteConfig.ACCESSIBILITY_URL,
 };
 
 let currentConfig = config;
@@ -112,7 +112,7 @@ describe('Footer', () => {
       expect(screen.queryByTestId('accessibilityRequest')).toBeNull();
     });
     it('should show accessibilty request link', () => {
-      render(<Component updateVariable={['ENABLE_ACCESSIBILITY_PAGE', 'true']} />);
+      render(<Component updateVariable={['ACCESSIBILITY_URL', 'accessibilityurl']} />);
       expect(screen.getByText('LMS')).toBeVisible();
       expect(screen.queryByTestId('termsOfService')).toBeNull();
       expect(screen.queryByTestId('privacyPolicy')).toBeNull();
