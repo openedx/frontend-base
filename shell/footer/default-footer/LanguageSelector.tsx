@@ -1,9 +1,20 @@
-import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from '../../../runtime';
+import {
+  FormattedMessage,
+  useIntl
+} from '../../../runtime';
 
-const LanguageSelector = ({
-  intl, options, onSubmit, ...props
-}) => {
+interface LanguageSelectorProps {
+  onSubmit: (languageCode: string) => void,
+  options: Array<{
+    label: string,
+    value: string
+  }>,
+}
+
+export default function LanguageSelector({
+  options, onSubmit, ...props
+}: LanguageSelectorProps) {
+  const intl = useIntl();
   const handleSubmit = (e) => {
     e.preventDefault();
     const languageCode = e.target.elements['site-footer-language-select'].value;
@@ -43,15 +54,4 @@ const LanguageSelector = ({
       </div>
     </form>
   );
-};
-
-LanguageSelector.propTypes = {
-  intl: intlShape.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string,
-    label: PropTypes.string,
-  })).isRequired,
-};
-
-export default injectIntl(LanguageSelector);
+}
