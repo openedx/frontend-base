@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { injectIntl, intlShape } from '../../../runtime';
+import { injectIntl, intlShape } from '../../../../runtime';
 
 // Local Components
-import Avatar from './Avatar';
-import LinkedLogo from './LinkedLogo';
-import Logo from './Logo';
-import { Menu, MenuContent, MenuTrigger } from './menu';
+import Avatar from '../Avatar';
+import LinkedLogo from '../LinkedLogo';
+import Logo from '../Logo';
+import { Menu, MenuContent, MenuTrigger } from '../menu';
 
 // i18n
-import messages from './DefaultHeader.messages';
+import messages from '../DefaultHeader.messages';
 
 // Assets
-import { CaretIcon } from './Icons';
+import { CaretIcon } from '../Icons';
 
 class DesktopHeader extends React.Component {
   renderMenu(menu) {

@@ -6,7 +6,7 @@ import {
   AppContext,
   injectIntl, intlShape
 } from '../../../runtime';
-import DesktopHeader from './DesktopHeader';
+import DesktopHeader from './desktop/DesktopHeader';
 import MobileHeader from './mobile/MobileHeader';
 
 import messages from './DefaultHeader.messages';
