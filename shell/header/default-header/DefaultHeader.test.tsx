@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Context as ResponsiveContext } from 'react-responsive';
 import TestRenderer from 'react-test-renderer';
-// eslint-disable-next-line import/no-unresolved
+// @ts-ignore
 import siteConfig from 'site.config';
 
 import { AppContext, IntlProvider } from '../../../runtime';

@@ -35,7 +35,7 @@ interface MobileHeaderProps {
   avatar?: string,
   username?: string,
   loggedIn: boolean,
-  stickyOnMobile: boolean,
+  stickyOnMobile?: boolean,
 }
 
 export default function MobileHeader({
