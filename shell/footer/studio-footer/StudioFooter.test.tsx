@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import siteConfig from 'site.config';
 
-import { AppContext, IntlProvider } from '../../../../runtime';
+import { AppContext, IntlProvider } from '../../../runtime';
 import StudioFooter from './StudioFooter';
 import messages from './messages';
 

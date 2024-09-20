@@ -1,4 +1,4 @@
-import { defineMessages } from '../../../../runtime';
+import { defineMessages } from '../../../runtime';
 
 const messages = defineMessages({
   openHelpButtonLabel: {

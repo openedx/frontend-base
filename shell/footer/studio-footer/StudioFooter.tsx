@@ -14,7 +14,7 @@ import {
   FormattedMessage,
   injectIntl,
   intlShape
-} from '../../../../runtime';
+} from '../../../runtime';
 import messages from './messages';
 
 const StudioFooter = ({
