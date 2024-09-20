@@ -7,7 +7,6 @@ import {
   TransitionReplace,
 } from '@openedx/paragon';
 import { ExpandLess, ExpandMore, Help } from '@openedx/paragon/icons';
-import isEmpty from 'lodash.isempty';
 import { useContext, useState } from 'react';
 
 import {
@@ -72,7 +71,7 @@ const StudioFooter = ({
               >
                 <FormattedMessage {...messages.studioXButtonLabel} />
               </Button>
-              {!isEmpty(config.SUPPORT_EMAIL) && (
+              {config.SUPPORT_EMAIL !== null && (
                 <Button
                   as="a"
                   href={`mailto:${config.SUPPORT_EMAIL}`}
@@ -89,11 +88,11 @@ const StudioFooter = ({
         <ActionRow className="pt-3 m-0 x-small">
           © {new Date().getFullYear()} <Hyperlink destination={config.MARKETING_SITE_BASE_URL} target="_blank" className="ml-2">{config.SITE_NAME}</Hyperlink>
           <ActionRow.Spacer />
-          {!isEmpty(config.TERMS_OF_SERVICE_URL) && (
+          {config.TERMS_OF_SERVICE_URL !== null && (
             <Hyperlink destination={config.TERMS_OF_SERVICE_URL} data-testid="termsOfService">
               {intl.formatMessage(messages.termsOfServiceLinkLabel)}
             </Hyperlink>
-          )}{!isEmpty(config.PRIVACY_POLICY_URL) && (
+          )}{config.PRIVACY_POLICY_URL !== null && (
             <Hyperlink destination={config.PRIVACY_POLICY_URL} data-testid="privacyPolicy">
               {intl.formatMessage(messages.privacyPolicyLinkLabel)}
             </Hyperlink>
