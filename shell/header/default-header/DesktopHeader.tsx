@@ -6,7 +6,7 @@ import { injectIntl, intlShape } from '../../../runtime';
 import Avatar from './Avatar';
 import LinkedLogo from './LinkedLogo';
 import Logo from './Logo';
-import { Menu, MenuContent, MenuTrigger } from './Menu';
+import { Menu, MenuContent, MenuTrigger } from './menu';
 
 // i18n
 import messages from './DefaultHeader.messages';
