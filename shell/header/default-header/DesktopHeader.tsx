@@ -90,7 +90,9 @@ class DesktopHeader extends React.Component {
           {userMenu.map((group, index) => (
             // eslint-disable-next-line react/jsx-no-comment-textnodes,react/no-array-index-key
             <React.Fragment key={index}>
-              {group.heading && <div className="dropdown-header" role="heading" aria-level="1">{group.heading}</div>}
+              {group.heading && (
+                <div className="dropdown-header" role="heading" aria-level={1}>{group.heading}</div>
+              )}
               {group.items.map(({
                 type, content, href, disabled, isActive, onClick,
               }) => (
