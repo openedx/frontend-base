@@ -1,20 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import MenuTrigger from './MenuTrigger';
 
-const MenuTrigger = ({ tag, className, ...attributes }) => React.createElement(tag, {
-  className: `menu-trigger ${className}`,
-  ...attributes,
-});
-MenuTrigger.propTypes = {
-  tag: PropTypes.string,
-  className: PropTypes.string,
-};
-MenuTrigger.defaultProps = {
-  tag: 'div',
-  className: null,
-};
-const MenuTriggerComp = <MenuTrigger />;
+const MenuTriggerComp = <MenuTrigger><div /></MenuTrigger>;
 const MenuTriggerType = MenuTriggerComp.type;
 
 const menuPropTypes = {
@@ -29,7 +18,7 @@ const menuPropTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
 
-class Menu extends React.Component {
+export default class Menu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -259,5 +248,3 @@ Menu.defaultProps = {
   transitionTimeout: 250,
   transitionClassName: 'menu-content',
 };
-
-export { Menu, MenuTrigger };
