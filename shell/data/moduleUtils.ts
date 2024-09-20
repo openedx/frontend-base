@@ -2,10 +2,11 @@ import { loadRemote } from '@module-federation/runtime';
 import { getConfig } from '../../runtime';
 import {
   AppConfig, AppConfigTypes, ApplicationModuleConfig,
+  FederatedAppConfig,
   InternalAppConfig
 } from '../../types';
 
-export function getFederatedModules() {
+export function getFederatedModules(): Array<FederatedAppConfig> {
   const { apps } = getConfig();
 
   return apps.filter((app: AppConfig) => app.type === AppConfigTypes.FEDERATED);

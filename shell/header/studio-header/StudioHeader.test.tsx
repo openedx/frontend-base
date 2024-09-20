@@ -7,7 +7,7 @@ import {
 import { useMemo } from 'react';
 
 import { Context as ResponsiveContext } from 'react-responsive';
-// eslint-disable-next-line import/no-unresolved
+// @ts-ignore
 import siteConfig from 'site.config';
 
 import { AppContext, IntlProvider } from '../../../runtime';
@@ -31,6 +31,7 @@ const RootWrapper = ({
   const appContextValue = useMemo(() => ({
     authenticatedUser: currentUser,
     config: {
+      ...siteConfig,
       LOGOUT_URL: siteConfig.LOGOUT_URL,
       LOGO_URL: siteConfig.LOGO_URL,
       SITE_NAME: siteConfig.SITE_NAME,
@@ -46,6 +47,7 @@ const RootWrapper = ({
       <AppContext.Provider value={appContextValue}>
         <ResponsiveContext.Provider value={responsiveContextValue}>
           <StudioHeader
+            title="test title"
             {...props}
           />
         </ResponsiveContext.Provider>
