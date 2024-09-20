@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { useMemo } from 'react';
 import renderer from 'react-test-renderer';
 
-// eslint-disable-next-line import/no-unresolved
+// @ts-ignore
 import siteConfig from 'site.config';
 import {
   AppContext,
@@ -16,6 +16,7 @@ const FooterWithContext = ({ locale = 'en' }) => {
   const contextValue = useMemo(() => ({
     authenticatedUser: null,
     config: {
+      ...siteConfig,
       LOGO_TRADEMARK_URL: siteConfig.LOGO_TRADEMARK_URL,
       LMS_BASE_URL: siteConfig.LMS_BASE_URL,
     },
@@ -36,6 +37,7 @@ const FooterWithLanguageSelector = ({ languageSelected = () => {} }) => {
   const contextValue = useMemo(() => ({
     authenticatedUser: null,
     config: {
+      ...siteConfig,
       LOGO_TRADEMARK_URL: siteConfig.LOGO_TRADEMARK_URL,
       LMS_BASE_URL: siteConfig.LMS_BASE_URL,
     },
