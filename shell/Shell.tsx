@@ -4,7 +4,7 @@ import {
   AppProvider,
   PluginSlot
 } from '../runtime';
-import Footer from './footer';
+import ActiveFooter from './footer';
 import ActiveHeader from './header/ActiveHeader';
 
 export default function Shell() {
@@ -18,7 +18,7 @@ export default function Shell() {
         <Outlet />
       </Suspense>
       <PluginSlot id="org.openedx.frontend.shell.footer.v1">
-        <Footer />
+        <ActiveFooter />
       </PluginSlot>
     </AppProvider>
   );
