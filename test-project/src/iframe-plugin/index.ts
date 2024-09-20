@@ -1,4 +1,4 @@
-import { ApplicationModuleConfig } from "@openedx/frontend-base";
+import { ApplicationModuleConfig, HeaderTypes } from "@openedx/frontend-base";
 
 const config: ApplicationModuleConfig = {
   routes: [
@@ -9,7 +9,7 @@ const config: ApplicationModuleConfig = {
         return {
           Component,
           handle: {
-            headerId: null,
+            headerId: HeaderTypes.NONE,
           }
         }
       },

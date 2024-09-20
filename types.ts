@@ -202,4 +202,11 @@ export enum HeaderTypes {
   DEFAULT = 'default',
   STUDIO = 'studio',
   LEARNING = 'learning',
+  NONE = 'none',
+}
+
+export enum FooterTypes {
+  DEFAULT = 'default',
+  STUDIO = 'studio',
+  NONE = 'none',
 }
