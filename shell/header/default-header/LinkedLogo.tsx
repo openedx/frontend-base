@@ -2,16 +2,17 @@ interface LinkedLogoProps {
   href: string,
   src: string,
   alt: string,
+  [key: string]: any,
 }
 
 export default function LinkedLogo({
   href,
   src,
   alt,
-  ...attributes
+  ...props
 }: LinkedLogoProps) {
   return (
-    <a href={href} {...attributes}>
+    <a href={href} {...props}>
       <img className="d-block" src={src} alt={alt} />
     </a>
   );

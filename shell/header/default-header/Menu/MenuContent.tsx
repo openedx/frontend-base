@@ -4,13 +4,14 @@ interface MenuContentProps {
   tag?: string,
   className?: string,
   children: ReactNode,
+  [key: string]: any,
 }
 
 const MenuContent = ({
-  tag = 'div', className, children, ...attributes
+  tag = 'div', className, children, ...props
 }: MenuContentProps) => createElement(tag, {
   className: ['menu-content', className].join(' '),
-  ...attributes,
+  ...props,
 }, children);
 
 export default MenuContent;
