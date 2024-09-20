@@ -1,224 +1,126 @@
 import { MenuIcon } from '@openedx/paragon/icons';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { injectIntl, intlShape } from '../../../../runtime';
+import classNames from 'classnames';
 
-// Local Components
+import { useIntl } from '../../../../runtime';
 import Avatar from '../Avatar';
 import messages from '../DefaultHeader.messages';
 import LinkedLogo from '../LinkedLogo';
 import Logo from '../Logo';
 import { Menu, MenuContent, MenuTrigger } from '../menu';
+import LinkMenu, { LinkMenuItem } from './LinkMenu';
+import LoggedOutMenu from './LoggedOutLinkMenu';
+import UserMenu from './UserMenu';
 
-class MobileHeader extends React.Component {
-  renderMenu(menu) {
-    // Nodes are accepted as a prop
-    if (!Array.isArray(menu)) {
-      return menu;
-    }
-
-    return menu.map((menuItem) => {
-      const {
-        type,
-        href,
-        content,
-        submenuContent,
-        disabled,
-        isActive,
-        onClick,
-      } = menuItem;
-
-      if (type === 'item') {
-        return (
-          <a
-            key={`${type}-${content}`}
-            className={`nav-link${disabled ? ' disabled' : ''}${isActive ? ' active' : ''}`}
-            href={href}
-            onClick={onClick || null}
-          >
-            {content}
-          </a>
-        );
-      }
-
-      return (
-        <Menu key={`${type}-${content}`} tag="div" className="nav-item">
-          <MenuTrigger onClick={onClick || null} tag="a" role="button" tabIndex="0" className="nav-link">
-            {content}
-          </MenuTrigger>
-          <MenuContent className="position-static pin-left pin-right py-2">
-            {submenuContent}
-          </MenuContent>
-        </Menu>
-      );
-    });
-  }
-
-  renderMainMenu() {
-    const { mainMenu } = this.props;
-    return this.renderMenu(mainMenu);
-  }
-
-  renderSecondaryMenu() {
-    const { secondaryMenu } = this.props;
-    return this.renderMenu(secondaryMenu);
-  }
-
-  renderUserMenuItems() {
-    const { userMenu } = this.props;
-
-    return userMenu.map((group) => (
-      group.items.map(({
-        type, content, href, disabled, isActive, onClick,
-      }) => (
-        <li className="nav-item" key={`${type}-${content}`}>
-          <a
-            className={`nav-link${isActive ? ' active' : ''}${disabled ? ' disabled' : ''}`}
-            href={href}
-            onClick={onClick || null}
-          >
-            {content}
-          </a>
-        </li>
-      ))
-    ));
-  }
-
-  renderLoggedOutItems() {
-    const { loggedOutItems } = this.props;
-
-    return loggedOutItems.map(({ type, href, content }, i, arr) => (
-      <li className="nav-item px-3 my-2" key={`${type}-${content}`}>
-        <a
-          className={i < arr.length - 1 ? 'btn btn-block btn-outline-primary' : 'btn btn-block btn-primary'}
-          href={href}
-        >
-          {content}
-        </a>
-      </li>
-    ));
-  }
-
-  render() {
-    const {
-      logo,
-      logoAltText,
-      logoDestination,
-      loggedIn,
-      avatar,
-      username,
-      stickyOnMobile,
-      intl,
-      mainMenu,
-      userMenu,
-      loggedOutItems,
-    } = this.props;
-    const logoProps = { src: logo, alt: logoAltText, href: logoDestination };
-    const stickyClassName = stickyOnMobile ? 'sticky-top' : '';
-
-    return (
-      <header
-        aria-label={intl.formatMessage(messages['header.label.main.header'])}
-        className={`site-header-mobile d-flex justify-content-between align-items-center shadow ${stickyClassName}`}
-      >
-        <a className="nav-skip sr-only sr-only-focusable" href="#main">{intl.formatMessage(messages['header.label.skip.nav'])}</a>
-        {mainMenu.length > 0 ? (
-          <div className="w-100 d-flex justify-content-start">
-
-            <Menu className="position-static">
-              <MenuTrigger
-                tag="button"
-                className="icon-button"
-                aria-label={intl.formatMessage(messages['header.label.main.menu'])}
-                title={intl.formatMessage(messages['header.label.main.menu'])}
-              >
-                <MenuIcon role="img" aria-hidden focusable="false" style={{ width: '1.5rem', height: '1.5rem' }} />
-              </MenuTrigger>
-              <MenuContent
-                tag="nav"
-                aria-label={intl.formatMessage(messages['header.label.main.nav'])}
-                className="nav flex-column pin-left pin-right border-top shadow py-2"
-              >
-                {this.renderMainMenu()}
-                {this.renderSecondaryMenu()}
-              </MenuContent>
-            </Menu>
-          </div>
-        ) : null}
-        <div className="w-100 d-flex justify-content-center">
-          { logoDestination === null ? <Logo className="logo" src={logo} alt={logoAltText} /> : <LinkedLogo className="logo" {...logoProps} itemType="http://schema.org/Organization" />}
-        </div>
-        {userMenu.length > 0 || loggedOutItems.length > 0 ? (
-          <div className="w-100 d-flex justify-content-end align-items-center">
-            <Menu tag="nav" aria-label={intl.formatMessage(messages['header.label.secondary.nav'])} className="position-static">
-              <MenuTrigger
-                tag="button"
-                className="icon-button"
-                aria-label={intl.formatMessage(messages['header.label.account.menu'])}
-                title={intl.formatMessage(messages['header.label.account.menu'])}
-              >
-                <Avatar size="1.5rem" src={avatar} alt={username} />
-              </MenuTrigger>
-              <MenuContent tag="ul" className="nav flex-column pin-left pin-right border-top shadow py-2">
-                {loggedIn ? this.renderUserMenuItems() : this.renderLoggedOutItems()}
-              </MenuContent>
-            </Menu>
-          </div>
-        ) : null}
-      </header>
-    );
-  }
+interface MobileHeaderProps {
+  mainMenu: Array<LinkMenuItem>,
+  secondaryMenu: Array<LinkMenuItem>,
+  userMenu: Array<{
+    heading: string,
+    items: Array<{
+      type: 'item' | 'menu',
+      href: string,
+      content: string,
+      disabled: boolean,
+      isActive: boolean,
+      onClick: () => void,
+    }>,
+  }>,
+  loggedOutItems: Array<{
+    href: string,
+    content: string,
+  }>,
+  logo: string,
+  logoAltText: string,
+  logoDestination?: string,
+  avatar?: string,
+  username?: string,
+  loggedIn: boolean,
+  stickyOnMobile: boolean,
 }
 
-MobileHeader.propTypes = {
-  mainMenu: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.array,
-  ]),
-  secondaryMenu: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.array,
-  ]),
-  userMenu: PropTypes.arrayOf(PropTypes.shape({
-    heading: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      type: PropTypes.oneOf(['item', 'menu']),
-      href: PropTypes.string,
-      content: PropTypes.string,
-      isActive: PropTypes.bool,
-      onClick: PropTypes.func,
-    })),
-  })),
-  loggedOutItems: PropTypes.arrayOf(PropTypes.shape({
-    type: PropTypes.oneOf(['item', 'menu']),
-    href: PropTypes.string,
-    content: PropTypes.string,
-  })),
-  logo: PropTypes.string,
-  logoAltText: PropTypes.string,
-  logoDestination: PropTypes.string,
-  avatar: PropTypes.string,
-  username: PropTypes.string,
-  loggedIn: PropTypes.bool,
-  stickyOnMobile: PropTypes.bool,
+export default function MobileHeader({
+  logo,
+  logoAltText,
+  logoDestination,
+  loggedIn = false,
+  avatar,
+  username,
+  stickyOnMobile = true,
+  mainMenu = [],
+  secondaryMenu = [],
+  userMenu = [],
+  loggedOutItems = []
+}: MobileHeaderProps) {
+  const intl = useIntl();
 
-  // i18n
-  intl: intlShape.isRequired,
-};
+  return (
+    <header
+      aria-label={intl.formatMessage(messages['header.label.main.header'])}
+      className={classNames(
+        'site-header-mobile d-flex justify-content-between align-items-center shadow',
+        { 'sticky-top': stickyOnMobile }
+      )}
+    >
+      <a className="nav-skip sr-only sr-only-focusable" href="#main">{intl.formatMessage(messages['header.label.skip.nav'])}</a>
+      {mainMenu.length > 0 ? (
+        <div className="w-100 d-flex justify-content-start">
 
-MobileHeader.defaultProps = {
-  mainMenu: [],
-  secondaryMenu: [],
-  userMenu: [],
-  loggedOutItems: [],
-  logo: null,
-  logoAltText: null,
-  logoDestination: null,
-  avatar: null,
-  username: null,
-  loggedIn: false,
-  stickyOnMobile: true,
-
-};
-
-export default injectIntl(MobileHeader);
+          <Menu className="position-static">
+            <MenuTrigger
+              tag="button"
+              className="icon-button"
+              aria-label={intl.formatMessage(messages['header.label.main.menu'])}
+              title={intl.formatMessage(messages['header.label.main.menu'])}
+            >
+              <MenuIcon role="img" aria-hidden focusable="false" style={{ width: '1.5rem', height: '1.5rem' }} />
+            </MenuTrigger>
+            <MenuContent
+              tag="nav"
+              aria-label={intl.formatMessage(messages['header.label.main.nav'])}
+              className="nav flex-column pin-left pin-right border-top shadow py-2"
+            >
+              {Array.isArray(mainMenu) ? (
+                { mainMenu }
+              ) : (
+                <LinkMenu menu={mainMenu} />
+              )}
+              {Array.isArray(secondaryMenu) ? (
+                { secondaryMenu }
+              ) : (
+                <LinkMenu menu={secondaryMenu} />
+              )}
+            </MenuContent>
+          </Menu>
+        </div>
+      ) : null}
+      <div className="w-100 d-flex justify-content-center">
+        {logoDestination === undefined ? (
+          <Logo className="logo" src={logo} alt={logoAltText} />
+        ) : (
+          <LinkedLogo className="logo" src={logo} alt={logoAltText} href={logoDestination} itemType="http://schema.org/Organization" />
+        )}
+      </div>
+      {userMenu.length > 0 || loggedOutItems.length > 0 ? (
+        <div className="w-100 d-flex justify-content-end align-items-center">
+          <Menu tag="nav" aria-label={intl.formatMessage(messages['header.label.secondary.nav'])} className="position-static">
+            <MenuTrigger
+              tag="button"
+              className="icon-button"
+              aria-label={intl.formatMessage(messages['header.label.account.menu'])}
+              title={intl.formatMessage(messages['header.label.account.menu'])}
+            >
+              <Avatar size="1.5rem" src={avatar} alt={username} />
+            </MenuTrigger>
+            <MenuContent tag="ul" className="nav flex-column pin-left pin-right border-top shadow py-2">
+              {loggedIn ? (
+                <UserMenu userMenuItems={userMenu} />
+              ) : (
+                <LoggedOutMenu loggedOutItems={loggedOutItems} />
+              )}
+            </MenuContent>
+          </Menu>
+        </div>
+      ) : null}
+    </header>
+  );
+}
