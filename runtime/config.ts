@@ -118,6 +118,10 @@ let config: SiteConfig = {
   MFE_CONFIG_API_URL: null,
   SUPPORT_URL: null,
   SEGMENT_KEY: null,
+  SUPPORT_EMAIL: null,
+  TERMS_OF_SERVICE_URL: null,
+  PRIVACY_POLICY_URL: null,
+  ACCESSIBILITY_URL: null,
 
   apps: [],
   pluginSlots: {},

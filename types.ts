@@ -140,6 +140,11 @@ export interface OptionalSiteConfig {
   ORDER_HISTORY_URL: string | null,
   SUPPORT_URL: string | null,
 
+  SUPPORT_EMAIL: string | null,
+  TERMS_OF_SERVICE_URL: string | null,
+  PRIVACY_POLICY_URL: string | null,
+  ACCESSIBILITY_URL: string | null,
+
   custom: {
     [key:string]: any,
   }
