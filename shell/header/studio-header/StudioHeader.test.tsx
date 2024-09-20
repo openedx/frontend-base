@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   fireEvent,
   render,
@@ -42,7 +41,6 @@ const RootWrapper = ({
   const responsiveContextValue = useMemo(() => ({ width: screenWidth }), []);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values, react/prop-types
     <IntlProvider locale="en">
       <AppContext.Provider value={appContextValue}>
         <ResponsiveContext.Provider value={responsiveContextValue}>
