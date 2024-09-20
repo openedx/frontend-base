@@ -28,7 +28,6 @@ export default function LanguageSelector({
       {...props}
     >
       <div className="form-group">
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="site-footer-language-select" className="d-inline-block m-0">
           <FormattedMessage
             id="footer.languageForm.select.label"

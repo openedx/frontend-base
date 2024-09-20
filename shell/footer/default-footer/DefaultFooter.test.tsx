@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useMemo } from 'react';
 import renderer from 'react-test-renderer';
@@ -12,7 +11,7 @@ import {
 
 import Footer from './DefaultFooter';
 
-const FooterWithContext = ({ locale = 'en' }) => {
+const FooterWithContext = ({ locale = 'en' }: { locale: string }) => {
   const contextValue = useMemo(() => ({
     authenticatedUser: null,
     config: {
@@ -33,7 +32,9 @@ const FooterWithContext = ({ locale = 'en' }) => {
   );
 };
 
-const FooterWithLanguageSelector = ({ languageSelected = () => {} }) => {
+const FooterWithLanguageSelector = ({
+  languageSelected = () => {}
+}: { languageSelected?: (languageCode: string) => void }) => {
   const contextValue = useMemo(() => ({
     authenticatedUser: null,
     config: {
