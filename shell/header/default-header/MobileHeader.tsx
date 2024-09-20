@@ -11,7 +11,7 @@ import { Menu, MenuContent, MenuTrigger } from './Menu';
 import messages from './DefaultHeader.messages';
 
 // Assets
-import { MenuIcon } from './Icons';
+import { MenuIcon } from '@openedx/paragon/icons';
 
 class MobileHeader extends React.Component {
   renderMenu(menu) {

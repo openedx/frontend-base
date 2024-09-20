@@ -1,19 +1,3 @@
-import React from 'react';
-
-export const MenuIcon = (props) => (
-  <svg
-    width="24px"
-    height="24px"
-    viewBox="0 0 24 24"
-    version="1.1"
-    {...props}
-  >
-    <rect fill="currentColor" x="2" y="5" width="20" height="2" />
-    <rect fill="currentColor" x="2" y="11" width="20" height="2" />
-    <rect fill="currentColor" x="2" y="17" width="20" height="2" />
-  </svg>
-);
-
 export const AvatarIcon = (props) => (
   <svg
     width="24px"
