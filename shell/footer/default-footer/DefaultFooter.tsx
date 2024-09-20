@@ -8,7 +8,7 @@ import {
   sendTrackEvent
 } from '../../../runtime';
 
-import messages from './Footer.messages';
+import messages from './DefaultFooter.messages';
 import LanguageSelector from './LanguageSelector';
 
 const EVENT_NAMES = {

@@ -10,7 +10,7 @@ import {
   IntlProvider
 } from '../../../runtime';
 
-import Footer from './Footer';
+import Footer from './DefaultFooter';
 
 const FooterWithContext = ({ locale = 'en' }) => {
   const contextValue = useMemo(() => ({
