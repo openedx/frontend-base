@@ -196,6 +196,7 @@ export interface User {
   userId: string,
   roles: Array<string>,
   administrator: boolean,
+  avatar: string,
 }
 
 export enum HeaderTypes {
