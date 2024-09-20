@@ -1,30 +1,18 @@
-/* eslint-disable react/prop-types */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useMemo } from 'react';
-// eslint-disable-next-line import/no-unresolved
+// @ts-ignore
 import siteConfig from 'site.config';
 
 import { AppContext, IntlProvider } from '../../../runtime';
 import StudioFooter from './StudioFooter';
 import messages from './messages';
 
-const config = {
-  LMS_BASE_URL: siteConfig.LMS_BASE_URL,
-  MARKETING_SITE_BASE_URL: siteConfig.MARKETING_SITE_BASE_URL,
-  TERMS_OF_SERVICE_URL: siteConfig.TERMS_OF_SERVICE_URL,
-  PRIVACY_POLICY_URL: siteConfig.PRIVACY_POLICY_URL,
-  SUPPORT_EMAIL: siteConfig.SUPPORT_EMAIL,
-  SITE_NAME: siteConfig.SITE_NAME,
-  STUDIO_BASE_URL: siteConfig.STUDIO_BASE_URL,
-  ACCESSIBILITY_URL: siteConfig.ACCESSIBILITY_URL,
-};
-
-let currentConfig = config;
-const Component = ({ updateVariable }) => {
+let currentConfig = siteConfig;
+const Component = ({ updateVariable }: { updateVariable?: Array<string> }) => {
   if (updateVariable) {
     const [variable, value] = updateVariable;
     currentConfig = {
-      ...config,
+      ...siteConfig,
       [variable]: value,
     };
   }

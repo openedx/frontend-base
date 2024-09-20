@@ -12,15 +12,12 @@ import { useContext, useState } from 'react';
 import {
   AppContext,
   FormattedMessage,
-  injectIntl,
-  intlShape
+  useIntl
 } from '../../../runtime';
 import messages from './messages';
 
-const StudioFooter = ({
-  // injected
-  intl,
-}) => {
+export default function StudioFooter() {
+  const intl = useIntl();
   const [isOpen, setIsOpen] = useState(false);
   const { config } = useContext(AppContext);
 
@@ -128,11 +125,4 @@ const StudioFooter = ({
       </Container>
     </>
   );
-};
-
-StudioFooter.propTypes = {
-  // injected
-  intl: intlShape.isRequired,
-};
-
-export default injectIntl(StudioFooter);
+}
