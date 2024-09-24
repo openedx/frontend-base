@@ -25,6 +25,11 @@ const config: ProjectSiteConfig = {
   APP_ID: 'runtime',
   SUPPORT_URL: 'https://support.edx.org',
   ENVIRONMENT: 'test',
+  // We include these for some tests that need them.
+  SUPPORT_EMAIL: null,
+  TERMS_OF_SERVICE_URL: null,
+  PRIVACY_POLICY_URL: null,
+  ACCESSIBILITY_URL: null,
 };
 
 export default config;
