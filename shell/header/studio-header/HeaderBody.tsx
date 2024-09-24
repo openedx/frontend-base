@@ -8,7 +8,6 @@ import {
   Row,
 } from '@openedx/paragon';
 import { Close, MenuIcon, Search } from '@openedx/paragon/icons';
-import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from '../../../runtime';
 
 import BrandNav from './BrandNav';
@@ -20,7 +19,7 @@ import messages from './messages';
 interface HeaderBodyProps {
   studioBaseUrl: string,
   logoutUrl: string,
-  setModalPopupTarget?: Dispatch<SetStateAction<null>>,
+  setModalPopupTarget?: any,
   toggleModalPopup?: () => void,
   isModalPopupOpen?: boolean,
   number?: string,
