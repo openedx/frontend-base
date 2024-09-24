@@ -1,21 +1,28 @@
 import {
   Avatar,
 } from '@openedx/paragon';
-import PropTypes from 'prop-types';
-import { injectIntl, intlShape } from '../../../runtime';
+import { useIntl } from '../../../runtime';
 import NavDropdownMenu from './NavDropdownMenu';
 import getUserMenuItems from './utils';
 
-const UserMenu = ({
+interface UserMenuProps {
+  username: string,
+  studioBaseUrl: string,
+  logoutUrl: string,
+  authenticatedUserAvatar: string,
+  isMobile?: boolean,
+  isAdmin?: boolean,
+}
+
+export default function UserMenu({
   username,
   studioBaseUrl,
   logoutUrl,
   authenticatedUserAvatar,
-  isMobile,
-  isAdmin,
-  // injected
-  intl,
-}) => {
+  isMobile = false,
+  isAdmin = false,
+}: UserMenuProps) {
+  const intl = useIntl();
   const avatar = authenticatedUserAvatar ? (
     <img
       className="d-block w-100 h-100"
@@ -45,24 +52,4 @@ const UserMenu = ({
       })}
     />
   );
-};
-
-UserMenu.propTypes = {
-  username: PropTypes.string,
-  studioBaseUrl: PropTypes.string.isRequired,
-  logoutUrl: PropTypes.string.isRequired,
-  authenticatedUserAvatar: PropTypes.string,
-  isMobile: PropTypes.bool,
-  isAdmin: PropTypes.bool,
-  // injected
-  intl: intlShape.isRequired,
-};
-
-UserMenu.defaultProps = {
-  isMobile: false,
-  isAdmin: false,
-  authenticatedUserAvatar: null,
-  username: null,
-};
-
-export default injectIntl(UserMenu);
+}
