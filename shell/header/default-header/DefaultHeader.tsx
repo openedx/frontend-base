@@ -1,15 +1,24 @@
 import { useContext } from 'react';
 import Responsive from 'react-responsive';
 
-import PropTypes from 'prop-types';
 import {
   AppContext,
-  injectIntl, intlShape
+  useIntl
 } from '../../../runtime';
 import DesktopHeader from './desktop/DesktopHeader';
 import MobileHeader from './mobile/MobileHeader';
 
+import { LinkMenuItem } from '../types';
 import messages from './DefaultHeader.messages';
+
+interface HeaderProps {
+  mainMenuItems: Array<LinkMenuItem>,
+  secondaryMenuItems: Array<LinkMenuItem>,
+  userMenuItems: Array<{
+    heading: string,
+    items: Array<LinkMenuItem>,
+  }>,
+}
 
 /**
  * Header component for the application.
@@ -26,9 +35,10 @@ import messages from './DefaultHeader.messages';
  * @param {list} userMenuItems - The list of user menu items to display.
  * See the documentation for the structure of user menu item.
  */
-const Header = ({
-  intl, mainMenuItems, secondaryMenuItems, userMenuItems,
-}) => {
+export default function Header({
+  mainMenuItems, secondaryMenuItems, userMenuItems,
+}: HeaderProps) {
+  const intl = useIntl();
   const { authenticatedUser, config } = useContext(AppContext);
 
   const defaultMainMenu = [
@@ -110,33 +120,4 @@ const Header = ({
       </Responsive>
     </>
   );
-};
-
-Header.defaultProps = {
-  mainMenuItems: null,
-  secondaryMenuItems: null,
-  userMenuItems: null,
-};
-
-Header.propTypes = {
-  intl: intlShape.isRequired,
-  mainMenuItems: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.array,
-  ]),
-  secondaryMenuItems: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.array,
-  ]),
-  userMenuItems: PropTypes.arrayOf(PropTypes.shape({
-    heading: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      type: PropTypes.oneOf(['item', 'menu']),
-      href: PropTypes.string,
-      content: PropTypes.string,
-      isActive: PropTypes.bool,
-    })),
-  })),
-};
-
-export default injectIntl(Header);
+}
