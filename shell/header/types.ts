@@ -1,9 +1,9 @@
 export interface LinkMenuItem {
-  type: 'item' | 'menu',
+  type: string,
   href: string,
   content: string,
-  submenuContent: JSX.Element,
-  disabled: boolean,
-  isActive: boolean,
+  submenuContent?: JSX.Element,
+  disabled?: boolean,
+  isActive?: boolean,
   onClick?: () => void,
 }
