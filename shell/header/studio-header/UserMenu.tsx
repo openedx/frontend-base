@@ -6,10 +6,10 @@ import NavDropdownMenu from './NavDropdownMenu';
 import getUserMenuItems from './utils';
 
 interface UserMenuProps {
-  username: string,
+  username?: string,
   studioBaseUrl: string,
   logoutUrl: string,
-  authenticatedUserAvatar: string,
+  authenticatedUserAvatar?: string,
   isMobile?: boolean,
   isAdmin?: boolean,
 }

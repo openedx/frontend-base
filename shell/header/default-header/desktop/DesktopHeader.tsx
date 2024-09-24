@@ -24,8 +24,7 @@ interface DesktopHeaderProps {
   logo: string,
   logoAltText: string,
   logoDestination: string,
-  avatar: string,
-  username: string,
+  avatar?: string,
   loggedIn: boolean,
 }
 
@@ -38,7 +37,6 @@ export default function DesktopHeader({
   logoAltText,
   logoDestination,
   avatar,
-  username,
   loggedIn = false,
 }: DesktopHeaderProps) {
   const intl = useIntl();
@@ -69,7 +67,6 @@ export default function DesktopHeader({
                 <DesktopUserMenu
                   userMenu={userMenu}
                   avatar={avatar}
-                  username={username}
                 />
               </>
             ) : (

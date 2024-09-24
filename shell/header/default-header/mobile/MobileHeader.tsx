@@ -1,7 +1,7 @@
 import { MenuIcon } from '@openedx/paragon/icons';
 import classNames from 'classnames';
 
-import { useIntl } from '../../../../runtime';
+import { getAuthenticatedUser, useIntl } from '../../../../runtime';
 import LinkedLogo from '../../LinkedLogo';
 import Logo from '../../Logo';
 import { LinkMenuItem } from '../../types';
@@ -27,7 +27,6 @@ interface MobileHeaderProps {
   logoAltText: string,
   logoDestination?: string,
   avatar?: string,
-  username?: string,
   loggedIn: boolean,
   stickyOnMobile?: boolean,
 }
@@ -38,7 +37,6 @@ export default function MobileHeader({
   logoDestination,
   loggedIn = false,
   avatar,
-  username,
   stickyOnMobile = true,
   mainMenu = [],
   secondaryMenu = [],
@@ -46,7 +44,10 @@ export default function MobileHeader({
   loggedOutItems = []
 }: MobileHeaderProps) {
   const intl = useIntl();
-
+  let username = null;
+  if (getAuthenticatedUser() !== null) {
+    username = getAuthenticatedUser().username;
+  }
   return (
     <header
       aria-label={intl.formatMessage(messages['header.label.main.header'])}
@@ -103,7 +104,7 @@ export default function MobileHeader({
               aria-label={intl.formatMessage(messages['header.label.account.menu'])}
               title={intl.formatMessage(messages['header.label.account.menu'])}
             >
-              <Avatar size="1.5rem" src={avatar} alt={username} />
+              <Avatar size="1.5rem" src={avatar} alt={username || intl.formatMessage(messages['header.label.user.avatar'])} />
             </MenuTrigger>
             <MenuContent tag="ul" className="nav flex-column pin-left pin-right border-top shadow py-2">
               {loggedIn ? (
