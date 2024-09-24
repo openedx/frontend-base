@@ -2,10 +2,10 @@ import { MenuIcon } from '@openedx/paragon/icons';
 import classNames from 'classnames';
 
 import { useIntl } from '../../../../runtime';
+import LinkedLogo from '../../LinkedLogo';
 import Logo from '../../Logo';
 import Avatar from '../Avatar';
 import messages from '../DefaultHeader.messages';
-import LinkedLogo from '../LinkedLogo';
 import { Menu, MenuContent, MenuTrigger } from '../menu';
 import LinkMenu, { LinkMenuItem } from './LinkMenu';
 import LoggedOutMenu from './LoggedOutLinkMenu';

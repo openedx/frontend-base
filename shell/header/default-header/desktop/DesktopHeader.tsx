@@ -3,9 +3,9 @@ import React from 'react';
 import { injectIntl, intlShape } from '../../../../runtime';
 
 // Local Components
+import LinkedLogo from '../../LinkedLogo';
 import Logo from '../../Logo';
 import Avatar from '../Avatar';
-import LinkedLogo from '../LinkedLogo';
 import { Menu, MenuContent, MenuTrigger } from '../menu';
 
 // i18n

@@ -5,26 +5,10 @@ import {
   getConfig, injectIntl, intlShape
 } from '../../../runtime';
 
+import LinkedLogo from '../LinkedLogo';
 import AnonymousUserMenu from './AnonymousUserMenu';
 import AuthenticatedUserDropdown from './AuthenticatedUserDropdown';
 import messages from './messages';
-
-const LinkedLogo = ({
-  href,
-  src,
-  alt,
-  ...attributes
-}) => (
-  <a href={href} {...attributes}>
-    <img className="d-block" src={src} alt={alt} />
-  </a>
-);
-
-LinkedLogo.propTypes = {
-  href: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-};
 
 const LearningHeader = ({
   courseOrg, courseNumber, courseTitle, intl, showUserDropdown,
