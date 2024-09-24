@@ -1,7 +1,8 @@
 import { MenuIcon } from '@openedx/paragon/icons';
 import classNames from 'classnames';
 
-import { getAuthenticatedUser, useIntl } from '../../../../runtime';
+import { useContext } from 'react';
+import { AppContext, useIntl } from '../../../../runtime';
 import LinkedLogo from '../../LinkedLogo';
 import Logo from '../../Logo';
 import { LinkMenuItem } from '../../types';
@@ -44,9 +45,10 @@ export default function MobileHeader({
   loggedOutItems = []
 }: MobileHeaderProps) {
   const intl = useIntl();
-  let username = null;
-  if (getAuthenticatedUser() !== null) {
-    username = getAuthenticatedUser().username;
+  const { authenticatedUser } = useContext(AppContext);
+  let username: string | null = null;
+  if (authenticatedUser !== null) {
+    username = authenticatedUser.username;
   }
   return (
     <header

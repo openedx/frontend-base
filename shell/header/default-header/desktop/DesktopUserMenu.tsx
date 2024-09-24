@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useIntl } from 'react-intl';
-import { getAuthenticatedUser } from '../../../../runtime';
+import { AppContext } from '../../../../runtime';
 import { LinkMenuItem } from '../../types';
 import Avatar from '../Avatar';
 import messages from '../DefaultHeader.messages';
@@ -17,7 +17,13 @@ interface DesktopUserMenuProps {
 
 export default function DesktopUserMenu({ userMenu, avatar }: DesktopUserMenuProps) {
   const intl = useIntl();
-  const { username } = getAuthenticatedUser();
+
+  const { authenticatedUser } = useContext(AppContext);
+
+  let username: string | null = null;
+  if (authenticatedUser !== null) {
+    username = authenticatedUser.username;
+  }
   return (
     <Menu transitionClassName="menu-dropdown" transitionTimeout={250}>
       <MenuTrigger
