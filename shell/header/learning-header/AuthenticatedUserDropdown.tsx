@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types';
-
-import { getConfig, injectIntl, intlShape } from '../../../runtime';
 import { Dropdown, Icon } from '@openedx/paragon';
 import { Person } from '@openedx/paragon/icons';
+import {
+  getConfig,
+  useIntl
+} from '../../../runtime';
 
 import messages from './messages';
 
-const AuthenticatedUserDropdown = ({ intl, username }) => {
-  const dashboardMenuItem = (
-    <Dropdown.Item href={`${getConfig().LMS_BASE_URL}/dashboard`}>
-      {intl.formatMessage(messages.dashboard)}
-    </Dropdown.Item>
-  );
+interface AuthenticatedUserDropdownProps {
+  username: string,
+}
+
+export default function AuthenticatedUserDropdown({ username }: AuthenticatedUserDropdownProps) {
+  const intl = useIntl();
 
   return (
     <>
@@ -26,7 +27,9 @@ const AuthenticatedUserDropdown = ({ intl, username }) => {
           </span>
         </Dropdown.Toggle>
         <Dropdown.Menu className="dropdown-menu-right">
-          {dashboardMenuItem}
+          <Dropdown.Item href={`${getConfig().LMS_BASE_URL}/dashboard`}>
+            {intl.formatMessage(messages.dashboard)}
+          </Dropdown.Item>
           <Dropdown.Item href={`${getConfig().ACCOUNT_PROFILE_URL}/u/${username}`}>
             {intl.formatMessage(messages.profile)}
           </Dropdown.Item>
@@ -45,11 +48,4 @@ const AuthenticatedUserDropdown = ({ intl, username }) => {
       </Dropdown>
     </>
   );
-};
-
-AuthenticatedUserDropdown.propTypes = {
-  intl: intlShape.isRequired,
-  username: PropTypes.string.isRequired,
-};
-
-export default injectIntl(AuthenticatedUserDropdown);
+}
