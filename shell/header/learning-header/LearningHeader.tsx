@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import {
   AppContext,
-  getConfig, injectIntl, intlShape
+  getConfig,
+  useIntl
 } from '../../../runtime';
 
 import LinkedLogo from '../LinkedLogo';
@@ -10,9 +10,17 @@ import AnonymousUserMenu from './AnonymousUserMenu';
 import AuthenticatedUserDropdown from './AuthenticatedUserDropdown';
 import messages from './messages';
 
-const LearningHeader = ({
-  courseOrg, courseNumber, courseTitle, intl, showUserDropdown,
-}) => {
+interface LearningHeaderProps {
+  courseOrg?: string,
+  courseNumber?: string,
+  courseTitle?: string,
+  showUserDropdown?: boolean,
+}
+
+export default function LearningHeader({
+  courseOrg, courseNumber, courseTitle, showUserDropdown = true,
+}: LearningHeaderProps) {
+  const intl = useIntl();
   const { authenticatedUser } = useContext(AppContext);
 
   const headerLogo = (
@@ -44,21 +52,4 @@ const LearningHeader = ({
       </div>
     </header>
   );
-};
-
-LearningHeader.propTypes = {
-  courseOrg: PropTypes.string,
-  courseNumber: PropTypes.string,
-  courseTitle: PropTypes.string,
-  intl: intlShape.isRequired,
-  showUserDropdown: PropTypes.bool,
-};
-
-LearningHeader.defaultProps = {
-  courseOrg: null,
-  courseNumber: null,
-  courseTitle: null,
-  showUserDropdown: true,
-};
-
-export default injectIntl(LearningHeader);
+}
