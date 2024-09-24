@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import Responsive from 'react-responsive';
 import { AppContext } from '../../../runtime';
@@ -6,9 +5,32 @@ import { AppContext } from '../../../runtime';
 import HeaderBody from './HeaderBody';
 import MobileHeader from './MobileHeader';
 
-const StudioHeader = ({
-  number, org, title, isHiddenMainMenu, mainMenuDropdowns, outlineLink, searchButtonAction,
-}) => {
+interface StudioHeaderProps {
+  number?: string,
+  org?: string,
+  title: string,
+  isHiddenMainMenu?: boolean,
+  mainMenuDropdowns?: Array<{
+    id: string,
+    buttonTitle: string,
+    items: Array<{
+      href: string,
+      title: string,
+    }>,
+  }>,
+  outlineLink?: string,
+  searchButtonAction?: () => void,
+}
+
+export default function StudioHeader({
+  number = '',
+  org = '',
+  title,
+  isHiddenMainMenu = false,
+  mainMenuDropdowns = [],
+  outlineLink,
+  searchButtonAction,
+}: StudioHeaderProps) {
   const { authenticatedUser, config } = useContext(AppContext);
   const props = {
     logo: config.LOGO_URL,
@@ -38,32 +60,4 @@ const StudioHeader = ({
       </Responsive>
     </div>
   );
-};
-
-StudioHeader.propTypes = {
-  number: PropTypes.string,
-  org: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  isHiddenMainMenu: PropTypes.bool,
-  mainMenuDropdowns: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    buttonTitle: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      href: PropTypes.string,
-      title: PropTypes.string,
-    })),
-  })),
-  outlineLink: PropTypes.string,
-  searchButtonAction: PropTypes.func,
-};
-
-StudioHeader.defaultProps = {
-  number: '',
-  org: '',
-  isHiddenMainMenu: false,
-  mainMenuDropdowns: [],
-  outlineLink: null,
-  searchButtonAction: null,
-};
-
-export default StudioHeader;
+}
