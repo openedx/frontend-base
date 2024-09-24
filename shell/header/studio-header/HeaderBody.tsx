@@ -40,7 +40,7 @@ interface HeaderBodyProps {
       title: string,
     }>,
   }>,
-  outlineLink: string,
+  outlineLink?: string,
   searchButtonAction?: () => void,
 }
 

@@ -9,7 +9,7 @@ interface CourseLockUpProps {
   number: string,
   org: string,
   title: string,
-  outlineLink: string,
+  outlineLink?: string,
 }
 
 export default function CourseLockUp({
@@ -28,15 +28,23 @@ export default function CourseLockUp({
         </Tooltip>
     )}
     >
-      <a
-        className="course-title-lockup mr-2"
-        href={outlineLink}
-        aria-label={intl.formatMessage(messages['header.label.courseOutline'])}
-        data-testid="course-lock-up-block"
-      >
-        <span className="d-block small m-0 text-gray-800" data-testid="course-org-number">{org} {number}</span>
-        <span className="d-block m-0 font-weight-bold text-gray-800" data-testid="course-title">{title}</span>
-      </a>
+      {outlineLink ? (
+        <a
+          className="course-title-lockup mr-2"
+          href={outlineLink}
+          aria-label={intl.formatMessage(messages['header.label.courseOutline'])}
+          data-testid="course-lock-up-block"
+        >
+          <span className="d-block small m-0 text-gray-800" data-testid="course-org-number">{org} {number}</span>
+          <span className="d-block m-0 font-weight-bold text-gray-800" data-testid="course-title">{title}</span>
+        </a>
+      ) : (
+        <span className="course-title-lockup mr-2">
+          <span className="d-block small m-0 text-gray-800" data-testid="course-org-number">{org} {number}</span>
+          <span className="d-block m-0 font-weight-bold text-gray-800" data-testid="course-title">{title}</span>
+        </span>
+      )}
+
     </OverlayTrigger>
   );
 }
