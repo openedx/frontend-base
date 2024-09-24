@@ -1,24 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+interface BrandNavProps {
+  studioBaseUrl: string,
+  logo: string,
+  logoAltText: string,
+}
 
-const BrandNav = ({
-  studioBaseUrl,
-  logo,
-  logoAltText,
-}) => (
-  <a href={studioBaseUrl}>
-    <img
-      src={logo}
-      alt={logoAltText}
-      className="d-block logo"
-    />
-  </a>
-);
-
-BrandNav.propTypes = {
-  studioBaseUrl: PropTypes.string.isRequired,
-  logo: PropTypes.string.isRequired,
-  logoAltText: PropTypes.string.isRequired,
-};
-
-export default BrandNav;
+export default function BrandNav({ studioBaseUrl, logo, logoAltText }: BrandNavProps) {
+  return (
+    <a href={studioBaseUrl}>
+      <img
+        src={logo}
+        alt={logoAltText}
+        className="d-block logo"
+      />
+    </a>
+  );
+}
