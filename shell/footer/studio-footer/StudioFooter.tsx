@@ -7,11 +7,11 @@ import {
   TransitionReplace,
 } from '@openedx/paragon';
 import { ExpandLess, ExpandMore, Help } from '@openedx/paragon/icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import {
+  AppContext,
   FormattedMessage,
-  getConfig,
   useIntl
 } from '../../../runtime';
 import messages from './messages';
@@ -19,7 +19,8 @@ import messages from './messages';
 export default function StudioFooter() {
   const intl = useIntl();
   const [isOpen, setIsOpen] = useState(false);
-  const config = getConfig();
+
+  const { config } = useContext(AppContext);
 
   return (
     <>
@@ -89,7 +90,8 @@ export default function StudioFooter() {
             <Hyperlink destination={config.TERMS_OF_SERVICE_URL} data-testid="termsOfService">
               {intl.formatMessage(messages.termsOfServiceLinkLabel)}
             </Hyperlink>
-          )}{config.PRIVACY_POLICY_URL !== null && (
+          )}
+          {config.PRIVACY_POLICY_URL !== null && (
             <Hyperlink destination={config.PRIVACY_POLICY_URL} data-testid="privacyPolicy">
               {intl.formatMessage(messages.privacyPolicyLinkLabel)}
             </Hyperlink>

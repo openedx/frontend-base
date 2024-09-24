@@ -33,7 +33,6 @@ exports[`<Header /> renders correctly for anonymous desktop 1`] = `
         <a
           className="nav-link"
           href="http://localhost:18000/dashboard"
-          onClick={null}
         >
           Courses
         </a>
@@ -90,8 +89,9 @@ exports[`<Header /> renders correctly for anonymous mobile 1`] = `
       >
         <svg
           aria-hidden={true}
+          fill="none"
           focusable="false"
-          height="24px"
+          height={24}
           role="img"
           style={
             {
@@ -99,30 +99,13 @@ exports[`<Header /> renders correctly for anonymous mobile 1`] = `
               "width": "1.5rem",
             }
           }
-          version="1.1"
           viewBox="0 0 24 24"
-          width="24px"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <rect
+          <path
+            d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
             fill="currentColor"
-            height="2"
-            width="20"
-            x="2"
-            y="5"
-          />
-          <rect
-            fill="currentColor"
-            height="2"
-            width="20"
-            x="2"
-            y="11"
-          />
-          <rect
-            fill="currentColor"
-            height="2"
-            width="20"
-            x="2"
-            y="17"
           />
         </svg>
       </button>
@@ -162,7 +145,7 @@ exports[`<Header /> renders correctly for anonymous mobile 1`] = `
         title="Account Menu"
       >
         <span
-          className="avatar overflow-hidden d-inline-flex rounded-circle null"
+          className="avatar overflow-hidden d-inline-flex rounded-circle"
           style={
             {
               "height": "1.5rem",
@@ -230,7 +213,6 @@ exports[`<Header /> renders correctly for authenticated desktop 1`] = `
         <a
           className="nav-link"
           href="http://localhost:18000/dashboard"
-          onClick={null}
         >
           Courses
         </a>
@@ -240,7 +222,7 @@ exports[`<Header /> renders correctly for authenticated desktop 1`] = `
         className="nav secondary-menu-container align-items-center ml-auto"
       >
         <div
-          className="menu null"
+          className="menu"
           onKeyDown={[Function]}
           onMouseEnter={[Function]}
           onMouseLeave={[Function]}
@@ -337,8 +319,9 @@ exports[`<Header /> renders correctly for authenticated mobile 1`] = `
       >
         <svg
           aria-hidden={true}
+          fill="none"
           focusable="false"
-          height="24px"
+          height={24}
           role="img"
           style={
             {
@@ -346,30 +329,13 @@ exports[`<Header /> renders correctly for authenticated mobile 1`] = `
               "width": "1.5rem",
             }
           }
-          version="1.1"
           viewBox="0 0 24 24"
-          width="24px"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <rect
+          <path
+            d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
             fill="currentColor"
-            height="2"
-            width="20"
-            x="2"
-            y="5"
-          />
-          <rect
-            fill="currentColor"
-            height="2"
-            width="20"
-            x="2"
-            y="11"
-          />
-          <rect
-            fill="currentColor"
-            height="2"
-            width="20"
-            x="2"
-            y="17"
           />
         </svg>
       </button>
@@ -409,7 +375,7 @@ exports[`<Header /> renders correctly for authenticated mobile 1`] = `
         title="Account Menu"
       >
         <span
-          className="avatar overflow-hidden d-inline-flex rounded-circle null"
+          className="avatar overflow-hidden d-inline-flex rounded-circle"
           style={
             {
               "height": "1.5rem",
