@@ -8,7 +8,7 @@ import {
   Row,
 } from '@openedx/paragon';
 import { Close, MenuIcon, Search } from '@openedx/paragon/icons';
-import PropTypes from 'prop-types';
+import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from '../../../runtime';
 
 import BrandNav from './BrandNav';
@@ -17,35 +17,61 @@ import NavDropdownMenu from './NavDropdownMenu';
 import UserMenu from './UserMenu';
 import messages from './messages';
 
-const HeaderBody = ({
+interface HeaderBodyProps {
+  studioBaseUrl: string,
+  logoutUrl: string,
+  setModalPopupTarget?: Dispatch<SetStateAction<null>>,
+  toggleModalPopup?: () => void,
+  isModalPopupOpen?: boolean,
+  number?: string,
+  org?: string,
+  title?: string,
+  logo: string,
+  logoAltText: string,
+  authenticatedUserAvatar?: string,
+  username?: string,
+  isAdmin?: boolean,
+  isMobile?: boolean,
+  isHiddenMainMenu?: boolean,
+  mainMenuDropdowns?: Array<{
+    id: string,
+    buttonTitle: string,
+    items: Array<{
+      href: string,
+      title: string,
+    }>,
+  }>,
+  outlineLink?: string,
+  searchButtonAction?: () => void,
+}
+
+export default function HeaderBody({
   logo,
   logoAltText,
-  number,
-  org,
-  title,
+  number = '',
+  org = '',
+  title = '',
   username,
-  isAdmin,
+  isAdmin = false,
   studioBaseUrl,
   logoutUrl,
   authenticatedUserAvatar,
-  isMobile,
+  isMobile = false,
   setModalPopupTarget,
   toggleModalPopup,
-  isModalPopupOpen,
-  isHiddenMainMenu,
-  mainMenuDropdowns,
+  isModalPopupOpen = false,
+  isHiddenMainMenu = false,
+  mainMenuDropdowns = [],
   outlineLink,
   searchButtonAction,
-}) => {
+}: HeaderBodyProps) {
   const intl = useIntl();
 
   const renderBrandNav = (
     <BrandNav
-      {...{
-        studioBaseUrl,
-        logo,
-        logoAltText,
-      }}
+      studioBaseUrl={studioBaseUrl}
+      logo={logo}
+      logoAltText={logoAltText}
     />
   );
 
@@ -127,53 +153,4 @@ const HeaderBody = ({
       </ActionRow>
     </Container>
   );
-};
-
-HeaderBody.propTypes = {
-  studioBaseUrl: PropTypes.string.isRequired,
-  logoutUrl: PropTypes.string.isRequired,
-  setModalPopupTarget: PropTypes.func,
-  toggleModalPopup: PropTypes.func,
-  isModalPopupOpen: PropTypes.bool,
-  number: PropTypes.string,
-  org: PropTypes.string,
-  title: PropTypes.string,
-  logo: PropTypes.string,
-  logoAltText: PropTypes.string,
-  authenticatedUserAvatar: PropTypes.string,
-  username: PropTypes.string,
-  isAdmin: PropTypes.bool,
-  isMobile: PropTypes.bool,
-  isHiddenMainMenu: PropTypes.bool,
-  mainMenuDropdowns: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    buttonTitle: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      href: PropTypes.string,
-      title: PropTypes.string,
-    })),
-  })),
-  outlineLink: PropTypes.string,
-  searchButtonAction: PropTypes.func,
-};
-
-HeaderBody.defaultProps = {
-  setModalPopupTarget: null,
-  toggleModalPopup: null,
-  isModalPopupOpen: false,
-  logo: null,
-  logoAltText: null,
-  number: '',
-  org: '',
-  title: '',
-  authenticatedUserAvatar: null,
-  username: null,
-  isAdmin: false,
-  isMobile: false,
-  isHiddenMainMenu: false,
-  mainMenuDropdowns: [],
-  outlineLink: null,
-  searchButtonAction: null,
-};
-
-export default HeaderBody;
+}
