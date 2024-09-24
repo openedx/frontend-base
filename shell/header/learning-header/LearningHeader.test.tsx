@@ -1,6 +1,5 @@
 import { render as rtlRender, screen } from '@testing-library/react';
-import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-unresolved
+import { ReactNode } from 'react';
 import {
   AppProvider,
   configureAuth, configureI18n, configureLogging, getConfig, IntlProvider,
@@ -67,7 +66,7 @@ function render(
     ...renderOptions
   } = {},
 ) {
-  const Wrapper = ({ children }) => (
+  const Wrapper = ({ children }: { children: ReactNode }) => (
     // eslint-disable-next-line react/jsx-filename-extension
     <IntlProvider locale="en">
       <AppProvider>
@@ -75,10 +74,6 @@ function render(
       </AppProvider>
     </IntlProvider>
   );
-
-  Wrapper.propTypes = {
-    children: PropTypes.node.isRequired,
-  };
 
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
