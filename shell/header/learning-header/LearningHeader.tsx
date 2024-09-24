@@ -23,20 +23,16 @@ export default function LearningHeader({
   const intl = useIntl();
   const { authenticatedUser } = useContext(AppContext);
 
-  const headerLogo = (
-    <LinkedLogo
-      className="logo"
-      href={`${getConfig().LMS_BASE_URL}/dashboard`}
-      src={getConfig().LOGO_URL}
-      alt={getConfig().SITE_NAME}
-    />
-  );
-
   return (
     <header className="learning-header">
       <a className="sr-only sr-only-focusable" href="#main-content">{intl.formatMessage(messages.skipNavLink)}</a>
       <div className="container-xl py-2 d-flex align-items-center">
-        {headerLogo}
+        <LinkedLogo
+          className="logo"
+          href={`${getConfig().LMS_BASE_URL}/dashboard`}
+          src={getConfig().LOGO_URL}
+          alt={getConfig().SITE_NAME}
+        />
         <div className="flex-grow-1 course-title-lockup" style={{ lineHeight: 1 }}>
           <span className="d-block small m-0">{courseOrg} {courseNumber}</span>
           <span className="d-block m-0 font-weight-bold course-title">{courseTitle}</span>
