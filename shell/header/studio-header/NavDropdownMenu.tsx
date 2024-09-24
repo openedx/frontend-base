@@ -2,38 +2,38 @@ import {
   Dropdown,
   DropdownButton,
 } from '@openedx/paragon';
-import PropTypes from 'prop-types';
+import { ReactNode } from 'react';
 
-const NavDropdownMenu = ({
+interface NavDropdownMenuProps {
+  id: string,
+  buttonTitle: string | ReactNode,
+  items: Array<{
+    href: string,
+    title: string,
+  }>,
+}
+
+export default function NavDropdownMenu({
   id,
   buttonTitle,
   items,
-}) => (
-  <DropdownButton
-    id={id}
-    title={buttonTitle}
-    variant="outline-primary"
-    className="mr-2"
-  >
-    {items.map(item => (
-      <Dropdown.Item
-        key={`${item.title}-dropdown-item`}
-        href={item.href}
-        className="small"
-      >
-        {item.title}
-      </Dropdown.Item>
-    ))}
-  </DropdownButton>
-);
-
-NavDropdownMenu.propTypes = {
-  id: PropTypes.string.isRequired,
-  buttonTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    href: PropTypes.string,
-    title: PropTypes.string,
-  })).isRequired,
-};
-
-export default NavDropdownMenu;
+}: NavDropdownMenuProps) {
+  return (
+    <DropdownButton
+      id={id}
+      title={buttonTitle}
+      variant="outline-primary"
+      className="mr-2"
+    >
+      {items.map(item => (
+        <Dropdown.Item
+          key={`${item.title}-dropdown-item`}
+          href={item.href}
+          className="small"
+        >
+          {item.title}
+        </Dropdown.Item>
+      ))}
+    </DropdownButton>
+  );
+}
