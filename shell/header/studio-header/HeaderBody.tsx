@@ -41,7 +41,7 @@ interface HeaderBodyProps {
       title: string,
     }>,
   }>,
-  outlineLink?: string,
+  outlineLink: string,
   searchButtonAction?: () => void,
 }
 
@@ -100,12 +100,10 @@ export default function HeaderBody({
                 <Row className="m-0 flex-nowrap">
                   {renderBrandNav}
                   <CourseLockUp
-                    {...{
-                      outlineLink,
-                      number,
-                      org,
-                      title,
-                    }}
+                    outlineLink={outlineLink}
+                    number={number}
+                    org={org}
+                    title={title}
                   />
                 </Row>
               </div>
