@@ -18,7 +18,7 @@ interface StudioHeaderProps {
       title: string,
     }>,
   }>,
-  outlineLink?: string,
+  outlineLink: string,
   searchButtonAction?: () => void,
 }
 
