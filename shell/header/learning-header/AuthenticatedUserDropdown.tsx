@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 
-// TODO: Fix these
-// import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from '@openedx/paragon';
 import { getConfig, injectIntl, intlShape } from '../../../runtime';
+import { Dropdown, Icon } from '@openedx/paragon';
+import { Person } from '@openedx/paragon/icons';
 
 import messages from './messages';
 
@@ -22,7 +20,7 @@ const AuthenticatedUserDropdown = ({ intl, username }) => {
       )}
       <Dropdown className="user-dropdown ml-3">
         <Dropdown.Toggle id="authenticated-user-dropdown" variant="outline-primary">
-          {/* <FontAwesomeIcon icon={faUserCircle} className="d-md-none" size="lg" /> */}
+          <Icon src={Person} size="lg" />
           <span data-hj-suppress className="d-none d-md-inline">
             {username}
           </span>
