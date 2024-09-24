@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { ReactNode, RefObject } from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -270,7 +271,7 @@ export default class Menu extends React.Component<MenuProps, { expanded: boolean
     const rootClassName = this.state.expanded ? 'menu expanded' : 'menu';
 
     return React.createElement(this.props.tag || 'div', {
-      className: `${rootClassName} ${className}`,
+      className: classNames(rootClassName, className),
       ref: this.menu,
       onKeyDown: this.onKeyDown,
       onMouseEnter: this.onMouseEnter,

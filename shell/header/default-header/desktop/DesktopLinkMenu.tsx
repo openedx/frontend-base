@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { LinkMenuItem } from '../../types';
 import { CaretIcon } from '../Icons';
 import { Menu, MenuContent, MenuTrigger } from '../menu';
@@ -24,7 +25,11 @@ export default function DesktopLinkMenu({ menu }: DesktopLinkMenuProps) {
           return (
             <a
               key={`${type}-${content}`}
-              className={`nav-link${disabled ? ' disabled' : ''}${isActive ? ' active' : ''}`}
+              className={classNames(
+                'nav-link',
+                { disabled },
+                { active: isActive }
+              )}
               href={href}
               onClick={onClick}
             >
