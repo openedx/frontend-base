@@ -12,9 +12,9 @@ import { LinkMenuItem } from '../types';
 import messages from './DefaultHeader.messages';
 
 interface HeaderProps {
-  mainMenuItems: Array<LinkMenuItem>,
-  secondaryMenuItems: Array<LinkMenuItem>,
-  userMenuItems: Array<{
+  mainMenuItems?: Array<LinkMenuItem>,
+  secondaryMenuItems?: Array<LinkMenuItem>,
+  userMenuItems?: Array<{
     heading: string,
     items: Array<LinkMenuItem>,
   }>,
