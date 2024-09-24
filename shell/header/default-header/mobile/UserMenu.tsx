@@ -1,15 +1,10 @@
 import classNames from 'classnames';
+import { LinkMenuItem } from '../../types';
 
 interface UserMenuProps {
   userMenuItems: Array<{
     heading: string,
-    items: Array<{
-      href: string,
-      content: string,
-      disabled: boolean,
-      isActive: boolean,
-      onClick?: () => void,
-    }>,
+    items: Array<LinkMenuItem>,
   }>
 }
 

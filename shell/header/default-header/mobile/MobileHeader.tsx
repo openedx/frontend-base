@@ -4,10 +4,11 @@ import classNames from 'classnames';
 import { useIntl } from '../../../../runtime';
 import LinkedLogo from '../../LinkedLogo';
 import Logo from '../../Logo';
+import { LinkMenuItem } from '../../types';
 import Avatar from '../Avatar';
 import messages from '../DefaultHeader.messages';
 import { Menu, MenuContent, MenuTrigger } from '../menu';
-import LinkMenu, { LinkMenuItem } from './LinkMenu';
+import LinkMenu from './LinkMenu';
 import LoggedOutMenu from './LoggedOutLinkMenu';
 import UserMenu from './UserMenu';
 
@@ -16,14 +17,7 @@ interface MobileHeaderProps {
   secondaryMenu: Array<LinkMenuItem>,
   userMenu: Array<{
     heading: string,
-    items: Array<{
-      type: 'item' | 'menu',
-      href: string,
-      content: string,
-      disabled: boolean,
-      isActive: boolean,
-      onClick: () => void,
-    }>,
+    items: Array<LinkMenuItem>,
   }>,
   loggedOutItems: Array<{
     href: string,

@@ -1,16 +1,7 @@
 import { Menu } from '@openedx/paragon';
 import classNames from 'classnames';
+import { LinkMenuItem } from '../../types';
 import { MenuContent, MenuTrigger } from '../menu';
-
-export interface LinkMenuItem {
-  type: 'item' | 'menu',
-  href: string,
-  content: string,
-  submenuContent: JSX.Element,
-  disabled: boolean,
-  isActive: boolean,
-  onClick?: () => void,
-}
 
 interface LinkMenuProps {
   menu: Array<LinkMenuItem>,
