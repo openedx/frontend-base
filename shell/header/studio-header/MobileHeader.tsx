@@ -57,7 +57,7 @@ export default function MobileHeader({
         onEscapeKey={close}
         className="mobile-menu-container"
       >
-        <MobileMenu {...{ mainMenuDropdowns }} />
+        <MobileMenu mainMenuDropdowns={mainMenuDropdowns} />
       </ModalPopup>
     </>
   );

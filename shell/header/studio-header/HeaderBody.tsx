@@ -117,7 +117,7 @@ export default function HeaderBody({
                 {mainMenuDropdowns.map(dropdown => {
                   const { id, buttonTitle, items } = dropdown;
                   return (
-                    <NavDropdownMenu key={id} {...{ id, buttonTitle, items }} />
+                    <NavDropdownMenu key={id} id={id} buttonTitle={buttonTitle} items={items} />
                   );
                 })}
               </Nav>
@@ -138,13 +138,11 @@ export default function HeaderBody({
         )}
         <Nav>
           <UserMenu
-            {...{
-              username,
-              studioBaseUrl,
-              logoutUrl,
-              authenticatedUserAvatar,
-              isAdmin,
-            }}
+            username={username}
+            studioBaseUrl={studioBaseUrl}
+            logoutUrl={logoutUrl}
+            authenticatedUserAvatar={authenticatedUserAvatar}
+            isAdmin={isAdmin}
           />
         </Nav>
       </ActionRow>
