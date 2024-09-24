@@ -93,7 +93,7 @@ export default function HeaderBody({
                 iconBefore={isModalPopupOpen ? Close : MenuIcon}
                 data-testid="mobile-menu-button"
               >
-                Menu
+                {intl.formatMessage(messages['header.label.menu'])}
               </Button>
             ) : (
               <div className="w-25">

@@ -1,6 +1,11 @@
 import { defineMessages } from '../../../runtime';
 
 const messages = defineMessages({
+  'header.label.menu': {
+    id: 'header.label.menu',
+    defaultMessage: 'Menu',
+    description: 'Label for the menu button in the studio mobile header'
+  },
   'header.user.menu.studio': {
     id: 'header.user.menu.studio',
     defaultMessage: 'Studio Home',
