@@ -71,6 +71,11 @@ const messages = defineMessages({
     defaultMessage: 'Account',
     description: 'The aria label for the account menu nav',
   },
+  'header.label.user.avatar': {
+    id: 'header.label.user.avatar',
+    defaultMessage: 'User',
+    description: 'The aria label for the user avatar icon',
+  },
   'header.label.account.menu': {
     id: 'header.label.account.menu',
     defaultMessage: 'Account Menu',
