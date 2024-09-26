@@ -1,6 +1,6 @@
 import { AppConfigTypes, PluginOperations, PluginTypes } from '@openedx/frontend-base';
 
-import { ProjectSiteConfig } from '@openedx/frontend-base';
+import { EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
 import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
 import ModularComponent from './src/plugin-page/components/ModularComponent';
 import PluginDirect from './src/plugin-page/components/PluginDirect';
@@ -70,7 +70,7 @@ const config: ProjectSiteConfig = {
       config: iframePluginConfig,
     },
   ],
-  ENVIRONMENT: 'dev',
+  ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
   BASE_URL: 'http://localhost:8080',

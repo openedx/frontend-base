@@ -1,3 +1,4 @@
+import { EnvironmentTypes } from '../../types';
 import { getConfig } from '../config';
 
 /**
@@ -24,7 +25,7 @@ const pageActionNameInfo = 'INFO';
 const pageActionNameIgnoredError = 'IGNORED_ERROR';
 
 function sendPageAction(actionName, message, customAttributes) {
-  if (getConfig().ENVIRONMENT === 'development') {
+  if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
     console.log(actionName, message, customAttributes); // eslint-disable-line
   }
   if (window && typeof window.newrelic !== 'undefined') {
@@ -34,7 +35,7 @@ function sendPageAction(actionName, message, customAttributes) {
 }
 
 function sendError(error, customAttributes) {
-  if (getConfig().ENVIRONMENT === 'development') {
+  if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
     console.error(error, customAttributes); // eslint-disable-line
   }
   if (window && typeof window.newrelic !== 'undefined') {
@@ -44,7 +45,7 @@ function sendError(error, customAttributes) {
 }
 
 function setCustomAttribute(name, value) {
-  if (getConfig().ENVIRONMENT === 'development') {
+  if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
     console.log(name, value); // eslint-disable-line
   }
   if (window && typeof window.newrelic !== 'undefined') {

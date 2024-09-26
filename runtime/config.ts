@@ -102,13 +102,13 @@
 
 import merge from 'lodash.merge';
 import 'pubsub-js';
-import { SiteConfig } from '../types';
+import { EnvironmentTypes, SiteConfig } from '../types';
 import { CONFIG_CHANGED } from './constants';
 
 let config: SiteConfig = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-  ENVIRONMENT: 'production',
+  ENVIRONMENT: EnvironmentTypes.PRODUCTION,
   IGNORED_ERROR_REGEX: null,
   LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
   PUBLIC_PATH: '/',

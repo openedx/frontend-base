@@ -1,4 +1,4 @@
-import { ProjectSiteConfig } from '../types';
+import { EnvironmentTypes, ProjectSiteConfig } from '../types';
 
 const config: ProjectSiteConfig = {
   apps: [],
@@ -24,7 +24,7 @@ const config: ProjectSiteConfig = {
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
   APP_ID: 'runtime',
   SUPPORT_URL: 'https://support.edx.org',
-  ENVIRONMENT: 'test',
+  ENVIRONMENT: EnvironmentTypes.TEST,
   // We include these for some tests that need them.
   SUPPORT_EMAIL: null,
   TERMS_OF_SERVICE_URL: null,

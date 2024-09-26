@@ -1,7 +1,8 @@
 import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
 
-import { AppConfigTypes, ProjectSiteConfig } from '@openedx/frontend-base';
+import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
 import './src/project.scss';
+
 
 const config: ProjectSiteConfig = {
   apps: [
@@ -29,7 +30,7 @@ const config: ProjectSiteConfig = {
       config: iframePluginConfig,
     },
   ],
-  ENVIRONMENT: 'dev',
+  ENVIRONMENT: EnvironmentTypes.PRODUCTION,
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
   BASE_URL: 'http://localhost:8080',

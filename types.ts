@@ -211,3 +211,9 @@ export enum FooterTypes {
   STUDIO = 'studio',
   NONE = 'none',
 }
+
+export enum EnvironmentTypes {
+  PRODUCTION = 'production',
+  DEVELOPMENT = 'development',
+  TEST = 'test',
+}

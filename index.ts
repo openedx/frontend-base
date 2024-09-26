@@ -112,6 +112,9 @@ export type {
 } from './types';
 
 export {
-  AppConfigTypes, HeaderTypes, PluginOperations,
+  AppConfigTypes,
+  EnvironmentTypes,
+  HeaderTypes,
+  PluginOperations,
   PluginTypes
 } from './types';
