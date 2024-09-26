@@ -36,7 +36,7 @@ import '@formatjs/intl-relativetimeformat/locale-data/th';
 import '@formatjs/intl-relativetimeformat/locale-data/uk';
 import '@formatjs/intl-relativetimeformat/locale-data/zh';
 
-import { SiteConfig } from '../../types';
+import { EnvironmentTypes, SiteConfig } from '../../types';
 import { LoggingService } from '../logging/types';
 
 const cookies = new Cookies();
@@ -287,7 +287,7 @@ export function configure(options: ConfigureI18nOptions) {
   config = options.config;
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
 
-  if (config.ENVIRONMENT !== 'production' && messages !== undefined) {
+  if (config.ENVIRONMENT === EnvironmentTypes.DEVELOPMENT && messages !== undefined) {
     Object.keys(messages).forEach((key) => {
       if (supportedLocales.indexOf(key) < 0) {
         console.warn(`Unexpected locale: ${key}`); // eslint-disable-line no-console
