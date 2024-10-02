@@ -17,9 +17,12 @@ build:
 	cp tools/typescript/tsconfig.json config/tsconfig.json
 	tsc --project ./tools/tsconfig.json
 	cp -prf ./tools/dist/config-helpers ./config/config-helpers
+	cp -prf ./tools/dist/defaultConfigPaths.js ./config/defaultConfigPaths.js
+	cp -prf ./tools/dist/types.js ./config/types.js
 	cp -prf ./tools/dist/eslint ./config/eslint
 	cp -prf ./tools/dist/jest ./config/jest
 	cp -prf ./tools/dist/webpack ./config/webpack
+	cp -prf ./tools/dist/babel ./config/babel
 	cp -prf ./tools/dist/index.js ./config/index.js
 
 docs-build:

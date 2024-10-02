@@ -1,17 +1,17 @@
 __mocks__
 .eslintignore
-.eslintrc.js
+./.eslintrc.js
 .github
 .gitignore
 *.test.js
 *.test.jsx
 *.test.ts
 *.test.tsx
-babel.config.js
+./babel.config.js
 catalog-info.yaml
 coverage
 docs
-jest.config.js
+./jest.config.js
 jsdoc.json
 renovate.json
 service-interface.png
@@ -20,5 +20,4 @@ node_modules
 npm-debug.log
 openedx-frontend-base-*.tgz
 test-project
-tsconfig.build.json
 .nvmrc
