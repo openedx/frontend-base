@@ -137,6 +137,13 @@ export interface OptionalSiteConfig {
   MFE_CONFIG_API_URL: string | null,
   PUBLIC_PATH: string,
 
+  // Backends
+  CREDENTIALS_BASE_URL: string | null,
+  DISCOVERY_API_BASE_URL: string | null,
+  ECOMMERCE_BASE_URL: string | null,
+  PUBLISHER_BASE_URL: string | null,
+
+  // Frontends
   ORDER_HISTORY_URL: string | null,
   SUPPORT_URL: string | null,
 
@@ -157,7 +164,7 @@ export interface RequiredSiteConfig {
   BASE_URL: string,
   SITE_NAME: string,
 
-  // Apps
+  // Frontends
   ACCOUNT_PROFILE_URL: string,
   ACCOUNT_SETTINGS_URL: string,
   LEARNING_BASE_URL: string,
@@ -166,11 +173,7 @@ export interface RequiredSiteConfig {
   MARKETING_SITE_BASE_URL: string,
 
   // Backends
-  CREDENTIALS_BASE_URL: string,
-  DISCOVERY_API_BASE_URL: string,
-  ECOMMERCE_BASE_URL: string,
   LMS_BASE_URL: string,
-  PUBLISHER_BASE_URL: string,
   STUDIO_BASE_URL: string,
 
   // Branding

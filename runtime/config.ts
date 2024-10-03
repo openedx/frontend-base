@@ -114,14 +114,23 @@ let config: SiteConfig = {
   PUBLIC_PATH: '/',
   REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
   USER_INFO_COOKIE_NAME: 'edx-user-info',
-  ORDER_HISTORY_URL: null,
   MFE_CONFIG_API_URL: null,
-  SUPPORT_URL: null,
+
   SEGMENT_KEY: null,
   SUPPORT_EMAIL: null,
+
+  // Optional Frontends
+  ORDER_HISTORY_URL: null,
+  SUPPORT_URL: null,
   TERMS_OF_SERVICE_URL: null,
   PRIVACY_POLICY_URL: null,
   ACCESSIBILITY_URL: null,
+
+  // Optional Backends
+  CREDENTIALS_BASE_URL: null,
+  DISCOVERY_API_BASE_URL: null,
+  ECOMMERCE_BASE_URL: null,
+  PUBLISHER_BASE_URL: null,
 
   apps: [],
   pluginSlots: {},
@@ -130,18 +139,20 @@ let config: SiteConfig = {
   APP_ID: '',
   BASE_URL: '',
   SITE_NAME: '',
+
+  // Frontends
   ACCOUNT_PROFILE_URL: '',
   ACCOUNT_SETTINGS_URL: '',
   LEARNING_BASE_URL: '',
   LOGIN_URL: '',
   LOGOUT_URL: '',
   MARKETING_SITE_BASE_URL: '',
-  CREDENTIALS_BASE_URL: '',
-  DISCOVERY_API_BASE_URL: '',
-  ECOMMERCE_BASE_URL: '',
+
+  // Backends
   LMS_BASE_URL: '',
-  PUBLISHER_BASE_URL: '',
   STUDIO_BASE_URL: '',
+
+  // Branding
   FAVICON_URL: '',
   LOGO_TRADEMARK_URL: '',
   LOGO_URL: '',
