@@ -51,6 +51,7 @@ export {
   getAuthService,
   getAuthenticatedHttpClient,
   getAuthenticatedUser,
+  getBasename,
   getConfig,
   getCountryList,
   getCountryMessages,

@@ -81,6 +81,7 @@ export {
 
 export {
   auth,
+  getBasename,
   getHistory,
   initError,
   initialize
