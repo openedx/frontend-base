@@ -40,7 +40,7 @@
 	"bugs": {
 		"url": "https://github.com/openedx/frontend-base/issues"
 	},
-	"sideEffects": false,
+	"sideEffects": ["*.css", "*.scss"],
 	"homepage": "https://github.com/openedx/frontend-base#readme",
 	"dependencies": {
 		"@babel/core": "^7.24.9",
