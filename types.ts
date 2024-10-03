@@ -133,7 +133,7 @@ export interface OptionalSiteConfig {
   // Analytics
   SEGMENT_KEY: string | null,
 
-  ENVIRONMENT: string,
+  ENVIRONMENT: EnvironmentTypes,
   MFE_CONFIG_API_URL: string | null,
   PUBLIC_PATH: string,
 
