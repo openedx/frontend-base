@@ -516,7 +516,16 @@ This file will be ignored via `.gitignore`, as it is part of your 'project', not
 
 ## 25. Document module-specific configuration needs
 
-Your modules will need environment variables that your system merged into config in index.jsx - we need to document and expect those when the module is loaded.
+Your modules will need environment variables that your system merged into config in index.jsx - we need to document and expect those when the module is loaded.  You'll need this list in the next step.
+
+## 27. Stop using process.env
+
+Instead, custom variables must go through site config.
+
+- Move all your custom variables into the `custom: {}` block of site config.
+- Throughout your app, wherever you use one of these variables, get it from `getConfig().custom` instead of from `process.env`.
+
+As we decide on the module boundaries of our library, we'll be able to move these into module-specific configuration in site config.  `custom` is a temporary home for this config.
 
 ## 26. More art than science: find your module boundaries
 
