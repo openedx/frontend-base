@@ -35,8 +35,4 @@ subscribe(APP_INIT_ERROR, (error) => {
 
 initialize({
   messages,
-  handlers: {
-    // TODO: Remove this.
-    auth: () => {}, // This MFE turns off auth so it can run independently of edx-platform.
-  },
 });
