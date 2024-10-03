@@ -15,7 +15,6 @@
   "scripts": {
     "build": "openedx build",
     "lint": "openedx lint . --no-eslintrc -c .eslintrc.js",
-    "dev-tutor": "PORT=2000 PUBLIC_PATH=/ MFE_CONFIG_API_URL='http://localhost:8000/api/mfe_config/v1' openedx dev --progress --host localhost",
     "dev": "openedx dev",
     "dev:with-remotes": "SITE_CONFIG_PATH=site.config.dev.with-remotes.tsx openedx dev",
     "dev:module": "PORT=8081 openedx dev:module",

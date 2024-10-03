@@ -4,7 +4,6 @@ import ReactRefreshTypeScript from 'react-refresh-typescript';
 import { RuleSetRule } from 'webpack';
 
 export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteConfigPath: string) {
-
   const rules: RuleSetRule[] = [
     {
       test: /\.(js|jsx|ts|tsx)$/,

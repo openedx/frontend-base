@@ -70,6 +70,7 @@ const config: ProjectSiteConfig = {
       config: iframePluginConfig,
     },
   ],
+  APP_ID: 'shell',
   ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
   ACCOUNT_PROFILE_URL: 'http://apps.local.openedx.io:1995',
   ACCOUNT_SETTINGS_URL: 'http://apps.local.openedx.io:1997',
@@ -88,7 +89,6 @@ const config: ProjectSiteConfig = {
   LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  APP_ID: 'shell',
 
   pluginSlots: {
     'slot_with_insert_operation': {
