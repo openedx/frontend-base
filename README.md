@@ -148,3 +148,40 @@ Then move the files out of the way (move src to some other sub-dir, mostly) to m
 - When using MockAuthService, set the authenticated user by calling setAuthenticatedUser after instantiating the service.  It's not okay for us to add arbitrary config values to the site config.
 - `REFRESH_ACCESS_TOKEN_ENDPOINT` has been replaced with `REFRESH_ACCESS_TOKEN_API_PATH`.  It is now a path that defaults to '/login_refresh'.  The Auth service assumes it is an endpoint on the LMS, and joins the path with `LMS_BASE_URL`.  This change creates more parity with other paths such as `CSRF_TOKEN_API_PATH`.
 - `ENABLE_ACCESSIBILITY_PAGE` has been renamed `ACCESSIBILITY_URL` and is now the URL to an accessibility page.
+
+# Working with Tutor
+
+In order to use tutor with frontend-base, you need to create a tutor plugin which patches some of the LMS's development settings.
+
+```
+from tutormfe.hooks import MFE_APPS, MFE_ATTRS_TYPE
+
+from tutor import hooks
+
+hooks.Filters.ENV_PATCHES.add_item(
+  (
+    "openedx-lms-development-settings",
+    """
+CORS_ORIGIN_WHITELIST.append("http://{{ MFE_HOST }}:8080")
+LOGIN_REDIRECT_WHITELIST.append("http://{{ MFE_HOST }}:8080")
+CSRF_TRUSTED_ORIGINS.append("http://{{ MFE_HOST }}:8080")
+MFE_CONFIG = {
+  # override MFE CONFIG values appropriate to the shell, if necessary
+}
+"""
+    )
+)
+
+```
+
+Customizing the MFE config API:
+
+https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#customising-mfes
+
+Creating a Tutor plugin:
+
+https://docs.tutor.edly.io/tutorials/plugin.html
+
+Adding new MFEs:
+
+https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#adding-new-mfes
