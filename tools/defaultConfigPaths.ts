@@ -19,6 +19,10 @@ export const defaultConfigPaths = {
     path.resolve(process.cwd(), 'webpack.dev.config.js'),
     path.resolve(__dirname, './webpack/webpack.dev.config.js'),
   ],
+  [ConfigTypes.WEBPACK_DEV_LEGACY]: [
+    path.resolve(process.cwd(), 'webpack.dev.legacy.config.js'),
+    path.resolve(__dirname, './webpack/webpack.dev.legacy.config.js'),
+  ],
   [ConfigTypes.WEBPACK_DEV_MODULE]: [
     path.resolve(process.cwd(), 'webpack.dev.module.config.js'),
     path.resolve(__dirname, './webpack/webpack.dev.module.config.js'),
