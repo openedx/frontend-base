@@ -3,6 +3,10 @@ import { ConfigTypes } from "./types";
 
 // These config paths are tested in the order they're defined, so the last ones are the last fallback.
 export const defaultConfigPaths = {
+  [ConfigTypes.BABEL]: [
+    path.resolve(process.cwd(), 'babel.config.js'),
+    path.resolve(__dirname, './babel/babel.config.js'),
+  ],
   [ConfigTypes.WEBPACK_BUILD]: [
     path.resolve(process.cwd(), 'webpack.build.config.js'),
     path.resolve(__dirname, './webpack/webpack.build.config.js'),

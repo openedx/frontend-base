@@ -1,4 +1,5 @@
 export enum ConfigTypes {
+  BABEL = 'babel',
   WEBPACK_BUILD = 'webpack-build',
   WEBPACK_BUILD_MODULE = 'webpack-build-module',
   WEBPACK_DEV = 'webpack-dev',
