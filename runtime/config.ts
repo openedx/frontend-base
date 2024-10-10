@@ -143,6 +143,7 @@ let config: SiteConfig = {
   // Frontends
   ACCOUNT_PROFILE_URL: '',
   ACCOUNT_SETTINGS_URL: '',
+  LEARNER_DASHBOARD_URL: '',
   LEARNING_BASE_URL: '',
   LOGIN_URL: '',
   LOGOUT_URL: '',

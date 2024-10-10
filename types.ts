@@ -167,6 +167,7 @@ export interface RequiredSiteConfig {
   // Frontends
   ACCOUNT_PROFILE_URL: string,
   ACCOUNT_SETTINGS_URL: string,
+  LEARNER_DASHBOARD_URL: string,
   LEARNING_BASE_URL: string,
   LOGIN_URL: string,
   LOGOUT_URL: string,

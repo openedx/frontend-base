@@ -10,6 +10,7 @@ const config: ProjectSiteConfig = {
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   ECOMMERCE_BASE_URL: 'http://localhost:18130',
   LMS_BASE_URL: 'http://localhost:18000',
+  LEARNER_DASHBOARD_URL: 'http://localhost:18000/dashboard',
   LEARNING_BASE_URL: 'http://localhost:2000',
   LOGIN_URL: 'http://localhost:18000/login',
   LOGOUT_URL: 'http://localhost:18000/logout',

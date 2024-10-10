@@ -532,3 +532,7 @@ As we decide on the module boundaries of our library, we'll be able to move thes
 From this step on, things get a bit more subjective.  At this point you need to ensure that the modules in your library are decoupled and well-bounded.  If you use Redux, this may mean creating individual redux stores for each module, including adding a context so that they're separate from any "upstream" redux stores that may exist.
 
 https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
+
+## 27. Subdomains!?
+
+## 28. Add LEARNER_DASHBOARD_URL to config
