@@ -10,8 +10,6 @@ import { ensureConfigFilenameOption } from './utils/ensureConfigFilenameOption';
 import prettyPrintTitle from './utils/prettyPrintTitle';
 import printUsage from './utils/printUsage';
 
-
-
 // commandName is the third argument after node and 'openedx'
 const commandName = process.argv[2];
 
@@ -68,6 +66,10 @@ switch (commandName) {
     break;
   case CommandTypes.DEV_MODULE:
     ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV_MODULE, ['-c', '--config']);
+    require('webpack-dev-server/bin/webpack-dev-server');
+    break;
+  case CommandTypes.DEV_SHELL:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV_SHELL, ['-c', '--config']);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
   case CommandTypes.DEV:

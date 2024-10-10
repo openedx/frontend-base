@@ -27,6 +27,10 @@ export const defaultConfigPaths = {
     path.resolve(process.cwd(), 'webpack.dev.module.config.js'),
     path.resolve(__dirname, './webpack/webpack.dev.module.config.js'),
   ],
+  [ConfigTypes.WEBPACK_DEV_SHELL]: [
+    path.resolve(process.cwd(), 'webpack.dev.shell.config.js'),
+    path.resolve(__dirname, './webpack/webpack.dev.shell.config.js'),
+  ],
   [ConfigTypes.LINT]: [
     path.resolve(process.cwd(), '.eslintrc.js'),
     path.resolve(__dirname, './eslint/.eslintrc.js'),

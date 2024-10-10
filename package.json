@@ -14,6 +14,7 @@
 	},
 	"scripts": {
 		"build": "make build",
+		"dev:shell": "npm run build && node ./tools/dist/cli/openedx.js dev:shell",
 		"temp:refresh-all": "npm run build && npm pack && npm run temp:refresh-base-test && npm run temp:refresh-authn && npm run temp:refresh-project && npm run temp:refresh-project-module && npm run temp:refresh-test-project",
 		"temp:refresh-base-test": "cd ../frontend-app-base-test && npm i --audit=false --fund=false --save-peer ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
 		"temp:refresh-authn": "cd ../frontend-app-authn && npm i --audit=false --fund=false --save-peer ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
