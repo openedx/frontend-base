@@ -153,7 +153,7 @@ export interface OptionalSiteConfig {
   ACCESSIBILITY_URL: string | null,
 
   custom: {
-    [key:string]: any,
+    [key: string]: any,
   }
 }
 
@@ -191,15 +191,17 @@ export interface ModuleConfig {
   name?: string,
   plugins?: any,
   custom?: {
-    [key:string]: any,
+    [key: string]: any,
   }
 }
 
 export interface User {
-  username: string,
-  userId: string,
-  roles: Array<string>,
   administrator: boolean,
+  email: string,
+  name: string,
+  roles: Array<string>,
+  userId: number,
+  username: string,
   avatar: string,
 }
 
