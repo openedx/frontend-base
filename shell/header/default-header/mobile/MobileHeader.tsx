@@ -77,14 +77,14 @@ export default function MobileHeader({
               className="nav flex-column pin-left pin-right border-top shadow py-2"
             >
               {Array.isArray(mainMenu) ? (
-                { mainMenu }
-              ) : (
                 <LinkMenu menu={mainMenu} />
+              ) : (
+                { mainMenu }
               )}
               {Array.isArray(secondaryMenu) ? (
-                { secondaryMenu }
-              ) : (
                 <LinkMenu menu={secondaryMenu} />
+              ) : (
+                { secondaryMenu }
               )}
             </MenuContent>
           </Menu>
