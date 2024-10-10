@@ -1,15 +1,15 @@
 import {
-  AppContext,
   getAuthenticatedUser,
   getConfig,
   logInfo,
   mergeConfig,
+  useAuthenticatedUser,
+  useConfig,
   useIntl
 } from '@openedx/frontend-base';
 import { Container } from '@openedx/paragon';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
 import messages from '../messages';
 import Image from './Image';
 import ParagonPreview from './ParagonPreview';
@@ -27,7 +27,8 @@ mergeConfig({
 });
 
 export default function ExamplePage() {
-  const context = useContext<AppContext>(AppContext);
+  const config = useConfig();
+  const authenticatedUser = useAuthenticatedUser();
 
   const intl = useIntl();
 
@@ -37,7 +38,7 @@ export default function ExamplePage() {
 
   return (
     <Container>
-      <h1>{context.config.SITE_NAME} test page</h1>
+      <h1>{config.SITE_NAME} test page</h1>
 
       <h2>Links</h2>
       <p>Visit <Link to="/authenticated">authenticated page</Link>.</p>
@@ -45,8 +46,8 @@ export default function ExamplePage() {
       <p>Visit <Link to="/error">error page</Link>.</p>
 
       <h2>Context Config Test</h2>
-      <p>Is context.config equal to getConfig()? {printTestResult(context.config === getConfig())}</p>
-      <p>Is context.authenticatedUser equal to getAuthenticatedUser()? {printTestResult(context.authenticatedUser === getAuthenticatedUser())}</p>
+      <p>Is context.config equal to getConfig()? {printTestResult(config === getConfig())}</p>
+      <p>Is context.authenticatedUser equal to getAuthenticatedUser()? {printTestResult(authenticatedUser === getAuthenticatedUser())}</p>
 
       <h2>SCSS parsing tests</h2>
       <p><span className="red-text">"The Apples"</span> should be red (<code>color: red;</code> via <code>.red-text</code> CSS class in SCSS stylesheet)</p>
@@ -65,17 +66,17 @@ export default function ExamplePage() {
       <p>{intl.formatMessage(messages['test-project.message'])}</p>
 
       <h2>Authenticated User Test</h2>
-      {context.authenticatedUser !== null ? (
+      {authenticatedUser !== null ? (
         <div>
-          <p>Authenticated Username: <strong>{context.authenticatedUser.username}</strong></p>
+          <p>Authenticated Username: <strong>{authenticatedUser.username}</strong></p>
           <p>
             Authenticated user&apos;s name:
-            <strong>{context.authenticatedUser.username}</strong>
+            <strong>{authenticatedUser.username}</strong>
             (Only available if user account has been fetched)
           </p>
         </div>
       ) : (
-        <p>Unauthenticated {printTestResult(context.authenticatedUser === null)}</p>
+        <p>Unauthenticated {printTestResult(authenticatedUser === null)}</p>
       )}
 
       <h2>Config tests</h2>

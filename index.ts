@@ -98,6 +98,8 @@ export {
   subscribe,
   unsubscribe,
   useAppEvent,
+  useAuthenticatedUser,
+  useConfig,
   useIntl
 } from './runtime';
 

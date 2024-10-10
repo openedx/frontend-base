@@ -116,7 +116,9 @@ export {
   ErrorPage,
   LoginRedirect,
   PageWrap,
-  useAppEvent
+  useAppEvent,
+  useAuthenticatedUser,
+  useConfig
 } from './react';
 
 export {

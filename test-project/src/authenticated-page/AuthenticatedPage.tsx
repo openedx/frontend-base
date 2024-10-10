@@ -1,10 +1,10 @@
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { AppContext } from '@openedx/frontend-base';
+import { useAuthenticatedUser, useConfig } from '@openedx/frontend-base';
 
 export default function AuthenticatedPage() {
-  const { authenticatedUser, config } = useContext<AppContext>(AppContext);
+  const authenticatedUser = useAuthenticatedUser();
+  const config = useConfig();
 
   return (
     <main className="p-3">

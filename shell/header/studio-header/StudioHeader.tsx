@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import Responsive from 'react-responsive';
-import { AppContext } from '../../../runtime';
+import { useAuthenticatedUser, useConfig } from '../../../runtime';
 
 import HeaderBody from './HeaderBody';
 import MobileHeader from './MobileHeader';
@@ -31,7 +30,8 @@ export default function StudioHeader({
   outlineLink,
   searchButtonAction,
 }: StudioHeaderProps) {
-  const { authenticatedUser, config } = useContext(AppContext);
+  const authenticatedUser = useAuthenticatedUser();
+  const config = useConfig();
   const props = {
     logo: config.LOGO_URL,
     logoAltText: `Studio ${config.SITE_NAME}`,

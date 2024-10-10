@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
 
 import { getLoginRedirectUrl } from '../auth';
-import AppContext from './AppContext';
 import PageWrap from './PageWrap';
+import { useAuthenticatedUser } from './hooks';
 
 /**
  * A react-router route that redirects to the login page when the route becomes active and the user
@@ -23,7 +22,7 @@ import PageWrap from './PageWrap';
  * viewing the route's contents.
  */
 export default function AuthenticatedPageRoute({ redirectUrl, children }) {
-  const { authenticatedUser } = useContext(AppContext);
+  const authenticatedUser = useAuthenticatedUser();
   if (authenticatedUser === null) {
     const destination = redirectUrl || getLoginRedirectUrl(global.location.href);
     global.location.assign(destination);

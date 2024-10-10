@@ -1,6 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useTrackColorSchemeChoice } from './hooks';
+import { EnvironmentTypes } from '../../types';
 import { sendTrackEvent } from '../analytics';
+import { setAuthenticatedUser } from '../auth';
+import { initializeMockApp } from '../testing';
+import AppProvider from './AppProvider';
+import { useAuthenticatedUser, useConfig, useTrackColorSchemeChoice } from './hooks';
 
 jest.mock('../analytics');
 
@@ -50,5 +54,48 @@ describe('useTrackColorSchemeChoice hook', () => {
 
     expect(mockAddEventListener).toHaveBeenCalledTimes(1);
     expect(mockAddEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+  });
+});
+
+describe('useAuthenticatedUser', () => {
+  it('returns null when the user is anonymous', () => {
+    const { result } = renderHook(() => useAuthenticatedUser());
+    expect(result.current).toBeNull();
+  });
+
+  describe('with a user', () => {
+    const user = {
+      administrator: true,
+      email: 'admin@example.com',
+      name: 'Admin',
+      roles: ['admin'],
+      userId: 1,
+      username: 'admin-user',
+      avatar: 'http://localhost/admin.png',
+    };
+
+    beforeEach(() => {
+      initializeMockApp({
+        authenticatedUser: user,
+      });
+    });
+
+    afterEach(() => {
+      setAuthenticatedUser(null);
+    });
+
+    it('returns a User when the user exists', () => {
+      const { result } = renderHook(() => useAuthenticatedUser(), { wrapper: AppProvider });
+      expect(result.current).toBe(user);
+    });
+  });
+});
+
+describe('useConfig', () => {
+  it('returns the site config', () => {
+    const { result } = renderHook(() => useConfig());
+    expect(result.current).toHaveProperty('apps', []);
+    expect(result.current).toHaveProperty('ENVIRONMENT', EnvironmentTypes.TEST);
+    expect(result.current).toHaveProperty('BASE_URL', 'http://localhost:8080');
   });
 });

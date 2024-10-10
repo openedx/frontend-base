@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import {
-  AppContext,
   getConfig,
+  useAuthenticatedUser,
   useIntl
 } from '../../../runtime';
 
@@ -21,7 +20,7 @@ export default function LearningHeader({
   courseOrg, courseNumber, courseTitle, showUserDropdown = true,
 }: LearningHeaderProps) {
   const intl = useIntl();
-  const { authenticatedUser } = useContext(AppContext);
+  const authenticatedUser = useAuthenticatedUser();
 
   return (
     <header className="learning-header">
@@ -38,12 +37,12 @@ export default function LearningHeader({
           <span className="d-block m-0 font-weight-bold course-title">{courseTitle}</span>
         </div>
         {showUserDropdown && authenticatedUser && (
-        <AuthenticatedUserDropdown
-          username={authenticatedUser.username}
-        />
+          <AuthenticatedUserDropdown
+            username={authenticatedUser.username}
+          />
         )}
         {showUserDropdown && !authenticatedUser && (
-        <AnonymousUserMenu />
+          <AnonymousUserMenu />
         )}
       </div>
     </header>

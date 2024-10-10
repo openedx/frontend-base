@@ -11,6 +11,6 @@ export { default as AppProvider } from './AppProvider';
 export { default as AuthenticatedPageRoute } from './AuthenticatedPageRoute';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as ErrorPage } from './ErrorPage';
-export { useAppEvent } from './hooks';
+export { useAppEvent, useAuthenticatedUser, useConfig } from './hooks';
 export { default as LoginRedirect } from './LoginRedirect';
 export { default as PageWrap } from './PageWrap';
