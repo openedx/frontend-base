@@ -110,7 +110,7 @@ export type {
   InsertDirectPluginWidget,
   InsertIframePluginWidget,
   InternalAppConfig,
-  ModuleConfig,
+  ProjectModuleConfig,
   ProjectSiteConfig
 } from './types';
 

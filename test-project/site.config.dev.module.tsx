@@ -1,6 +1,6 @@
-import { ModuleConfig } from '@openedx/frontend-base';
+import { ProjectModuleConfig } from '@openedx/frontend-base';
 
-const config: ModuleConfig = {
+const config: ProjectModuleConfig = {
   plugins: {},
 }
 

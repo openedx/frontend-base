@@ -186,7 +186,7 @@ export interface RequiredSiteConfig {
 
 export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
 
-export interface ModuleConfig {
+export interface ProjectModuleConfig {
   modules?: Array<string>,
   name?: string,
   plugins?: any,
