@@ -4,22 +4,27 @@ import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
 import './index.scss';
 
 const config: ProjectSiteConfig = {
-  apps: [
-    {
+  apps: {
+    root: {
       type: AppConfigTypes.INTERNAL,
-      appId: 'root',
       config: {
-        routes: [
-          {
-            path: '/',
-            element: (
-              <div>Main content</div>
-            )
-          }
-        ]
+        route: {
+          path: '/',
+          element: (
+            <div className="p-3">Main content.</div>
+          ),
+        }
       }
+    },
+    'learner-dashboard': {
+      type: AppConfigTypes.EXTERNAL,
+      url: 'http://local.openedx.io:8000/dashboard'
+    },
+    support: {
+      type: AppConfigTypes.EXTERNAL,
+      url: 'https://local.openedx.io:8000',
     }
-  ],
+  },
 
   header: {
     primaryLinks: [
