@@ -10,17 +10,6 @@ const config: ApplicationModuleConfig = {
           Component,
         }
       },
-      // children: [
-      //   {
-      //     path: 'child',
-      //     lazy: async () => {
-      //       const { default: Component } = await import('./ModuleOneChild');
-      //       return {
-      //         Component,
-      //       }
-      //     }
-      //   }
-      // ]
     }
   ]
 };
