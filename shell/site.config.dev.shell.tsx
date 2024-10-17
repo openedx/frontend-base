@@ -1,3 +1,4 @@
+import { Divider } from '../runtime';
 import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
 
 import './index.scss';
@@ -19,6 +20,40 @@ const config: ProjectSiteConfig = {
       }
     }
   ],
+
+  header: {
+    primaryLinks: [
+      {
+        name: 'Courses',
+        appId: 'learner-dashboard',
+      },
+      {
+        name: 'Other',
+        href: '#',
+      },
+      {
+        name: 'Dropdown',
+        items: [
+          {
+            name: 'Item #1',
+            href: '#',
+          },
+          <Divider />,
+          {
+            name: 'Item #2',
+            href: '#',
+          },
+        ]
+      }
+    ],
+    secondaryLinks: [
+      {
+        name: 'Help',
+        appId: 'support',
+      }
+    ]
+  },
+
   APP_ID: 'shell',
   ACCOUNT_PROFILE_URL: 'http://apps.local.openedx.io:1995',
   ACCOUNT_SETTINGS_URL: 'http://apps.local.openedx.io:1997',

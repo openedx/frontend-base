@@ -118,6 +118,8 @@ export interface OptionalSiteConfig {
     },
   },
 
+  header?: HeaderConfig,
+
   // Cookies
   ACCESS_TOKEN_COOKIE_NAME: string,
   LANGUAGE_PREFERENCE_COOKIE_NAME: string,
@@ -216,3 +218,37 @@ export enum EnvironmentTypes {
   DEVELOPMENT = 'development',
   TEST = 'test',
 }
+
+// Header Types
+
+export interface HeaderConfig {
+  logoUrl?: string,
+  logoDestinationUrl?: string,
+  primaryLinks?: Array<MenuItem>,
+  secondaryLinks?: Array<MenuItem>,
+  authenticatedMenu?: Array<AuthenticatedMenuItem>
+}
+
+export type AuthenticatedMenuItem = string | AppMenuItem | LinkMenuItem | ReactNode;
+
+export interface AppMenuItem {
+  name: string,
+  appId: string,
+}
+
+export interface DropdownMenuItem {
+  name: string,
+  items: Array<DropdownMenuSubItem>,
+}
+
+export interface LinkMenuItem {
+  name: string,
+  href: string,
+}
+
+export type MenuItem = DataMenuItem | ReactNode;
+
+export type DataMenuItem = LinkMenuItem | DropdownMenuItem;
+
+export type DropdownMenuSubItem = LinkMenuItem | ReactNode;
+

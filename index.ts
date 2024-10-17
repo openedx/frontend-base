@@ -16,6 +16,7 @@ export {
   AxiosJwtAuthService,
   CONFIG_CHANGED,
   CONFIG_TOPIC,
+  Divider,
   ErrorBoundary,
   ErrorPage,
   FormattedDate,

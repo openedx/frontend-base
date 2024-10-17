@@ -1,13 +1,12 @@
-interface LogoProps {
-  src: string,
-  alt: string,
-  className?: string,
-}
+import { Image, NavLink } from '@openedx/paragon';
 
-export default function Logo({
-  src, alt, className, ...props
-}: LogoProps) {
+import { useConfig } from '../../runtime';
+
+export default function Logo() {
+  const config = useConfig();
   return (
-    <img src={src} alt={alt} className={className} {...props} />
+    <NavLink href={`${config.LEARNER_DASHBOARD_URL}`} className="p-0">
+      <Image src={config.LOGO_URL} style={{ maxHeight: '2rem' }} />
+    </NavLink>
   );
 }

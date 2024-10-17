@@ -112,6 +112,7 @@ export {
   AppContext,
   AppProvider,
   AuthenticatedPageRoute,
+  Divider,
   ErrorBoundary,
   ErrorPage,
   LoginRedirect,
