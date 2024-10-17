@@ -6,11 +6,14 @@ import { getInternalModules } from '../data/moduleUtils';
 export default function createInternalRoutes() {
   const internalModules = getInternalModules();
 
-  let routes: Array<RouteObject> = [];
+  const routes: Array<RouteObject> = [];
 
-  internalModules.forEach((internalModule: InternalAppConfig) => {
-    const moduleRoutes = internalModule.config.routes;
-    routes = [...routes, ...moduleRoutes];
+  Object.values(internalModules).forEach((internalModule: InternalAppConfig) => {
+    const route = { ...internalModule.config.route };
+    if (internalModule.path) {
+      route.path = internalModule.path;
+    }
+    routes.push(route);
   });
   return routes;
 }

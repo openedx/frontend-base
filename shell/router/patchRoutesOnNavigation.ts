@@ -1,11 +1,18 @@
+import { RouteObject } from 'react-router';
 import { FederatedAppConfig } from '../../types';
 import { SHELL_ID } from '../data/constants';
 import { getFederatedModules, loadModuleConfig } from '../data/moduleUtils';
 
-export default async function patchRoutesOnNavigation({ path, patch }) {
+interface PatchRoutesOnNavigationArgs {
+  path: string,
+  patch: (routeId: string | null, children: RouteObject[]) => void,
+}
+
+export default async function patchRoutesOnNavigation({ path, patch }: PatchRoutesOnNavigationArgs) {
   const federatedModules = getFederatedModules();
   let missingModule: FederatedAppConfig | null = null;
-  for (let i = 0; i < federatedModules.length; i++) {
+  const entries = Object.values(federatedModules);
+  for (let i = 0; i < entries.length; i++) {
     const federatedModule = federatedModules[i];
     if (path.startsWith(federatedModule.path)) {
       missingModule = federatedModule;
@@ -14,10 +21,11 @@ export default async function patchRoutesOnNavigation({ path, patch }) {
   }
 
   if (missingModule) {
-    const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.appId);
+    const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.libraryId);
     if (moduleConfig) {
-      patch(SHELL_ID, moduleConfig.routes);
+      patch(SHELL_ID, [moduleConfig.route]);
     } else {
+      // TODO: What do we do if it doesn't work?
       console.log('uhoh, no module config.');
     }
   }

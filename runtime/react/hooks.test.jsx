@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
+import siteConfig from 'site.config';
 import { EnvironmentTypes } from '../../types';
 import { sendTrackEvent } from '../analytics';
 import { setAuthenticatedUser } from '../auth';
@@ -94,7 +95,7 @@ describe('useAuthenticatedUser', () => {
 describe('useConfig', () => {
   it('returns the site config', () => {
     const { result } = renderHook(() => useConfig());
-    expect(result.current).toHaveProperty('apps', []);
+    expect(result.current).toHaveProperty('apps', siteConfig.apps);
     expect(result.current).toHaveProperty('ENVIRONMENT', EnvironmentTypes.TEST);
     expect(result.current).toHaveProperty('BASE_URL', 'http://localhost:8080');
   });

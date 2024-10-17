@@ -132,7 +132,7 @@ let config: SiteConfig = {
   ECOMMERCE_BASE_URL: null,
   PUBLISHER_BASE_URL: null,
 
-  apps: [],
+  apps: {},
   pluginSlots: {},
   custom: {},
 
