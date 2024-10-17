@@ -1,4 +1,4 @@
-import { ApplicationModuleConfig, HeaderTypes } from "@openedx/frontend-base";
+import { ApplicationModuleConfig } from "@openedx/frontend-base";
 
 const config: ApplicationModuleConfig = {
   routes: [
@@ -8,9 +8,6 @@ const config: ApplicationModuleConfig = {
         const { default: Component } = await import('./PluginPage');
         return {
           Component,
-          handle: {
-            headerId: HeaderTypes.DEFAULT,
-          }
         }
       },
       // children: [

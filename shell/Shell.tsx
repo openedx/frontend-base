@@ -5,14 +5,12 @@ import {
   PluginSlot
 } from '../runtime';
 import ActiveFooter from './footer';
-import ActiveHeader from './header/ActiveHeader';
 
 export default function Shell() {
   // TODO: Plugin Slots for header/footer should be per type, i.e., default, learning, and studio slots.
   return (
     <AppProvider>
       <PluginSlot id="org.openedx.frontend.shell.header.v1">
-        <ActiveHeader />
       </PluginSlot>
       <Suspense fallback={<div>Loading</div>}>
         <Outlet />
