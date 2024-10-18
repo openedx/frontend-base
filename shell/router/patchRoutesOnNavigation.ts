@@ -1,4 +1,5 @@
 import { RouteObject } from 'react-router';
+import { patchAppModuleConfig } from '../../runtime/config';
 import { FederatedAppConfig } from '../../types';
 import { SHELL_ID } from '../data/constants';
 import { getFederatedModules, loadModuleConfig } from '../data/moduleUtils';
@@ -11,19 +12,22 @@ interface PatchRoutesOnNavigationArgs {
 export default async function patchRoutesOnNavigation({ path, patch }: PatchRoutesOnNavigationArgs) {
   const federatedModules = getFederatedModules();
   let missingModule: FederatedAppConfig | null = null;
-  const entries = Object.values(federatedModules);
+  let missingAppId: string | null = null;
+  const entries = Object.entries(federatedModules);
   for (let i = 0; i < entries.length; i++) {
-    const federatedModule = federatedModules[i];
+    const [appId, federatedModule] = entries[i];
     if (path.startsWith(federatedModule.path)) {
       missingModule = federatedModule;
+      missingAppId = appId;
       break;
     }
   }
 
-  if (missingModule) {
+  if (missingModule && missingAppId) {
     const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.libraryId);
     if (moduleConfig) {
       patch(SHELL_ID, [moduleConfig.route]);
+      patchAppModuleConfig(missingAppId, moduleConfig);
     } else {
       // TODO: What do we do if it doesn't work?
       console.log('uhoh, no module config.');

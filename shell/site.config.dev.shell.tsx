@@ -1,62 +1,98 @@
 import { Divider } from '../runtime';
 import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
 
+import ChildOnePage from './dev-project/ChildOnePage';
+import CoursesLink from './dev-project/CoursesLink';
+import DashboardPage from './dev-project/DashboardPage';
+import HomePage from './dev-project/HomePage';
+import { primaryLinks } from './header/defaults';
 import './index.scss';
 
 const config: ProjectSiteConfig = {
   apps: {
-    root: {
+    home: {
       type: AppConfigTypes.INTERNAL,
       config: {
         route: {
           path: '/',
-          element: (
-            <div className="p-3">Main content.</div>
-          ),
+          Component: HomePage,
+        }
+      }
+    },
+    child1: {
+      type: AppConfigTypes.INTERNAL,
+      config: {
+        header: {
+          primaryLinks: [
+            {
+              label: 'Child Link',
+              url: '#'
+            },
+            ...primaryLinks,
+          ],
+          secondaryLinks: [
+            {
+              label: 'Child Help',
+              appId: 'support',
+            }
+          ]
+        },
+        route: {
+          path: '/child1',
+          Component: ChildOnePage,
         }
       }
     },
     'learner-dashboard': {
-      type: AppConfigTypes.EXTERNAL,
-      url: 'http://local.openedx.io:8000/dashboard'
+      type: AppConfigTypes.INTERNAL,
+      config: {
+        route: {
+          path: 'dashboard',
+          Component: DashboardPage,
+        }
+      }
     },
     support: {
       type: AppConfigTypes.EXTERNAL,
-      url: 'https://local.openedx.io:8000',
+      url: 'https://local.openedx.io:8000/support',
+    },
+    logout: {
+      type: AppConfigTypes.EXTERNAL,
+      url: 'http://local.openedx.io:8000/logout',
     }
   },
 
   header: {
     primaryLinks: [
       {
-        name: 'Courses',
+        label: (<CoursesLink />),
         appId: 'learner-dashboard',
       },
       {
-        name: 'Other',
-        href: '#',
+        label: 'Other',
+        url: '#',
       },
       {
-        name: 'Dropdown',
+        label: 'Dropdown',
         items: [
           {
-            name: 'Item #1',
-            href: '#',
+            label: 'Item #1',
+            url: '#',
           },
           <Divider />,
           {
-            name: 'Item #2',
-            href: '#',
+            label: 'Item #2',
+            url: '#',
           },
         ]
       }
     ],
     secondaryLinks: [
       {
-        name: 'Help',
+        label: 'Help',
         appId: 'support',
       }
-    ]
+    ],
   },
 
   APP_ID: 'shell',

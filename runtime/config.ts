@@ -102,7 +102,9 @@
 
 import merge from 'lodash.merge';
 import 'pubsub-js';
-import { EnvironmentTypes, SiteConfig } from '../types';
+import {
+  AppConfigTypes, ApplicationModuleConfig, ConfigurableAppConfig, EnvironmentTypes, SiteConfig
+} from '../types';
 import { CONFIG_CHANGED } from './constants';
 
 let config: SiteConfig = {
@@ -219,6 +221,16 @@ export function setConfig(newConfig: SiteConfig) {
 export function mergeConfig(newConfig: Partial<SiteConfig>) {
   config = merge(config, newConfig);
   global.PubSub.publish(CONFIG_CHANGED);
+}
+
+export function patchAppModuleConfig(appId: string, appModuleConfig: ApplicationModuleConfig) {
+  if (config.apps[appId] !== undefined) {
+    const app = config.apps[appId];
+    if (app.type === AppConfigTypes.INTERNAL || app.type === AppConfigTypes.FEDERATED) {
+      const configurableApp = app as ConfigurableAppConfig;
+      configurableApp.config = appModuleConfig;
+    }
+  }
 }
 
 /**

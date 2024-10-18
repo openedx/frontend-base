@@ -1,12 +1,14 @@
 import { Image, NavLink } from '@openedx/paragon';
 
-import { useConfig } from '../../runtime';
+import { useContext } from 'react';
+import HeaderContext from './HeaderContext';
 
 export default function Logo() {
-  const config = useConfig();
+  const { logoDestinationUrl, logoUrl } = useContext(HeaderContext);
+
   return (
-    <NavLink href={`${config.LEARNER_DASHBOARD_URL}`} className="p-0">
-      <Image src={config.LOGO_URL} style={{ maxHeight: '2rem' }} />
+    <NavLink href={logoDestinationUrl} className="p-0">
+      <Image src={logoUrl} style={{ maxHeight: '2rem' }} />
     </NavLink>
   );
 }

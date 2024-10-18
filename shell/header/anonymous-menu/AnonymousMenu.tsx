@@ -1,0 +1,22 @@
+import classNames from 'classnames';
+import { useContext } from 'react';
+import HeaderContext from '../HeaderContext';
+import AnonymousMenuItem from './AnonymousMenuItem';
+
+interface AnonymousMenuProps {
+  className?: string,
+}
+
+export default function AnonymousMenu({ className }: AnonymousMenuProps) {
+  const { anonymousLinks } = useContext(HeaderContext);
+
+  return (
+    <div className={classNames('d-flex flex-nowrap align-items-center flex-shrink-0', className)} style={{ gap: '1rem' }}>
+      {anonymousLinks.map((item, index) => (
+        // TODO: Do something better than using the array index here.
+        // eslint-disable-next-line react/no-array-index-key
+        <AnonymousMenuItem key={index} item={item} />
+      ))}
+    </div>
+  );
+}

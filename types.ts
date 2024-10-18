@@ -1,7 +1,10 @@
-import { ElementType, ReactNode } from 'react';
+import { ElementType, ReactElement } from 'react';
+import { MessageDescriptor } from 'react-intl';
 import { IndexRouteObject, NonIndexRouteObject } from 'react-router';
 
-export type AppConfig = ExternalAppConfig | InternalAppConfig | FederatedAppConfig;
+export type AppConfig = ExternalAppConfig | InternalAppConfig | FederatedAppConfig | HydratedFederatedAppConfig;
+
+export type ConfigurableAppConfig = InternalAppConfig | HydratedFederatedAppConfig;
 
 export enum AppConfigTypes {
   EXTERNAL = 'external',
@@ -9,21 +12,27 @@ export enum AppConfigTypes {
   FEDERATED = 'federated',
 }
 
+export interface AppModuleHandle {
+  appId: string,
+  [key: string]: any,
+}
+
 // We extend the react-router RouteObject to make path required. `path` is not required for
 // 'layout' routes, which for now we won't support as the route of a module.
 // Documentation of this here: https://reactrouter.com/en/main/route/route#layout-routes
-export interface PathIndexRouteObject extends IndexRouteObject {
-  path: string
+export interface AppModuleIndexRouteObject extends IndexRouteObject {
+  path: string,
 }
 
-export interface PathNonIndexRouteObject extends NonIndexRouteObject {
-  path: string
+export interface AppModuleNonIndexRouteObject extends NonIndexRouteObject {
+  path: string,
 }
 
-export type PathRouteObject = PathIndexRouteObject | PathNonIndexRouteObject;
+export type AppModuleRouteObject = AppModuleIndexRouteObject | AppModuleNonIndexRouteObject;
 
 export interface ApplicationModuleConfig {
-  route: PathRouteObject,
+  route: AppModuleRouteObject,
+  header?: HeaderConfig,
 }
 
 export interface InternalAppConfig {
@@ -38,6 +47,10 @@ export interface FederatedAppConfig {
   remoteUrl: string,
   moduleId: string,
   path: string,
+}
+
+export interface HydratedFederatedAppConfig extends FederatedAppConfig {
+  config: ApplicationModuleConfig,
 }
 
 export interface ExternalAppConfig {
@@ -165,34 +178,60 @@ export enum EnvironmentTypes {
 
 export interface HeaderConfig {
   logoUrl?: string,
-  logoDestinationUrl?: string,
+  logoDestinationUrl?: string | null,
   primaryLinks?: Array<MenuItem>,
   secondaryLinks?: Array<MenuItem>,
-  authenticatedMenu?: Array<AuthenticatedMenuItem>
+  anonymousLinks?: Array<MenuItem>,
+  authenticatedLinks?: Array<ChildMenuItem>,
 }
 
-export type AuthenticatedMenuItem = string | AppMenuItem | LinkMenuItem | ReactNode;
+export interface ResolvedHeaderConfig {
+  logoUrl: string,
+  logoDestinationUrl: string | null,
+  primaryLinks: Array<MenuItem>,
+  secondaryLinks: Array<MenuItem>,
+  anonymousLinks: Array<MenuItem>,
+  authenticatedLinks: Array<ChildMenuItem>,
+}
 
-export interface AppMenuItem {
-  name: string,
+export enum MenuItemVariants {
+  BUTTON = 'button',
+  LINK = 'link',
+}
+
+export type MenuItemName = string | MessageDescriptor | ReactElement;
+
+export interface BaseLinkMenuItem {
+  label: MenuItemName,
+  type?: MenuItemVariants,
+}
+
+export interface AppMenuItem extends BaseLinkMenuItem {
   appId: string,
 }
 
 export interface DropdownMenuItem {
-  name: string,
-  items: Array<DropdownMenuSubItem>,
+  label: MessageDescriptor | string,
+  items: Array<ChildMenuItem>,
 }
 
-export interface LinkMenuItem {
-  name: string,
-  href: string,
+export interface UrlMenuItem extends BaseLinkMenuItem {
+  url: string,
 }
 
-export type MenuItem = DataMenuItem | ReactNode;
+/**
+ * A menu item that displays as a link.
+ *
+ * There are two sub-types based on how the link is configured.
+ *
+ * * **AppMenuItem**: Uses an app ID to resolve the link URL.  Used to link directly to another app module.
+ * * **UrlMenuItem**: Includes a fully-qualified URL.  Used for external links.
+ */
+export type LinkMenuItem = AppMenuItem | UrlMenuItem;
 
-export type DataMenuItem = LinkMenuItem | DropdownMenuItem;
+export type MenuItem = LinkMenuItem | DropdownMenuItem | ReactElement;
 
-export type DropdownMenuSubItem = LinkMenuItem | ReactNode;
+export type ChildMenuItem = LinkMenuItem | ReactElement;
 
 // Plugin Types
 

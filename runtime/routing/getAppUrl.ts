@@ -1,12 +1,13 @@
 import { AppConfigTypes } from '../../types';
 import { getConfig } from '../config';
+import isValidApp from './isValidApp';
 
 export default function getAppUrl(appId: string) {
   const { apps } = getConfig();
   const app = apps[appId];
 
-  if (app === undefined) {
-    return null;
+  if (!isValidApp(appId)) {
+    return '#';
   }
 
   if (app.type === AppConfigTypes.EXTERNAL) {
@@ -21,5 +22,5 @@ export default function getAppUrl(appId: string) {
     }
     return app.config.route.path;
   }
-  return null;
+  return '#';
 }
