@@ -3,6 +3,7 @@ import { patchAppModuleConfig } from '../../runtime/config';
 import { FederatedAppConfig } from '../../types';
 import { SHELL_ID } from '../data/constants';
 import { getFederatedModules, loadModuleConfig } from '../data/moduleUtils';
+import patchAppIdIntoRouteHandle from './patchAppIdIntoRouteHandle';
 
 interface PatchRoutesOnNavigationArgs {
   path: string,
@@ -26,6 +27,7 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
   if (missingModule && missingAppId) {
     const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.libraryId);
     if (moduleConfig) {
+      patchAppIdIntoRouteHandle(missingAppId, moduleConfig.route);
       patch(SHELL_ID, [moduleConfig.route]);
       patchAppModuleConfig(missingAppId, moduleConfig);
     } else {
