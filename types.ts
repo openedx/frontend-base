@@ -194,16 +194,10 @@ export interface ResolvedHeaderConfig {
   authenticatedLinks: Array<ChildMenuItem>,
 }
 
-export enum MenuItemVariants {
-  BUTTON = 'button',
-  LINK = 'link',
-}
-
 export type MenuItemName = string | MessageDescriptor | ReactElement;
 
 export interface BaseLinkMenuItem {
   label: MenuItemName,
-  type?: MenuItemVariants,
 }
 
 export interface AppMenuItem extends BaseLinkMenuItem {
