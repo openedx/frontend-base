@@ -44,33 +44,30 @@ const wrapWidget = ({ component }) => (
 );
 
 const config: ProjectSiteConfig = {
-  apps: [
-    {
+  apps: {
+    examplePage: {
       type: AppConfigTypes.INTERNAL,
-      appId: 'examplePage',
       config: examplePageConfig,
     },
-    {
+    authenticatedPage: {
       type: AppConfigTypes.FEDERATED,
-      appId: 'testProject',
       moduleId: 'AuthenticatedPage',
+      libraryId: 'testProject',
       remoteUrl: 'http://localhost:8081/remoteEntry.js',
       path: '/authenticated',
     },
-    {
+    pluginPage: {
       type: AppConfigTypes.INTERNAL,
-      appId: 'pluginPage',
       config: pluginPageConfig,
     },
     // This site is serving its own iframe plugin and embedding it in the PluginPage.  This is
     // obviously not quite like a real world use case, but it helps us test the mechanism without
     // adding another test project to the library.
-    {
+    iframePlugin: {
       type: AppConfigTypes.INTERNAL,
-      appId: 'iframePlugin',
       config: iframePluginConfig,
     },
-  ],
+  },
   ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
   ACCOUNT_PROFILE_URL: 'http://apps.local.openedx.io:1995',
   ACCOUNT_SETTINGS_URL: 'http://apps.local.openedx.io:1997',
