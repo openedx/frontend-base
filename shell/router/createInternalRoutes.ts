@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router';
 
 import { InternalAppConfig } from '../../types';
 import { getInternalModules } from '../data/moduleUtils';
+import patchAppIdIntoRouteHandle from './patchAppIdIntoRouteHandle';
 
 export default function createInternalRoutes() {
   const internalModules = getInternalModules();
@@ -15,11 +16,7 @@ export default function createInternalRoutes() {
       if (internalModule.path) {
         route.path = internalModule.path;
       }
-      // Save the appId in 'handle' so we can get it later.
-      if (route.handle === undefined) {
-        route.handle = {};
-      }
-      route.handle.appId = appId;
+      patchAppIdIntoRouteHandle(appId, route);
       routes.push(route);
     }
   );
