@@ -9,6 +9,14 @@ const config: ApplicationModuleConfig = {
         Component,
       }
     },
+  },
+  header: {
+    primaryLinks: [
+      {
+        label: 'Authenticated Page Link',
+        url: '#',
+      },
+    ]
   }
 };
 
