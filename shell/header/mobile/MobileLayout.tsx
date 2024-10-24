@@ -27,15 +27,15 @@ export default function MobileLayout() {
           isMobile ? 'd-flex' : 'd-none',
         )}
       >
-        <div className="flex-grow-1 w-100">
+        <div className="flex-grow-1 flex-basis-0">
           <Button onClick={handleMobileButtonClick} variant="outline">
             <MenuIcon />
           </Button>
         </div>
-        <div className="d-flex justify-content-center flex-grow-1 w-100">
+        <div className="d-flex justify-content-center flex-grow-1 flex-basis-0">
           <Logo />
         </div>
-        <div className="d-flex flex-grow-1 justify-content-end w-100">
+        <div className="d-flex flex-grow-1 justify-content-end flex-basis-0">
           {authenticatedUser ? (
             <AuthenticatedMenu />
           ) : (

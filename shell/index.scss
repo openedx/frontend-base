@@ -2,6 +2,10 @@
 
 @import "./footer/footer";
 
+.flex-basis-0 {
+  flex-basis: 0 !important;
+}
+
 .gap-0 {
   gap: 0px;
 }
