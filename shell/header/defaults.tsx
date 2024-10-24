@@ -1,5 +1,5 @@
 import { ChildMenuItem, MenuItem } from '../../types';
-import messages from './Header.messages';
+import messages from '../Shell.messages';
 import LoginButton from './anonymous-menu/LoginButton';
 import RegisterButton from './anonymous-menu/RegisterButton';
 

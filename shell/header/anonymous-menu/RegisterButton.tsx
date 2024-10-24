@@ -1,7 +1,7 @@
 import { Button } from '@openedx/paragon';
 
 import { useConfig, useIntl } from '../../../runtime';
-import messages from '../Header.messages';
+import messages from '../../Shell.messages';
 
 export default function RegisterButton({ ...props }) {
   const config = useConfig();

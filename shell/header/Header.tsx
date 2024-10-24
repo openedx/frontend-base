@@ -1,8 +1,8 @@
 import { useIntl } from '../../runtime';
 
+import messages from '../Shell.messages';
 import useResolvedHeaderConfig from './data/hooks';
 import DesktopLayout from './desktop/DesktopLayout';
-import messages from './Header.messages';
 import HeaderContext from './HeaderContext';
 import MobileLayout from './mobile/MobileLayout';
 

@@ -1,6 +1,6 @@
 import { Button } from '@openedx/paragon';
 import { useConfig, useIntl } from '../../../runtime';
-import messages from '../Header.messages';
+import messages from '../../Shell.messages';
 
 export default function LoginButton({ ...props }) {
   const config = useConfig();

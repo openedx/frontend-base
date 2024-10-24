@@ -1,4 +1,4 @@
-import { defineMessages } from '../../runtime';
+import { defineMessages } from '../runtime';
 
 const messages = defineMessages({
   'header.user.menu.dashboard': {
@@ -41,7 +41,11 @@ const messages = defineMessages({
     defaultMessage: 'Skip to main content.',
     description: 'A link used by screen readers to allow users to skip to the main content of the page.',
   },
-
+  footerPoweredBy: {
+    id: 'footer.powered.by',
+    defaultMessage: 'Powered by Open edX',
+    description: 'Alt text for the \'Powered by Open edX\' logo displayed in the footer',
+  }
 });
 
 export default messages;
