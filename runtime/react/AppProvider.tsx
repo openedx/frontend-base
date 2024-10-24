@@ -60,7 +60,11 @@ export default function AppProvider({ children }: AppProviderProps) {
     setLocale(getLocale());
   });
 
-  const appContextValue = useMemo(() => ({ authenticatedUser, config, locale }), [authenticatedUser, config, locale]);
+  const appContextValue = useMemo(() => ({
+    authenticatedUser,
+    config,
+    locale
+  }), [authenticatedUser, config, locale]);
 
   return (
     <IntlProvider locale={locale} messages={getMessages()}>

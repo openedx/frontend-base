@@ -81,6 +81,7 @@ export {
 
 export {
   auth,
+  getBasename,
   getHistory,
   initError,
   initialize
@@ -111,11 +112,14 @@ export {
   AppContext,
   AppProvider,
   AuthenticatedPageRoute,
+  Divider,
   ErrorBoundary,
   ErrorPage,
   LoginRedirect,
   PageWrap,
-  useAppEvent
+  useAppEvent,
+  useAuthenticatedUser,
+  useConfig
 } from './react';
 
 export {

@@ -5,27 +5,23 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"main": "dist/index.js",
-	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"files": [
-		"/dist",
-		"/config",
-		"/shell/**/*.scss"
-	],
+	"main": "index.ts",
+	"module": "index.ts",
 	"bin": {
-		"intl-imports.js": "dist/tools/cli/scripts/intl-imports.js",
-		"openedx": "dist/tools/cli/openedx.js",
-		"transifex-utils.js": "dist/tools/cli/scripts/transifex-utils.js"
+		"intl-imports.js": "tools/dist/cli/scripts/intl-imports.js",
+		"openedx": "tools/dist/cli/openedx.js",
+		"transifex-utils.js": "tools/dist/cli/scripts/transifex-utils.js"
 	},
 	"scripts": {
 		"build": "make build",
-		"temp:pack-it": "npm run temp:prep-pack && npm run temp:pack-base-test && npm run temp:pack-project && npm run temp:pack-project-module && npm run temp:pack-test-project",
-		"temp:prep-pack": "npm run build && npm pack",
-		"temp:pack-base-test": "cd ../frontend-app-base-test && npm i --save-peer ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
-		"temp:pack-project": "cd ../frontend-project-test && npm i ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
-		"temp:pack-project-module": "cd ../frontend-project-module-test && npm i ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
-		"temp:pack-test-project": "cd test-project && npm i ../openedx-frontend-base-1.0.0.tgz && cd ../",
+		"dev:shell": "npm run build && node ./tools/dist/cli/openedx.js dev:shell",
+		"temp:refresh-all": "npm run build && npm pack && npm run temp:refresh-base-test && npm run temp:refresh-authn && npm run temp:refresh-project && npm run temp:refresh-project-module && npm run temp:refresh-test-project",
+		"temp:refresh-base-test": "cd ../frontend-app-base-test && npm i --audit=false --fund=false --save-peer ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
+		"temp:refresh-authn": "cd ../frontend-app-authn && npm i --audit=false --fund=false --save-peer ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
+		"temp:refresh-project": "cd ../frontend-project-test && npm i --audit=false --fund=false ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
+		"temp:refresh-project-module": "cd ../frontend-project-module-test && npm i --audit=false --fund=false ../frontend-base/openedx-frontend-base-1.0.0.tgz && cd ../frontend-base",
+		"temp:refresh-test-project": "cd test-project && npm i --audit=false --fund=false ../openedx-frontend-base-1.0.0.tgz && cd ../",
+		"refresh:test-project": "npm run build && npm pack && cd test-project && npm i --audit=false --fund=false ../openedx-frontend-base-1.0.0.tgz && cd ../",
 		"clean": "rm -rf dist",
 		"docs": "jsdoc -c jsdoc.json",
 		"docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
@@ -46,7 +42,10 @@
 	"bugs": {
 		"url": "https://github.com/openedx/frontend-base/issues"
 	},
-	"sideEffects": false,
+	"sideEffects": [
+		"*.css",
+		"*.scss"
+	],
 	"homepage": "https://github.com/openedx/frontend-base#readme",
 	"dependencies": {
 		"@babel/core": "^7.24.9",
@@ -86,6 +85,7 @@
 		"eslint-plugin-react-hooks": "4.6.0",
 		"express": "^4.18.2",
 		"file-loader": "6.2.0",
+		"fork-ts-checker-webpack-plugin": "^9.0.2",
 		"form-urlencoded": "^6.1.5",
 		"glob": "^7.2.3",
 		"gradient-string": "^2.0.2",
@@ -100,7 +100,6 @@
 		"localforage": "^1.10.0",
 		"localforage-memoryStorageDriver": "^0.9.2",
 		"lodash.camelcase": "^4.3.0",
-		"lodash.isempty": "^4.4.0",
 		"lodash.memoize": "^4.1.2",
 		"lodash.merge": "^4.6.2",
 		"lodash.snakecase": "^4.1.1",
@@ -113,8 +112,10 @@
 		"prop-types": "^15.8.1",
 		"pubsub-js": "^1.9.4",
 		"react-dev-utils": "12.0.1",
+		"react-focus-on": "^3.9.4",
 		"react-intl": "^6.6.6",
 		"react-refresh": "0.14.2",
+		"react-refresh-typescript": "^2.0.9",
 		"react-responsive": "^10.0.0",
 		"react-transition-group": "^4.4.5",
 		"resolve-url-loader": "5.0.0",

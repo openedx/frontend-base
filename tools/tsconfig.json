@@ -17,5 +17,6 @@
     "webpack/**/*",
     "types.ts",
     "index.ts",
+    "defaultConfigPaths.ts",
   ],
 }

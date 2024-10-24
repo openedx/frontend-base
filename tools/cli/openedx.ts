@@ -3,48 +3,12 @@ import chalk from 'chalk';
 
 import { existsSync } from 'fs';
 import path from 'path';
-import presets from '../config-helpers/presets';
-import { ConfigPreset, ConfigPresetTypes } from '../types';
+import { CommandTypes, ConfigTypes } from '../types';
 import pack from './commands/pack';
 import release from './commands/release';
-import prettyPrintTitle from './prettyPrintTitle';
-import printUsage from './printUsage';
-
-/**
- * TLDR:
- *  - Find the command to be run in process.argv
- *  - Remove 'openedx' in process.argv
- *  - Add a --config option to process.argv if one is missing
- *  - Execute the command's bin script by pulling it directly in with require()
- *
- * This file forwards cli commands by manipulating process.argv values and then
- * directly requiring bin scripts from the specified packages (as opposed to
- * attempting to run them from the aliases npm copies to the .bin folder upon
- * install). This seems like a relatively safe thing to do since these file
- * names are identical to their cli name and this method of requiring/executing
- * them should behave the same as if run from the command line as usual.
- */
-
-function optionExists(keys: string[]) {
-  return process.argv.some((arg) => {
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < keys.length; i++) {
-      if (arg.startsWith(keys[i])) {
-        return true;
-      }
-    }
-    return false;
-  });
-}
-
-// Ensures that a config option already exists and if it does not adds a default
-function ensureConfigOption(preset: ConfigPreset, keys = ['--config', '-c']) {
-  if (!optionExists(keys)) {
-    console.log(`Running with resolved config:\n\n${preset.resolvedFilepath}\n`);
-    process.argv.push(keys[0]);
-    process.argv.push(preset.resolvedFilepath);
-  }
-}
+import { ensureConfigFilenameOption } from './utils/ensureConfigFilenameOption';
+import prettyPrintTitle from './utils/prettyPrintTitle';
+import printUsage from './utils/printUsage';
 
 // commandName is the third argument after node and 'openedx'
 const commandName = process.argv[2];
@@ -63,10 +27,10 @@ if (existsSync(path.resolve(__dirname, '../../package.json'))) {
 prettyPrintTitle(`Open edX CLI v${version}`);
 
 switch (commandName) {
-  case 'release':
+  case CommandTypes.RELEASE:
     release();
     break;
-  case 'pack':
+  case CommandTypes.PACK:
     if (process.argv[2] === undefined) {
       console.log(chalk.red(`${chalk.bold.red(commandName)} command usage: specify a peer folder where the command should install the package:
 
@@ -75,33 +39,46 @@ switch (commandName) {
     }
     pack();
     break;
-  case 'lint':
-    ensureConfigOption(presets[ConfigPresetTypes.LINT]);
+  case CommandTypes.LINT:
+    ensureConfigFilenameOption(ConfigTypes.LINT, ['-c', '--config']);
+    // If extensions haven't been specified, add them.  Otherwise we don't get jsx/tsx files.
+    if (process.argv.indexOf('--ext') === -1) {
+      process.argv.push('--ext');
+      process.argv.push('.js,.jsx,.ts,.tsx');
+    }
     require('.bin/eslint');
     break;
-  case 'test':
-    ensureConfigOption(presets[ConfigPresetTypes.TEST]);
+  case CommandTypes.TEST:
+    ensureConfigFilenameOption(ConfigTypes.TEST, ['-c', '--config']);
     require('jest/bin/jest');
     break;
-  case 'build':
-    ensureConfigOption(presets[ConfigPresetTypes.BUILD]);
+  case CommandTypes.BUILD:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_BUILD, ['-c', '--config']);
     require('webpack/bin/webpack');
     break;
-  case 'build:module':
-    ensureConfigOption(presets[ConfigPresetTypes.BUILD_MODULE]);
+  case CommandTypes.BUILD_MODULE:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_BUILD_MODULE, ['-c', '--config']);
     require('webpack/bin/webpack');
     break;
-  case 'dev:module':
-    ensureConfigOption(presets[ConfigPresetTypes.DEV_MODULE]);
+  case CommandTypes.DEV_LEGACY:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV_LEGACY, ['-c', '--config']);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
-  case 'dev':
-    ensureConfigOption(presets[ConfigPresetTypes.DEV]);
+  case CommandTypes.DEV_MODULE:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV_MODULE, ['-c', '--config']);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
-  case 'formatjs':
+  case CommandTypes.DEV_SHELL:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV_SHELL, ['-c', '--config']);
+    require('webpack-dev-server/bin/webpack-dev-server');
+    break;
+  case CommandTypes.DEV:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV, ['-c', '--config']);
+    require('webpack-dev-server/bin/webpack-dev-server');
+    break;
+  case CommandTypes.FORMAT_JS:
     const commonArgs = [
-      '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/formatter.js',
+      '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/utils/formatter.js',
       '--ignore', 'src/**/*.json',
       '--out-file', './temp/formatjs/Default.messages.json',
       '--', 'src/**/*.js*',
@@ -109,10 +86,10 @@ switch (commandName) {
     process.argv = process.argv.concat(commonArgs);
     require('@formatjs/cli/bin/formatjs');
     break;
-  case 'serve':
+  case CommandTypes.SERVE:
     require('./commands/serve');
     break;
-  case 'help':
+  case CommandTypes.HELP:
     printUsage();
     break;
   default:

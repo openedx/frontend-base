@@ -1,22 +1,33 @@
-import { AuthenticatedPage, ExamplePage } from './src';
+import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
 
-import { ProjectSiteConfig } from '@openedx/frontend-base';
+import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
 import './src/project.scss';
 
+
 const config: ProjectSiteConfig = {
-  apps: [
-    {
-      appId: 'examplePage',
-      component: ExamplePage,
-      path: '/',
+  apps: {
+    examplePage: {
+      type: AppConfigTypes.INTERNAL,
+      config: examplePageConfig,
     },
-    {
-      appId: 'authenticatedPage',
-      component: AuthenticatedPage,
-      path: '/authenticated',
+    authenticatedPage: {
+      type: AppConfigTypes.INTERNAL,
+      config: authenticatedPageConfig,
     },
-  ],
-  ENVIRONMENT: 'dev',
+    pluginPage: {
+      type: AppConfigTypes.INTERNAL,
+      config: pluginPageConfig,
+    },
+    // This site is serving its own iframe plugin and embedding it in the PluginPage.  This is
+    // obviously not quite like a real world use case, but it helps us test the mechanism without
+    // adding another test project to the library.
+    iframePlugin: {
+      type: AppConfigTypes.INTERNAL,
+      config: iframePluginConfig,
+    },
+  },
+
+  ENVIRONMENT: EnvironmentTypes.PRODUCTION,
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
   BASE_URL: 'http://localhost:8080',
@@ -24,6 +35,7 @@ const config: ProjectSiteConfig = {
   DISCOVERY_API_BASE_URL: 'http://localhost:18381',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   ECOMMERCE_BASE_URL: 'http://localhost:18130',
+  LEARNER_DASHBOARD_URL: 'http://localhost:18000/dashboard',
   LEARNING_BASE_URL: 'http://localhost:2000',
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',

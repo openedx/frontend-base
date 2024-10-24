@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
+import { EnvironmentTypes } from '../../types';
 import {
   configure,
-  getPrimaryLanguageSubtag,
+  getCookies,
   getLocale,
   getMessages,
-  isRtl,
+  getPrimaryLanguageSubtag,
   handleRtl,
-  getCookies,
+  isRtl,
   mergeMessages,
 } from './lib';
 
@@ -29,7 +30,7 @@ describe('lib', () => {
       configure({
         loggingService: { logError: jest.fn() },
         config: {
-          ENVIRONMENT: 'production',
+          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
         messages: {
@@ -46,7 +47,7 @@ describe('lib', () => {
       configure({
         loggingService: { logError: jest.fn() },
         config: {
-          ENVIRONMENT: 'development', // turn on warnings!
+          ENVIRONMENT: EnvironmentTypes.DEVELOPMENT, // turn on warnings!
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
         messages: {
@@ -74,7 +75,7 @@ describe('lib', () => {
       configure({
         loggingService: { logError: jest.fn() },
         config: {
-          ENVIRONMENT: 'development', // turn on warnings!
+          ENVIRONMENT: EnvironmentTypes.DEVELOPMENT, // turn on warnings!
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
         messages: {},
@@ -116,7 +117,7 @@ describe('lib', () => {
       configure({
         loggingService: { logError: jest.fn() },
         config: {
-          ENVIRONMENT: 'production',
+          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
         messages: {
@@ -161,7 +162,7 @@ describe('lib', () => {
       configure({
         loggingService: { logError: jest.fn() },
         config: {
-          ENVIRONMENT: 'production',
+          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
         messages: {
@@ -218,7 +219,7 @@ describe('lib', () => {
       configure({
         loggingService: { logError: jest.fn() },
         config: {
-          ENVIRONMENT: 'production',
+          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
         messages: {
@@ -235,7 +236,7 @@ describe('lib', () => {
       configure({
         loggingService: { logError: jest.fn() },
         config: {
-          ENVIRONMENT: 'production',
+          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
         messages: {
@@ -254,7 +255,7 @@ describe('mergeMessages', () => {
     configure({
       loggingService: { logError: jest.fn() },
       config: {
-        ENVIRONMENT: 'production',
+        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
         LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
       },
       messages: {
@@ -274,7 +275,7 @@ describe('mergeMessages', () => {
     configure({
       loggingService: { logError: jest.fn() },
       config: {
-        ENVIRONMENT: 'production',
+        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
         LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
       },
       messages: {
@@ -294,7 +295,7 @@ describe('mergeMessages', () => {
     configure({
       loggingService: { logError: jest.fn() },
       config: {
-        ENVIRONMENT: 'production',
+        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
         LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
       },
       messages: {
@@ -332,7 +333,7 @@ describe('mergeMessages', () => {
     configure({
       loggingService: { logError: jest.fn() },
       config: {
-        ENVIRONMENT: 'production',
+        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
         LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
       },
       messages: {},
@@ -347,7 +348,7 @@ describe('mergeMessages', () => {
     configure({
       loggingService: { logError: jest.fn() },
       config: {
-        ENVIRONMENT: 'production',
+        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
         LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
       },
       messages: { en: { hello: 'world ' } },

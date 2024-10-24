@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { sendTrackEvent } from '../analytics';
+import AppContext from './AppContext';
 
 /**
  * A React hook that allows functional components to subscribe to application events.  This should
@@ -47,3 +48,13 @@ export const useTrackColorSchemeChoice = () => {
     };
   }, []);
 };
+
+export function useAuthenticatedUser() {
+  const { authenticatedUser } = useContext(AppContext);
+  return authenticatedUser;
+}
+
+export function useConfig() {
+  const { config } = useContext(AppContext);
+  return config;
+}

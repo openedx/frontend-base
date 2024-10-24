@@ -1,7 +1,10 @@
-import { ElementType } from 'react';
-import { RouteObject } from 'react-router';
+import { ElementType, ReactElement } from 'react';
+import { MessageDescriptor } from 'react-intl';
+import { IndexRouteObject, NonIndexRouteObject } from 'react-router';
 
-export type AppConfig = ExternalAppConfig | InternalAppConfig | FederatedAppConfig;
+export type AppConfig = ExternalAppConfig | InternalAppConfig | FederatedAppConfig | HydratedFederatedAppConfig;
+
+export type ConfigurableAppConfig = InternalAppConfig | HydratedFederatedAppConfig;
 
 export enum AppConfigTypes {
   EXTERNAL = 'external',
@@ -9,31 +12,223 @@ export enum AppConfigTypes {
   FEDERATED = 'federated',
 }
 
-export interface ExternalAppConfig {
-  type: AppConfigTypes.EXTERNAL,
+export interface AppModuleHandle {
   appId: string,
-  moduleId: string,
-  url: string,
+  [key: string]: any,
 }
 
+// We extend the react-router RouteObject to make path required. `path` is not required for
+// 'layout' routes, which for now we won't support as the route of a module.
+// Documentation of this here: https://reactrouter.com/en/main/route/route#layout-routes
+export interface AppModuleIndexRouteObject extends IndexRouteObject {
+  path: string,
+}
+
+export interface AppModuleNonIndexRouteObject extends NonIndexRouteObject {
+  path: string,
+}
+
+export type AppModuleRouteObject = AppModuleIndexRouteObject | AppModuleNonIndexRouteObject;
+
 export interface ApplicationModuleConfig {
-  routes: Array<RouteObject>
+  route: AppModuleRouteObject,
+  header?: HeaderConfig,
 }
 
 export interface InternalAppConfig {
   type: AppConfigTypes.INTERNAL,
-  appId: string,
   config: ApplicationModuleConfig,
   path?: string,
 }
 
 export interface FederatedAppConfig {
   type: AppConfigTypes.FEDERATED,
-  appId: string,
+  libraryId: string,
   remoteUrl: string,
   moduleId: string,
   path: string,
 }
+
+export interface HydratedFederatedAppConfig extends FederatedAppConfig {
+  config: ApplicationModuleConfig,
+}
+
+export interface ExternalAppConfig {
+  type: AppConfigTypes.EXTERNAL,
+  url: string,
+}
+
+export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
+
+export interface OptionalSiteConfig {
+
+  pluginSlots: {
+    [slotName: string]: {
+      keepDefault: boolean,
+      plugins: Array<Plugin>,
+    },
+  },
+
+  header?: HeaderConfig,
+
+  // Cookies
+  ACCESS_TOKEN_COOKIE_NAME: string,
+  LANGUAGE_PREFERENCE_COOKIE_NAME: string,
+  USER_INFO_COOKIE_NAME: string,
+
+  // Paths
+  CSRF_TOKEN_API_PATH: string,
+  REFRESH_ACCESS_TOKEN_API_PATH: string,
+
+  // Logging
+  IGNORED_ERROR_REGEX: RegExp | null,
+
+  // Analytics
+  SEGMENT_KEY: string | null,
+
+  ENVIRONMENT: EnvironmentTypes,
+  MFE_CONFIG_API_URL: string | null,
+  PUBLIC_PATH: string,
+
+  // Backends
+  CREDENTIALS_BASE_URL: string | null,
+  DISCOVERY_API_BASE_URL: string | null,
+  ECOMMERCE_BASE_URL: string | null,
+  PUBLISHER_BASE_URL: string | null,
+
+  // Frontends
+  ORDER_HISTORY_URL: string | null,
+  SUPPORT_URL: string | null,
+
+  SUPPORT_EMAIL: string | null,
+  TERMS_OF_SERVICE_URL: string | null,
+  PRIVACY_POLICY_URL: string | null,
+  ACCESSIBILITY_URL: string | null,
+
+  custom: {
+    [key: string]: any,
+  }
+}
+
+export interface AppsConfig {
+  [appId: string]: AppConfig,
+}
+
+export interface RequiredSiteConfig {
+  apps: AppsConfig,
+
+  APP_ID: string,
+  BASE_URL: string,
+  SITE_NAME: string,
+
+  // Frontends
+  ACCOUNT_PROFILE_URL: string,
+  ACCOUNT_SETTINGS_URL: string,
+  LEARNER_DASHBOARD_URL: string,
+  LEARNING_BASE_URL: string,
+  LOGIN_URL: string,
+  LOGOUT_URL: string,
+  MARKETING_SITE_BASE_URL: string,
+
+  // Backends
+  LMS_BASE_URL: string,
+  STUDIO_BASE_URL: string,
+
+  // Branding
+  FAVICON_URL: string,
+  LOGO_TRADEMARK_URL: string,
+  LOGO_URL: string,
+  LOGO_WHITE_URL: string,
+}
+
+export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
+
+export interface ProjectModuleConfig {
+  modules?: Array<string>,
+  name?: string,
+  plugins?: any,
+  custom?: {
+    [key: string]: any,
+  }
+}
+
+export interface User {
+  administrator: boolean,
+  email: string,
+  name: string,
+  roles: Array<string>,
+  userId: number,
+  username: string,
+  avatar: string,
+}
+
+export enum FooterTypes {
+  DEFAULT = 'default',
+  STUDIO = 'studio',
+  NONE = 'none',
+}
+
+export enum EnvironmentTypes {
+  PRODUCTION = 'production',
+  DEVELOPMENT = 'development',
+  TEST = 'test',
+}
+
+// Header Types
+
+export interface HeaderConfig {
+  logoUrl?: string,
+  logoDestinationUrl?: string | null,
+  primaryLinks?: Array<MenuItem>,
+  secondaryLinks?: Array<MenuItem>,
+  anonymousLinks?: Array<MenuItem>,
+  authenticatedLinks?: Array<ChildMenuItem>,
+}
+
+export interface ResolvedHeaderConfig {
+  logoUrl: string,
+  logoDestinationUrl: string | null,
+  primaryLinks: Array<MenuItem>,
+  secondaryLinks: Array<MenuItem>,
+  anonymousLinks: Array<MenuItem>,
+  authenticatedLinks: Array<ChildMenuItem>,
+}
+
+export type MenuItemName = string | MessageDescriptor | ReactElement;
+
+export interface BaseLinkMenuItem {
+  label: MenuItemName,
+}
+
+export interface AppMenuItem extends BaseLinkMenuItem {
+  appId: string,
+}
+
+export interface DropdownMenuItem {
+  label: MessageDescriptor | string,
+  items: Array<ChildMenuItem>,
+}
+
+export interface UrlMenuItem extends BaseLinkMenuItem {
+  url: string,
+}
+
+/**
+ * A menu item that displays as a link.
+ *
+ * There are two sub-types based on how the link is configured.
+ *
+ * * **AppMenuItem**: Uses an app ID to resolve the link URL.  Used to link directly to another app module.
+ * * **UrlMenuItem**: Includes a fully-qualified URL.  Used for external links.
+ */
+export type LinkMenuItem = AppMenuItem | UrlMenuItem;
+
+export type MenuItem = LinkMenuItem | DropdownMenuItem | ReactElement;
+
+export type ChildMenuItem = LinkMenuItem | ReactElement;
+
+// Plugin Types
+
 /**
  * Defines the changes to be made to either the default widget(s) or to any
  * that are inserted.
@@ -107,95 +302,3 @@ export interface HidePlugin {
 }
 
 export type Plugin = HidePlugin | InsertPlugin | ModifyPlugin | WrapPlugin;
-
-export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
-
-export interface OptionalSiteConfig {
-
-  pluginSlots: {
-    [slotName: string]: {
-      keepDefault: boolean,
-      plugins: Array<Plugin>,
-    },
-  },
-
-  // Cookies
-  ACCESS_TOKEN_COOKIE_NAME: string,
-  LANGUAGE_PREFERENCE_COOKIE_NAME: string,
-  USER_INFO_COOKIE_NAME: string,
-
-  // Paths
-  CSRF_TOKEN_API_PATH: string,
-  REFRESH_ACCESS_TOKEN_API_PATH: string,
-
-  // Logging
-  IGNORED_ERROR_REGEX: RegExp | null,
-
-  // Analytics
-  SEGMENT_KEY: string | null,
-
-  ENVIRONMENT: string,
-  MFE_CONFIG_API_URL: string | null,
-  PUBLIC_PATH: string,
-
-  ORDER_HISTORY_URL: string | null,
-  SUPPORT_URL: string | null,
-
-  custom: {
-    [key:string]: any,
-  }
-}
-
-export interface RequiredSiteConfig {
-  apps: Array<AppConfig>,
-
-  APP_ID: string,
-  BASE_URL: string,
-  SITE_NAME: string,
-
-  // Apps
-  ACCOUNT_PROFILE_URL: string,
-  ACCOUNT_SETTINGS_URL: string,
-  LEARNING_BASE_URL: string,
-  LOGIN_URL: string,
-  LOGOUT_URL: string,
-  MARKETING_SITE_BASE_URL: string,
-
-  // Backends
-  CREDENTIALS_BASE_URL: string,
-  DISCOVERY_API_BASE_URL: string,
-  ECOMMERCE_BASE_URL: string,
-  LMS_BASE_URL: string,
-  PUBLISHER_BASE_URL: string,
-  STUDIO_BASE_URL: string,
-
-  // Branding
-  FAVICON_URL: string,
-  LOGO_TRADEMARK_URL: string,
-  LOGO_URL: string,
-  LOGO_WHITE_URL: string,
-}
-
-export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
-
-export interface ModuleConfig {
-  modules?: Array<string>,
-  name?: string,
-  plugins?: any,
-  custom?: {
-    [key:string]: any,
-  }
-}
-
-export interface User {
-  username: string,
-  userId: string,
-  roles: Array<string>,
-  administrator: boolean,
-}
-
-export enum HeaderTypes {
-  DEFAULT = 'default',
-  STUDIO = 'studio',
-  LEARNING = 'learning',
-}

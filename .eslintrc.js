@@ -10,10 +10,9 @@ module.exports = merge(config, {
     '.eslintrc.js',
     'frontend-base.d.ts',
     'coverage',
-    'example',
-    'example-plugin-app',
     'tools',
     'config',
+    'dist',
   ],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),

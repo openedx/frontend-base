@@ -1,9 +1,9 @@
-import { PluginOperations, PluginTypes } from '@openedx/frontend-base';
-import DefaultDirectWidget from './src/components/DefaultDirectWidget';
+import { AppConfigTypes, PluginOperations, PluginTypes } from '@openedx/frontend-base';
 
-import { InsertDirectPluginWidget, ProjectSiteConfig } from '@openedx/frontend-base';
-import ModularComponent from './src/components/ModularComponent';
-import PluginDirect from './src/components/PluginDirect';
+import { EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
+import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
+import ModularComponent from './src/plugin-page/components/ModularComponent';
+import PluginDirect from './src/plugin-page/components/PluginDirect';
 import './src/project.scss';
 
 const modifyWidget = (widget) => {
@@ -45,45 +45,48 @@ const wrapWidget = ({ component }) => (
 );
 
 const config: ProjectSiteConfig = {
-  apps: [
-    {
-      appId: 'examplePage',
-      component: ExamplePage,
-      path: '/',
+  apps: {
+    examplePage: {
+      type: AppConfigTypes.INTERNAL,
+      config: examplePageConfig,
     },
-    {
-      appId: 'authenticatedPage',
-      component: AuthenticatedPage,
-      path: '/authenticated',
+    authenticatedPage: {
+      type: AppConfigTypes.INTERNAL,
+      config: authenticatedPageConfig,
     },
-    {
-      appId: 'pluginPage',
-      component: PluginPage,
-      path: '/plugins',
+    pluginPage: {
+      type: AppConfigTypes.INTERNAL,
+      config: pluginPageConfig,
     },
-  ],
-  ENVIRONMENT: 'dev',
-  ACCOUNT_PROFILE_URL: 'http://localhost:1995',
-  ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
-  BASE_URL: 'http://localhost:8080',
-  CREDENTIALS_BASE_URL: 'http://localhost:18150',
-  DISCOVERY_API_BASE_URL: 'http://localhost:18381',
-  PUBLISHER_BASE_URL: 'http://localhost:18400',
-  ECOMMERCE_BASE_URL: 'http://localhost:18130',
-  LEARNING_BASE_URL: 'http://localhost:2000',
-  LMS_BASE_URL: 'http://localhost:18000',
-  LOGIN_URL: 'http://localhost:18000/login',
-  LOGOUT_URL: 'http://localhost:18000/logout',
-  STUDIO_BASE_URL: 'http://localhost:18010',
-  MARKETING_SITE_BASE_URL: 'http://localhost:18000',
-  ORDER_HISTORY_URL: 'http://localhost:1996/orders',
-  SITE_NAME: 'localhost',
+    // This site is serving its own iframe plugin and embedding it in the PluginPage.  This is
+    // obviously not quite like a real world use case, but it helps us test the mechanism without
+    // adding another test project to the library.
+    iframePlugin: {
+      type: AppConfigTypes.INTERNAL,
+      config: iframePluginConfig,
+    },
+  },
+
+  APP_ID: 'shell',
+  ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
+  ACCOUNT_PROFILE_URL: 'http://apps.local.openedx.io:1995',
+  ACCOUNT_SETTINGS_URL: 'http://apps.local.openedx.io:1997',
+  BASE_URL: 'http://apps.local.openedx.io:8080',
+  LEARNER_DASHBOARD_URL: 'http://local.openedx.io:8000/dashboard',
+  LEARNING_BASE_URL: 'http://apps.local.openedx.io:2000',
+  LMS_BASE_URL: 'http://local.openedx.io:8000',
+  LOGIN_URL: 'http://local.openedx.io:8000/login',
+  LOGOUT_URL: 'http://local.openedx.io:8000/logout',
+  STUDIO_BASE_URL: 'http://studio.local.openedx.io:8001',
+  MARKETING_SITE_BASE_URL: 'http://local.openedx.io:8000',
+  ORDER_HISTORY_URL: 'http://apps.local.openedx.io:1996/orders',
+  SITE_NAME: 'My Open edX Site',
+  MFE_CONFIG_API_URL: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
 
   LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',
   LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  APP_ID: 'shell',
 
   pluginSlots: {
     'slot_with_insert_operation': {
@@ -104,7 +107,7 @@ const config: ProjectSiteConfig = {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
             priority: 30,
-            url: 'http://localhost:8081/plugin_iframe',
+            url: 'http://apps.local.openedx.io:8080/iframe-plugin',
             title: 'The iFrame plugin that is inserted in the slot',
           },
         },
@@ -132,7 +135,7 @@ const config: ProjectSiteConfig = {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
             priority: 30,
-            url: 'http://localhost:8081/plugin_iframe',
+            url: 'http://apps.local.openedx.io:8080/iframe-plugin',
             title: 'This iFrame plugin will be hidden due to the Hide operation in this config.',
           },
         },
@@ -201,7 +204,7 @@ const config: ProjectSiteConfig = {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
             priority: 30,
-            url: 'http://localhost:8081/plugin_iframe',
+            url: 'http://apps.local.openedx.io:8080/iframe-plugin',
             title: 'The iFrame plugin that is inserted in the slot',
           },
         },
@@ -211,7 +214,7 @@ const config: ProjectSiteConfig = {
       keepDefault: true,
       plugins: [
         {
-          op: PluginOperations.MODIFIY,
+          op: PluginOperations.MODIFY,
           widgetId: 'default_contents',
           fn: modifyWidgetDefaultContentsUsernamePII,
         },

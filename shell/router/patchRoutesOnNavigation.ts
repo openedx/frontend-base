@@ -1,23 +1,37 @@
+import { RouteObject } from 'react-router';
+import { patchAppModuleConfig } from '../../runtime/config';
 import { FederatedAppConfig } from '../../types';
 import { SHELL_ID } from '../data/constants';
 import { getFederatedModules, loadModuleConfig } from '../data/moduleUtils';
+import patchAppIdIntoRouteHandle from './patchAppIdIntoRouteHandle';
 
-export default async function patchRoutesOnNavigation({ path, patch }) {
+interface PatchRoutesOnNavigationArgs {
+  path: string,
+  patch: (routeId: string | null, children: RouteObject[]) => void,
+}
+
+export default async function patchRoutesOnNavigation({ path, patch }: PatchRoutesOnNavigationArgs) {
   const federatedModules = getFederatedModules();
   let missingModule: FederatedAppConfig | null = null;
-  for (let i = 0; i < federatedModules.length; i++) {
-    const federatedModule = federatedModules[i];
+  let missingAppId: string | null = null;
+  const entries = Object.entries(federatedModules);
+  for (let i = 0; i < entries.length; i++) {
+    const [appId, federatedModule] = entries[i];
     if (path.startsWith(federatedModule.path)) {
       missingModule = federatedModule;
+      missingAppId = appId;
       break;
     }
   }
 
-  if (missingModule) {
-    const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.appId);
+  if (missingModule && missingAppId) {
+    const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.libraryId);
     if (moduleConfig) {
-      patch(SHELL_ID, moduleConfig.routes);
+      patchAppIdIntoRouteHandle(missingAppId, moduleConfig.route);
+      patch(SHELL_ID, [moduleConfig.route]);
+      patchAppModuleConfig(missingAppId, moduleConfig);
     } else {
+      // TODO: What do we do if it doesn't work?
       console.log('uhoh, no module config.');
     }
   }

@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react';
-import { UIMatch, useMatches } from 'react-router';
-import { HeaderTypes } from '../../../types';
+import { ResolvedHeaderConfig } from '../../../types';
+import { useActiveAppId } from '../../data/hooks';
+import { resolveHeaderConfig } from './utils';
 
-export default function useActiveHeaderId() {
-  const matches = useMatches() as UIMatch<unknown, { headerId?: HeaderTypes }>[];
-  const [headerId, setHeaderId] = useState<HeaderTypes>(HeaderTypes.DEFAULT);
+export default function useResolvedHeaderConfig() {
+  const appId = useActiveAppId();
+
+  const [config, setConfig] = useState<ResolvedHeaderConfig>(resolveHeaderConfig(appId));
 
   useEffect(() => {
-    for (let i = matches.length - 1; i >= 0; i--) {
-      const match = matches[i];
-      if (match.handle !== undefined && match.handle.headerId !== undefined) {
-        setHeaderId(match.handle.headerId);
-        break;
-      }
-    }
-  }, [matches]);
+    const headerConfig = resolveHeaderConfig(appId);
+    setConfig(headerConfig);
+  }, [appId]);
 
-  return headerId;
+  return config;
 }

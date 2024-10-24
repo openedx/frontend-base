@@ -1,6 +1,6 @@
 import fs from 'fs';
-import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import path from 'path';
 import webpack from 'webpack';
 
 import HtmlWebpackNewRelicPlugin from '../HtmlWebpackNewRelicPlugin';
@@ -18,7 +18,7 @@ describe('HtmlWebpackNewRelicPlugin', () => {
 
   afterEach(() => {
     if (fs.existsSync(OUTPUT_DIR)) {
-      fs.rmdirSync(OUTPUT_DIR, { recursive: true, force: true });
+      fs.rmSync(OUTPUT_DIR, { recursive: true, force: true });
     }
   });
 

@@ -16,6 +16,7 @@ export {
   AxiosJwtAuthService,
   CONFIG_CHANGED,
   CONFIG_TOPIC,
+  Divider,
   ErrorBoundary,
   ErrorPage,
   FormattedDate,
@@ -51,6 +52,7 @@ export {
   getAuthService,
   getAuthenticatedHttpClient,
   getAuthenticatedUser,
+  getBasename,
   getConfig,
   getCountryList,
   getCountryMessages,
@@ -97,6 +99,8 @@ export {
   subscribe,
   unsubscribe,
   useAppEvent,
+  useAuthenticatedUser,
+  useConfig,
   useIntl
 } from './runtime';
 
@@ -107,11 +111,13 @@ export type {
   InsertDirectPluginWidget,
   InsertIframePluginWidget,
   InternalAppConfig,
-  ModuleConfig,
+  ProjectModuleConfig,
   ProjectSiteConfig
 } from './types';
 
 export {
-  AppConfigTypes, HeaderTypes, PluginOperations,
+  AppConfigTypes,
+  EnvironmentTypes,
+  PluginOperations,
   PluginTypes
 } from './types';
