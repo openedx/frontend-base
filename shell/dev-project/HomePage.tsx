@@ -1,15 +1,20 @@
 import { Link } from 'react-router-dom';
-import { getAppUrl, isValidApp } from '../../runtime/routing';
+import { getAppUrl } from '../../runtime/routing';
 
 export default function HomePage() {
+  const child1Url = getAppUrl('child1');
+  const dashboardUrl = getAppUrl('learner-dashboard');
+
   return (
     <div className="p-3">
       <p>Home page content.</p>
       <ul>
-        {isValidApp('child1') && (
-          <li><Link to={getAppUrl('child1')}>Go to child one page</Link></li>
+        {child1Url !== null && (
+          <li><Link to={child1Url}>Go to child one page</Link></li>
         )}
-        <li><Link to="/dashboard">Go to dashboard page</Link></li>
+        {dashboardUrl !== null && (
+          <li><Link to={dashboardUrl}>Go to dashboard page</Link></li>
+        )}
       </ul>
     </div>
   );

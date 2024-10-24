@@ -7,7 +7,7 @@ export default function getAppUrl(appId: string) {
   const app = apps[appId];
 
   if (!isValidApp(appId)) {
-    return '#';
+    return null;
   }
 
   if (app.type === AppConfigTypes.EXTERNAL) {
@@ -22,5 +22,5 @@ export default function getAppUrl(appId: string) {
     }
     return app.config.route.path;
   }
-  return '#';
+  return null;
 }
