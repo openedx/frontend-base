@@ -13,11 +13,13 @@ export default function Header() {
 
   return (
     <HeaderContext.Provider value={resolvedHeaderConfig}>
-      <nav className="py-2 px-3 border-bottom">
-        <a className="sr-only sr-only-focusable" href="#main-content">{intl.formatMessage(messages.skipNavLink)}</a>
-        <DesktopLayout />
-        <MobileLayout />
-      </nav>
+      <header className="border-bottom py-2 px-3">
+        <nav className="py-2 px-3">
+          <a className="sr-only sr-only-focusable" href="#main-content">{intl.formatMessage(messages.skipNavLink)}</a>
+          <DesktopLayout />
+          <MobileLayout />
+        </nav>
+      </header>
     </HeaderContext.Provider>
   );
 }
