@@ -47,6 +47,12 @@ export function isDropdownMenuItem(item: MenuItem): item is DropdownMenuItem {
 }
 
 function overrideHeaderConfig(base: HeaderConfig, override: HeaderConfig) {
+  if (override.logoUrl !== undefined) {
+    base.logoUrl = override.logoUrl;
+  }
+  if (override.logoDestinationUrl !== undefined) {
+    base.logoDestinationUrl = override.logoDestinationUrl;
+  }
   if (override.primaryLinks !== undefined) {
     base.primaryLinks = override.primaryLinks;
   }
