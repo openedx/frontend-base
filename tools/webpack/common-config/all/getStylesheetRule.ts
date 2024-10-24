@@ -56,7 +56,11 @@ function getStyleUseConfig(mode: 'dev' | 'production') {
       options: {
         sourceMap: true,
         modules: {
-          compileType: 'icss',
+          // namedExport defaults to true in css-loader v7, but we rely on the old behavior.
+          // Details here:
+          // https://github.com/webpack-contrib/css-loader/blob/master/CHANGELOG.md#700-2024-04-04
+          namedExport: false,
+          mode: 'icss',
         },
       },
     },
