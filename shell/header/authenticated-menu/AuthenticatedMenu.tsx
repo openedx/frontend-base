@@ -19,7 +19,7 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
   const { authenticatedLinks } = useContext(HeaderContext);
 
   const title = (
-    <div className="d-flex mr-2 align-items-center" style={{ gap: '0.5rem' }}>
+    <div className="d-flex mr-2 align-items-center gap-2">
       <Person />
       {authenticatedUser !== null ? authenticatedUser.name : null}
     </div>
