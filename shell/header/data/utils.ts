@@ -49,7 +49,7 @@ export function isDropdownMenuItem(item: MenuItem): item is DropdownMenuItem {
   return item && typeof item === 'object' && 'items' in item;
 }
 
-function overrideHeaderConfig(base: HeaderConfig, override: HeaderConfig) {
+function overrideHeaderConfig(base: ResolvedHeaderConfig, override: HeaderConfig) {
   if (override.logoUrl !== undefined) {
     base.logoUrl = override.logoUrl;
   }
