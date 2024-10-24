@@ -92,18 +92,5 @@ export function resolveHeaderConfig(appId: string | null): ResolvedHeaderConfig 
     }
   }
 
-  if (config.primaryLinks === undefined) {
-    config.primaryLinks = [];
-  }
-  if (config.secondaryLinks === undefined) {
-    config.secondaryLinks = [];
-  }
-  if (config.anonymousLinks === undefined) {
-    config.anonymousLinks = [];
-  }
-  if (config.authenticatedLinks === undefined) {
-    config.authenticatedLinks = [];
-  }
-
   return config;
 }
