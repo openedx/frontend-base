@@ -3,15 +3,18 @@ import { IntlShape, MessageDescriptor } from 'react-intl';
 import { getConfig } from '../../../runtime';
 import { getAppUrl } from '../../../runtime/routing';
 import {
-  AppConfigTypes,
   AppMenuItem,
   ConfigurableAppConfig,
   DropdownMenuItem, HeaderConfig, LinkMenuItem, MenuItem,
   ResolvedHeaderConfig,
   UrlMenuItem
 } from '../../../types';
+import isConfigurableApp from '../../data/isConfigurableApp';
 import {
-  anonymousLinks, authenticatedLinks, primaryLinks, secondaryLinks
+  anonymousLinks,
+  authenticatedLinks,
+  primaryLinks,
+  secondaryLinks
 } from '../defaults';
 
 // A name can be a string or a react-intl MessageDescriptor.
@@ -85,16 +88,10 @@ export function resolveHeaderConfig(appId: string | null): ResolvedHeaderConfig 
     overrideHeaderConfig(config, header);
   }
 
-  if (appId !== null) {
-    if (siteConfig.apps[appId] !== undefined) {
-      const { type } = siteConfig.apps[appId];
-
-      if (type === AppConfigTypes.INTERNAL || type === AppConfigTypes.FEDERATED) {
-        const { config: appModuleConfig } = siteConfig.apps[appId] as ConfigurableAppConfig;
-        if (appModuleConfig.header !== undefined) {
-          overrideHeaderConfig(config, appModuleConfig.header);
-        }
-      }
+  if (isConfigurableApp(appId)) {
+    const { config: appModuleConfig } = siteConfig.apps[appId] as ConfigurableAppConfig;
+    if (appModuleConfig.header !== undefined) {
+      overrideHeaderConfig(config, appModuleConfig.header);
     }
   }
 
