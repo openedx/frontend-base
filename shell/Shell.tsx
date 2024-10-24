@@ -10,16 +10,23 @@ import Header from './header/Header';
 export default function Shell() {
   return (
     <AppProvider>
-      <PluginSlot id="org.openedx.frontend.shell.header.v1">
-        <Header />
-      </PluginSlot>
-      <div id="main-content" />
-      <Suspense fallback={<div>Loading</div>}>
-        <Outlet />
-      </Suspense>
-      <PluginSlot id="org.openedx.frontend.shell.footer.v1">
-        <ActiveFooter />
-      </PluginSlot>
+      <div className="d-flex flex-column min-vh-100">
+        <div className="flex-grow-0 flex-shrink-0">
+          <PluginSlot id="org.openedx.frontend.shell.header.v1">
+            <Header />
+          </PluginSlot>
+        </div>
+        <div id="main-content" className="flex-grow-1">
+          <Suspense fallback={<div>Loading</div>}>
+            <Outlet />
+          </Suspense>
+        </div>
+        <div className="flex-grow-0 flex-shrink-0">
+          <PluginSlot id="org.openedx.frontend.shell.footer.v1">
+            <ActiveFooter />
+          </PluginSlot>
+        </div>
+      </div>
     </AppProvider>
   );
 }
