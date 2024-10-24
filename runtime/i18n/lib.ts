@@ -263,7 +263,7 @@ export function mergeMessages(newMessages) {
 
 interface ConfigureI18nOptions {
   loggingService: LoggingService,
-  messages: Array<{ [locale: string] : { [key: string]: string } }> | { [locale: string] : { [key: string]: string } },
+  messages: Array<{ [locale: string]: { [key: string]: string } }> | { [locale: string]: { [key: string]: string } },
   config: SiteConfig,
 }
 
