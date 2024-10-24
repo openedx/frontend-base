@@ -21,12 +21,13 @@ export default function getDevServer(): Configuration {
     host: 'apps.local.openedx.io',
     hot: true,
     port: process.env.PORT || 8080,
-    proxy: {
-      '/api/mfe_config/v1': {
+    proxy: [
+      {
+        context: ['/api/mfe_config/v1'],
         target: 'http://local.openedx.io:8000',
         changeOrigin: true,
-      },
-    },
+      }
+    ],
     // Enable hot reloading server. It will provide WDS_SOCKET_PATH endpoint
     // for the WebpackDevServer client so it can learn when the files were
     // updated. The WebpackDevServer client is included as an entry point
