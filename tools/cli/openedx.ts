@@ -72,13 +72,12 @@ switch (commandName) {
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
   case CommandTypes.FORMAT_JS:
-    const commonArgs = [
+    process.argv = process.argv.concat([
       '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/utils/formatter.js',
       '--ignore', 'src/**/*.json',
       '--out-file', './temp/formatjs/Default.messages.json',
       '--', 'src/**/*.js*',
-    ];
-    process.argv = process.argv.concat(commonArgs);
+    ]);
     require('@formatjs/cli/bin/formatjs');
     break;
   case CommandTypes.SERVE:
