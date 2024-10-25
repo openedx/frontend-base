@@ -79,7 +79,7 @@ const config: ProjectSiteConfig = {
             label: 'Item #1',
             url: '#',
           },
-          <Divider />,
+          <Divider key="divider" />,
           {
             label: 'Item #2',
             url: '#',

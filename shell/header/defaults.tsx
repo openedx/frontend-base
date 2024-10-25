@@ -13,8 +13,8 @@ export const primaryLinks: Array<MenuItem> = [
 export const secondaryLinks: Array<MenuItem> = [];
 
 export const anonymousLinks: Array<MenuItem> = [
-  <LoginButton />,
-  <RegisterButton />
+  <LoginButton key="login" />,
+  <RegisterButton key="register" />
 ];
 
 export const authenticatedLinks: Array<ChildMenuItem> = [
