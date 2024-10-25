@@ -10,7 +10,7 @@ import HeaderContext from '../HeaderContext';
 import AuthenticatedMenuItem from './AuthenticatedMenuItem';
 
 interface AuthenticatedMenuProps {
-  className?: string
+  className?: string,
 }
 
 export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps) {

@@ -24,7 +24,7 @@ export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteCon
               transform({
                 overrideIdFn: '[sha512:contenthash:base64:6]',
               }),
-            ]
+            ];
             if (mode === 'dev') {
               before.push(ReactRefreshTypeScript());
             }
@@ -35,7 +35,7 @@ export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteCon
         },
       },
     },
-  ]
+  ];
 
   if (mode === 'production') {
     rules.push({
@@ -44,7 +44,7 @@ export default function getCodeRules(mode: 'dev' | 'production', resolvedSiteCon
         require.resolve('source-map-loader'),
       ],
       enforce: 'pre',
-    })
+    });
   }
 
   return rules;

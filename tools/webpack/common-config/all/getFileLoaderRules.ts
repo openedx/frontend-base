@@ -19,5 +19,5 @@ export default function getFileLoaderRules() {
       test: /\.(jpe?g|png|gif)(\?v=\d+\.\d+\.\d+)?$/,
       loader: require.resolve('file-loader'),
     },
-  ]
+  ];
 }

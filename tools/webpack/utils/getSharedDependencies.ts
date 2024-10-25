@@ -35,5 +35,5 @@ export default function getSharedDependencies({ isShell }: { isShell: boolean })
       requiredVersion: '^4.2.1',
       eager: isShell
     },
-  }
+  };
 }

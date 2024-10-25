@@ -45,7 +45,7 @@ export interface ParagonThemeUrlsFile {
       paths: {
         default: string,
         minified: string,
-      }
+      },
     },
     defaults: {
       [variant: string]: string,
@@ -68,7 +68,7 @@ export interface ParagonScriptContents {
       core: any,
       variants: any,
       defaults: any,
-    }
+    },
   },
   brand?: {
     version: string,
@@ -76,6 +76,6 @@ export interface ParagonScriptContents {
       core: any,
       variants: any,
       defaults: any,
-    }
-  }
+    },
+  },
 }

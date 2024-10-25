@@ -14,7 +14,7 @@ import {
 } from '../data/utils';
 
 interface AuthenticatedMenuItemProps {
-  item: MenuItem
+  item: MenuItem,
 }
 
 export default function AuthenticatedMenuItem({ item }: AuthenticatedMenuItemProps) {

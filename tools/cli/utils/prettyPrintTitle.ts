@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import gradient from 'gradient-string';
 
 export default function prettyPrintTitle(title: string) {
-  const openedxGradient = gradient(['#B82669', '#22358C'])
+  const openedxGradient = gradient(['#B82669', '#22358C']);
 
   const borderedTitle = `█ ${title} █`;
 

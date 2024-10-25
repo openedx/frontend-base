@@ -30,7 +30,6 @@ const modifyWidgetDefaultContentsLink = (widget) => {
   return widget;
 };
 
-
 const wrapWidget = ({ component }) => (
   <div className="bg-warning" data-testid="wrapper">
     <div className="px-3">
