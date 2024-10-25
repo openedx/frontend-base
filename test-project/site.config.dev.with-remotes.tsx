@@ -90,7 +90,7 @@ const config: ProjectSiteConfig = {
   APP_ID: 'shell',
 
   pluginSlots: {
-    'slot_with_insert_operation': {
+    slot_with_insert_operation: {
       keepDefault: true,
       plugins: [
         {
@@ -152,7 +152,7 @@ const config: ProjectSiteConfig = {
         },
         {
           op: PluginOperations.HIDE,
-          widgetId: "inserted_iframe_plugin",
+          widgetId: 'inserted_iframe_plugin',
         },
       ],
     },
