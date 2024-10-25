@@ -5,7 +5,7 @@
     "outDir": "dist"
   },
   "include": [
-    ".eslintrc.js",
+    "eslint.config.js",
     "jest.config.js",
     "site.config.*.tsx",
     "src/**/*",
