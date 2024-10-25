@@ -56,7 +56,6 @@ This 'site.config' package is a special 'magic' alias in our webpack configurati
 folder. It points at an `site.config.tsx` file in the root of an project's repository.
 */
 import siteConfig from 'site.config';
-import { getPath } from './utils';
 import {
   configure as configureAnalytics,
   identifyAnonymousUser,
@@ -94,6 +93,7 @@ import {
   NewRelicLoggingService,
 } from './logging';
 import { GoogleAnalyticsLoader } from './scripts';
+import { getPath } from './utils';
 
 /**
  * A browser history or memory history object created by the [history](https://github.com/ReactTraining/history)

@@ -1,12 +1,12 @@
 import { waitFor } from '@testing-library/react';
 import {
-  modifyObjectKeys,
   camelCaseObject,
-  snakeCaseObject,
   convertKeyNames,
-  parseURL,
   getPath,
   getQueryParameters,
+  modifyObjectKeys,
+  parseURL,
+  snakeCaseObject,
 } from '.';
 
 describe('modifyObjectKeys', () => {
