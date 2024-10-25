@@ -19,7 +19,7 @@ function gatherJson(dir: string) {
   const files = glob.sync(`${dir}/**/*.json`);
 
   files.forEach((filename) => {
-    const messages = JSON.parse(fs.readFileSync(filename, { encoding: 'utf8'}));
+    const messages = JSON.parse(fs.readFileSync(filename, { encoding: 'utf8' }));
     ret.push(...messages);
   });
   return ret;
