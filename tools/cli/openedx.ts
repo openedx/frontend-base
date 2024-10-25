@@ -41,11 +41,6 @@ switch (commandName) {
     break;
   case CommandTypes.LINT:
     ensureConfigFilenameOption(ConfigTypes.LINT, ['-c', '--config']);
-    // If extensions haven't been specified, add them.  Otherwise we don't get jsx/tsx files.
-    if (process.argv.indexOf('--ext') === -1) {
-      process.argv.push('--ext');
-      process.argv.push('.js,.jsx,.ts,.tsx');
-    }
     require('.bin/eslint');
     break;
   case CommandTypes.TEST:
