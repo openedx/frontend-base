@@ -30,7 +30,7 @@ export default function DefaultFooter({ logo, onLanguageSelected, supportedLangu
         >
           <img
             style={{ maxHeight: 45 }}
-            src={logo || getConfig().LOGO_TRADEMARK_URL}
+            src={logo ?? getConfig().LOGO_TRADEMARK_URL}
             alt={intl.formatMessage(messages['footer.logo.altText'])}
           />
         </a>
