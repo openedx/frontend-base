@@ -103,14 +103,14 @@ export default class ParagonWebpackPlugin implements WebpackPluginInstance {
 
     // Inject theme variant CSS
     newSource = injectParagonThemeVariantStylesheets({
-      // @ts-ignore newSource is possibly undefined here.
+      // @ts-expect-error newSource is possibly undefined here.
       source: newSource.source(),
       paragonThemeVariantCss,
       paragonThemeCss,
       brandThemeCss,
     });
 
-    // @ts-ignore newSource is possibly undefined here.
+    // @ts-expect-error newSource is possibly undefined here.
     compilation.updateAsset('index.html', new sources.RawSource(newSource.source()));
   }
 

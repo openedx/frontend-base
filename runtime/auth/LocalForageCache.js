@@ -71,7 +71,6 @@ export default async function configureCache() {
       //
       // https://axios-cache-interceptor.js.org/#/pages/development-mode
       // https://axios-cache-interceptor.js.org/#/pages/global-configuration?id=debug
-      // eslint-disable-next-line no-console
       debug: console.log,
     },
   );

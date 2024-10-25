@@ -87,7 +87,7 @@ export default class HtmlWebpackNewRelicPlugin {
     compiler.hooks.compilation.tap('HtmlWebpackNewRelicPlugin', (compilation) => {
       HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tap(
         'HtmlWebpackNewRelicPlugin',
-        // @ts-ignore
+        // @ts-expect-error TS doesn't like this declaration, but it seems to work fine.
         (data) => {
           const newRelicScriptTag = HtmlWebpackPlugin.createHtmlTagObject(
             'script',

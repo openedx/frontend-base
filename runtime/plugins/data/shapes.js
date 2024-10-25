@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable import/prefer-default-export */
 import PropTypes from 'prop-types';
 import { PluginTypes } from '../../../types';
 

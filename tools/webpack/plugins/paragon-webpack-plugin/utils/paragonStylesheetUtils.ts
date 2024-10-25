@@ -27,7 +27,7 @@ export function injectParagonCoreStylesheets({
   return insertStylesheetsIntoDocument({
     source,
     urls: paragonCoreCss.urls,
-    // @ts-ignore These two parameters don't exist on insertStylesheetsIntoDocument
+    // @ts-expect-error These two parameters don't exist on insertStylesheetsIntoDocument
     paragonThemeCss,
     brandThemeCss,
   });
@@ -54,7 +54,7 @@ export function injectParagonThemeVariantStylesheets({
     newSource = insertStylesheetsIntoDocument({
       source: (typeof newSource === 'object' ? newSource.source() : newSource) as string,
       urls,
-      // @ts-ignore These two parameters don't exist on insertStylesheetsIntoDocument
+      // @ts-expect-error These two parameters don't exist on insertStylesheetsIntoDocument
       paragonThemeCss,
       brandThemeCss,
     });

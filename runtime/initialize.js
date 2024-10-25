@@ -57,7 +57,6 @@ folder. It points at an `site.config.tsx` file in the root of an project's repos
 */
 import siteConfig from 'site.config';
 import { getPath } from './utils';
-// eslint-disable-next-line import/no-cycle
 import {
   configure as configureAnalytics,
   identifyAnonymousUser,
@@ -198,7 +197,6 @@ async function runtimeConfig() {
       mergeConfig(data);
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error with config API', error.message);
   }
 }

@@ -2,7 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { useMemo } from 'react';
 import renderer from 'react-test-renderer';
 
-// @ts-ignore
+// @ts-expect-error 'site.config' is set up via webpack alias, so we know it works, but TypeScript
+// can't figure out what it means.
 import siteConfig from 'site.config';
 import {
   AppContext,

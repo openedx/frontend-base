@@ -61,7 +61,6 @@ export default class AxiosJwtTokenService {
         try {
           try {
             axiosResponse = await this.httpClient.post(`${this.tokenRefreshBaseUrl}${this.tokenRefreshPath}`);
-            // eslint-disable-next-line max-len
             if (axiosResponse.data && axiosResponse.data.response_epoch_seconds) {
               responseServerEpochSeconds = axiosResponse.data.response_epoch_seconds;
             }
@@ -125,8 +124,6 @@ export default class AxiosJwtTokenService {
     }
 
     try {
-      // Eslint is incorrect - refresh() DOES return a promise.
-      // eslint-disable-next-line @typescript-eslint/return-await
       return await this.refresh();
     } catch (e) {
       // TODO: Fix these.  They're still using loggingService as a singleton.
