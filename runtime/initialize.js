@@ -218,7 +218,7 @@ export function loadExternalScripts(externalScripts, data) {
  */
 export async function analytics() {
   const authenticatedUser = getAuthenticatedUser();
-  if (authenticatedUser && authenticatedUser.userId) {
+  if (authenticatedUser?.userId) {
     identifyAuthenticatedUser(authenticatedUser.userId);
   } else {
     await identifyAnonymousUser();

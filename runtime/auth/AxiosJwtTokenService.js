@@ -61,7 +61,7 @@ export default class AxiosJwtTokenService {
         try {
           try {
             axiosResponse = await this.httpClient.post(`${this.tokenRefreshBaseUrl}${this.tokenRefreshPath}`);
-            if (axiosResponse.data && axiosResponse.data.response_epoch_seconds) {
+            if (axiosResponse.data?.response_epoch_seconds) {
               responseServerEpochSeconds = axiosResponse.data.response_epoch_seconds;
             }
           } catch (error) {
