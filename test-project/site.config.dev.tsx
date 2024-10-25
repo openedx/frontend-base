@@ -20,7 +20,9 @@ const modifyWidgetDefaultContentsUsernamePII = (widget) => {
     'data-another-custom-attr': '',
     className: 'font-weight-bold',
     style: { color: 'blue' },
-    onClick: (e) => { console.log('Username clicked!', 'custom', e); },
+    onClick: (e) => {
+      console.log('Username clicked!', 'custom', e);
+    },
   };
   return widget;
 };
