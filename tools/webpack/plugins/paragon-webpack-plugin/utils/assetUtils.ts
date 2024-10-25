@@ -1,4 +1,4 @@
-import { Compilation } from "webpack";
+import { Compilation } from 'webpack';
 
 /**
  * Finds the core CSS asset from the given array of Paragon assets.

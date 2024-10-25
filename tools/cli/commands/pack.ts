@@ -1,5 +1,5 @@
-import { execSync } from "child_process";
-import path from "path";
+import { execSync } from 'child_process';
+import path from 'path';
 
 export default function pack() {
   const destination = process.argv[2];

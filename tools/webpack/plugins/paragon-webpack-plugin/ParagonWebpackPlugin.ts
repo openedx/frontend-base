@@ -1,6 +1,6 @@
-import { Compilation, Compiler, WebpackPluginInstance, sources } from "webpack";
+import { Compilation, Compiler, WebpackPluginInstance, sources } from 'webpack';
 
-import { ParagonThemeUrls } from "../../types";
+import { ParagonThemeUrls } from '../../types';
 import {
   getParagonThemeCss,
   getParagonVersion,

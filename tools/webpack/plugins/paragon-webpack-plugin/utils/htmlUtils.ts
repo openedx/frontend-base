@@ -1,4 +1,4 @@
-import { Compilation, sources } from "webpack";
+import { Compilation, sources } from 'webpack';
 
 import { getCssAssetsFromCompilation } from './assetUtils';
 import { generateScriptContents, insertScriptContentsIntoDocument } from './scriptUtils';
