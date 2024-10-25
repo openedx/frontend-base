@@ -269,6 +269,6 @@ if (require.main === module) {
     directories: process.argv.slice(2),
     log: text => process.stdout.write(text),
     writeFileSync: fs.writeFileSync,
-    pwd: process.env.PWD || '.',
+    pwd: process.env.PWD ?? '.',
   });
 }

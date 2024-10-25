@@ -49,7 +49,7 @@ export default class ParagonWebpackPlugin implements WebpackPluginInstance {
    */
   async resolveParagonThemeUrlsFromConfig() {
     try {
-      this.paragonThemeUrlsConfig = JSON.parse(process.env.PARAGON_THEME_URLS || '{}');
+      this.paragonThemeUrlsConfig = JSON.parse(process.env.PARAGON_THEME_URLS ?? '{}');
     } catch (error) {
       console.info('Paragon Plugin cannot load PARAGON_THEME_URLS env variable, skipping.');
     }

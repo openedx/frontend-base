@@ -20,7 +20,7 @@ export default function getDevServer(): Configuration {
     },
     host: 'apps.local.openedx.io',
     hot: true,
-    port: process.env.PORT || 8080,
+    port: process.env.PORT ?? 8080,
     proxy: [
       {
         context: ['/api/mfe_config/v1'],

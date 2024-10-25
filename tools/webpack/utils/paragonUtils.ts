@@ -11,7 +11,7 @@ import { ParagonThemeCss, ParagonThemeUrlsFile } from '../types';
  */
 function getBrandPackageName(dir: string) {
   const appDependencies = JSON.parse(fs.readFileSync(path.resolve(dir, 'package.json'), 'utf-8')).dependencies;
-  return Object.keys(appDependencies).find((key) => key.match(/@(open)?edx\/brand/)) || '';
+  return Object.keys(appDependencies).find((key) => /@(open)?edx\/brand/.exec(key)) ?? '';
 }
 
 /**
