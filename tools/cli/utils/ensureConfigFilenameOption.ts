@@ -5,8 +5,7 @@ import getResolvedConfigPath from './getResolvedConfigPath';
 export function ensureConfigFilenameOption(configType: ConfigTypes, keys: string[]) {
   let configFileName = null;
   let fileNameIndex = null;
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
+  for (const key of keys) {
     const index = process.argv.indexOf(key);
     if (index !== -1) {
       fileNameIndex = index + 1;

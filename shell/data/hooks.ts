@@ -3,8 +3,7 @@ import { useMatches } from 'react-router';
 import { AppModuleHandle } from '../../types';
 
 function findAppIdInMatches(matches) {
-  for (let i = 0; i < matches.length; i++) {
-    const match = matches[i];
+  for (const match of matches) {
     if (match.handle && typeof match.handle === 'object' && 'appId' in match.handle) {
       const appHandle = match.handle as AppModuleHandle;
       return appHandle.appId;
