@@ -20,7 +20,7 @@ export interface ParagonThemeCss {
 }
 
 // This isn't perfect, as it implies having neither url nor urls would be valid.  Feel free to improve it so that one is required.
-export type ParagonThemeUrlsVariant = {
+export interface ParagonThemeUrlsVariant {
   url?: string,
   urls?: Record<string, string | undefined>,
 }
