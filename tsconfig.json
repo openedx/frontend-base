@@ -10,7 +10,8 @@
     "index.ts",
     "jest.config.js",
     "babel.config.js",
-    ".eslintrc.js",
+    "eslint.config.js",
+    "frontend-base.d.ts",
   ],
   "exclude": [
     "test-project/**/*",
