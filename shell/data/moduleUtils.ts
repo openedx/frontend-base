@@ -8,7 +8,7 @@ import {
 } from '../../types';
 
 function filterAppsByType<T extends AppConfig>(apps: AppsConfig, type: AppConfigTypes) {
-  const filteredApps: { [appId: string]: T } = {};
+  const filteredApps: Record<string, T> = {};
   Object.entries(apps).forEach(
     ([appId, app]: [appId: string, app: AppConfig]) => {
       if (app.type === type) {

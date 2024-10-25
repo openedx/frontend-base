@@ -26,7 +26,7 @@ Some working examples, as of the time of this writing:
 
 */
 export default function getLocalAliases() {
-  const aliases: { [moduleName: string]: string} = {};
+  const aliases: Record<string, string> = {};
 
   try {
     const moduleConfigPath = path.resolve(process.cwd(), 'module.config.js');
