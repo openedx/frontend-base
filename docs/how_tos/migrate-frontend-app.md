@@ -314,6 +314,40 @@ module.exports = createLintConfig(
 );
 ```
 
+## 12. Replace `.eslintignore`, if it exists, with entries in `eslint.config.js`
+
+The base eslint config provided by frontend-base ignores a number of common folders by default:
+
+```
+  {
+    ignores: [
+      'coverage/*',
+      'dist/*',
+      'node_modules/*',
+      '**/__mocks__/*',
+      '**/__snapshots__/*',
+    ],
+  },
+```
+
+You can configure additional ignores in your own `eslint.config.js` file using the above syntax, as a separate object from the existing 'files' object:
+
+```diff
+module.exports = createLintConfig(
+  {
+    files: [
+      'src/**/*',
+      'site.config.*',
+    ],
+  },
++  {
++    ignores: [
++      'ignoredfolder/*'
++    ]
++  }
+);
+```
+
 ## 12. Search for any other usages of `frontend-build`
 
 Find any other imports/usages of `frontend-build` in your repository and replace them with `frontend-base` so they don't break.
