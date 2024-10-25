@@ -50,7 +50,7 @@ export default function ExamplePage() {
       <p>Is context.authenticatedUser equal to getAuthenticatedUser()? {printTestResult(authenticatedUser === getAuthenticatedUser())}</p>
 
       <h2>SCSS parsing tests</h2>
-      <p><span className="red-text">"The Apples"</span> should be red (<code>color: red;</code> via <code>.red-text</code> CSS class in SCSS stylesheet)</p>
+      <p><span className="red-text">&quot;The Apples&quot;</span> should be red (<code>color: red;</code> via <code>.red-text</code> CSS class in SCSS stylesheet)</p>
 
       <h2>TSX parsing tests</h2>
       <Image src={appleUrl} alt="apple.svg displayed in Image.tsx" style={{ width: '10rem' }} />
