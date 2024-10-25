@@ -287,14 +287,14 @@ export function configure(options: ConfigureI18nOptions) {
 
   if (config.ENVIRONMENT === EnvironmentTypes.DEVELOPMENT && messages !== undefined) {
     Object.keys(messages).forEach((key) => {
-      if (supportedLocales.indexOf(key) < 0) {
-        console.warn(`Unexpected locale: ${key}`); // eslint-disable-line no-console
+      if (!supportedLocales.includes(key)) {
+        console.warn(`Unexpected locale: ${key}`);
       }
     });
 
     supportedLocales.forEach((key) => {
-        console.warn(`Missing locale: ${key}`); // eslint-disable-line no-console
       if (messages?.[key] === undefined) {
+        console.warn(`Missing locale: ${key}`);
       }
     });
   }
