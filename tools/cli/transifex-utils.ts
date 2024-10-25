@@ -66,7 +66,7 @@ if (process.argv[3] === '--comments') { // prepare to handle the translator note
     }
   });
 } else {
-  const output: {[id: string]: string } = {};
+  const output: Record<string, string> = {};
 
   messageObjects.forEach((message) => {
     output[message.id] = message.defaultMessage;

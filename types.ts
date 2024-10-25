@@ -62,12 +62,10 @@ export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>
 
 export interface OptionalSiteConfig {
 
-  pluginSlots: {
-    [slotName: string]: {
-      keepDefault: boolean,
-      plugins: Array<Plugin>,
-    },
-  },
+  pluginSlots: Record<string, {
+    keepDefault: boolean,
+    plugins: Plugin[],
+  }>,
 
   header?: HeaderConfig,
 
@@ -105,14 +103,10 @@ export interface OptionalSiteConfig {
   PRIVACY_POLICY_URL: string | null,
   ACCESSIBILITY_URL: string | null,
 
-  custom: {
-    [key: string]: any,
-  }
+  custom: Record<string, any>,
 }
 
-export interface AppsConfig {
-  [appId: string]: AppConfig,
-}
+export type AppsConfig = Record<string, AppConfig>;
 
 export interface RequiredSiteConfig {
   apps: AppsConfig,
@@ -147,9 +141,7 @@ export interface ProjectModuleConfig {
   modules?: Array<string>,
   name?: string,
   plugins?: any,
-  custom?: {
-    [key: string]: any,
-  }
+  custom?: Record<string, any>,
 }
 
 export interface User {
@@ -262,9 +254,7 @@ export interface InsertDirectPluginWidget {
   type: PluginTypes.DIRECT,
   priority: number,
   RenderWidget: ElementType,
-  content?: {
-    [propName: string]: any,
-  }
+  content?: Record<string, any>,
 }
 
 export interface InsertIframePluginWidget {

@@ -104,7 +104,7 @@ export function getParagonCacheGroups(paragonThemeCss: ParagonThemeCss | undefin
   if (!paragonThemeCss) {
     return {};
   }
-  const cacheGroups: { [index: string]: { type: string, name: string, chunks: (chunk: Chunk) => boolean, enforce: boolean } } = {};
+  const cacheGroups: Record<string, { type: string, name: string, chunks: (chunk: Chunk) => boolean, enforce: boolean }> = {};
 
   if (paragonThemeCss.core !== undefined) {
     const { core } = paragonThemeCss;
@@ -141,7 +141,7 @@ export function getParagonEntryPoints(paragonThemeCss: ParagonThemeCss | undefin
     return {};
   }
 
-  const entryPoints: { [entryName: string]: string } = {};
+  const entryPoints: Record<string, string> = {};
   if (paragonThemeCss.core !== undefined) {
     entryPoints[paragonThemeCss.core.entryName] = path.resolve(process.cwd(), paragonThemeCss.core.filePath);
   }

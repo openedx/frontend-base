@@ -68,7 +68,7 @@ const rtlLocales = [
 
 let config: SiteConfig | null = null;
 let loggingService: LoggingService | null = null;
-let messages: { [locale: string]: Record<string, string> | Record<string, MessageFormatElement[]> | undefined };
+let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
 
 /**
  * @memberof module:Internationalization
@@ -263,7 +263,7 @@ export function mergeMessages(newMessages) {
 
 interface ConfigureI18nOptions {
   loggingService: LoggingService,
-  messages: Array<{ [locale: string]: { [key: string]: string } }> | { [locale: string]: { [key: string]: string } },
+  messages: Record<string, Record<string, string>>[] | Record<string, Record<string, string>>,
   config: SiteConfig,
 }
 
