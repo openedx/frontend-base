@@ -1,13 +1,13 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { logFrontendAuthError } from './utils';
 import { camelCaseObject } from '../utils';
-import createJwtTokenProviderInterceptor from './interceptors/createJwtTokenProviderInterceptor';
-import createCsrfTokenProviderInterceptor from './interceptors/createCsrfTokenProviderInterceptor';
-import createProcessAxiosRequestErrorInterceptor from './interceptors/createProcessAxiosRequestErrorInterceptor';
-import AxiosJwtTokenService from './AxiosJwtTokenService';
 import AxiosCsrfTokenService from './AxiosCsrfTokenService';
+import AxiosJwtTokenService from './AxiosJwtTokenService';
+import createCsrfTokenProviderInterceptor from './interceptors/createCsrfTokenProviderInterceptor';
+import createJwtTokenProviderInterceptor from './interceptors/createJwtTokenProviderInterceptor';
+import createProcessAxiosRequestErrorInterceptor from './interceptors/createProcessAxiosRequestErrorInterceptor';
 import configureCache from './LocalForageCache';
+import { logFrontendAuthError } from './utils';
 
 const optionsPropTypes = {
   config: PropTypes.shape({

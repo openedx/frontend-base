@@ -1,13 +1,12 @@
-/* eslint-disable no-underscore-dangle */
+import axios from 'axios';
+import {
+  buildStorage,
+  defaultHeaderInterpreter,
+  defaultKeyGenerator,
+  setupCache,
+} from 'axios-cache-interceptor';
 import localforage from 'localforage';
 import memoryDriver from 'localforage-memoryStorageDriver';
-import {
-  setupCache,
-  defaultKeyGenerator,
-  defaultHeaderInterpreter,
-  buildStorage,
-} from 'axios-cache-interceptor';
-import axios from 'axios';
 
 /**
  * Async function to configure localforage and setup the cache
