@@ -15,7 +15,7 @@ import path from 'path';
  *
  */
 function gatherJson(dir: string) {
-  const ret: Array<{ id: string, description: string, defaultMessage: string }> = [];
+  const ret: { id: string, description: string, defaultMessage: string }[] = [];
   const files = glob.sync(`${dir}/**/*.json`);
 
   files.forEach((filename) => {
