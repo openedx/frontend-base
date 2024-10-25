@@ -63,7 +63,7 @@ const config: Configuration = {
   plugins: [
     // Writes the extracted CSS from each entry to a file in the output directory.
     new MiniCssExtractPlugin({
-    filename: '[name].[chunkhash].css',
+      filename: '[name].[chunkhash].css',
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',

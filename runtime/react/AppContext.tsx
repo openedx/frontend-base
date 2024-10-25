@@ -20,7 +20,7 @@ import { getConfig } from '../config';
  */
 const AppContext = React.createContext<{
   authenticatedUser: User | null,
-  config: SiteConfig
+  config: SiteConfig,
 }>({
   authenticatedUser: null,
   config: getConfig(),

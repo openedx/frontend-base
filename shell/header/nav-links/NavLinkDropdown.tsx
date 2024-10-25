@@ -9,7 +9,7 @@ import {
 import NavLinkDropdownItem from './NavLinkDropdownItem';
 
 interface NavLinkDropdownProps {
-  item: DropdownMenuItem
+  item: DropdownMenuItem,
 }
 
 export default function NavLinkDropdown({ item }: NavLinkDropdownProps) {

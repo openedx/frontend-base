@@ -12,7 +12,7 @@ import { getDescendantByTag } from './tagUtils';
  * @throws {Error} If the head element is missing in the HTML document.
  * @return {number} The insertion point for the stylesheet in the HTML document.
  */
-export function findStylesheetInsertionPoint({ document, source }: { document: Document, source: string}) {
+export function findStylesheetInsertionPoint({ document, source }: { document: Document, source: string }) {
   const headElement = getDescendantByTag(document, 'head');
   if (!headElement) {
     throw new Error('Missing head element in index.html.');

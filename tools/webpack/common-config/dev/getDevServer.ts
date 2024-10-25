@@ -34,5 +34,5 @@ export default function getDevServer(): Configuration {
     // in the webpack development configuration. Note that only changes
     // to CSS are currently hot reloaded. JS changes will refresh the browser.
     webSocketServer: 'ws',
-  }
+  };
 }

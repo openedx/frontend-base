@@ -39,4 +39,4 @@ export const defaultConfigPaths = {
     path.resolve(process.cwd(), 'jest.config.js'),
     path.resolve(__dirname, './jest/jest.config.js'),
   ],
-}
+};

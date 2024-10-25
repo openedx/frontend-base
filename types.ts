@@ -293,12 +293,12 @@ export interface InsertPlugin {
 export interface WrapPlugin {
   op: PluginOperations.WRAP,
   widgetId: string,
-  wrapper: ElementType
+  wrapper: ElementType,
 }
 
 export interface HidePlugin {
   op: PluginOperations.HIDE,
-  widgetId: string
+  widgetId: string,
 }
 
 export type Plugin = HidePlugin | InsertPlugin | ModifyPlugin | WrapPlugin;

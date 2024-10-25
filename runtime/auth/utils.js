@@ -101,5 +101,5 @@ export {
   getUrlParts,
   logFrontendAuthError,
   processAxiosError,
-  processAxiosErrorAndThrow,
+  processAxiosErrorAndThrow
 };
