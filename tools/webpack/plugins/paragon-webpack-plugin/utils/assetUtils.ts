@@ -20,7 +20,7 @@ export function findCoreCssAsset(paragonAssets: any) {
  * @param {Object} [options.paragonThemeCss] - The Paragon theme CSS object.
  * @return {Object} - The theme variant CSS assets.
  */
-export function findThemeVariantCssAssets(paragonAssets: Array<any>, {
+export function findThemeVariantCssAssets(paragonAssets: any[], {
   isBrandOverride = false,
   brandThemeCss,
   paragonThemeCss,

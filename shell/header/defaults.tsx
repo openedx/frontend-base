@@ -3,21 +3,21 @@ import messages from '../Shell.messages';
 import LoginButton from './anonymous-menu/LoginButton';
 import RegisterButton from './anonymous-menu/RegisterButton';
 
-export const primaryLinks: Array<MenuItem> = [
+export const primaryLinks: MenuItem[] = [
   {
     appId: 'learner-dashboard',
     label: 'Courses',
   },
 ];
 
-export const secondaryLinks: Array<MenuItem> = [];
+export const secondaryLinks: MenuItem[] = [];
 
-export const anonymousLinks: Array<MenuItem> = [
+export const anonymousLinks: MenuItem[] = [
   <LoginButton key="login" />,
   <RegisterButton key="register" />
 ];
 
-export const authenticatedLinks: Array<ChildMenuItem> = [
+export const authenticatedLinks: ChildMenuItem[] = [
   {
     appId: 'learner-dashboard',
     label: messages['header.user.menu.dashboard']

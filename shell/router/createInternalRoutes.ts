@@ -7,7 +7,7 @@ import patchAppIdIntoRouteHandle from './patchAppIdIntoRouteHandle';
 export default function createInternalRoutes() {
   const internalModules = getInternalModules();
 
-  const routes: Array<RouteObject> = [];
+  const routes: RouteObject[] = [];
 
   Object.entries(internalModules).forEach(
     ([appId, internalModule]: [appId: string, internalModule: InternalAppConfig]) => {

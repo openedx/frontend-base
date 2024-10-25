@@ -5,10 +5,10 @@ import {
 
 interface LanguageSelectorProps {
   onSubmit: (languageCode: string) => void,
-  options: Array<{
+  options: {
     label: string,
-    value: string
-  }>,
+    value: string,
+  }[],
 }
 
 export default function LanguageSelector({

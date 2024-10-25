@@ -12,7 +12,7 @@ const logHistory: { log: string[], latest: string | null } = {
 };
 
 // History for `fs.writeFileSync` mock calls.
-const writeFileHistory: { log: Array<{ filename: string, content: string }>, latest: { filename: string, content: string } | null} = {
+const writeFileHistory: { log: { filename: string, content: string }[], latest: { filename: string, content: string } | null } = {
   log: [],
   latest: null,
 };

@@ -138,7 +138,7 @@ export interface RequiredSiteConfig {
 export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
 
 export interface ProjectModuleConfig {
-  modules?: Array<string>,
+  modules?: string[],
   name?: string,
   plugins?: any,
   custom?: Record<string, any>,
@@ -148,7 +148,7 @@ export interface User {
   administrator: boolean,
   email: string,
   name: string,
-  roles: Array<string>,
+  roles: string[],
   userId: number,
   username: string,
   avatar: string,
@@ -171,19 +171,19 @@ export enum EnvironmentTypes {
 export interface HeaderConfig {
   logoUrl?: string,
   logoDestinationUrl?: string | null,
-  primaryLinks?: Array<MenuItem>,
-  secondaryLinks?: Array<MenuItem>,
-  anonymousLinks?: Array<MenuItem>,
-  authenticatedLinks?: Array<ChildMenuItem>,
+  primaryLinks?: MenuItem[],
+  secondaryLinks?: MenuItem[],
+  anonymousLinks?: MenuItem[],
+  authenticatedLinks?: ChildMenuItem[],
 }
 
 export interface ResolvedHeaderConfig {
   logoUrl: string,
   logoDestinationUrl: string | null,
-  primaryLinks: Array<MenuItem>,
-  secondaryLinks: Array<MenuItem>,
-  anonymousLinks: Array<MenuItem>,
-  authenticatedLinks: Array<ChildMenuItem>,
+  primaryLinks: MenuItem[],
+  secondaryLinks: MenuItem[],
+  anonymousLinks: MenuItem[],
+  authenticatedLinks: ChildMenuItem[],
 }
 
 export type MenuItemName = string | MessageDescriptor | ReactElement;
@@ -198,7 +198,7 @@ export interface AppMenuItem extends BaseLinkMenuItem {
 
 export interface DropdownMenuItem {
   label: MessageDescriptor | string,
-  items: Array<ChildMenuItem>,
+  items: ChildMenuItem[],
 }
 
 export interface UrlMenuItem extends BaseLinkMenuItem {
