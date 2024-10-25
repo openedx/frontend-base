@@ -113,7 +113,7 @@ export function getParagonCacheGroups(paragonThemeCss: ParagonThemeCss | undefin
       name: paragonThemeCss.core.outputChunkName,
       chunks: (chunk: Chunk) => chunk.name === core.entryName,
       enforce: true,
-    }
+    };
   }
 
   Object.values(paragonThemeCss.variants).forEach(({ entryName, outputChunkName }) => {

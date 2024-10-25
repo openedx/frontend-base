@@ -49,7 +49,7 @@ if (process.argv[3] === '--comments') { // prepare to handle the translator note
 
   const hashFile = `${bashScriptsPath}/hashmap.json`;
   process.stdout.write(`${loggingPrefix}: reading hash file ${hashFile}\n`);
-  const messageInfo = JSON.parse(fs.readFileSync(hashFile, { encoding: 'utf8'}));
+  const messageInfo = JSON.parse(fs.readFileSync(hashFile, { encoding: 'utf8' }));
 
   const outputFile = `${bashScriptsPath}/hashed_data.txt`;
   process.stdout.write(`${loggingPrefix}: writing to output file ${outputFile}\n`);

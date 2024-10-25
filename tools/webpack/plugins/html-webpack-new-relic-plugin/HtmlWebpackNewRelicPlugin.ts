@@ -16,7 +16,7 @@ enum OptionTypes {
 
 type HtmlWebpackNewRelicPluginOptions = {
   [key in OptionTypes]: string | undefined;
-}
+};
 
 export default class HtmlWebpackNewRelicPlugin {
   options: HtmlWebpackNewRelicPluginOptions;

@@ -7,7 +7,7 @@ const config: ApplicationModuleConfig = {
       const { default: Component } = await import('./PluginPage');
       return {
         Component,
-      }
+      };
     },
   }
 };

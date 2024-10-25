@@ -70,11 +70,11 @@ class SegmentAnalyticsService {
     // for methods in Analytics.js so that you never have to wait
     // for it to load to actually record data. The `method` is
     // stored as the first argument, so we can replay the data.
-    analytics.factory = method => ((...args) => {
+    analytics.factory = method => (...args) => {
       args.unshift(method);
       analytics.push(args);
       return analytics;
-    });
+    };
 
     // For each of our methods, generate a queueing stub.
     analytics.methods.forEach((key) => {

@@ -23,7 +23,7 @@ interface PluginSlotProps {
   slotOptions?: {
     mergeProps?: boolean,
   },
-  ref?: React.ForwardedRef<unknown>
+  ref?: React.ForwardedRef<unknown>,
 }
 
 export default function PluginSlot({

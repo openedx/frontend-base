@@ -22,7 +22,7 @@ export default function getResolvedSiteConfigPath(defaultFilename: string) {
   if (siteConfigPath !== undefined) {
     console.error(`Invalid site config path (${siteConfigPath} specified as an environment variable. Aborting.`);
   } else {
-    console.error(`Default site config file (${defaultPath}) does not exist. Aborting.`)
+    console.error(`Default site config file (${defaultPath}) does not exist. Aborting.`);
   }
   process.exit(1);
 }

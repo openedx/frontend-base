@@ -3,7 +3,6 @@ import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginP
 import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
 import './src/project.scss';
 
-
 const config: ProjectSiteConfig = {
   apps: {
     examplePage: {

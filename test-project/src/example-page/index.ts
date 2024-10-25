@@ -7,7 +7,7 @@ const config: ApplicationModuleConfig = {
       const { default: Component } = await import('./ExamplePage');
       return {
         Component,
-      }
+      };
     },
   }
 };

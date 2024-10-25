@@ -234,7 +234,7 @@ export function main({
   directories: string | string[],
   log: (message: string) => void,
   writeFileSync: (filename: string, content: string) => void,
-  pwd: string
+  pwd: string,
 }) {
   const i18nDir = `${pwd}/src/i18n`; // The Micro-frontend i18n root directory
 

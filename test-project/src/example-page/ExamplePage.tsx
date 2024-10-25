@@ -34,7 +34,7 @@ export default function ExamplePage() {
 
   useEffect(() => {
     logInfo('The example page can log info, which means logging is configured correctly.');
-  }, [])
+  }, []);
 
   return (
     <Container>
@@ -91,5 +91,5 @@ export default function ExamplePage() {
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>
       <ParagonPreview />
     </Container>
-  )
+  );
 }
