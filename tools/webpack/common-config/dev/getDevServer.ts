@@ -1,7 +1,7 @@
 import path from 'path';
 import { Configuration } from 'webpack-dev-server';
 
-import getPublicPath from "../../utils/getPublicPath";
+import getPublicPath from '../../utils/getPublicPath';
 
 export default function getDevServer(): Configuration {
   return {

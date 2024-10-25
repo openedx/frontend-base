@@ -1,7 +1,7 @@
-import chalk from "chalk";
-import { execSync } from "child_process";
-import { existsSync, rmSync } from "fs";
-import path from "path";
+import chalk from 'chalk';
+import { execSync } from 'child_process';
+import { existsSync, rmSync } from 'fs';
+import path from 'path';
 
 export default function release() {
 

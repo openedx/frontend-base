@@ -1,4 +1,4 @@
-import { WebpackError } from "webpack";
+import { WebpackError } from 'webpack';
 
 export default function getIgnoreWarnings() {
   return [

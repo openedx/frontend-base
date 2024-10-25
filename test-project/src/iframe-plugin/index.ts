@@ -1,4 +1,4 @@
-import { ApplicationModuleConfig } from "@openedx/frontend-base";
+import { ApplicationModuleConfig } from '@openedx/frontend-base';
 
 const config: ApplicationModuleConfig = {
   route: {

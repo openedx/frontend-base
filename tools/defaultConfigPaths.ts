@@ -1,5 +1,5 @@
 import path from 'path';
-import { ConfigTypes } from "./types";
+import { ConfigTypes } from './types';
 
 // These config paths are tested in the order they're defined, so the last ones are the last fallback.
 export const defaultConfigPaths = {
