@@ -15,8 +15,7 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
   let missingModule: FederatedAppConfig | null = null;
   let missingAppId: string | null = null;
   const entries = Object.entries(federatedModules);
-  for (let i = 0; i < entries.length; i++) {
-    const [appId, federatedModule] = entries[i];
+  for (const [appId, federatedModule] of entries) {
     if (path.startsWith(federatedModule.path)) {
       missingModule = federatedModule;
       missingAppId = appId;
