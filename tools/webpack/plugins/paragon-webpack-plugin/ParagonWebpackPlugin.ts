@@ -24,7 +24,7 @@ const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true 
  */
 export default class ParagonWebpackPlugin implements WebpackPluginInstance {
   pluginName: string;
-  paragonThemeUrlsConfig: ParagonThemeUrls | {};
+  paragonThemeUrlsConfig: ParagonThemeUrls | object;
   processAssetsHandlers: ((compilation: any) => void)[];
   paragonMetadata: any;
 
