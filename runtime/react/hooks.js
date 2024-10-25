@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { useContext, useEffect } from 'react';
 import { sendTrackEvent } from '../analytics';
 import AppContext from './AppContext';

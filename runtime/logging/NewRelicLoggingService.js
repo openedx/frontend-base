@@ -26,7 +26,7 @@ const pageActionNameIgnoredError = 'IGNORED_ERROR';
 
 function sendPageAction(actionName, message, customAttributes) {
   if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
-    console.log(actionName, message, customAttributes); // eslint-disable-line
+    console.log(actionName, message, customAttributes);
   }
   if (window && typeof window.newrelic !== 'undefined') {
     // https://docs.newrelic.com/docs/browser/new-relic-browser/browser-apis/addpageaction/
@@ -36,7 +36,7 @@ function sendPageAction(actionName, message, customAttributes) {
 
 function sendError(error, customAttributes) {
   if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
-    console.error(error, customAttributes); // eslint-disable-line
+    console.error(error, customAttributes);
   }
   if (window && typeof window.newrelic !== 'undefined') {
     // https://docs.newrelic.com/docs/browser/new-relic-browser/browser-apis/noticeerror/
@@ -46,7 +46,7 @@ function sendError(error, customAttributes) {
 
 function setCustomAttribute(name, value) {
   if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
-    console.log(name, value); // eslint-disable-line
+    console.log(name, value);
   }
   if (window && typeof window.newrelic !== 'undefined') {
     // https://docs.newrelic.com/docs/browser/new-relic-browser/browser-apis/setcustomattribute/

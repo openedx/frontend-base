@@ -26,7 +26,6 @@ const createCsrfTokenProviderInterceptor = (options) => {
     }
 
     const CSRF_HEADER_NAME = 'X-CSRFToken';
-    // eslint-disable-next-line no-param-reassign
     axiosRequestConfig.headers[CSRF_HEADER_NAME] = csrfToken;
     return axiosRequestConfig;
   };
