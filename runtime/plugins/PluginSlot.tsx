@@ -17,9 +17,7 @@ interface PluginSlotProps {
   /** ID of the PluginSlot configuration */
   id: string,
   /** Props that are passed down to each Plugin in the Slot */
-  pluginProps?: {
-    [prop: string]: any,
-  },
+  pluginProps?: Record<string, any>,
   slotOptions?: {
     mergeProps?: boolean,
   },
