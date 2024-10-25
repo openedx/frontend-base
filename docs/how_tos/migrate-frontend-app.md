@@ -295,35 +295,23 @@ mergeConfig(siteConfig);
 
 ```
 
-## 11. Edit `.eslintrc.js`
+## 11. Replace `.eslintrc.js` with `eslint.config.js`
 
-Replace the import from 'frontend-build' with 'frontend-base'.
-
-```diff
-- const { createConfig } = require('@openedx/frontend-build');
-+ const { createConfig } = require('@openedx/frontend-base/config');
-```
-
-Use 'lint' instead of 'eslint' as the config type for createConfig()
+ESLint has been upgraded to v9, which has a new 'flat' file format.  Replace the repository's `.eslintrc.js` file with a new `eslint.config.js` file with the following contents:
 
 ```
-module.exports = createConfig('lint', {
-  // ... custom config
-})
-```
+// @ts-check
 
-You will also need to set the `project` in `parserOptions`.  An uncustomized `.eslintrc.js` file looks like:
+const { createLintConfig } = require('@openedx/frontend-base/config');
 
-```
-const path = require('path');
-
-const { createConfig } = require('@openedx/frontend-base/config');
-
-module.exports = createConfig('lint', {
-  parserOptions: {
-    project: path.resolve(__dirname, './tsconfig.json'),
+module.exports = createLintConfig(
+  {
+    files: [
+      'src/**/*',
+      'site.config.*',
+    ],
   },
-});
+);
 ```
 
 ## 12. Search for any other usages of `frontend-build`

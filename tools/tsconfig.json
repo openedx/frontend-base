@@ -17,7 +17,7 @@
     "types.ts",
     "index.ts",
     "defaultConfigPaths.ts",
-    "eslint/base.eslint.config.js",
+    "eslint/**/*",
     "eslint.config.js",
     "jest.config.js",
   ],
