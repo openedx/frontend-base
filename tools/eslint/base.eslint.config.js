@@ -3,12 +3,9 @@
 const { fixupPluginRules } = require('@eslint/compat');
 const eslint = require('@eslint/js');
 const formatjs = require('eslint-plugin-formatjs');
-// @ts-expect-error There are no type definitions for this.
 const jest = require('eslint-plugin-jest');
-// @ts-expect-error There are no type definitions for this.
 const jsxA11y = require('eslint-plugin-jsx-a11y');
 const react = require('eslint-plugin-react');
-// @ts-expect-error There are no type definitions for this.
 const reactHooks = require('eslint-plugin-react-hooks');
 const globals = require('globals');
 const tseslint = require('typescript-eslint');
