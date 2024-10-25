@@ -42,7 +42,7 @@ class GoogleAnalyticsLoader {
       const first = document.getElementsByTagName('script')[0];
       first.parentNode.insertBefore(scriptSrc, first);
       first.parentNode.insertBefore(scriptGtag, first);
-      googleAnalytics._loadOptions = options; // eslint-disable-line no-underscore-dangle
+      googleAnalytics._loadOptions = options;
     };
 
     // Load GoogleAnalytics with your key.

@@ -281,9 +281,7 @@ interface ConfigureI18nOptions {
  */
 export function configure(options: ConfigureI18nOptions) {
   PropTypes.checkPropTypes(optionsShape, options, 'property', 'i18n');
-  // eslint-disable-next-line prefer-destructuring
   loggingService = options.loggingService;
-  // eslint-disable-next-line prefer-destructuring
   config = options.config;
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
 

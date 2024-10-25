@@ -27,7 +27,6 @@ const createJwtTokenProviderInterceptor = (options) => {
     }
 
     // Add the proper headers to tell the server to look for the jwt cookie
-    // eslint-disable-next-line no-param-reassign
     axiosRequestConfig.headers['USE-JWT-COOKIE'] = true;
     return axiosRequestConfig;
   };

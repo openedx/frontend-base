@@ -98,7 +98,7 @@ class SegmentAnalyticsService {
       // Insert our script next to the first script element.
       const first = document.getElementsByTagName('script')[0];
       first.parentNode.insertBefore(script, first);
-      analytics._loadOptions = options; // eslint-disable-line no-underscore-dangle
+      analytics._loadOptions = options;
 
       this.segmentInitialized = true;
     };

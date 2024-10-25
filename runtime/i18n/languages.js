@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import LANGUAGES, { langs as languageLangs } from '@cospired/i18n-iso-languages';
 
 // import arLocale from '@cospired/i18n-iso-languages/langs/ar.json';

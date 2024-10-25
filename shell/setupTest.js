@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import '@testing-library/jest-dom';
 import siteConfig from 'site.config';
 import { mergeConfig } from '../runtime';
