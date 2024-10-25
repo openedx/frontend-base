@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "openedx build",
-    "lint": "openedx lint . --no-eslintrc -c .eslintrc.js",
+    "lint": "openedx lint .",
     "dev": "openedx dev",
     "dev:with-remotes": "SITE_CONFIG_PATH=site.config.dev.with-remotes.tsx openedx dev",
     "dev:module": "PORT=8081 openedx dev:module",
