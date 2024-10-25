@@ -293,8 +293,8 @@ export function configure(options: ConfigureI18nOptions) {
     });
 
     supportedLocales.forEach((key) => {
-      if (messages === undefined || messages[key] === undefined) {
         console.warn(`Missing locale: ${key}`); // eslint-disable-line no-console
+      if (messages?.[key] === undefined) {
       }
     });
   }
