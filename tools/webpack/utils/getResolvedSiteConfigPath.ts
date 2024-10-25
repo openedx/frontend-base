@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 export default function getResolvedSiteConfigPath(defaultFilename: string) {
-  let siteConfigPath = process.env.SITE_CONFIG_PATH;
+  const siteConfigPath = process.env.SITE_CONFIG_PATH;
 
   if (siteConfigPath !== undefined) {
     // We assume siteConfigPath is a relative path.
