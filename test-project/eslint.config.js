@@ -1,19 +1,8 @@
 // @ts-check
 
-const tseslint = require('typescript-eslint');
-const eslintConfig = require('../tools/eslint/base.eslint.config.js');
+const { createLintConfig } = require('@openedx/frontend-base/config');
 
-module.exports = tseslint.config(
-  {
-    extends: eslintConfig,
-  },
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-      }
-    }
-  },
+module.exports = createLintConfig(
   {
     files: [
       'src/**/*',
