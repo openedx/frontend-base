@@ -9,7 +9,7 @@ import LanguageSelector from './LanguageSelector';
 interface DefaultFooterProps {
   logo?: string,
   onLanguageSelected?: (languageCode: string) => void,
-  supportedLanguages?: Array<{ label: string, value: string }>
+  supportedLanguages?: { label: string, value: string }[],
 }
 
 export default function DefaultFooter({ logo, onLanguageSelected, supportedLanguages = [] }: DefaultFooterProps) {

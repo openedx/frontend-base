@@ -65,7 +65,7 @@ export default function PluginSlot({
     ? loadingFallback
     : defaultLoadingFallback;
 
-  const finalChildren: Array<ReactNode> = [];
+  const finalChildren: ReactNode[] = [];
   if (finalPlugins.length > 0) {
     finalPlugins.forEach((pluginConfig) => {
       // If hidden, don't push to finalChildren

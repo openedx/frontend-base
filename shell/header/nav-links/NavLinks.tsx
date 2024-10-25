@@ -5,7 +5,7 @@ import {
 import NavLinksItem from './NavLinksItem';
 
 interface NavLinksProps {
-  items: Array<MenuItem>,
+  items: MenuItem[],
   className?: string,
 }
 

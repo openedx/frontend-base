@@ -75,7 +75,7 @@ export default class HtmlWebpackNewRelicPlugin {
       ;NREUM.info={beacon:"bam-cell.nr-data.net",errorBeacon:"bam-cell.nr-data.net",licenseKey:"${this.options.licenseKey}",applicationID:"${this.options.applicationID}",sa:1}
     `;
 
-    const optionKeys = <Array<OptionTypes>>Object.keys(this.options)
+    const optionKeys = Object.keys(this.options) as OptionTypes[];
     optionKeys.forEach((key: OptionTypes) => {
       if (!this.options[key]) {
         throw new Error(`${key} argument is required`);
