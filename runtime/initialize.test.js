@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history';
-import 'pubsub-js';
+
 import {
   APP_ANALYTICS_INITIALIZED,
   APP_AUTH_INITIALIZED,
@@ -31,6 +31,7 @@ import {
   logError,
   NewRelicLoggingService,
 } from './logging';
+import { clearAllSubscriptions, subscribe } from './subscriptions';
 
 jest.mock('./logging');
 jest.mock('./auth');
@@ -83,7 +84,7 @@ describe('initialize', () => {
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();
     logError.mockReset();
-    global.PubSub.clearAllSubscriptions();
+    clearAllSubscriptions();
   });
 
   it('should call default handlers in the absence of overrides', async () => {
@@ -106,13 +107,13 @@ describe('initialize', () => {
       }
     }
 
-    global.PubSub.subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_READY, checkDispatchedDone);
+    subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_READY, checkDispatchedDone);
 
     const messages = { i_am: 'a message' };
     await initialize({ messages });
@@ -222,7 +223,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
+    subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
@@ -258,7 +259,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
+    subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,

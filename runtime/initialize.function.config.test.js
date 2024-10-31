@@ -1,5 +1,3 @@
-import 'pubsub-js';
-
 import {
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
@@ -10,6 +8,7 @@ import { initialize } from './initialize';
 import {
   logError,
 } from './logging';
+import { clearAllSubscriptions } from './subscriptions';
 
 jest.mock('./logging');
 jest.mock('./auth');
@@ -30,7 +29,7 @@ describe('initialize with function js file config', () => {
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();
     logError.mockReset();
-    global.PubSub.clearAllSubscriptions();
+    clearAllSubscriptions();
   });
 
   it('should initialize the app with javascript file configuration', async () => {

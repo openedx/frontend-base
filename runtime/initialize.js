@@ -93,6 +93,7 @@ import {
   NewRelicLoggingService,
 } from './logging';
 import { GoogleAnalyticsLoader } from './scripts';
+import { publish } from './subscriptions';
 import { getPath } from './utils';
 
 /**
@@ -303,13 +304,13 @@ export async function initialize({
   try {
     // Pub/Sub
     await handlers.pubSub();
-    global.PubSub.publish(APP_PUBSUB_INITIALIZED);
+    publish(APP_PUBSUB_INITIALIZED);
 
     // Configuration
     await fileConfig();
     await handlers.config();
     await runtimeConfig();
-    global.PubSub.publish(APP_CONFIG_INITIALIZED);
+    publish(APP_CONFIG_INITIALIZED);
 
     loadExternalScripts(externalScripts, {
       config: getConfig(),
@@ -329,16 +330,14 @@ export async function initialize({
       config: getConfig(),
     });
     await handlers.logging();
-    global.PubSub.publish(APP_LOGGING_INITIALIZED);
+    publish(APP_LOGGING_INITIALIZED);
 
     // Internationalization
     configureI18n({
       messages,
-      config: getConfig(),
-      loggingService: getLoggingService(),
     });
     await handlers.i18n();
-    global.PubSub.publish(APP_I18N_INITIALIZED);
+    publish(APP_I18N_INITIALIZED);
 
     // Authentication
     configureAuth(authServiceImpl, {
@@ -348,7 +347,7 @@ export async function initialize({
     });
 
     await handlers.auth(requireUser, hydrateUser);
-    global.PubSub.publish(APP_AUTH_INITIALIZED);
+    publish(APP_AUTH_INITIALIZED);
 
     // Analytics
     configureAnalytics(analyticsServiceImpl, {
@@ -357,16 +356,16 @@ export async function initialize({
       httpClient: getAuthenticatedHttpClient(),
     });
     await handlers.analytics();
-    global.PubSub.publish(APP_ANALYTICS_INITIALIZED);
+    publish(APP_ANALYTICS_INITIALIZED);
 
     // Application Ready
     await handlers.ready();
-    global.PubSub.publish(APP_READY);
+    publish(APP_READY);
   } catch (error) {
     if (!error.isRedirecting) {
       // Initialization Error
       await handlers.initError(error);
-      global.PubSub.publish(APP_INIT_ERROR, error);
+      publish(APP_INIT_ERROR, error);
     }
   }
 }

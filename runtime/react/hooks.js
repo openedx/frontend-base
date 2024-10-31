@@ -1,5 +1,7 @@
 import { useContext, useEffect } from 'react';
+
 import { sendTrackEvent } from '../analytics';
+import { subscribe, unsubscribe } from '../subscriptions';
 import AppContext from './AppContext';
 
 /**
@@ -14,10 +16,10 @@ import AppContext from './AppContext';
  */
 export const useAppEvent = (type, callback) => {
   useEffect(() => {
-    const subscriptionToken = global.PubSub.subscribe(type, callback);
+    subscribe(type, callback);
 
-    return function cleanup() {
-      global.PubSub.unsubscribe(subscriptionToken);
+    return () => {
+      unsubscribe(type, callback);
     };
   }, [callback, type]);
 };
