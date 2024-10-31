@@ -58,8 +58,6 @@
 		"@eslint/compat": "^1.2.1",
 		"@eslint/js": "^9.13.0",
 		"@formatjs/cli": "^6.0.3",
-		"@formatjs/intl-pluralrules": "^4.3.3",
-		"@formatjs/intl-relativetimeformat": "^10.0.1",
 		"@formatjs/ts-transformer": "^3.13.14",
 		"@module-federation/enhanced": "^0.6.12",
 		"@module-federation/runtime": "^0.6.12",
