@@ -1,11 +1,10 @@
-import { initialize } from './initialize';
-
 import {
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
   hydrateAuthenticatedUser,
 } from './auth';
 import { getConfig } from './config';
+import { initialize } from './initialize';
 import {
   logError,
 } from './logging';
