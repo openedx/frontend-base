@@ -560,3 +560,10 @@ https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
 ## 28. Add LEARNER_DASHBOARD_URL to config
 
 ## 29. Convert @import to @use in SCSS files.
+
+## 30. Changes to i81n
+
+`getLanguageList` has been removed. Modules that need a list of countries should install `@cospired/i18n-iso-languages` as a dependency.
+
+`getCountryList` has been removed.  MFEs that need a list of countries should install `i18n-iso-countries` or `countries-list` as a dependency.
+
