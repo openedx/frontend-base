@@ -3,29 +3,10 @@ import PropTypes from 'prop-types';
 import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
 
-import { EnvironmentTypes, SiteConfig } from '../../types';
-import { LoggingService } from '../logging/types';
+import { getConfig } from '../config';
 import { publish } from '../subscriptions';
 
 const cookies = new Cookies();
-const supportedLocales = [
-  'ar', // Arabic
-  // NOTE: 'en' is not included in this list intentionally, since it's the fallback.
-  'es-419', // Spanish, Latin American
-  'fa', // Farsi
-  'fa-ir', // Farsi, Iran
-  'fr', // French
-  'zh-cn', // Chinese, Simplified
-  'ca', // Catalan
-  'he', // Hebrew
-  'id', // Indonesian
-  'ko-kr', // Korean (Korea)
-  'pl', // Polish
-  'pt-br', // Portuguese (Brazil)
-  'ru', // Russian
-  'th', // Thai
-  'uk', // Ukrainian
-];
 const rtlLocales = [
   'ar', // Arabic
   'he', // Hebrew
@@ -34,8 +15,6 @@ const rtlLocales = [
   'ur', // Urdu (not currently supported)
 ];
 
-let config: SiteConfig | null = null;
-let loggingService: LoggingService | null = null;
 let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
 
 /**
@@ -49,13 +28,6 @@ let messages: Record<string, Record<string, string> | Record<string, MessageForm
  * @deprecated
  */
 export const intlShape = PropTypes.object;
-
-/**
- *
- * @ignore
- * @returns {LoggingService}
- */
-export const getLoggingService = () => loggingService;
 
 /**
  * @memberof module:Internationalization
@@ -127,7 +99,7 @@ export function findSupportedLocale(locale) {
  * @memberof module:Internationalization
  */
 export function getLocale(locale?: string) {
-  if (messages === null || config === null) {
+  if (messages === null) {
     throw new Error('getLocale called before configuring i18n. Call configure with messages first.');
   }
 
@@ -136,8 +108,8 @@ export function getLocale(locale?: string) {
     return findSupportedLocale(locale);
   }
   // 2. User setting in cookie
-  const cookieLangPref = cookies
-    .get(config.LANGUAGE_PREFERENCE_COOKIE_NAME);
+
+  const cookieLangPref = cookies.get(getConfig().LANGUAGE_PREFERENCE_COOKIE_NAME);
   if (cookieLangPref) {
     return findSupportedLocale(cookieLangPref.toLowerCase());
   }
@@ -213,34 +185,6 @@ export function handleRtl() {
   }
 }
 
-const messagesShape = {
-  ar: PropTypes.objectOf(PropTypes.string), // Arabic
-  en: PropTypes.objectOf(PropTypes.string),
-  'es-419': PropTypes.objectOf(PropTypes.string), // Spanish, Latin American
-  fr: PropTypes.objectOf(PropTypes.string), // French
-  'zh-cn': PropTypes.objectOf(PropTypes.string), // Chinese, Simplified
-  ca: PropTypes.objectOf(PropTypes.string), // Catalan
-  he: PropTypes.objectOf(PropTypes.string), // Hebrew
-  id: PropTypes.objectOf(PropTypes.string), // Indonesian
-  'ko-kr': PropTypes.objectOf(PropTypes.string), // Korean (Korea)
-  pl: PropTypes.objectOf(PropTypes.string), // Polish
-  'pt-br': PropTypes.objectOf(PropTypes.string), // Portuguese (Brazil)
-  ru: PropTypes.objectOf(PropTypes.string), // Russian
-  th: PropTypes.objectOf(PropTypes.string), // Thai
-  uk: PropTypes.objectOf(PropTypes.string), // Ukrainian
-};
-
-const optionsShape = {
-  config: PropTypes.object.isRequired,
-  loggingService: PropTypes.shape({
-    logError: PropTypes.func.isRequired,
-  }).isRequired,
-  messages: PropTypes.oneOfType([
-    PropTypes.shape(messagesShape),
-    PropTypes.arrayOf(PropTypes.shape(messagesShape)),
-  ]).isRequired,
-};
-
 /**
  *
  *
@@ -256,9 +200,7 @@ export function mergeMessages(newMessages) {
 }
 
 interface ConfigureI18nOptions {
-  loggingService: LoggingService,
   messages: Record<string, Record<string, string>>[] | Record<string, Record<string, string>>,
-  config: SiteConfig,
 }
 
 /**
@@ -268,30 +210,11 @@ interface ConfigureI18nOptions {
  * above), or if an expected locale is not provided.
  *
  * @param {Object} options
- * @param {LoggingService} options.loggingService
- * @param {Object} options.config
  * @param {Object} options.messages
  * @memberof module:Internationalization
  */
 export function configure(options: ConfigureI18nOptions) {
-  PropTypes.checkPropTypes(optionsShape, options, 'property', 'i18n');
-  loggingService = options.loggingService;
-  config = options.config;
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
-
-  if (config.ENVIRONMENT === EnvironmentTypes.DEVELOPMENT && messages !== undefined) {
-    Object.keys(messages).forEach((key) => {
-      if (!supportedLocales.includes(key)) {
-        console.warn(`Unexpected locale: ${key}`);
-      }
-    });
-
-    supportedLocales.forEach((key) => {
-      if (messages?.[key] === undefined) {
-        console.warn(`Missing locale: ${key}`);
-      }
-    });
-  }
 
   handleRtl();
 }

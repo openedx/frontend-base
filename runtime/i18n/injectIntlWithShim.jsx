@@ -2,7 +2,8 @@ import React from 'react';
 import { injectIntl } from 'react-intl';
 import { EnvironmentTypes } from '../../types';
 import { getConfig } from '../config';
-import { getLoggingService, intlShape } from './lib';
+import { getLoggingService } from '../logging';
+import { intlShape } from './lib';
 
 /**
  * This function wraps react-intl's injectIntl function in order to add error logging to the intl
