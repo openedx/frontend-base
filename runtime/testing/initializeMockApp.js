@@ -70,8 +70,6 @@ export default function initializeMockApp({
 
   // The i18n service configure function has no return value, since there isn't a service class.
   configureI18n({
-    config: getConfig(),
-    loggingService,
     messages,
   });
 
