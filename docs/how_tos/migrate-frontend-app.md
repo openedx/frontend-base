@@ -565,8 +565,13 @@ https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
 
 `getLanguageList` has been removed. Modules that need a list of countries should install `@cospired/i18n-iso-languages` as a dependency.
 
+`getSupportedLanguageList` now returns an array of objects containing the `name` and `code` of all the languages that have translations bundled with the app, rather than a hard-coded list.
+
 `getCountryList` has been removed.  MFEs that need a list of countries should install `i18n-iso-countries` or `countries-list` as a dependency.
 
+frontend-app-account should use the supported language list from frontend-base, rather than the hard-coded list in https://github.com/openedx/frontend-app-account/blob/master/src/account-settings/site-language/constants.js
+
+This would help it match the behavior of the footer's language dropdown.
 
 ## Removal of pubsub-js
 
