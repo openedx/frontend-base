@@ -131,8 +131,6 @@ describe('initialize', () => {
     });
     expect(configureI18n).toHaveBeenCalledWith({
       messages,
-      config,
-      loggingService: getLoggingService(),
     });
     expect(fetchAuthenticatedUser).toHaveBeenCalled();
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
@@ -312,8 +310,6 @@ describe('initialize', () => {
     });
     expect(configureI18n).toHaveBeenCalledWith({
       messages,
-      config,
-      loggingService: getLoggingService(),
     });
 
     expect(fetchAuthenticatedUser).toHaveBeenCalled();
@@ -365,8 +361,6 @@ describe('initialize', () => {
       });
       expect(configureI18n).toHaveBeenCalledWith({
         messages,
-        config,
-        loggingService: getLoggingService(),
       });
       expect(fetchAuthenticatedUser).toHaveBeenCalled();
       expect(ensureAuthenticatedUser).not.toHaveBeenCalled();

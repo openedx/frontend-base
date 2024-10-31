@@ -563,6 +563,10 @@ https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
 
 ## 30. Changes to i81n
 
+configureI18n no longer takes `config` or `loggingService` as options
+
+The `getLoggingService` export from _i18n_ has also been removed.  No one should be using that.
+
 `getLanguageList` has been removed. Modules that need a list of countries should install `@cospired/i18n-iso-languages` as a dependency.
 
 `getSupportedLanguageList` now returns an array of objects containing the `name` and `code` of all the languages that have translations bundled with the app, rather than a hard-coded list.
