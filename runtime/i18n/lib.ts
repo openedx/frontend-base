@@ -3,39 +3,6 @@ import PropTypes from 'prop-types';
 import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
 
-import '@formatjs/intl-pluralrules/polyfill';
-import '@formatjs/intl-relativetimeformat/polyfill';
-
-import '@formatjs/intl-pluralrules/locale-data/ar';
-import '@formatjs/intl-pluralrules/locale-data/ca';
-import '@formatjs/intl-pluralrules/locale-data/en';
-import '@formatjs/intl-pluralrules/locale-data/es';
-import '@formatjs/intl-pluralrules/locale-data/fr';
-import '@formatjs/intl-pluralrules/locale-data/he';
-import '@formatjs/intl-pluralrules/locale-data/id';
-import '@formatjs/intl-pluralrules/locale-data/ko';
-import '@formatjs/intl-pluralrules/locale-data/pl';
-import '@formatjs/intl-pluralrules/locale-data/pt';
-import '@formatjs/intl-pluralrules/locale-data/ru';
-import '@formatjs/intl-pluralrules/locale-data/th';
-import '@formatjs/intl-pluralrules/locale-data/uk';
-import '@formatjs/intl-pluralrules/locale-data/zh';
-
-import '@formatjs/intl-relativetimeformat/locale-data/ar';
-import '@formatjs/intl-relativetimeformat/locale-data/ca';
-import '@formatjs/intl-relativetimeformat/locale-data/en';
-import '@formatjs/intl-relativetimeformat/locale-data/es';
-import '@formatjs/intl-relativetimeformat/locale-data/fr';
-import '@formatjs/intl-relativetimeformat/locale-data/he';
-import '@formatjs/intl-relativetimeformat/locale-data/id';
-import '@formatjs/intl-relativetimeformat/locale-data/ko';
-import '@formatjs/intl-relativetimeformat/locale-data/pl';
-import '@formatjs/intl-relativetimeformat/locale-data/pt';
-import '@formatjs/intl-relativetimeformat/locale-data/ru';
-import '@formatjs/intl-relativetimeformat/locale-data/th';
-import '@formatjs/intl-relativetimeformat/locale-data/uk';
-import '@formatjs/intl-relativetimeformat/locale-data/zh';
-
 import { EnvironmentTypes, SiteConfig } from '../../types';
 import { LoggingService } from '../logging/types';
 
