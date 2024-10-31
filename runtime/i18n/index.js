@@ -112,13 +112,3 @@ export {
 export {
   default as injectIntl,
 } from './injectIntlWithShim';
-
-export {
-  getCountryList,
-  getCountryMessages,
-} from './countries';
-
-export {
-  getLanguageList,
-  getLanguageMessages,
-} from './languages';
