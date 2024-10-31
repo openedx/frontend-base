@@ -147,6 +147,27 @@ export function getLocale(locale?: string) {
   return findSupportedLocale(globalThis.navigator.language.toLowerCase());
 }
 
+export function getLocalizedLanguageName(locale) {
+  const localizedName = (new Intl.DisplayNames([locale], { type: 'language' })).of(locale);
+
+  if (localizedName === undefined) {
+    throw new Error(`Unsupported locale: ${locale}`);
+  }
+
+  return `${localizedName.charAt(0).toLocaleUpperCase(locale)}${localizedName.slice(1)}`;
+}
+
+export function getSupportedLanguageList() {
+  const locales = Object.keys(messages);
+  locales.push('en'); // 'en' is not in the messages object because it's the default.
+  locales.sort();
+
+  return locales.map((locale) => ({
+    code: locale,
+    name: getLocalizedLanguageName(locale),
+  }));
+}
+
 /**
  * Returns messages for the provided locale, or the user's preferred locale if no argument is
  * provided.
