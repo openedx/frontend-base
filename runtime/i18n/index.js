@@ -84,31 +84,31 @@
  */
 
 export {
-  createIntl,
   FormattedDate,
-  FormattedTime,
-  FormattedRelativeTime,
+  FormattedMessage,
   FormattedNumber,
   FormattedPlural,
-  FormattedMessage,
-  defineMessages,
+  FormattedRelativeTime,
+  FormattedTime,
   IntlProvider,
-  useIntl,
+  createIntl,
+  defineMessages,
+  useIntl
 } from 'react-intl';
 
 export {
-  intlShape,
-  configure,
-  getPrimaryLanguageSubtag,
-  getLocale,
-  getMessages,
-  isRtl,
-  handleRtl,
-  mergeMessages,
   LOCALE_CHANGED,
   LOCALE_TOPIC,
+  configure,
+  getLocale,
+  getMessages,
+  getPrimaryLanguageSubtag,
+  handleRtl,
+  intlShape,
+  isRtl,
+  mergeMessages,
 } from './lib';
 
 export {
-  default as injectIntl,
+  default as injectIntl
 } from './injectIntlWithShim';
