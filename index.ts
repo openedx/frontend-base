@@ -97,6 +97,7 @@ export {
   snakeCaseObject,
   subscribe,
   unsubscribe,
+  updateLocale,
   useAppEvent,
   useAuthenticatedUser,
   useConfig,

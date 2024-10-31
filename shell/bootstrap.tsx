@@ -11,9 +11,8 @@ import {
 
 import { SHELL_ID } from './data/constants';
 import { getFederationRemotes } from './data/moduleUtils';
+import messages from './i18n';
 import createRouter from './router/createRouter';
-
-const messages = [];
 
 subscribe(APP_READY, () => {
   init({

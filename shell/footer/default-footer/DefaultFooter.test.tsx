@@ -20,6 +20,7 @@ const FooterWithContext = ({ locale = 'en' }: { locale: string }) => {
       LOGO_TRADEMARK_URL: siteConfig.LOGO_TRADEMARK_URL,
       LMS_BASE_URL: siteConfig.LMS_BASE_URL,
     },
+    locale: 'en',
   }), []);
 
   return (
@@ -43,6 +44,7 @@ const FooterWithLanguageSelector = ({
       LOGO_TRADEMARK_URL: siteConfig.LOGO_TRADEMARK_URL,
       LMS_BASE_URL: siteConfig.LMS_BASE_URL,
     },
+    locale: 'en',
   }), []);
 
   return (
