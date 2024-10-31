@@ -5,6 +5,7 @@ import Cookies from 'universal-cookie';
 
 import { EnvironmentTypes, SiteConfig } from '../../types';
 import { LoggingService } from '../logging/types';
+import { publish } from '../subscriptions';
 
 const cookies = new Cookies();
 const supportedLocales = [
@@ -166,6 +167,11 @@ export function getSupportedLanguageList() {
     code: locale,
     name: getLocalizedLanguageName(locale),
   }));
+}
+
+export function updateLocale() {
+  handleRtl();
+  publish(LOCALE_CHANGED);
 }
 
 /**

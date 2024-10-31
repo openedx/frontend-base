@@ -74,6 +74,7 @@ export {
   intlShape,
   isRtl,
   mergeMessages,
+  updateLocale,
   useIntl
 } from './i18n';
 

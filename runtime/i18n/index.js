@@ -109,6 +109,7 @@ export {
   intlShape,
   isRtl,
   mergeMessages,
+  updateLocale
 } from './lib';
 
 export {
