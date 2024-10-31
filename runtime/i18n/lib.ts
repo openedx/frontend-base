@@ -7,12 +7,45 @@ import { getConfig } from '../config';
 import { publish } from '../subscriptions';
 
 const cookies = new Cookies();
+
+// This list is based on https://help.smartling.com/hc/en-us/articles/1260802028830-Right-to-left-RTL-Languages
+// There are very few resources available online outlining the locale codes for RTL languages;
+// If this list is inaccurate, we should change it.
 const rtlLocales = [
-  'ar', // Arabic
-  'he', // Hebrew
-  'fa', // Farsi (not currently supported)
-  'fa-ir', // Farsi Iran
-  'ur', // Urdu (not currently supported)
+  'ar', // Arabic (International)
+  'ar-ae', // Arabic (United Arab Emirates)
+  'ar-bh', // Arabic (Bahrain)
+  'ar-dj', // Arabic (Djibouti)
+  'ar-dz', // Arabic (Algeria)
+  'ar-eg', // Arabic (Egypt)
+  'ar-iq', // Arabic (Iraq)
+  'ar-jo', // Arabic (Jordan)
+  'ar-kw', // Arabic (Kuwait)
+  'ar-lb', // Arabic (Lebanon)
+  'ar-ly', // Arabic (Libya)
+  'ar-ma', // Arabic (Morocco)
+  'ar-om', // Arabic (Oman)
+  'ar-qa', // Arabic (Qatar)
+  'ar-sa', // Arabic (Saudi Arabia)
+  'ar-sd', // Arabic (Sudan)
+  'ar-sy', // Arabic (Syria)
+  'ar-tn', // Arabic (Tunisia)
+  'ar-ye', // Arabic (Yemen)
+  'fa', // Persian
+  'fa-af', // Dari/Persian (Afghanistan)
+  'fa-ir', // Persian (Iran)
+  'he', // Hebrew (he)
+  'he-il', // Hebrew
+  'iw', // Hebrew (iw)
+  'kd', // Kurdish (Sorani) RTL
+  'pk-pk', // Panjabi-Shahmuki (Pakistan)
+  'ps', // Pushto; Pashto
+  'ug', // Uighur; Uyghur
+  'ur', // Urdu
+  'ur-in', // Urdu (India)
+  'ur-pk', // Urdu (Pakistan)
+  'yi', // Yiddish
+  'yi-us', // Yiddish (United States)
 ];
 
 let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
