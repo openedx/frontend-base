@@ -108,7 +108,6 @@
 		"postcss-loader": "7.3.4",
 		"postcss-rtlcss": "^5.5.0",
 		"prop-types": "^15.8.1",
-		"pubsub-js": "^1.9.4",
 		"react-dev-utils": "12.0.1",
 		"react-focus-on": "^3.9.4",
 		"react-intl": "^6.6.6",

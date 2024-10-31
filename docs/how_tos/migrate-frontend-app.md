@@ -567,3 +567,16 @@ https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
 
 `getCountryList` has been removed.  MFEs that need a list of countries should install `i18n-iso-countries` or `countries-list` as a dependency.
 
+
+## Removal of pubsub-js
+
+frontend-platform used pubsub-js behind the scenes for event subscriptions/publishing.  It used it in a very rudimentary way, and the library was noisy in test suites, complaining about being re-initialized.  Because of these reasons, we've removed our dependency on pubsub-js and replaced it with a simple subscription system with a very similar API:
+
+- `subscribe(topic: string, callback: (topic: string, data?: any) => void)`
+- `publish(topic: string, data?: any)`
+- `unsubscribe(topic: string, callback: (topic: string, data?: any) => void)`
+- `clearAllSubscriptions()`
+
+The unsubscribe function as a different API than pubsub-js's unsubscribe function, taking a topic and a callback rather than an unsubscribe token.
+
+Consumers who were using the `PubSub` global variable should instead import the above functions directly from `@openedx/frontend-base`.

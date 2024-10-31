@@ -39,6 +39,7 @@ export {
   SegmentAnalyticsService,
   auth,
   camelCaseObject,
+  clearAllSubscriptions,
   configureAnalytics,
   configureAuth,
   configureI18n,
