@@ -101,11 +101,11 @@
  */
 
 import merge from 'lodash.merge';
-import 'pubsub-js';
 import {
   AppConfigTypes, ApplicationModuleConfig, ConfigurableAppConfig, EnvironmentTypes, SiteConfig
 } from '../types';
 import { CONFIG_CHANGED } from './constants';
+import { publish } from './subscriptions';
 
 let config: SiteConfig = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
@@ -199,7 +199,7 @@ export function getConfig() {
  */
 export function setConfig(newConfig: SiteConfig) {
   config = newConfig;
-  global.PubSub.publish(CONFIG_CHANGED);
+  publish(CONFIG_CHANGED);
 }
 
 /**
@@ -220,7 +220,7 @@ export function setConfig(newConfig: SiteConfig) {
  */
 export function mergeConfig(newConfig: Partial<SiteConfig>) {
   config = merge(config, newConfig);
-  global.PubSub.publish(CONFIG_CHANGED);
+  publish(CONFIG_CHANGED);
 }
 
 export function patchAppModuleConfig(appId: string, appModuleConfig: ApplicationModuleConfig) {

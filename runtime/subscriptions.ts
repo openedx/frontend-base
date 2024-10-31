@@ -17,10 +17,44 @@
  * @module PubSub
  */
 
-import PubSub from 'pubsub-js';
+// export const {
+//   subscribe,
+//   unsubscribe,
+//   publish,
+// } = PubSub;
 
-export const {
-  subscribe,
-  unsubscribe,
-  publish,
-} = PubSub;
+type CallbackFunction = (topic: string, data?: any) => void;
+
+let subscriptions: Record<string, CallbackFunction[]> = {};
+
+export function subscribe(topic: string, callback) {
+  if (subscriptions[topic] === undefined) {
+    subscriptions[topic] = [];
+  }
+  subscriptions[topic].push(callback);
+}
+
+export function publish(topic: string, data?: any) {
+  if (subscriptions[topic] === undefined) {
+    subscriptions[topic] = [];
+  }
+  subscriptions[topic].forEach(callback => {
+    if (data) {
+      callback(topic, data);
+    } else {
+      callback(topic);
+    }
+  });
+}
+
+export function unsubscribe(topic: string, callback: CallbackFunction) {
+  if (subscriptions[topic] === undefined) {
+    subscriptions[topic] = [];
+  }
+
+  subscriptions[topic] = subscriptions[topic].filter((value) => value !== callback);
+}
+
+export function clearAllSubscriptions() {
+  subscriptions = {};
+}

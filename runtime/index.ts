@@ -99,12 +99,6 @@ export {
 } from './plugins';
 
 export {
-  publish,
-  subscribe,
-  unsubscribe
-} from './pubSub';
-
-export {
   AppContext,
   AppProvider,
   AuthenticatedPageRoute,
@@ -117,6 +111,13 @@ export {
   useAuthenticatedUser,
   useConfig
 } from './react';
+
+export {
+  clearAllSubscriptions,
+  publish,
+  subscribe,
+  unsubscribe
+} from './subscriptions';
 
 export {
   initializeMockApp,

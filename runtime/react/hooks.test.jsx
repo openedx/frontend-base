@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import siteConfig from 'site.config';
 import { EnvironmentTypes } from '../../types';
 import { sendTrackEvent } from '../analytics';
@@ -82,7 +82,9 @@ describe('useAuthenticatedUser', () => {
     });
 
     afterEach(() => {
-      setAuthenticatedUser(null);
+      act(() => {
+        setAuthenticatedUser(null);
+      });
     });
 
     it('returns a User when the user exists', () => {

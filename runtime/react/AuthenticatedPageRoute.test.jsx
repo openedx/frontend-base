@@ -7,7 +7,7 @@ import { getConfig } from '../config';
 import AppContext from './AppContext';
 import AuthenticatedPageRoute from './AuthenticatedPageRoute';
 
-jest.mock('../pubSub');
+jest.mock('../subscriptions');
 jest.mock('../analytics');
 jest.mock('../auth');
 
