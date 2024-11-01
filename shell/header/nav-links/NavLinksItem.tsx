@@ -1,5 +1,6 @@
 import { NavLink } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
+
 import { getAppUrl } from '../../../runtime/routing';
 import {
   MenuItem
@@ -20,9 +21,15 @@ interface NavLinksItemProps {
 export default function NavLinksItem({ item }: NavLinksItemProps) {
   const intl = useIntl();
 
+  // If the item is falsy for whatever reason, just return null.
+  if (!item) {
+    return null;
+  }
+
   if (isReactNodeMenuItem(item)) {
     return item;
   }
+
   if (isAppMenuItem(item)) {
     const url = getAppUrl(item.appId);
     // If the app in question is not loaded, then the url may be null. If this is the case,
