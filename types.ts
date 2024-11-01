@@ -1,4 +1,4 @@
-import { ElementType, ReactElement } from 'react';
+import { ElementType, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { IndexRouteObject, NonIndexRouteObject } from 'react-router';
 
@@ -33,6 +33,7 @@ export type AppModuleRouteObject = AppModuleIndexRouteObject | AppModuleNonIndex
 export interface ApplicationModuleConfig {
   route: AppModuleRouteObject,
   header?: HeaderConfig,
+  footer?: FooterConfig,
 }
 
 export interface InternalAppConfig {
@@ -68,6 +69,7 @@ export interface OptionalSiteConfig {
   }>,
 
   header?: HeaderConfig,
+  footer?: FooterConfig,
 
   // Cookies
   ACCESS_TOKEN_COOKIE_NAME: string,
@@ -205,6 +207,35 @@ export interface UrlMenuItem extends BaseLinkMenuItem {
   url: string,
 }
 
+// Footer
+
+export interface LabeledMenu {
+  label: ReactNode,
+  links: ChildMenuItem[],
+}
+
+export interface FooterConfig {
+  logoUrl?: string,
+  logoDestinationUrl?: string | null,
+  leftLinks?: ChildMenuItem[],
+  centerLinks?: LabeledMenu[],
+  rightLinks?: ChildMenuItem[],
+  revealMenu?: LabeledMenu,
+  copyrightNotice?: ReactNode,
+}
+
+export interface ResolvedFooterConfig {
+  logoUrl: string,
+  logoDestinationUrl: string | null,
+  leftLinks: ChildMenuItem[],
+  centerLinks: LabeledMenu[],
+  rightLinks: ChildMenuItem[],
+  revealMenu?: LabeledMenu, // this can be undefined
+  copyrightNotice?: ReactNode, // this can be undefined
+}
+
+// TODO: Link Menu Items need to support 'external' links via Hyperlink.  May need to replace all
+// NavLink components with Hyperlink to have a consistent prop schema.
 /**
  * A menu item that displays as a link.
  *
