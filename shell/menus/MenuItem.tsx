@@ -12,6 +12,13 @@ interface MenuItemProps {
   linkVariant?: 'hyperlink' | 'navLink',
 }
 
+/**
+ * A MenuItem can be:
+ *
+ * - A dropdown menu
+ * - A ReactElement
+ * - A link, rendered as a Hyperlink or a NavLink component.
+ */
 export default function MenuItem({ item, linkVariant = 'hyperlink' }: MenuItemProps) {
   // If the item is falsy for whatever reason, just return null.
   if (!item) {
