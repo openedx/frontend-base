@@ -36,10 +36,10 @@ const config: ProjectSiteConfig = {
               label: 'Child Help',
               appId: 'support',
             }
-          ]
+          ],
         },
         route: {
-          path: '/child1',
+          path: 'child1',
           Component: ChildOnePage,
         }
       }
