@@ -5,7 +5,7 @@ import {
   isLinkMenuItem,
   isReactElementMenuItem
 } from './data/utils';
-import LinkItem from './LinkItem';
+import LinkMenuItem from './LinkMenuItem';
 
 interface ChildMenuItemProps {
   item: ChildMenuItemConfig,
@@ -24,7 +24,7 @@ export default function ChildMenuItem({ item, variant = 'hyperlink' }: ChildMenu
 
   if (isLinkMenuItem(item)) {
     return (
-      <LinkItem item={item} variant={variant} />
+      <LinkMenuItem item={item} variant={variant} />
     );
   }
 
