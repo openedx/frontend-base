@@ -23,7 +23,7 @@ export default function MobileLayout() {
     <>
       <div
         className={classNames(
-          'align-items-center justify-content-between',
+          'align-items-center justify-content-between pr-3',
           isMobile ? 'd-flex' : 'd-none',
         )}
       >
