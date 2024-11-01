@@ -1,9 +1,9 @@
-import { getConfig } from '../../../../runtime';
-import { getAppUrl } from '../../../../runtime/routing';
+import { getConfig } from '../../../runtime';
+import { getAppUrl } from '../../../runtime/routing';
 import {
   ConfigurableAppConfig, FooterConfig, ResolvedFooterConfig
-} from '../../../../types';
-import isConfigurableApp from '../../../data/isConfigurableApp';
+} from '../../../types';
+import isConfigurableApp from '../../data/isConfigurableApp';
 import { centerLinks, copyrightNotice, leftLinks, revealMenu, rightLinks } from '../defaults';
 
 function overrideFooterConfig(base: ResolvedFooterConfig, override: FooterConfig) {

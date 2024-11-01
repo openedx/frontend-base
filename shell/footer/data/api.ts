@@ -1,4 +1,9 @@
-import { getAuthenticatedHttpClient, getAuthenticatedUser, getConfig, updateLocale } from '../../../../runtime';
+import {
+  getAuthenticatedHttpClient,
+  getAuthenticatedUser,
+  getConfig,
+  updateLocale
+} from '../../../runtime';
 
 export async function updateSiteLanguage(locale: string) {
   const user = getAuthenticatedUser();

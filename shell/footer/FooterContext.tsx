@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import { ResolvedFooterConfig } from '../../../types';
+
+import { ResolvedFooterConfig } from '../../types';
 
 const FooterContext = createContext<ResolvedFooterConfig>({
   logoUrl: '',

@@ -1,6 +1,7 @@
 import { Hyperlink, Image } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
-import messages from '../../Shell.messages';
+
+import messages from '../Shell.messages';
 
 export default function PoweredBy() {
   const intl = useIntl();

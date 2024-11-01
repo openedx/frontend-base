@@ -5,8 +5,12 @@ import { MenuItem } from '../../../types';
 
 import { getAppUrl } from '../../../runtime/routing';
 import {
-  getItemLabel, isAppMenuItem, isDropdownMenuItem, isReactNodeMenuItem, isUrlMenuItem
-} from '../data/utils';
+  getItemLabel,
+  isAppMenuItem,
+  isDropdownMenuItem,
+  isReactNodeMenuItem,
+  isUrlMenuItem
+} from '../../menus/data/utils';
 import NavLinkDropdown from '../nav-links/NavLinkDropdown';
 
 interface AnonymousMenuItemProps {

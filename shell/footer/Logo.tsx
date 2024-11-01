@@ -1,5 +1,6 @@
 import { Hyperlink, Image } from '@openedx/paragon';
 import { useContext } from 'react';
+
 import FooterContext from './FooterContext';
 
 export default function Logo() {
