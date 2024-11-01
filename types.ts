@@ -173,64 +173,62 @@ export enum EnvironmentTypes {
 export interface HeaderConfig {
   logoUrl?: string,
   logoDestinationUrl?: string | null,
-  primaryLinks?: MenuItem[],
-  secondaryLinks?: MenuItem[],
-  anonymousLinks?: MenuItem[],
-  authenticatedLinks?: ChildMenuItem[],
+  primaryLinks?: MenuItemConfig[],
+  secondaryLinks?: MenuItemConfig[],
+  anonymousLinks?: MenuItemConfig[],
+  authenticatedLinks?: ChildMenuItemConfig[],
 }
 
 export interface ResolvedHeaderConfig {
   logoUrl: string,
   logoDestinationUrl: string | null,
-  primaryLinks: MenuItem[],
-  secondaryLinks: MenuItem[],
-  anonymousLinks: MenuItem[],
-  authenticatedLinks: ChildMenuItem[],
+  primaryLinks: MenuItemConfig[],
+  secondaryLinks: MenuItemConfig[],
+  anonymousLinks: MenuItemConfig[],
+  authenticatedLinks: ChildMenuItemConfig[],
 }
 
 export type MenuItemName = string | MessageDescriptor | ReactElement;
 
-export interface BaseLinkMenuItem {
+export interface AppMenuItemConfig {
   label: MenuItemName,
-}
-
-export interface AppMenuItem extends BaseLinkMenuItem {
   appId: string,
 }
 
-export interface DropdownMenuItem {
+export interface DropdownMenuItemConfig {
   label: MessageDescriptor | string,
-  items: ChildMenuItem[],
+  items: ChildMenuItemConfig[],
 }
 
-export interface UrlMenuItem extends BaseLinkMenuItem {
+export interface UrlMenuItemConfig {
+  label: MenuItemName,
   url: string,
 }
 
 // Footer
 
-export interface LabeledMenu {
+export interface LabeledMenuConfig {
   label: ReactNode,
-  links: ChildMenuItem[],
+  links: MenuItemConfig[],
 }
 
 export interface FooterConfig {
   logoUrl?: string,
   logoDestinationUrl?: string | null,
-  leftLinks?: ChildMenuItem[],
-  centerLinks?: LabeledMenu[],
-  rightLinks?: ChildMenuItem[],
-  revealMenu?: LabeledMenu,
+  leftLinks?: ChildMenuItemConfig[],
+  centerLinks?: LabeledMenuConfig[],
+  rightLinks?: ChildMenuItemConfig[],
+  revealMenu?: LabeledMenuConfig,
   copyrightNotice?: ReactNode,
 }
 
 export interface ResolvedFooterConfig {
   logoUrl: string,
   logoDestinationUrl: string | null,
-  leftLinks: ChildMenuItem[],
-  centerLinks: LabeledMenu[],
-  rightLinks: ChildMenuItem[],
-  revealMenu?: LabeledMenu, // this can be undefined
+  leftLinks: ChildMenuItemConfig[],
+  centerLinks: LabeledMenuConfig[],
+  rightLinks: ChildMenuItemConfig[],
+  revealMenu?: LabeledMenuConfig, // this can be undefined
   copyrightNotice?: ReactNode, // this can be undefined
 }
 
@@ -241,14 +239,14 @@ export interface ResolvedFooterConfig {
  *
  * There are two sub-types based on how the link is configured.
  *
- * * **AppMenuItem**: Uses an app ID to resolve the link URL.  Used to link directly to another app module.
- * * **UrlMenuItem**: Includes a fully-qualified URL.  Used for external links.
+ * * **AppMenuItemConfig**: Uses an app ID to resolve the link URL.  Used to link directly to another app module.
+ * * **UrlMenuItemConfig**: Includes a fully-qualified URL.  Used for external links.
  */
-export type LinkMenuItem = AppMenuItem | UrlMenuItem;
+export type LinkMenuItemConfig = AppMenuItemConfig | UrlMenuItemConfig;
 
-export type MenuItem = LinkMenuItem | DropdownMenuItem | ReactElement;
+export type ChildMenuItemConfig = LinkMenuItemConfig | ReactElement;
 
-export type ChildMenuItem = LinkMenuItem | ReactElement;
+export type MenuItemConfig = DropdownMenuItemConfig | ChildMenuItemConfig;
 
 // Plugin Types
 

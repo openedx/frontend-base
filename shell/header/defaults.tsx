@@ -1,23 +1,23 @@
-import { ChildMenuItem, MenuItem } from '../../types';
+import { ChildMenuItemConfig, MenuItemConfig } from '../../types';
 import messages from '../Shell.messages';
 import LoginButton from './anonymous-menu/LoginButton';
 import RegisterButton from './anonymous-menu/RegisterButton';
 
-export const primaryLinks: MenuItem[] = [
+export const primaryLinks: MenuItemConfig[] = [
   {
     appId: 'learner-dashboard',
     label: 'Courses',
   },
 ];
 
-export const secondaryLinks: MenuItem[] = [];
+export const secondaryLinks: MenuItemConfig[] = [];
 
-export const anonymousLinks: MenuItem[] = [
+export const anonymousLinks: MenuItemConfig[] = [
   <LoginButton key="login" />,
   <RegisterButton key="register" />
 ];
 
-export const authenticatedLinks: ChildMenuItem[] = [
+export const authenticatedLinks: ChildMenuItemConfig[] = [
   {
     appId: 'learner-dashboard',
     label: messages['header.user.menu.dashboard']
