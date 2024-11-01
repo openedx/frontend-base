@@ -8,11 +8,11 @@ import {
   getItemLabel
 } from './data/utils';
 
-interface MenuDropdownProps {
+interface DropdownMenuItemProps {
   item: DropdownMenuItemConfig,
 }
 
-export default function MenuDropdown({ item }: MenuDropdownProps) {
+export default function DropdownMenuItem({ item }: DropdownMenuItemProps) {
   const intl = useIntl();
   const dropdownLabel = getItemLabel(item, intl);
   return (

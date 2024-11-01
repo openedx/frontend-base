@@ -5,7 +5,7 @@ import ChildMenuItem from './ChildMenuItem';
 import {
   isDropdownMenuItem
 } from './data/utils';
-import MenuDropdown from './MenuDropdown';
+import DropdownMenuItem from './DropdownMenuItem';
 
 interface MenuItemProps {
   item: MenuItemConfig,
@@ -20,7 +20,7 @@ export default function MenuItem({ item, linkVariant = 'hyperlink' }: MenuItemPr
 
   if (isDropdownMenuItem(item)) {
     return (
-      <MenuDropdown item={item} />
+      <DropdownMenuItem item={item} />
     );
   }
 

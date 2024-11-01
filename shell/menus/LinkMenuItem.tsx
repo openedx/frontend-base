@@ -11,12 +11,12 @@ import {
   isUrlMenuItem
 } from './data/utils';
 
-interface LinkItemProps {
+interface LinkMenuItemProps {
   item: LinkMenuItemConfig,
   variant?: 'hyperlink' | 'navLink' | 'navDropdownItem' | 'dropdownItem',
 }
 
-export default function LinkItem({ item, variant = 'hyperlink' }: LinkItemProps) {
+export default function LinkMenuItem({ item, variant = 'hyperlink' }: LinkMenuItemProps) {
   const intl = useIntl();
   const label = getItemLabel(item, intl);
 
