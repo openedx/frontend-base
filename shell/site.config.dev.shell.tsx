@@ -1,3 +1,4 @@
+import { Button } from '@openedx/paragon';
 import { Divider } from '../runtime';
 import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
 
@@ -93,6 +94,89 @@ const config: ProjectSiteConfig = {
         appId: 'support',
       }
     ],
+  },
+  footer: {
+    centerLinks: [
+      {
+        label: 'First Column',
+        links: [
+          {
+            label: 'Link 1',
+            url: '#',
+          },
+          {
+            label: 'Link 2',
+            url: '#',
+          },
+          {
+            label: 'Link 3',
+            url: '#',
+          },
+        ],
+      },
+      {
+        label: 'Second Column',
+        links: [
+          {
+            label: 'Link 5',
+            url: '#',
+          },
+          {
+            label: 'Link 6',
+            url: '#',
+          },
+          {
+            label: 'Link 7 With A Long Label ',
+            url: '#',
+          },
+          {
+            label: 'Link 8',
+            url: '#',
+          },
+        ]
+      },
+      {
+        label: 'Third Column',
+        links: [
+          {
+            label: 'Link 9',
+            url: '#',
+          },
+          {
+            label: 'Link 10 With Another Longer Label',
+            url: '#',
+          },
+        ]
+      },
+      {
+        label: 'Fourth Column',
+        links: [
+          {
+            label: 'Link 11',
+            url: '#',
+          },
+          {
+            label: 'Link 12',
+            url: '#',
+          },
+        ]
+      }
+    ],
+    revealMenu: {
+      label: 'I Reveal Buttons',
+      links: [
+        <Button key="button-one">
+          Button One
+        </Button>,
+        <Button key="button-two">
+          Button Two
+        </Button>,
+        {
+          label: 'Link Three',
+          url: '#',
+        }
+      ]
+    },
   },
 
   APP_ID: 'shell',
