@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useContext } from 'react';
 import HeaderContext from '../HeaderContext';
-import AnonymousMenuItem from './AnonymousMenuItem';
+import NavLinksItem from '../nav-links/NavLinksItem';
 
 interface AnonymousMenuProps {
   className?: string,
@@ -15,7 +15,7 @@ export default function AnonymousMenu({ className }: AnonymousMenuProps) {
       {anonymousLinks.map((item, index) => (
         // TODO: Do something better than using the array index here.
         // eslint-disable-next-line react/no-array-index-key
-        <AnonymousMenuItem key={index} item={item} />
+        <NavLinksItem key={index} item={item} />
       ))}
     </div>
   );
