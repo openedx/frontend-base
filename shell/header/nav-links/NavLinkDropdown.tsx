@@ -6,7 +6,7 @@ import {
 import {
   getItemLabel
 } from '../../menus/data/utils';
-import NavLinkDropdownItem from './NavLinkDropdownItem';
+import DropdownItem from './DropdownItem';
 
 interface NavLinkDropdownProps {
   item: DropdownMenuItem,
@@ -20,7 +20,7 @@ export default function NavLinkDropdown({ item }: NavLinkDropdownProps) {
       {item.items.map((subItem, index) => (
         // TODO: Do something better than using the array index here.
         // eslint-disable-next-line react/no-array-index-key
-        <NavLinkDropdownItem key={index} item={subItem} />
+        <DropdownItem key={index} item={subItem} as={NavDropdown.Item} />
       ))}
     </NavDropdown>
   );

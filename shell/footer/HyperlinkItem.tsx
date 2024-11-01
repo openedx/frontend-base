@@ -12,11 +12,11 @@ import {
   isUrlMenuItem
 } from '../menus/data/utils';
 
-interface NavLinksItemProps {
+interface HyperlinkItemProps {
   item: ChildMenuItem,
 }
 
-export default function LinkGridItem({ item }: NavLinksItemProps) {
+export default function HyperlinkItem({ item }: HyperlinkItemProps) {
   const intl = useIntl();
 
   if (isReactNodeMenuItem(item)) {

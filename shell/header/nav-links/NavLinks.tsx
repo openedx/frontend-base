@@ -2,7 +2,7 @@ import { Nav } from '@openedx/paragon';
 import {
   MenuItem
 } from '../../../types';
-import NavLinksItem from './NavLinksItem';
+import NavLinkItem from './NavLinkItem';
 
 interface NavLinksProps {
   items: MenuItem[],
@@ -15,7 +15,7 @@ export default function NavLinks({ items, className }: NavLinksProps) {
       {items.map((item, index) => (
         // TODO: Do something better than using the array index here.
         // eslint-disable-next-line react/no-array-index-key
-        <NavLinksItem key={index} item={item} />
+        <NavLinkItem key={index} item={item} />
       ))}
     </Nav>
   );
