@@ -3,7 +3,7 @@ import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
 import { useContext } from 'react';
 
 import FooterContext from './FooterContext';
-import LinkRowItem from './LinkRowItem';
+import HyperlinkItem from './HyperlinkItem';
 
 export default function RevealLinks() {
   const { revealMenu } = useContext(FooterContext);
@@ -38,7 +38,7 @@ export default function RevealLinks() {
           {links.map((item, index) => (
             // TODO: Do something better than using the array index here.
             // eslint-disable-next-line react/no-array-index-key
-            <LinkRowItem key={index} item={item} />
+            <HyperlinkItem key={index} item={item} />
           ))}
         </div>
       </Collapsible.Body>

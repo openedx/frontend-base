@@ -1,22 +1,30 @@
-import { NavDropdown } from '@openedx/paragon';
+import { NavLink } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
+
 import { getAppUrl } from '../../../runtime/routing';
 import {
-  ChildMenuItem
+  MenuItem
 } from '../../../types';
 import {
   getItemLabel,
   isAppMenuItem,
+  isDropdownMenuItem,
   isReactNodeMenuItem,
   isUrlMenuItem
 } from '../../menus/data/utils';
+import NavLinkDropdown from './NavLinkDropdown';
 
-interface NavLinkDropdownItemProps {
-  item: ChildMenuItem,
+interface NavLinkItemProps {
+  item: MenuItem,
 }
 
-export default function NavLinkDropdownItem({ item }: NavLinkDropdownItemProps) {
+export default function NavLinkItem({ item }: NavLinkItemProps) {
   const intl = useIntl();
+
+  // If the item is falsy for whatever reason, just return null.
+  if (!item) {
+    return null;
+  }
 
   if (isReactNodeMenuItem(item)) {
     return item;
@@ -30,9 +38,9 @@ export default function NavLinkDropdownItem({ item }: NavLinkDropdownItemProps) 
     if (url !== null) {
       const label = getItemLabel(item, intl);
       return (
-        <NavDropdown.Item href={url}>
+        <NavLink href={url}>
           {label}
-        </NavDropdown.Item>
+        </NavLink>
       );
     }
     return null;
@@ -40,12 +48,16 @@ export default function NavLinkDropdownItem({ item }: NavLinkDropdownItemProps) 
   if (isUrlMenuItem(item)) {
     const label = getItemLabel(item, intl);
     return (
-      <NavDropdown.Item href={item.url}>
+      <NavLink href={item.url}>
         {label}
-      </NavDropdown.Item>
+      </NavLink>
     );
   }
-
+  if (isDropdownMenuItem(item)) {
+    return (
+      <NavLinkDropdown item={item} />
+    );
+  }
   // If the item is something we haven't accounted for above, we don't know
   // how to display it here.  Just return null.
   return null;
