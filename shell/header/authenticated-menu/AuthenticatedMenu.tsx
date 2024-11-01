@@ -6,8 +6,8 @@ import {
   useAuthenticatedUser
 } from '../../../runtime';
 
+import ChildMenuItem from '../../menus/ChildMenuItem';
 import HeaderContext from '../HeaderContext';
-import DropdownItem from '../nav-links/DropdownItem';
 
 interface AuthenticatedMenuProps {
   className?: string,
@@ -30,7 +30,7 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
       {authenticatedLinks.map((item, index) => (
         // TODO: Do something better than using the array index here.
         // eslint-disable-next-line react/no-array-index-key
-        <DropdownItem key={index} item={item} />
+        <ChildMenuItem key={index} item={item} variant="dropdownItem" />
       ))}
     </DropdownButton>
   );
