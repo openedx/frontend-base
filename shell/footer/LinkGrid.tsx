@@ -1,6 +1,6 @@
 // TODO: Do something better than using the array index here.
 /* eslint-disable react/no-array-index-key */
-import { LabeledMenu } from '../../../types';
+import { LabeledMenu } from '../../types';
 import LinkGridItem from './LinkGridItem';
 
 interface LinkGridProps {

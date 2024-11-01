@@ -1,5 +1,6 @@
 import { Hyperlink } from '@openedx/paragon';
-import { useConfig } from '../../../runtime';
+
+import { useConfig } from '../../runtime';
 
 interface CopyrightNoticeProps {
   title?: string,

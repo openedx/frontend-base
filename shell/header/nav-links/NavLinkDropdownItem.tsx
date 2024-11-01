@@ -5,8 +5,11 @@ import {
   ChildMenuItem
 } from '../../../types';
 import {
-  getItemLabel, isAppMenuItem, isReactNodeMenuItem, isUrlMenuItem
-} from '../data/utils';
+  getItemLabel,
+  isAppMenuItem,
+  isReactNodeMenuItem,
+  isUrlMenuItem
+} from '../../menus/data/utils';
 
 interface NavLinkDropdownItemProps {
   item: ChildMenuItem,

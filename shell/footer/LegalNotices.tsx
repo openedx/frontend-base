@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useIntl } from 'react-intl';
 
-import messages from '../../Shell.messages';
+import messages from '../Shell.messages';
 import FooterContext from './FooterContext';
 
 export default function LegalNotices() {

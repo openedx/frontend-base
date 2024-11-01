@@ -1,6 +1,7 @@
 import { Button, Collapsible } from '@openedx/paragon';
 import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
 import { useContext } from 'react';
+
 import FooterContext from './FooterContext';
 import LinkRowItem from './LinkRowItem';
 
