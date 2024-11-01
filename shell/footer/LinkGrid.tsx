@@ -1,10 +1,10 @@
 // TODO: Do something better than using the array index here.
 /* eslint-disable react/no-array-index-key */
-import { LabeledMenu } from '../../types';
-import HyperlinkItem from './HyperlinkItem';
+import { LabeledMenuConfig } from '../../types';
+import MenuItem from '../menus/MenuItem';
 
 interface LinkGridProps {
-  items: LabeledMenu[],
+  items: LabeledMenuConfig[],
 }
 export default function LinkGrid({ items }: LinkGridProps) {
   return (
@@ -13,7 +13,7 @@ export default function LinkGrid({ items }: LinkGridProps) {
         <div key={subItemsIndex} className="d-flex flex-grow-1 flex-column gap-2 small">
           <div className="mb-1 font-weight-bold">{menu.label}</div>
           {menu.links.map((item, index) => (
-            <HyperlinkItem key={index} item={item} />
+            <MenuItem key={index} item={item} />
           ))}
         </div>
       ))}

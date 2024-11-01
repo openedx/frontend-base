@@ -1,16 +1,16 @@
-import { ChildMenuItem, LabeledMenu } from '../../types';
+import { ChildMenuItemConfig, LabeledMenuConfig } from '../../types';
 
 import CopyrightNotice from './CopyrightNotice';
 import LanguageMenu from './LanguageMenu';
 import Logo from './Logo';
 
-export const rightLinks: ChildMenuItem[] = [
+export const rightLinks: ChildMenuItemConfig[] = [
   <LanguageMenu key="language-menu" />,
 ];
 
-export const centerLinks: LabeledMenu[] = [];
+export const centerLinks: LabeledMenuConfig[] = [];
 
-export const leftLinks: ChildMenuItem[] = [
+export const leftLinks: ChildMenuItemConfig[] = [
   <Logo key="logo" />
 ];
 
