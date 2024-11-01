@@ -156,19 +156,38 @@ export interface User {
   avatar: string,
 }
 
-export enum FooterTypes {
-  DEFAULT = 'default',
-  STUDIO = 'studio',
-  NONE = 'none',
-}
-
 export enum EnvironmentTypes {
   PRODUCTION = 'production',
   DEVELOPMENT = 'development',
   TEST = 'test',
 }
 
-// Header Types
+// Menu Items
+
+export type MenuItemName = string | MessageDescriptor | ReactElement;
+
+export interface AppMenuItemConfig {
+  label: MenuItemName,
+  appId: string,
+}
+
+export interface DropdownMenuItemConfig {
+  label: MessageDescriptor | string,
+  items: ChildMenuItemConfig[],
+}
+
+export interface UrlMenuItemConfig {
+  label: MenuItemName,
+  url: string,
+}
+
+export type LinkMenuItemConfig = AppMenuItemConfig | UrlMenuItemConfig;
+
+export type ChildMenuItemConfig = LinkMenuItemConfig | ReactElement;
+
+export type MenuItemConfig = DropdownMenuItemConfig | ChildMenuItemConfig;
+
+// Header
 
 export interface HeaderConfig {
   logoUrl?: string,
@@ -186,23 +205,6 @@ export interface ResolvedHeaderConfig {
   secondaryLinks: MenuItemConfig[],
   anonymousLinks: MenuItemConfig[],
   authenticatedLinks: ChildMenuItemConfig[],
-}
-
-export type MenuItemName = string | MessageDescriptor | ReactElement;
-
-export interface AppMenuItemConfig {
-  label: MenuItemName,
-  appId: string,
-}
-
-export interface DropdownMenuItemConfig {
-  label: MessageDescriptor | string,
-  items: ChildMenuItemConfig[],
-}
-
-export interface UrlMenuItemConfig {
-  label: MenuItemName,
-  url: string,
 }
 
 // Footer
@@ -231,22 +233,6 @@ export interface ResolvedFooterConfig {
   revealMenu?: LabeledMenuConfig, // this can be undefined
   copyrightNotice?: ReactNode, // this can be undefined
 }
-
-// TODO: Link Menu Items need to support 'external' links via Hyperlink.  May need to replace all
-// NavLink components with Hyperlink to have a consistent prop schema.
-/**
- * A menu item that displays as a link.
- *
- * There are two sub-types based on how the link is configured.
- *
- * * **AppMenuItemConfig**: Uses an app ID to resolve the link URL.  Used to link directly to another app module.
- * * **UrlMenuItemConfig**: Includes a fully-qualified URL.  Used for external links.
- */
-export type LinkMenuItemConfig = AppMenuItemConfig | UrlMenuItemConfig;
-
-export type ChildMenuItemConfig = LinkMenuItemConfig | ReactElement;
-
-export type MenuItemConfig = DropdownMenuItemConfig | ChildMenuItemConfig;
 
 // Plugin Types
 

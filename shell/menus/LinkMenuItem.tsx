@@ -27,9 +27,8 @@ export default function LinkMenuItem({ item, variant = 'hyperlink' }: LinkMenuIt
     url = item.url;
   }
 
-  // If the app in question is not loaded, then the url may be null. If this is the case,
-  // we just don't bother to try to show the link.  This helps us keep configuration logic
-  // simpler.
+  // The URL will only be null if the item is an "app" menu item, and if the app is not loaded.
+  // We automatically hide the link if this is the case.
   if (url === null) {
     return null;
   }
@@ -60,7 +59,6 @@ export default function LinkMenuItem({ item, variant = 'hyperlink' }: LinkMenuIt
     );
   }
 
-  // If the item is something we haven't accounted for above, we don't know
-  // how to display it here.  Just return null.
+  // Just return null if the item is something we haven't accounted for above.
   return null;
 }
