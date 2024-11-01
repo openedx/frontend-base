@@ -4,7 +4,7 @@ import {
   AppProvider,
   PluginSlot
 } from '../runtime';
-import Footer from './footer/new-footer/Footer';
+import Footer from './footer/Footer';
 import Header from './header/Header';
 
 export default function Shell() {

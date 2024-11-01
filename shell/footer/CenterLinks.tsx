@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+
 import FooterContext from './FooterContext';
 import LinkGrid from './LinkGrid';
 

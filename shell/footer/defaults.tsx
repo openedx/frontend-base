@@ -1,4 +1,5 @@
-import { ChildMenuItem, LabeledMenu } from '../../../types';
+import { ChildMenuItem, LabeledMenu } from '../../types';
+
 import CopyrightNotice from './CopyrightNotice';
 import LanguageMenu from './LanguageMenu';
 import Logo from './Logo';

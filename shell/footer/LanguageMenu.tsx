@@ -5,7 +5,7 @@ import {
   AppContext,
   getLocalizedLanguageName,
   getSupportedLanguageList
-} from '../../../runtime';
+} from '../../runtime';
 
 import LanguageMenuItem from './LanguageMenuItem';
 

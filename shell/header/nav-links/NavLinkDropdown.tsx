@@ -5,7 +5,7 @@ import {
 } from '../../../types';
 import {
   getItemLabel
-} from '../data/utils';
+} from '../../menus/data/utils';
 import NavLinkDropdownItem from './NavLinkDropdownItem';
 
 interface NavLinkDropdownProps {

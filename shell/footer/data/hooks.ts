@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ResolvedFooterConfig } from '../../../../types';
-import { useActiveAppId } from '../../../data/hooks';
+import { ResolvedFooterConfig } from '../../../types';
+import { useActiveAppId } from '../../data/hooks';
 import { resolveFooterConfig } from './utils';
 
 export default function useResolvedFooterConfig() {

@@ -11,7 +11,7 @@ import {
   isAppMenuItem,
   isReactNodeMenuItem,
   isUrlMenuItem
-} from '../data/utils';
+} from '../../menus/data/utils';
 
 interface AuthenticatedMenuItemProps {
   item: MenuItem,

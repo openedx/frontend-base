@@ -1,15 +1,16 @@
 import { Hyperlink } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
-import { getAppUrl } from '../../../runtime/routing';
+
+import { getAppUrl } from '../../runtime/routing';
 import {
   ChildMenuItem
-} from '../../../types';
+} from '../../types';
 import {
   getItemLabel,
   isAppMenuItem,
   isReactNodeMenuItem,
   isUrlMenuItem
-} from '../../header/data/utils';
+} from '../menus/data/utils';
 
 interface LinkRowItemProps {
   item: ChildMenuItem,
