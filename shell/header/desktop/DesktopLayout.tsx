@@ -14,7 +14,7 @@ export default function DesktopLayout() {
 
   return (
     <div className={classNames(
-      'align-items-center justify-content-between',
+      'align-items-center justify-content-between px-3',
       isMobile ? 'd-none' : 'd-flex'
     )}
     >
