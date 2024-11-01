@@ -44,7 +44,12 @@ const messages = defineMessages({
   footerPoweredBy: {
     id: 'footer.powered.by',
     defaultMessage: 'Powered by Open edX',
-    description: 'Alt text for the \'Powered by Open edX\' logo displayed in the footer',
+    description: 'Alt text for the \'Powered by Open edX\' logo displayed in the footer.',
+  },
+  footerTrademarkNotice: {
+    id: 'footer.trademark.notice',
+    defaultMessage: 'edX and Open edX are registered trademarks of edX LLC.',
+    description: 'A legal notice that "edX LLC" owns the trademarks on "edX" and "Open edX".  Please do not translate these three proper names.'
   }
 });
 
