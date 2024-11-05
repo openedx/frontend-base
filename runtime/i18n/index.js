@@ -93,7 +93,7 @@ export {
   IntlProvider,
   createIntl,
   defineMessages,
-  useIntl
+  useIntl,
 } from 'react-intl';
 
 export {

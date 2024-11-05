@@ -1,4 +1,5 @@
 import { RouteObject } from 'react-router';
+import { mergeMessages } from '../../runtime';
 import { patchAppModuleConfig } from '../../runtime/config';
 import { FederatedAppConfig } from '../../types';
 import { SHELL_ID } from '../data/constants';
@@ -29,6 +30,7 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
       patchAppIdIntoRouteHandle(missingAppId, moduleConfig.route);
       patch(SHELL_ID, [moduleConfig.route]);
       patchAppModuleConfig(missingAppId, moduleConfig);
+      mergeMessages(moduleConfig.messages);
     } else {
       // TODO: What do we do if it doesn't work?
       console.log('uhoh, no module config.');

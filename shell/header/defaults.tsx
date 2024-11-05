@@ -5,7 +5,7 @@ import RegisterButton from './anonymous-menu/RegisterButton';
 
 export const primaryLinks: MenuItemConfig[] = [
   {
-    appId: 'learner-dashboard',
+    appId: 'learnerDashboard',
     label: 'Courses',
   },
 ];
@@ -19,7 +19,7 @@ export const anonymousLinks: MenuItemConfig[] = [
 
 export const authenticatedLinks: ChildMenuItemConfig[] = [
   {
-    appId: 'learner-dashboard',
+    appId: 'learnerDashboard',
     label: messages['header.user.menu.dashboard']
   },
   {
