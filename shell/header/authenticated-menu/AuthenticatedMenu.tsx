@@ -27,10 +27,8 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
 
   return (
     <DropdownButton size="sm" id="user-nav-dropdown" title={title} variant="outline-primary" className={className}>
-      {authenticatedLinks.map((item, index) => (
-        // TODO: Do something better than using the array index here.
-        // eslint-disable-next-line react/no-array-index-key
-        <ChildMenuItem key={index} item={item} variant="dropdownItem" />
+      {authenticatedLinks.map((item) => (
+        <ChildMenuItem key={item.id} item={item} variant="dropdownItem" />
       ))}
     </DropdownButton>
   );

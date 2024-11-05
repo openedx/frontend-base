@@ -17,10 +17,8 @@ export default function DropdownMenuItem({ item }: DropdownMenuItemProps) {
   const dropdownLabel = getItemLabel(item, intl);
   return (
     <NavDropdown key={dropdownLabel} title={dropdownLabel} id={`${dropdownLabel}-dropdown`}>
-      {item.items.map((subItem, index) => (
-        // TODO: Do something better than using the array index here.
-        // eslint-disable-next-line react/no-array-index-key
-        <ChildMenuItem key={index} item={subItem} variant="navDropdownItem" />
+      {item.items.map((subItem) => (
+        <ChildMenuItem key={subItem.id} item={subItem} variant="navDropdownItem" />
       ))}
     </NavDropdown>
   );

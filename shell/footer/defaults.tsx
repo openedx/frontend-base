@@ -1,17 +1,22 @@
 import { ChildMenuItemConfig, LabeledMenuConfig } from '../../types';
+import { createComponentMenuItem } from '../menus/data/configHelpers';
 
 import CopyrightNotice from './CopyrightNotice';
 import LanguageMenu from './LanguageMenu';
 import Logo from './Logo';
 
 export const rightLinks: ChildMenuItemConfig[] = [
-  <LanguageMenu key="language-menu" />,
+  createComponentMenuItem(
+    <LanguageMenu />,
+  )
 ];
 
 export const centerLinks: LabeledMenuConfig[] = [];
 
 export const leftLinks: ChildMenuItemConfig[] = [
-  <Logo key="logo" />
+  createComponentMenuItem(
+    <Logo />
+  )
 ];
 
 export const revealMenu = undefined;

@@ -1,20 +1,15 @@
 import { primaryLinks } from '../../header/defaults';
+import { createAppMenuItem, createUrlMenuItem } from '../../menus/data/configHelpers';
 import ModuleOnePage from './ModuleOnePage';
 
 const config = {
   header: {
     primaryLinks: [
-      {
-        label: 'Child Link',
-        url: '#'
-      },
+      createUrlMenuItem('Child Link', '#'),
       ...primaryLinks,
     ],
     secondaryLinks: [
-      {
-        label: 'Child Help',
-        appId: 'support',
-      }
+      createAppMenuItem('Child Help', 'support'),
     ],
   },
   route: {

@@ -2,8 +2,8 @@ import {
   ChildMenuItemConfig
 } from '../../types';
 import {
-  isLinkMenuItem,
-  isReactElementMenuItem
+  isComponentMenuItem,
+  isLinkMenuItem
 } from './data/utils';
 import LinkMenuItem from './LinkMenuItem';
 
@@ -18,8 +18,8 @@ export default function ChildMenuItem({ item, variant = 'hyperlink' }: ChildMenu
     return null;
   }
 
-  if (isReactElementMenuItem(item)) {
-    return item;
+  if (isComponentMenuItem(item)) {
+    return item.component;
   }
 
   if (isLinkMenuItem(item)) {

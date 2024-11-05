@@ -28,9 +28,9 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
     const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.libraryId);
     if (moduleConfig) {
       patchAppIdIntoRouteHandle(missingAppId, moduleConfig.route);
-      patch(SHELL_ID, [moduleConfig.route]);
       patchAppModuleConfig(missingAppId, moduleConfig);
       mergeMessages(moduleConfig.messages);
+      patch(SHELL_ID, [moduleConfig.route]);
     } else {
       // TODO: What do we do if it doesn't work?
       console.log('uhoh, no module config.');
