@@ -15,17 +15,16 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
   const federatedModules = getFederatedModules();
   let missingModule: FederatedAppConfig | null = null;
   let missingAppId: string | null = null;
-  const entries = Object.entries(federatedModules);
-  for (const [appId, federatedModule] of entries) {
+  for (const federatedModule of federatedModules) {
     if (path.startsWith(federatedModule.path)) {
       missingModule = federatedModule;
-      missingAppId = appId;
+      missingAppId = federatedModule.id;
       break;
     }
   }
 
   if (missingModule && missingAppId) {
-    const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.libraryId);
+    const moduleConfig = await loadModuleConfig(missingModule.federation.moduleId, missingModule.federation.libraryId);
     if (moduleConfig) {
       patchAppIdIntoRouteHandle(missingAppId, moduleConfig.route);
       patchAppModuleConfig(missingAppId, moduleConfig);

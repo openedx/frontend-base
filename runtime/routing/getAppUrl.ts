@@ -1,12 +1,9 @@
 import { AppConfigTypes } from '../../types';
-import { getConfig } from '../config';
-import isValidApp from './isValidApp';
+import getApp from './getApp';
 
 export default function getAppUrl(appId: string) {
-  const { apps } = getConfig();
-  const app = apps[appId];
-
-  if (!isValidApp(appId)) {
+  const app = getApp(appId);
+  if (app == null) {
     return null;
   }
 

@@ -1,8 +1,9 @@
+import { ApplicationModuleConfig } from '../../../types';
 import { primaryLinks } from '../../header/defaults';
 import { createAppMenuItem, createUrlMenuItem } from '../../menus/data/configHelpers';
 import ModuleOnePage from './ModuleOnePage';
 
-const config = {
+const config: ApplicationModuleConfig = {
   header: {
     primaryLinks: [
       createUrlMenuItem('Child Link', '#'),
