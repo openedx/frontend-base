@@ -1,7 +1,7 @@
 import { Button } from '@openedx/paragon';
 
-import { Divider } from '../runtime';
-import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
+import { createExternalAppConfig, createInternalAppConfig, Divider } from '../runtime';
+import { EnvironmentTypes, ProjectSiteConfig } from '../types';
 import CoursesLink from './dev-project/header/CoursesLink';
 import homeConfig from './dev-project/home';
 import learnerDashboardConfig from './dev-project/learner-dashboard';
@@ -17,28 +17,12 @@ import {
 
 const config: ProjectSiteConfig = {
   apps: {
-    home: {
-      type: AppConfigTypes.INTERNAL,
-      config: homeConfig,
-    },
-    moduleOne: {
-      type: AppConfigTypes.INTERNAL,
-      config: moduleOneConfig,
-    },
-    learnerDashboard: {
-      type: AppConfigTypes.INTERNAL,
-      config: learnerDashboardConfig,
-    },
-    support: {
-      type: AppConfigTypes.EXTERNAL,
-      url: 'https://local.openedx.io:8000/support',
-    },
-    logout: {
-      type: AppConfigTypes.EXTERNAL,
-      url: 'http://local.openedx.io:8000/logout',
-    }
+    home: createInternalAppConfig(homeConfig),
+    moduleOne: createInternalAppConfig(moduleOneConfig),
+    learnerDashboard: createInternalAppConfig(learnerDashboardConfig),
+    support: createExternalAppConfig('https://local.openedx.io:8000/support'),
+    logout: createExternalAppConfig('http://local.openedx.io:8000/logout'),
   },
-
   header: {
     primaryLinks: [
       createAppMenuItem(<CoursesLink />, 'learnerDashboard'),
@@ -76,12 +60,8 @@ const config: ProjectSiteConfig = {
       ]),
     ],
     revealMenu: createLabeledMenu('I Reveal Buttons', [
-      createComponentMenuItem(
-        <Button>Button One</Button>,
-      ),
-      createComponentMenuItem(
-        <Button>Button Two</Button>
-      ),
+      createComponentMenuItem(<Button>Button One</Button>),
+      createComponentMenuItem(<Button>Button Two</Button>),
       createUrlMenuItem('Link Three', '#'),
     ]),
   },
