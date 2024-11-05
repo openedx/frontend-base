@@ -102,7 +102,7 @@
 
 import merge from 'lodash.merge';
 import {
-  AppConfigTypes, ApplicationModuleConfig, ConfigurableAppConfig, EnvironmentTypes, SiteConfig
+  AppConfigTypes, ApplicationModuleConfig, ConfigurableAppConfig, EnvironmentTypes, ExternalAppConfig, FederatedAppConfig, InternalAppConfig, SiteConfig
 } from '../types';
 import { CONFIG_CHANGED } from './constants';
 import { publish } from './subscriptions';
@@ -274,3 +274,27 @@ export function patchAppModuleConfig(appId: string, appModuleConfig: Application
  * @property {string} APP_ID
  * @property {string} SUPPORT_URL
  */
+
+export function createInternalAppConfig(config: ApplicationModuleConfig): InternalAppConfig {
+  return {
+    type: AppConfigTypes.INTERNAL,
+    config,
+  };
+}
+
+export function createExternalAppConfig(url: string): ExternalAppConfig {
+  return {
+    type: AppConfigTypes.EXTERNAL,
+    url,
+  };
+}
+
+export function createFederatedAppConfig(moduleId: string, libraryId: string, remoteUrl: string, path: string): FederatedAppConfig {
+  return {
+    type: AppConfigTypes.FEDERATED,
+    moduleId,
+    libraryId,
+    remoteUrl,
+    path,
+  };
+}
