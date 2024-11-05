@@ -16,13 +16,13 @@ import {
 } from './menus/data/configHelpers';
 
 const config: ProjectSiteConfig = {
-  apps: {
-    home: createInternalAppConfig(homeConfig),
-    moduleOne: createInternalAppConfig(moduleOneConfig),
-    learnerDashboard: createInternalAppConfig(learnerDashboardConfig),
-    support: createExternalAppConfig('https://local.openedx.io:8000/support'),
-    logout: createExternalAppConfig('http://local.openedx.io:8000/logout'),
-  },
+  apps: [
+    createInternalAppConfig('home', homeConfig),
+    createInternalAppConfig('moduleOne', moduleOneConfig),
+    createInternalAppConfig('learnerDashboard', learnerDashboardConfig),
+    createExternalAppConfig('support', 'https://local.openedx.io:8000/support'),
+    createExternalAppConfig('logout', 'http://local.openedx.io:8000/logout'),
+  ],
   header: {
     primaryLinks: [
       createAppMenuItem(<CoursesLink />, 'learnerDashboard'),

@@ -38,16 +38,20 @@ export interface ApplicationModuleConfig {
 }
 
 export interface InternalAppConfig {
+  id: string,
   type: AppConfigTypes.INTERNAL,
   config: ApplicationModuleConfig,
   path?: string,
 }
 
 export interface FederatedAppConfig {
+  id: string,
   type: AppConfigTypes.FEDERATED,
-  libraryId: string,
-  remoteUrl: string,
-  moduleId: string,
+  federation: {
+    libraryId: string,
+    moduleId: string,
+    remoteUrl: string,
+  },
   path: string,
 }
 
@@ -56,6 +60,7 @@ export interface HydratedFederatedAppConfig extends FederatedAppConfig {
 }
 
 export interface ExternalAppConfig {
+  id: string,
   type: AppConfigTypes.EXTERNAL,
   url: string,
 }
@@ -109,10 +114,8 @@ export interface OptionalSiteConfig {
   custom: Record<string, any>,
 }
 
-export type AppsConfig = Record<string, AppConfig>;
-
 export interface RequiredSiteConfig {
-  apps: AppsConfig,
+  apps: AppConfig[],
 
   APP_ID: string,
   BASE_URL: string,

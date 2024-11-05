@@ -134,7 +134,7 @@ let config: SiteConfig = {
   ECOMMERCE_BASE_URL: null,
   PUBLISHER_BASE_URL: null,
 
-  apps: {},
+  apps: [],
   pluginSlots: {},
   custom: {},
 
@@ -275,26 +275,32 @@ export function patchAppModuleConfig(appId: string, appModuleConfig: Application
  * @property {string} SUPPORT_URL
  */
 
-export function createInternalAppConfig(config: ApplicationModuleConfig): InternalAppConfig {
+export function createInternalAppConfig(id: string, config: ApplicationModuleConfig, path?: string): InternalAppConfig {
   return {
+    id,
     type: AppConfigTypes.INTERNAL,
+    path,
     config,
   };
 }
 
-export function createExternalAppConfig(url: string): ExternalAppConfig {
+export function createExternalAppConfig(id: string, url: string): ExternalAppConfig {
   return {
+    id,
     type: AppConfigTypes.EXTERNAL,
     url,
   };
 }
 
-export function createFederatedAppConfig(moduleId: string, libraryId: string, remoteUrl: string, path: string): FederatedAppConfig {
+export function createFederatedAppConfig(id: string, moduleId: string, libraryId: string, remoteUrl: string, path: string): FederatedAppConfig {
   return {
+    id,
     type: AppConfigTypes.FEDERATED,
-    moduleId,
-    libraryId,
-    remoteUrl,
     path,
+    federation: {
+      libraryId,
+      moduleId,
+      remoteUrl,
+    },
   };
 }

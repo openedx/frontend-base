@@ -1,10 +1,11 @@
-import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
+import { EnvironmentTypes, ProjectSiteConfig } from '../types';
+import { createExternalAppConfig, createFederatedAppConfig, createInternalAppConfig } from './config';
 
 const config: ProjectSiteConfig = {
-  apps: {
-    'test-app-1': {
-      type: AppConfigTypes.INTERNAL,
-      config: {
+  apps: [
+    createInternalAppConfig(
+      'test-app-1',
+      {
         route: {
           path: '/app1',
           element: (
@@ -12,31 +13,21 @@ const config: ProjectSiteConfig = {
           )
         }
       }
-    },
-    'test-app-2': {
-      type: AppConfigTypes.INTERNAL,
-      path: '/overridePathApp2',
-      config: {
+    ),
+    createInternalAppConfig(
+      'test-app-2',
+      {
         route: {
           path: '/app2',
           element: (
             <div>Test App 2</div>
           )
         }
-      }
-    },
-    'test-app-3': {
-      type: AppConfigTypes.FEDERATED,
-      path: '/app3',
-      libraryId: 'testLibrary',
-      moduleId: 'TestApp3',
-      remoteUrl: 'http://localhost/testLibrary/remoteEntry.js'
-    },
-    'test-app-4': {
-      type: AppConfigTypes.EXTERNAL,
-      url: 'http://localhost/testApp4',
-    }
-  },
+      },
+      '/overridePathApp2'),
+    createFederatedAppConfig('test-app-3', 'TestApp3', 'testLibrary', 'http://localhost/testLibrary/remoteEntry.js', '/app3'),
+    createExternalAppConfig('test-app-4', 'http://localhost/testApp4'),
+  ],
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
