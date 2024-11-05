@@ -1,4 +1,4 @@
-import { isValidElement, ReactElement, ReactNode } from 'react';
+import { isValidElement, ReactNode } from 'react';
 import { IntlShape, MessageDescriptor } from 'react-intl';
 
 import {
@@ -32,8 +32,8 @@ export function isUrlMenuItem(item: MenuItemConfig): item is UrlMenuItemConfig {
   return item && typeof item === 'object' && 'url' in item;
 }
 
-export function isReactElementMenuItem(item: LinkMenuItemConfig | DropdownMenuItemConfig | ReactElement): item is ReactElement {
-  return isValidElement(item);
+export function isComponentMenuItem(item: MenuItemConfig) {
+  return item && typeof item === 'object' && 'component' in item;
 }
 
 export function isDropdownMenuItem(item: MenuItemConfig): item is DropdownMenuItemConfig {

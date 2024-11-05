@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { Divider } from '../../../runtime';
+import { createComponentMenuItem } from '../../menus/data/configHelpers';
 import HeaderContext from '../HeaderContext';
 import NavLinks from '../nav-links';
 
@@ -11,7 +12,7 @@ export default function MobileNavLinks() {
   ];
 
   if (primaryLinks.length > 0 && secondaryLinks.length > 0) {
-    allLinks.push(<Divider />);
+    allLinks.push(createComponentMenuItem(<Divider />));
   }
 
   allLinks.push(...secondaryLinks);

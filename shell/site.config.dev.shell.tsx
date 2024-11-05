@@ -1,12 +1,19 @@
 import { Button } from '@openedx/paragon';
+
 import { Divider } from '../runtime';
 import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
-
 import CoursesLink from './dev-project/header/CoursesLink';
 import homeConfig from './dev-project/home';
 import learnerDashboardConfig from './dev-project/learner-dashboard';
 import moduleOneConfig from './dev-project/module-one';
 import './index.scss';
+import {
+  createAppMenuItem,
+  createComponentMenuItem,
+  createDropdownMenuItem,
+  createLabeledMenu,
+  createUrlMenuItem
+} from './menus/data/configHelpers';
 
 const config: ProjectSiteConfig = {
   apps: {
@@ -34,118 +41,49 @@ const config: ProjectSiteConfig = {
 
   header: {
     primaryLinks: [
-      {
-        label: (<CoursesLink />),
-        appId: 'learnerDashboard',
-      },
-      {
-        label: 'Other',
-        url: '#',
-      },
-      {
-        label: 'Dropdown',
-        items: [
-          {
-            label: 'Item #1',
-            url: '#',
-          },
-          <Divider key="divider" />,
-          {
-            label: 'Item #2',
-            url: '#',
-          },
-        ]
-      }
+      createAppMenuItem(<CoursesLink />, 'learnerDashboard'),
+      createUrlMenuItem('Other', '#'),
+      createDropdownMenuItem('Dropdown', [
+        createUrlMenuItem('Item #1', '#'),
+        createComponentMenuItem(<Divider />),
+        createUrlMenuItem('Item #2', '#'),
+      ]),
     ],
     secondaryLinks: [
-      {
-        label: 'Help',
-        appId: 'support',
-      }
+      createAppMenuItem('Help', 'support'),
     ],
   },
   footer: {
     centerLinks: [
-      {
-        label: 'First Column',
-        links: [
-          {
-            label: 'Link 1',
-            url: '#',
-          },
-          {
-            label: 'Link 2',
-            url: '#',
-          },
-          {
-            label: 'Link 3',
-            url: '#',
-          },
-        ],
-      },
-      {
-        label: 'Second Column',
-        links: [
-          {
-            label: 'Link 5',
-            url: '#',
-          },
-          {
-            label: 'Link 6',
-            url: '#',
-          },
-          {
-            label: 'Link 7 With A Long Label ',
-            url: '#',
-          },
-          {
-            label: 'Link 8',
-            url: '#',
-          },
-        ]
-      },
-      {
-        label: 'Third Column',
-        links: [
-          {
-            label: 'Link 9',
-            url: '#',
-          },
-          {
-            label: 'Link 10 With Another Longer Label',
-            url: '#',
-          },
-        ]
-      },
-      {
-        label: 'Fourth Column',
-        links: [
-          {
-            label: 'Link 11',
-            url: '#',
-          },
-          {
-            label: 'Link 12',
-            url: '#',
-          },
-        ]
-      }
+      createLabeledMenu('First Column', [
+        createUrlMenuItem('Link 1', '#'),
+        createUrlMenuItem('Link 2', '#'),
+        createUrlMenuItem('Link 3', '#'),
+      ]),
+      createLabeledMenu('Second Column', [
+        createUrlMenuItem('Link 4', '#'),
+        createUrlMenuItem('Link 5', '#'),
+        createUrlMenuItem('Link 6 With A Long Label', '#'),
+        createUrlMenuItem('Link 7', '#'),
+      ]),
+      createLabeledMenu('Third Column', [
+        createUrlMenuItem('Link 8', '#'),
+        createUrlMenuItem('Link 9 With Another Longer Label', '#'),
+      ]),
+      createLabeledMenu('Fourth Column', [
+        createUrlMenuItem('Link 10', '#'),
+        createUrlMenuItem('Link 11', '#'),
+      ]),
     ],
-    revealMenu: {
-      label: 'I Reveal Buttons',
-      links: [
-        <Button key="button-one">
-          Button One
-        </Button>,
-        <Button key="button-two">
-          Button Two
-        </Button>,
-        {
-          label: 'Link Three',
-          url: '#',
-        }
-      ]
-    },
+    revealMenu: createLabeledMenu('I Reveal Buttons', [
+      createComponentMenuItem(
+        <Button>Button One</Button>,
+      ),
+      createComponentMenuItem(
+        <Button>Button Two</Button>
+      ),
+      createUrlMenuItem('Link Three', '#'),
+    ]),
   },
 
   APP_ID: 'shell',
