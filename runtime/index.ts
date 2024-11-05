@@ -32,6 +32,9 @@ export {
 } from './auth';
 
 export {
+  createExternalAppConfig,
+  createFederatedAppConfig,
+  createInternalAppConfig,
   getConfig,
   mergeConfig,
   setConfig
