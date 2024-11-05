@@ -35,7 +35,7 @@ export function resolveFooterConfig(appId: string | null): ResolvedFooterConfig 
 
   const config: ResolvedFooterConfig = {
     logoUrl: siteConfig.LOGO_URL,
-    logoDestinationUrl: getAppUrl('learner-dashboard'),
+    logoDestinationUrl: getAppUrl('learnerDashboard'),
     leftLinks,
     centerLinks,
     rightLinks,

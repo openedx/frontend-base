@@ -1,5 +1,5 @@
 import { loadRemote } from '@module-federation/runtime';
-import { getConfig } from '../../runtime';
+import { getConfig, mergeMessages } from '../../runtime';
 import {
   AppConfig, AppConfigTypes, ApplicationModuleConfig,
   AppsConfig,
@@ -48,4 +48,12 @@ export async function loadModuleConfig(module, scope) {
 export function getInternalModules() {
   const { apps } = getConfig();
   return filterAppsByType<InternalAppConfig>(apps, AppConfigTypes.INTERNAL);
+}
+
+export function mergeInternalMessages() {
+  const modules = getInternalModules();
+
+  Object.values(modules).forEach((module) => {
+    mergeMessages(module.config.messages);
+  });
 }

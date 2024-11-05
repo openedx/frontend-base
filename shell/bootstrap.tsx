@@ -10,7 +10,7 @@ import {
 } from '../runtime';
 
 import { SHELL_ID } from './data/constants';
-import { getFederationRemotes } from './data/moduleUtils';
+import { getFederationRemotes, mergeInternalMessages } from './data/moduleUtils';
 import messages from './i18n';
 import createRouter from './router/createRouter';
 
@@ -21,6 +21,8 @@ subscribe(APP_READY, () => {
   });
 
   const router = createRouter();
+
+  mergeInternalMessages();
 
   ReactDOM.render(
     <RouterProvider router={router} />,

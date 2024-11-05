@@ -34,6 +34,7 @@ export interface ApplicationModuleConfig {
   route: AppModuleRouteObject,
   header?: HeaderConfig,
   footer?: FooterConfig,
+  messages?: Record<string, Record<string, string>>,
 }
 
 export interface InternalAppConfig {
