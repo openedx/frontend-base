@@ -2,56 +2,25 @@ import { Button } from '@openedx/paragon';
 import { Divider } from '../runtime';
 import { AppConfigTypes, EnvironmentTypes, ProjectSiteConfig } from '../types';
 
-import ChildOnePage from './dev-project/ChildOnePage';
-import CoursesLink from './dev-project/CoursesLink';
-import DashboardPage from './dev-project/DashboardPage';
-import HomePage from './dev-project/HomePage';
-import { primaryLinks } from './header/defaults';
+import CoursesLink from './dev-project/header/CoursesLink';
+import homeConfig from './dev-project/home';
+import learnerDashboardConfig from './dev-project/learner-dashboard';
+import moduleOneConfig from './dev-project/module-one';
 import './index.scss';
 
 const config: ProjectSiteConfig = {
   apps: {
     home: {
       type: AppConfigTypes.INTERNAL,
-      config: {
-        route: {
-          path: '/',
-          Component: HomePage,
-        }
-      }
+      config: homeConfig,
     },
-    child1: {
+    moduleOne: {
       type: AppConfigTypes.INTERNAL,
-      config: {
-        header: {
-          primaryLinks: [
-            {
-              label: 'Child Link',
-              url: '#'
-            },
-            ...primaryLinks,
-          ],
-          secondaryLinks: [
-            {
-              label: 'Child Help',
-              appId: 'support',
-            }
-          ],
-        },
-        route: {
-          path: 'child1',
-          Component: ChildOnePage,
-        }
-      }
+      config: moduleOneConfig,
     },
-    'learner-dashboard': {
+    learnerDashboard: {
       type: AppConfigTypes.INTERNAL,
-      config: {
-        route: {
-          path: 'dashboard',
-          Component: DashboardPage,
-        }
-      }
+      config: learnerDashboardConfig,
     },
     support: {
       type: AppConfigTypes.EXTERNAL,
@@ -67,7 +36,7 @@ const config: ProjectSiteConfig = {
     primaryLinks: [
       {
         label: (<CoursesLink />),
-        appId: 'learner-dashboard',
+        appId: 'learnerDashboard',
       },
       {
         label: 'Other',

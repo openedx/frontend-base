@@ -39,7 +39,7 @@ export function resolveHeaderConfig(appId: string | null): ResolvedHeaderConfig 
 
   const config = {
     logoUrl: siteConfig.LOGO_URL,
-    logoDestinationUrl: getAppUrl('learner-dashboard'),
+    logoDestinationUrl: getAppUrl('learnerDashboard'),
     primaryLinks,
     secondaryLinks,
     anonymousLinks,
