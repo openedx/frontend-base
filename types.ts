@@ -168,23 +168,31 @@ export enum EnvironmentTypes {
 export type MenuItemName = string | MessageDescriptor | ReactElement;
 
 export interface AppMenuItemConfig {
+  id: string,
   label: MenuItemName,
   appId: string,
 }
 
 export interface DropdownMenuItemConfig {
+  id: string,
   label: MessageDescriptor | string,
   items: ChildMenuItemConfig[],
 }
 
 export interface UrlMenuItemConfig {
+  id: string,
   label: MenuItemName,
   url: string,
 }
 
+export interface ComponentMenuItemConfig {
+  id: string,
+  component: ReactElement,
+}
+
 export type LinkMenuItemConfig = AppMenuItemConfig | UrlMenuItemConfig;
 
-export type ChildMenuItemConfig = LinkMenuItemConfig | ReactElement;
+export type ChildMenuItemConfig = LinkMenuItemConfig | ComponentMenuItemConfig;
 
 export type MenuItemConfig = DropdownMenuItemConfig | ChildMenuItemConfig;
 
@@ -211,6 +219,7 @@ export interface ResolvedHeaderConfig {
 // Footer
 
 export interface LabeledMenuConfig {
+  id: string,
   label: ReactNode,
   links: MenuItemConfig[],
 }

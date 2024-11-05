@@ -12,14 +12,8 @@ interface NavLinksProps {
 export default function NavLinks({ items, className }: NavLinksProps) {
   return (
     <Nav className={className}>
-      {items.map((item, index) => (
-        <MenuItem
-          // TODO: Do something better than using the array index here.
-          // eslint-disable-next-line react/no-array-index-key
-          key={index}
-          item={item}
-          linkVariant="navLink"
-        />
+      {items.map((item) => (
+        <MenuItem key={item.id} item={item} linkVariant="navLink" />
       ))}
     </Nav>
   );

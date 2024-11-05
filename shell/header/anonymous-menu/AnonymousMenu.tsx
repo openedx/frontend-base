@@ -12,10 +12,8 @@ export default function AnonymousMenu({ className }: AnonymousMenuProps) {
 
   return (
     <div className={classNames('d-flex flex-nowrap align-items-center flex-shrink-0 gap-3', className)}>
-      {anonymousLinks.map((item, index) => (
-        // TODO: Do something better than using the array index here.
-        // eslint-disable-next-line react/no-array-index-key
-        <MenuItem key={index} item={item} />
+      {anonymousLinks.map((item) => (
+        <MenuItem key={item.id} item={item} />
       ))}
     </div>
   );
