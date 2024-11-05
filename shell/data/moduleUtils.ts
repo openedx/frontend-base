@@ -2,21 +2,12 @@ import { loadRemote } from '@module-federation/runtime';
 import { getConfig, mergeMessages } from '../../runtime';
 import {
   AppConfig, AppConfigTypes, ApplicationModuleConfig,
-  AppsConfig,
   FederatedAppConfig,
   InternalAppConfig
 } from '../../types';
 
-function filterAppsByType<T extends AppConfig>(apps: AppsConfig, type: AppConfigTypes) {
-  const filteredApps: Record<string, T> = {};
-  Object.entries(apps).forEach(
-    ([appId, app]: [appId: string, app: AppConfig]) => {
-      if (app.type === type) {
-        filteredApps[appId] = app as T;
-      }
-    }
-  );
-  return filteredApps;
+function filterAppsByType<T extends AppConfig>(apps: AppConfig[], type: AppConfigTypes): T[] {
+  return apps.filter((app): app is T => app.type === type);
 }
 
 export function getFederatedModules() {
@@ -25,10 +16,9 @@ export function getFederatedModules() {
 }
 
 export function getFederationRemotes() {
-  const federatedModules = getFederatedModules();
-  return Object.values(federatedModules).map((app: FederatedAppConfig) => ({
-    name: app.libraryId,
-    entry: app.remoteUrl
+  return getFederatedModules().map((app: FederatedAppConfig) => ({
+    name: app.federation.libraryId,
+    entry: app.federation.remoteUrl
   }));
 }
 
@@ -51,9 +41,7 @@ export function getInternalModules() {
 }
 
 export function mergeInternalMessages() {
-  const modules = getInternalModules();
-
-  Object.values(modules).forEach((module) => {
+  getInternalModules().forEach((module) => {
     mergeMessages(module.config.messages);
   });
 }

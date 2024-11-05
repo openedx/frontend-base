@@ -9,14 +9,14 @@ export default function createInternalRoutes() {
 
   const routes: RouteObject[] = [];
 
-  Object.entries(internalModules).forEach(
-    ([appId, internalModule]: [appId: string, internalModule: InternalAppConfig]) => {
+  internalModules.forEach(
+    (internalModule: InternalAppConfig) => {
       const route = { ...internalModule.config.route };
       // Route path override
       if (internalModule.path) {
         route.path = internalModule.path;
       }
-      patchAppIdIntoRouteHandle(appId, route);
+      patchAppIdIntoRouteHandle(internalModule.id, route);
       routes.push(route);
     }
   );
