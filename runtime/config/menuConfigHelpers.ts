@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { v4 as uuid } from 'uuid';
-import { AppMenuItemConfig, ChildMenuItemConfig, ComponentMenuItemConfig, DropdownMenuItemConfig, LabeledMenuConfig, MenuItemConfig, MenuItemName, UrlMenuItemConfig } from '../../../types';
+import { AppMenuItemConfig, ChildMenuItemConfig, ComponentMenuItemConfig, DropdownMenuItemConfig, LabeledMenuConfig, MenuItemConfig, MenuItemName, UrlMenuItemConfig } from '../../types';
 
 export function createUrlMenuItem(label: MenuItemName, url: string): UrlMenuItemConfig {
   return {

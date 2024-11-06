@@ -1,5 +1,5 @@
+import { createAppMenuItem, createComponentMenuItem } from '../../runtime/config/menuConfigHelpers';
 import { ChildMenuItemConfig, MenuItemConfig } from '../../types';
-import { createAppMenuItem, createComponentMenuItem } from '../menus/data/configHelpers';
 import messages from '../Shell.messages';
 import LoginButton from './anonymous-menu/LoginButton';
 import RegisterButton from './anonymous-menu/RegisterButton';
