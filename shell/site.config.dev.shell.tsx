@@ -1,19 +1,19 @@
 import { Button } from '@openedx/paragon';
 
 import { createExternalAppConfig, createInternalAppConfig, Divider } from '../runtime';
-import { EnvironmentTypes, ProjectSiteConfig } from '../types';
-import CoursesLink from './dev-project/header/CoursesLink';
-import homeConfig from './dev-project/home';
-import learnerDashboardConfig from './dev-project/learner-dashboard';
-import moduleOneConfig from './dev-project/module-one';
-import './index.scss';
 import {
   createAppMenuItem,
   createComponentMenuItem,
   createDropdownMenuItem,
   createLabeledMenu,
   createUrlMenuItem
-} from './menus/data/configHelpers';
+} from '../runtime/config/menuConfigHelpers';
+import { EnvironmentTypes, ProjectSiteConfig } from '../types';
+import CoursesLink from './dev-project/header/CoursesLink';
+import homeConfig from './dev-project/home';
+import learnerDashboardConfig from './dev-project/learner-dashboard';
+import moduleOneConfig from './dev-project/module-one';
+import './index.scss';
 
 const config: ProjectSiteConfig = {
   apps: [
@@ -65,6 +65,31 @@ const config: ProjectSiteConfig = {
       createUrlMenuItem('Link Three', '#'),
     ]),
   },
+
+  // plugins: [
+  //   createInternalPlugin(pluginOneConfig, {
+  //     key: 'environment-specific variables needed to configure it.'
+  //   }),
+  //   createIFramePlugin({
+  //     slot: 'org.openedx.frontend.shell.fancySlot',
+  //     url: 'http://apps.local.openedx.io:8080/iframe-plugin'
+  //   }),
+  //   createFederatedPlugin({
+  //     slot: 'org.openedx.frontend.shell.fancySlot',
+  //     moduleId: 'pluginThingy',
+  //     libraryId: 'pluginsLibrary',
+  //     url: 'http://apps.local.openedx.io:8080/remoteEntry.js'
+  //   })
+  // ],
+
+  // slots: {
+  //   'org.openedx.frontend.shell.fancy': {
+  //     plugins: [
+
+  //     ],
+  //     layout: FancyLayout,
+  //   }
+  // },
 
   APP_ID: 'shell',
   ACCOUNT_PROFILE_URL: 'http://apps.local.openedx.io:1995',

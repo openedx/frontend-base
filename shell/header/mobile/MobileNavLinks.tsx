@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Divider } from '../../../runtime';
-import { createComponentMenuItem } from '../../menus/data/configHelpers';
+import { createComponentMenuItem } from '../../../runtime/config/menuConfigHelpers';
 import HeaderContext from '../HeaderContext';
 import NavLinks from '../nav-links';
 

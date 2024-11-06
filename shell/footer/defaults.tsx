@@ -1,5 +1,5 @@
+import { createComponentMenuItem } from '../../runtime';
 import { ChildMenuItemConfig, LabeledMenuConfig } from '../../types';
-import { createComponentMenuItem } from '../menus/data/configHelpers';
 
 import CopyrightNotice from './CopyrightNotice';
 import LanguageMenu from './LanguageMenu';

@@ -102,10 +102,25 @@
 
 import merge from 'lodash.merge';
 import {
-  AppConfigTypes, ApplicationModuleConfig, ConfigurableAppConfig, EnvironmentTypes, ExternalAppConfig, FederatedAppConfig, InternalAppConfig, SiteConfig
-} from '../types';
-import { CONFIG_CHANGED } from './constants';
-import { publish } from './subscriptions';
+  AppConfigTypes, ApplicationModuleConfig, ConfigurableAppConfig, EnvironmentTypes,
+  SiteConfig
+} from '../../types';
+import { CONFIG_CHANGED } from '../constants';
+import { publish } from '../subscriptions';
+
+export {
+  createExternalAppConfig,
+  createFederatedAppConfig,
+  createInternalAppConfig
+} from './appConfigHelpers';
+
+export {
+  createAppMenuItem,
+  createComponentMenuItem,
+  createDropdownMenuItem,
+  createLabeledMenu,
+  createUrlMenuItem
+} from './menuConfigHelpers';
 
 let config: SiteConfig = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
@@ -274,33 +289,3 @@ export function patchAppModuleConfig(appId: string, appModuleConfig: Application
  * @property {string} APP_ID
  * @property {string} SUPPORT_URL
  */
-
-export function createInternalAppConfig(id: string, config: ApplicationModuleConfig, path?: string): InternalAppConfig {
-  return {
-    id,
-    type: AppConfigTypes.INTERNAL,
-    path,
-    config,
-  };
-}
-
-export function createExternalAppConfig(id: string, url: string): ExternalAppConfig {
-  return {
-    id,
-    type: AppConfigTypes.EXTERNAL,
-    url,
-  };
-}
-
-export function createFederatedAppConfig(id: string, moduleId: string, libraryId: string, remoteUrl: string, path: string): FederatedAppConfig {
-  return {
-    id,
-    type: AppConfigTypes.FEDERATED,
-    path,
-    federation: {
-      libraryId,
-      moduleId,
-      remoteUrl,
-    },
-  };
-}

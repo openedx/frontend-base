@@ -44,14 +44,16 @@ export interface InternalAppConfig {
   path?: string,
 }
 
+export interface FederationConfig {
+  libraryId: string,
+  moduleId: string,
+  remoteUrl: string,
+}
+
 export interface FederatedAppConfig {
   id: string,
   type: AppConfigTypes.FEDERATED,
-  federation: {
-    libraryId: string,
-    moduleId: string,
-    remoteUrl: string,
-  },
+  federation: FederationConfig,
   path: string,
 }
 
@@ -193,6 +195,12 @@ export interface ComponentMenuItemConfig {
   component: ReactElement,
 }
 
+export interface LabeledMenuConfig {
+  id: string,
+  label: MenuItemName,
+  links: MenuItemConfig[],
+}
+
 export type LinkMenuItemConfig = AppMenuItemConfig | UrlMenuItemConfig;
 
 export type ChildMenuItemConfig = LinkMenuItemConfig | ComponentMenuItemConfig;
@@ -220,12 +228,6 @@ export interface ResolvedHeaderConfig {
 }
 
 // Footer
-
-export interface LabeledMenuConfig {
-  id: string,
-  label: ReactNode,
-  links: MenuItemConfig[],
-}
 
 export interface FooterConfig {
   logoUrl?: string,
