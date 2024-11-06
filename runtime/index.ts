@@ -32,9 +32,14 @@ export {
 } from './auth';
 
 export {
+  createAppMenuItem,
+  createComponentMenuItem,
+  createDropdownMenuItem,
   createExternalAppConfig,
   createFederatedAppConfig,
   createInternalAppConfig,
+  createLabeledMenu,
+  createUrlMenuItem,
   getConfig,
   mergeConfig,
   setConfig

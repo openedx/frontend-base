@@ -1,4 +1,4 @@
-import { ApplicationModuleConfig } from '@openedx/frontend-base';
+import { ApplicationModuleConfig, createUrlMenuItem } from '@openedx/frontend-base';
 
 const config: ApplicationModuleConfig = {
   route: {
@@ -12,10 +12,7 @@ const config: ApplicationModuleConfig = {
   },
   header: {
     primaryLinks: [
-      {
-        label: 'Authenticated Page Link',
-        url: '#',
-      },
+      createUrlMenuItem('Authenticated Page Link', '#'),
     ]
   }
 };
