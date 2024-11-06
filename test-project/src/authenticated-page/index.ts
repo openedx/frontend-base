@@ -1,4 +1,5 @@
 import { ApplicationModuleConfig, createUrlMenuItem } from '@openedx/frontend-base';
+import messages from './i18n';
 
 const config: ApplicationModuleConfig = {
   route: {
@@ -14,7 +15,8 @@ const config: ApplicationModuleConfig = {
     primaryLinks: [
       createUrlMenuItem('Authenticated Page Link', '#'),
     ]
-  }
+  },
+  messages,
 };
 
 export default config;
