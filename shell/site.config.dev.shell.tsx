@@ -9,16 +9,16 @@ import {
   createUrlMenuItem
 } from '../runtime/config/menuConfigHelpers';
 import { EnvironmentTypes, ProjectSiteConfig } from '../types';
+import coursewareConfig from './dev-project/courseware';
 import CoursesLink from './dev-project/header/CoursesLink';
 import homeConfig from './dev-project/home';
 import learnerDashboardConfig from './dev-project/learner-dashboard';
-import moduleOneConfig from './dev-project/module-one';
 import './index.scss';
 
 const config: ProjectSiteConfig = {
   apps: [
     createInternalAppConfig('home', homeConfig),
-    createInternalAppConfig('moduleOne', moduleOneConfig),
+    createInternalAppConfig('courseware', coursewareConfig),
     createInternalAppConfig('learnerDashboard', learnerDashboardConfig),
     createExternalAppConfig('support', 'https://local.openedx.io:8000/support'),
     createExternalAppConfig('logout', 'http://local.openedx.io:8000/logout'),
