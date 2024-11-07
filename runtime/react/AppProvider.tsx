@@ -13,6 +13,7 @@ import {
 import AppContext from './AppContext';
 import ErrorBoundary from './ErrorBoundary';
 import { useAppEvent, useTrackColorSchemeChoice } from './hooks';
+import LearningProvider from './learning/LearningProvider';
 
 interface AppProviderProps {
   children: ReactNode,
@@ -72,7 +73,9 @@ export default function AppProvider({ children }: AppProviderProps) {
         <AppContext.Provider
           value={appContextValue}
         >
-          {children}
+          <LearningProvider>
+            {children}
+          </LearningProvider>
         </AppContext.Provider>
       </ErrorBoundary>
     </IntlProvider>

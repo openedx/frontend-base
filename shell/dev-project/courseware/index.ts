@@ -1,7 +1,7 @@
 import { createAppMenuItem, createUrlMenuItem } from '../../../runtime/config/menuConfigHelpers';
 import { ApplicationModuleConfig } from '../../../types';
 import { primaryLinks } from '../../header/defaults';
-import ModuleOnePage from './ModuleOnePage';
+import CoursewarePage from './CoursewarePage';
 
 const config: ApplicationModuleConfig = {
   header: {
@@ -14,8 +14,8 @@ const config: ApplicationModuleConfig = {
     ],
   },
   route: {
-    path: 'module-one',
-    Component: ModuleOnePage,
+    path: 'courseware',
+    Component: CoursewarePage,
   }
 };
 
