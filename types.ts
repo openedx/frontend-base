@@ -322,3 +322,13 @@ export interface HidePlugin {
 }
 
 export type Plugin = HidePlugin | InsertPlugin | ModifyPlugin | WrapPlugin;
+
+// Learning
+
+// TODO: Make this interface match the shape of course info coming back from the server.
+// Check what additional data frontend-app-learning or frontend-app-authoring has and model it here.
+export interface CourseInfo {
+  title: string,
+  number: string,
+  org: string,
+}
