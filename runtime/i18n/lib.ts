@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
 
+import { LocalizedMessages } from '../../types';
 import { getConfig } from '../config';
 import { publish } from '../subscriptions';
 
@@ -233,7 +234,7 @@ export function mergeMessages(newMessages = {}) {
 }
 
 interface ConfigureI18nOptions {
-  messages: Record<string, Record<string, string>>[] | Record<string, Record<string, string>>,
+  messages: LocalizedMessages[] | LocalizedMessages,
 }
 
 /**
