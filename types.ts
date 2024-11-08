@@ -30,11 +30,13 @@ export interface AppModuleNonIndexRouteObject extends NonIndexRouteObject {
 
 export type AppModuleRouteObject = AppModuleIndexRouteObject | AppModuleNonIndexRouteObject;
 
+export type LocalizedMessages = Record<string, Record<string, string>>;
+
 export interface ApplicationModuleConfig {
   route: AppModuleRouteObject,
   header?: HeaderConfig,
   footer?: FooterConfig,
-  messages?: Record<string, Record<string, string>>,
+  messages?: LocalizedMessages,
 }
 
 export interface InternalAppConfig {
