@@ -26,7 +26,7 @@ describe('usePluginSlots', () => {
   });
   describe('when the plugin slot is defined', () => {
     it('returns keepDefault and plugin changes', () => {
-      getConfig.mockImplementation(() => (
+      (getConfig as jest.Mock).mockImplementation(() => (
         {
           pluginSlots: {
             example_plugin_slot: {
@@ -45,7 +45,7 @@ describe('usePluginSlots', () => {
 
   describe('when the plugin slot is not defined', () => {
     it('returns true for keepDefault and no plugin changes', () => {
-      getConfig.mockImplementation(() => {});
+      (getConfig as jest.Mock).mockImplementation(() => {});
 
       const slotConfig = usePluginSlot('example_plugin_slot');
 

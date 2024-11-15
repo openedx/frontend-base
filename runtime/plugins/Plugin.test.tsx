@@ -134,14 +134,14 @@ describe('Plugin', () => {
   beforeEach(async () => {
     // This is a gross hack to suppress error logs in the invalid parentSelector test
     jest.spyOn(console, 'error');
-    global.console.error.mockImplementation(() => {});
+    (global.console.error as jest.Mock).mockImplementation(() => {});
 
     const { loggingService } = initializeMockApp();
     logError = loggingService.logError;
   });
 
   afterEach(() => {
-    global.console.error.mockRestore();
+    (global.console.error as jest.Mock).mockRestore();
     jest.clearAllMocks();
   });
 
