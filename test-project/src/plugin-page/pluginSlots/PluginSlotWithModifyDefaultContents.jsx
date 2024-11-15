@@ -74,7 +74,7 @@ function PluginSlotWithModifyDefaultContents({ id, label }) {
           <PluginSlot
             id="slot_with_username_pii"
             as="div"
-            // Default slotOptions
+          // Default slotOptions
           >
             <UsernameWithPluginContent
               className="testing"
