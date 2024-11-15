@@ -69,6 +69,7 @@ module.exports = tseslint.config(
       ...(react.configs.flat !== undefined ? react.configs.flat['jsx-runtime'].rules : {}),
       ...reactHooks.configs.recommended.rules,
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
       'react/no-array-index-key': 'error',
       'formatjs/enforce-description': ['error', 'literal'],
       'jsx-a11y/label-has-associated-control': ['error', {
