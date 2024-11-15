@@ -257,7 +257,7 @@ export interface ResolvedFooterConfig {
  * Defines the changes to be made to either the default widget(s) or to any
  * that are inserted.
  */
-export enum PluginOperations {
+export enum PluginOperationTypes {
   /**
    * Inserts a new widget into the DirectPluginSlot.
    */
@@ -302,24 +302,24 @@ export type InsertPluginWidget = InsertDirectPluginWidget | InsertIframePluginWi
 export type PluginWidget = InsertPluginWidget;
 
 export interface ModifyPlugin {
-  op: PluginOperations.MODIFY,
+  op: PluginOperationTypes.MODIFY,
   widgetId: string,
   fn: (InsertDirectPluginWidget) => InsertDirectPluginWidget,
 }
 
 export interface InsertPlugin {
-  op: PluginOperations.INSERT,
+  op: PluginOperationTypes.INSERT,
   widget: PluginWidget,
 }
 
 export interface WrapPlugin {
-  op: PluginOperations.WRAP,
+  op: PluginOperationTypes.WRAP,
   widgetId: string,
   wrapper: ElementType,
 }
 
 export interface HidePlugin {
-  op: PluginOperations.HIDE,
+  op: PluginOperationTypes.HIDE,
   widgetId: string,
 }
 

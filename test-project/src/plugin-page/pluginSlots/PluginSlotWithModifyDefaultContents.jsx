@@ -45,7 +45,7 @@ function PluginSlotWithModifyDefaultContents({ id, label }) {
     <div className="border border-primary px-3">
       <h3 id={id}>{label}</h3>
       <p>
-        The following <code>PluginSlot</code> examples demonstrate the <code>PluginOperations.MODIFY</code> operation, when
+        The following <code>PluginSlot</code> examples demonstrate the <code>PluginOperationTypes.MODIFY</code> operation, when
         the <code>widgetId</code> is <code>default_contents</code>. Any configured, custom plugin <code>content</code> may be
         merged with any existing props passed to the component(s) represented by <code>default_contents</code>.
       </p>

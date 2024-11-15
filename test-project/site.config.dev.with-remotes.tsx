@@ -1,4 +1,4 @@
-import { createFederatedAppConfig, createInternalAppConfig, EnvironmentTypes, PluginOperations, PluginTypes } from '@openedx/frontend-base';
+import { createFederatedAppConfig, createInternalAppConfig, EnvironmentTypes, PluginOperationTypes, PluginTypes } from '@openedx/frontend-base';
 
 import { ProjectSiteConfig } from '@openedx/frontend-base';
 import { examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
@@ -87,7 +87,7 @@ const config: ProjectSiteConfig = {
       keepDefault: true,
       plugins: [
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'inserted_direct_plugin',
             type: PluginTypes.DIRECT,
@@ -96,7 +96,7 @@ const config: ProjectSiteConfig = {
           },
         },
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
@@ -111,7 +111,7 @@ const config: ProjectSiteConfig = {
       keepDefault: true,
       plugins: [
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'inserted_plugin',
             type: PluginTypes.DIRECT,
@@ -124,7 +124,7 @@ const config: ProjectSiteConfig = {
           },
         },
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
@@ -134,17 +134,17 @@ const config: ProjectSiteConfig = {
           },
         },
         {
-          op: PluginOperations.WRAP,
+          op: PluginOperationTypes.WRAP,
           widgetId: 'default_contents',
           wrapper: wrapWidget,
         },
         {
-          op: PluginOperations.MODIFY,
+          op: PluginOperationTypes.MODIFY,
           widgetId: 'inserted_plugin',
           fn: modifyWidget,
         },
         {
-          op: PluginOperations.HIDE,
+          op: PluginOperationTypes.HIDE,
           widgetId: 'inserted_iframe_plugin',
         },
       ],
@@ -153,7 +153,7 @@ const config: ProjectSiteConfig = {
       keepDefault: true,
       plugins: [
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'insert_modular_direct_plugin',
             type: PluginTypes.DIRECT,
@@ -171,7 +171,7 @@ const config: ProjectSiteConfig = {
       keepDefault: false,
       plugins: [
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'insert_direct_plugin',
             type: PluginTypes.DIRECT,
@@ -184,7 +184,7 @@ const config: ProjectSiteConfig = {
           },
         },
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'insert_another_direct_plugin',
             type: PluginTypes.DIRECT,
@@ -193,7 +193,7 @@ const config: ProjectSiteConfig = {
           },
         },
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'inserted_iframe_plugin',
             type: PluginTypes.IFRAME,
@@ -208,7 +208,7 @@ const config: ProjectSiteConfig = {
       keepDefault: true,
       plugins: [
         {
-          op: PluginOperations.MODIFY,
+          op: PluginOperationTypes.MODIFY,
           widgetId: 'default_contents',
           fn: modifyWidgetDefaultContentsUsernamePII,
         },
@@ -218,7 +218,7 @@ const config: ProjectSiteConfig = {
       keepDefault: true,
       plugins: [
         {
-          op: PluginOperations.MODIFY,
+          op: PluginOperationTypes.MODIFY,
           widgetId: 'default_contents',
           fn: modifyWidgetDefaultContentsLink,
         },

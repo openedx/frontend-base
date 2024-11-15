@@ -5,14 +5,14 @@ import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import classNames from 'classnames';
 
-import { PluginOperations, PluginTypes } from '../../types';
+import { PluginOperationTypes, PluginTypes } from '../../types';
 import { IntlProvider } from '../i18n';
 import { logError } from '../logging';
 import PluginSlot from './PluginSlot';
 import { usePluginSlot } from './data/hooks';
 
 const iframePluginConfig = {
-  op: PluginOperations.INSERT,
+  op: PluginOperationTypes.INSERT,
   widget: {
     id: 'iframe_config',
     url: 'http://localhost/plugin1',
@@ -180,7 +180,7 @@ describe('PluginSlot', () => {
     usePluginSlot.mockReturnValueOnce({
       plugins: [
         {
-          op: PluginOperations.WRAP,
+          op: PluginOperationTypes.WRAP,
           widgetId: 'default_contents',
           wrapper: ({ component }) => (
             <div data-testid="custom-wrapper">
@@ -203,7 +203,7 @@ describe('PluginSlot', () => {
       plugins: [
         iframePluginConfig,
         {
-          op: PluginOperations.HIDE,
+          op: PluginOperationTypes.HIDE,
           widgetId: 'iframe_config',
         },
       ],
@@ -251,7 +251,7 @@ describe('PluginSlot', () => {
     usePluginSlot.mockReturnValueOnce({
       plugins: [
         {
-          op: PluginOperations.INSERT,
+          op: PluginOperationTypes.INSERT,
           widget: {
             id: 'inserted_direct_plugin',
             type: PluginTypes.DIRECT,
@@ -393,7 +393,7 @@ describe('PluginSlot', () => {
     usePluginSlot.mockReturnValueOnce({
       plugins: [
         {
-          op: PluginOperations.MODIFY,
+          op: PluginOperationTypes.MODIFY,
           widgetId: 'default_contents',
           fn: (widget) => ({
             ...widget,
