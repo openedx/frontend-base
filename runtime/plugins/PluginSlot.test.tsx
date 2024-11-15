@@ -423,7 +423,9 @@ describe('PluginSlot', () => {
         expect(mockOnClick).toHaveBeenCalledWith(expectedEventObject);
       }
 
-      if (!pluginContent) { return; }
+      if (!pluginContent) {
+        return;
+      }
 
       Object.entries(pluginContent).forEach(([key, value]) => {
         const expectedValue = !value ? '' : value;
