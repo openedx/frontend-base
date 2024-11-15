@@ -40,7 +40,7 @@ const mockRenderWidget = () => (
 
 const mockSlotChanges = [
   {
-    op: PluginOperations.INSERT,
+    op: PluginOperationTypes.INSERT,
     widget: {
       id: 'login',
       priority: 50,
@@ -50,16 +50,16 @@ const mockSlotChanges = [
     },
   },
   {
-    op: PluginOperations.WRAP,
+    op: PluginOperationTypes.WRAP,
     widgetId: 'login',
     wrapper: mockIsAdminWrapper,
   },
   {
-    op: PluginOperations.HIDE,
+    op: PluginOperationTypes.HIDE,
     widgetId: 'default_contents',
   },
   {
-    op: PluginOperations.MODIFY,
+    op: PluginOperationTypes.MODIFY,
     widgetId: 'login',
     fn: mockModifyWidget,
   },
@@ -145,7 +145,7 @@ describe('organizePlugins', () => {
         return isStudent ? null : widget;
       };
       const newPluginChange = {
-        op: PluginOperations.WRAP,
+        op: PluginOperationTypes.WRAP,
         widgetId: 'login',
         wrapper: newMockWrapComponent,
       };
@@ -160,7 +160,7 @@ describe('organizePlugins', () => {
 
     it('should return plugins arranged by priority', () => {
       const newPluginChange = {
-        op: PluginOperations.INSERT,
+        op: PluginOperationTypes.INSERT,
         widget: {
           id: 'profile',
           priority: 1,
