@@ -2,12 +2,12 @@ import '@testing-library/jest-dom';
 
 import { getConfig } from '../../config';
 
-import { PluginOperations, PluginTypes } from '../../../types';
+import { PluginOperationTypes, PluginTypes } from '../../../types';
 import { usePluginSlot } from './hooks';
 
 const mockSlotChanges = [
   {
-    op: PluginOperations.INSERT,
+    op: PluginOperationTypes.INSERT,
     widget: {
       id: 'login',
       priority: 50,
