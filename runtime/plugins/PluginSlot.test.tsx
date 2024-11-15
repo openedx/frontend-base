@@ -139,13 +139,13 @@ function TestPluginSlotWithSlotOptions({ slotOptions: slotOptionsOverride, ...re
 
 describe('PluginSlot', () => {
   beforeEach(() => {
-    usePluginSlot.mockReturnValue(defaultSlotConfig);
+    (usePluginSlot as jest.Mock).mockReturnValue(defaultSlotConfig);
     console.error = jest.fn();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    console.error.mockRestore();
+    (console.error as jest.Mock).mockRestore();
   });
 
   it('should render multiple types of Plugin in a single slot config', () => {
@@ -177,7 +177,7 @@ describe('PluginSlot', () => {
   });
 
   it('should wrap a Plugin when using the "wrap" operation', () => {
-    usePluginSlot.mockReturnValueOnce({
+    (usePluginSlot as jest.Mock).mockReturnValueOnce({
       plugins: [
         {
           op: PluginOperationTypes.WRAP,
@@ -199,7 +199,7 @@ describe('PluginSlot', () => {
   });
 
   it('should not render a widget if the Hide operation is applied to it', () => {
-    usePluginSlot.mockReturnValueOnce({
+    (usePluginSlot as jest.Mock).mockReturnValueOnce({
       plugins: [
         iframePluginConfig,
         {
@@ -248,7 +248,7 @@ describe('PluginSlot', () => {
   });
 
   it('should handle keepDefault=false', () => {
-    usePluginSlot.mockReturnValueOnce({
+    (usePluginSlot as jest.Mock).mockReturnValueOnce({
       plugins: [
         {
           op: PluginOperationTypes.INSERT,
@@ -390,7 +390,7 @@ describe('PluginSlot', () => {
     pluginContent,
     includedAttributes,
   }) => {
-    usePluginSlot.mockReturnValueOnce({
+    (usePluginSlot as jest.Mock).mockReturnValueOnce({
       plugins: [
         {
           op: PluginOperationTypes.MODIFY,
