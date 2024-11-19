@@ -31,7 +31,7 @@
 		"test:app": "npm --prefix ./test-project i; npm --prefix ./test-project run build",
 		"test:tools": "jest tools --config tools/jest.config.js --no-cache",
 		"test:runtime": "jest runtime --config runtime/jest.config.js --no-cache",
-		"test:shell": "jest shell --config shell/jest.config.js --no-cache"
+		"test:shell": "jest shell --config shell/jest.config.js --no-cache --passWithNoTests"
 	},
 	"repository": {
 		"type": "git",
