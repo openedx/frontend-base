@@ -1,11 +1,16 @@
 import { PluginSlot } from '@openedx/frontend-base';
 import ModularComponent from '../components/ModularComponent';
 
-function PluginSlotWithModifyWrapHide({ id, label }) {
+interface PluginSlotWithModifyWrapHideProps {
+  id: string,
+  label: string,
+}
+
+function PluginSlotWithModifyWrapHide({ id, label }: PluginSlotWithModifyWrapHideProps) {
   const content = {
     title: 'Default Content',
-    uniqueText:  "Because this modular component is default content, this text is passed in as a prop within PluginSlot."
-  }
+    uniqueText: 'Because this modular component is default content, this text is passed in as a prop within PluginSlot.'
+  };
 
   return (
     <div className="border border-primary">

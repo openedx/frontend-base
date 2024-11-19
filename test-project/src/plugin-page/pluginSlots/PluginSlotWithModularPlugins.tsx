@@ -1,11 +1,16 @@
 import { PluginSlot } from '@openedx/frontend-base';
 import ModularComponent from '../components/ModularComponent';
 
-function PluginSlotWithModularPlugins({ id, label }) {
+interface PluginSlotWithModularPluginsProps {
+  id: string,
+  label: string,
+}
+
+function PluginSlotWithModularPlugins({ id, label }: PluginSlotWithModularPluginsProps) {
   const content = {
     title: 'Default Content',
     uniqueText: 'Default content are set with a priority of 50, which is why it appears second in this slot.',
-  }
+  };
 
   return (
     <div className="border border-primary">
