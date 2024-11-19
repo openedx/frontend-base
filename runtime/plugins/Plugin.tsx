@@ -1,15 +1,17 @@
-'use client';
-
-import PropTypes from 'prop-types';
 import {
+  FunctionComponent,
+  ReactNode,
   useEffect, useMemo, useState,
 } from 'react';
+
 import { useIntl } from '../i18n';
 import { ErrorBoundary } from '../react';
-
 import { PLUGIN_RESIZE } from './data/constants';
 import {
-  dispatchMountedEvent, dispatchReadyEvent, dispatchUnmountedEvent, useHostEvent,
+  dispatchMountedEvent,
+  dispatchReadyEvent,
+  dispatchUnmountedEvent,
+  useHostEvent,
 } from './data/hooks';
 import messages from './Plugin.messages';
 
@@ -24,12 +26,20 @@ const ErrorFallbackDefault = () => {
   );
 };
 
-const Plugin = ({
-  children, className, style, ready, ErrorFallbackComponent,
-}) => {
+interface PluginProps {
+  children: ReactNode,
+  className?: string,
+  style?: Record<string, string>,
+  ready?: boolean,
+  errorFallbackComponent?: FunctionComponent,
+}
+
+export default function Plugin({
+  children, className, style = {}, ready = true, errorFallbackComponent,
+}: PluginProps) {
   const [dimensions, setDimensions] = useState({
-    width: null,
-    height: null,
+    width: 0,
+    height: 0,
   });
 
   const finalStyle = useMemo(() => ({
@@ -39,7 +49,7 @@ const Plugin = ({
 
   // Need to confirm: When an error is caught here, the logging will be sent to the child MFE's logging service
 
-  const ErrorFallback = ErrorFallbackComponent || ErrorFallbackDefault;
+  const ErrorFallback = errorFallbackComponent ?? ErrorFallbackDefault;
 
   useHostEvent(PLUGIN_RESIZE, ({ payload }) => {
     setDimensions({
@@ -57,8 +67,8 @@ const Plugin = ({
   }, []);
 
   useEffect(() => {
-    /** Ready defaults to true, but can be used to defer rendering the Plugin until certain processes have
-     * occurred or conditions have been met */
+    // Ready defaults to true, but can be used to defer rendering the Plugin until certain processes
+    // have occurred or conditions have been met
     if (ready) {
       dispatchReadyEvent();
     }
@@ -66,33 +76,9 @@ const Plugin = ({
 
   return (
     <div className={className} style={finalStyle}>
-      <ErrorBoundary
-        fallbackComponent={<ErrorFallback />}
-      >
+      <ErrorBoundary fallbackComponent={<ErrorFallback />}>
         {children}
       </ErrorBoundary>
     </div>
   );
-};
-
-export default Plugin;
-
-Plugin.propTypes = {
-  /** The content for the Plugin */
-  children: PropTypes.node.isRequired,
-  /** Classes to apply to the Plugin wrapper component */
-  className: PropTypes.string,
-  /** Custom error fallback component */
-  ErrorFallbackComponent: PropTypes.func,
-  /** If ready is true, it will render the Plugin */
-  ready: PropTypes.bool,
-  /** Styles to apply to the Plugin wrapper component */
-  style: PropTypes.shape({}),
-};
-
-Plugin.defaultProps = {
-  className: undefined,
-  ErrorFallbackComponent: null,
-  style: {},
-  ready: true,
 };

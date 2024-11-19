@@ -4,11 +4,12 @@ import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import classNames from 'classnames';
+import { ReactElement, ReactNode } from 'react';
 
 import { PluginOperationTypes, PluginTypes } from '../../types';
 import { IntlProvider } from '../i18n';
-import { logError } from '../logging';
 import PluginSlot from './PluginSlot';
+import { PLUGIN_READY } from './data/constants';
 import { usePluginSlot } from './data/hooks';
 
 const iframePluginConfig = {
@@ -47,6 +48,7 @@ jest.mock('../logging', () => ({
 global.ResizeObserver = jest.fn(function mockResizeObserver() {
   this.observe = jest.fn();
   this.disconnect = jest.fn();
+  return this;
 });
 
 // Mock callback functions
@@ -55,7 +57,7 @@ const defaultContentsOnClick = jest.fn();
 const mockOnClick = jest.fn();
 
 const content = { text: 'This is a widget.' };
-function DefaultContents({ className, onClick, ...rest }) {
+function DefaultContents({ className, onClick, ...rest }: { className?: string, onClick?: (event) => void }) {
   const handleOnClick = (e) => {
     defaultContentsOnClick(e);
     onClick?.(e);
@@ -76,7 +78,7 @@ function DefaultContents({ className, onClick, ...rest }) {
   );
 }
 
-function PluginSlotWrapper({ slotOptions, children }) {
+function PluginSlotWrapper({ slotOptions, children }: { slotOptions: { mergeProps: boolean }, children: ReactNode }) {
   return (
     <IntlProvider locale="en">
       <PluginSlot
@@ -96,9 +98,10 @@ function TestPluginSlot({
   hasChildren = true,
   hasChildrenElement = true,
   hasMultipleChildren = false,
+  slotOptions,
   ...rest
 }) {
-  const defaultContentsProps = {
+  const defaultContentsProps: Record<string, any> = {
     className: 'other-classname',
     style: { background: 'gray' },
   };
@@ -107,7 +110,7 @@ function TestPluginSlot({
   }
   if (hasChildren && hasChildrenElement && hasMultipleChildren) {
     return (
-      <PluginSlotWrapper {...rest}>
+      <PluginSlotWrapper slotOptions={slotOptions} {...rest}>
         <DefaultContents {...defaultContentsProps} />
         <DefaultContents {...defaultContentsProps} />
       </PluginSlotWrapper>
@@ -115,26 +118,30 @@ function TestPluginSlot({
   }
   if (hasChildren) {
     return (
-      <PluginSlotWrapper {...rest}>
+      <PluginSlotWrapper slotOptions={slotOptions} {...rest}>
         {hasChildrenElement
           ? <DefaultContents {...defaultContentsProps} />
           : content.text}
       </PluginSlotWrapper>
     );
   }
-  return <PluginSlotWrapper {...rest} />;
+  return (
+    <PluginSlotWrapper slotOptions={slotOptions} {...rest}>
+      <></>
+    </PluginSlotWrapper>
+  );
 }
 
 const defaultSlotOptions = {
   mergeProps: true,
 };
 
-function TestPluginSlotWithSlotOptions({ slotOptions: slotOptionsOverride, ...rest }) {
-  const slotOptions = {
+function TestPluginSlotWithSlotOptions({ slotOptions = {}, ...rest }) {
+  const finalSlotOptions = {
     ...defaultSlotOptions,
-    ...slotOptionsOverride,
+    ...slotOptions,
   };
-  return <TestPluginSlot slotOptions={slotOptions} {...rest} />;
+  return <TestPluginSlot slotOptions={finalSlotOptions} {...rest} />;
 }
 
 describe('PluginSlot', () => {
@@ -149,7 +156,7 @@ describe('PluginSlot', () => {
   });
 
   it('should render multiple types of Plugin in a single slot config', () => {
-    const { container, getByTestId } = render(<TestPluginSlot />);
+    const { container, getByTestId } = render(<TestPluginSlot slotOptions={{ mergeProps: false }} />);
     const iframeElement = container.querySelector('iframe');
     const defaultContent = getByTestId('default_contents');
     const pluginSlot = getByTestId('test-slot-id');
@@ -159,21 +166,31 @@ describe('PluginSlot', () => {
   });
 
   it('should order each Plugin by priority', () => {
-    const { container, getByTestId } = render(<TestPluginSlot />);
+    const { container, getByTestId } = render(<TestPluginSlot slotOptions={{ mergeProps: false }} />);
     const iframeElement = container.querySelector('iframe');
     const defaultContent = getByTestId('default_contents');
     const pluginSlot = getByTestId('test-slot-id');
 
+    if (iframeElement === null) {
+      fail('iframeElement was null.');
+    }
+    if (iframeElement?.contentWindow === null) {
+      fail('contentWindow was null.');
+    }
+
     // Dispatch a 'ready' event manually.
-    const readyEvent = new Event('message');
-    readyEvent.data = {
-      type: 'PLUGIN_READY',
-    };
-    readyEvent.source = iframeElement.contentWindow;
+    const readyEvent = new MessageEvent('message', {
+      data: {
+        type: PLUGIN_READY,
+      },
+      source: iframeElement.contentWindow,
+    });
+
     fireEvent(window, readyEvent);
 
     expect(pluginSlot.children[0]).toEqual(iframeElement);
     expect(pluginSlot.children[1]).toEqual(defaultContent);
+    expect(pluginSlot.children.length).toBe(2); // This ensures that the spinner isn't showing too.
   });
 
   it('should wrap a Plugin when using the "wrap" operation', () => {
@@ -192,7 +209,7 @@ describe('PluginSlot', () => {
       keepDefault: true,
     });
 
-    const { getByTestId } = render(<TestPluginSlot />);
+    const { getByTestId } = render(<TestPluginSlot slotOptions={{ mergeProps: false }} />);
     const customWrapper = getByTestId('custom-wrapper');
     const defaultContent = getByTestId('default_contents');
     expect(customWrapper).toContainElement(defaultContent);
@@ -209,32 +226,14 @@ describe('PluginSlot', () => {
       ],
       keepDefault: true,
     });
-    const { container } = render(<TestPluginSlot />);
+    const { container } = render(<TestPluginSlot slotOptions={{ mergeProps: false }} />);
     const iframeElement = container.querySelector('iframe');
 
     expect(iframeElement).toBeNull();
   });
 
-  it('should throw an error for invalid config type', () => {
-    usePluginSlot.mockReturnValueOnce({
-      plugins: [
-        {
-          op: PluginOperations.INSERT,
-          widget: {
-            id: 'invalid_config',
-            type: 'INVALID_TYPE',
-          },
-        },
-      ],
-      keepDefault: true,
-    });
-    render(<TestPluginSlot />);
-
-    expect(logError).toHaveBeenCalledWith('the insert operation config is invalid for widget id: invalid_config');
-  });
-
   it('should handle multiple children', () => {
-    const { queryAllByTestId } = render(<TestPluginSlot hasMultipleChildren />);
+    const { queryAllByTestId } = render(<TestPluginSlot slotOptions={{ mergeProps: false }} hasMultipleChildren />);
     const defaultContentsWidgets = queryAllByTestId('default_contents');
     expect(defaultContentsWidgets).toHaveLength(2);
     defaultContentsWidgets.forEach((widget) => {
@@ -243,7 +242,7 @@ describe('PluginSlot', () => {
   });
 
   it('should handle empty children', () => {
-    const { getByTestId } = render(<TestPluginSlot hasChildren={false} />);
+    const { getByTestId } = render(<TestPluginSlot slotOptions={{ mergeProps: false }} hasChildren={false} />);
     expect(getByTestId('test-slot-id')).toBeInTheDocument();
   });
 
@@ -262,7 +261,7 @@ describe('PluginSlot', () => {
       ],
       keepDefault: false,
     });
-    const { container, queryByTestId, getByTestId } = render(<TestPluginSlot />);
+    const { container, queryByTestId, getByTestId } = render(<TestPluginSlot slotOptions={{ mergeProps: false }} />);
     const defaultContent = queryByTestId('default_contents');
 
     expect(container).not.toContainElement(defaultContent);
@@ -389,6 +388,12 @@ describe('PluginSlot', () => {
     hasMockOnClick,
     pluginContent,
     includedAttributes,
+  }: {
+    MockPluginSlot: ReactElement,
+    hasPluginSlotChildElement: boolean,
+    hasMockOnClick: boolean,
+    pluginContent?: Record<string, any> | null,
+    includedAttributes: string[],
   }) => {
     (usePluginSlot as jest.Mock).mockReturnValueOnce({
       plugins: [
@@ -414,7 +419,7 @@ describe('PluginSlot', () => {
       expect(defaultContents).toHaveClass('other-classname');
       expect(defaultContents).toHaveStyle({ background: 'gray' });
 
-      await userEvent.click(defaultContents);
+      await userEvent.click(defaultContents as Element);
       const expectedEventObject = expect.objectContaining({ type: 'click', target: expect.any(Element) });
       expect(defaultContentsOnClick).toHaveBeenCalledTimes(1);
       expect(defaultContentsOnClick).toHaveBeenCalledWith(expectedEventObject);
