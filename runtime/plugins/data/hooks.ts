@@ -3,18 +3,25 @@
  */
 
 import {
-  useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState,
+  LegacyRef,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
 } from 'react';
-import { getConfigSlots } from './utils';
+import { MessageEventCallback } from '../../../types';
 import { PLUGIN_MOUNTED, PLUGIN_READY, PLUGIN_UNMOUNTED } from './constants';
+import { getConfigSlots } from './utils';
 
 /**
  * Called by PluginSlot to extract a list of plugins from the JS configuration
  *
- * @param {String} id - Name of PluginSlot
- * @returns {Object} - JS configuration for the PluginSlot
+ * @param id - Name of PluginSlot
+ * @returns {PluginSlotConfig} - JS configuration for the PluginSlot
  */
-export function usePluginSlot(id) {
+export function usePluginSlot(id: string) {
   const configSlots = getConfigSlots()?.[id];
   if (configSlots) {
     return configSlots;
@@ -28,16 +35,12 @@ export function usePluginSlot(id) {
  * Dynamically add an event listener to the provided source window.
  * The source window can be the global parent (ie. the "window" object in the browser)
  * or it can be the content window of an individual element (ie. iFrame plugin container)
- *
- * @param {Object} srcWindow - Window object that the event originates from
- * @param {String} type - Event name (eg. PLUGIN_RESIZE)
- * @param {Function} callback - Called when the event is triggered
  */
-export function useMessageEvent(srcWindow, type, callback) {
+export function useMessageEvent(srcWindow: Window | null, type: string, callback: MessageEventCallback) {
   // useLayoutEffect is called before the browser repaints the screen
   useLayoutEffect(() => {
     // Create a listener callback function
-    const listener = (event) => {
+    const listener = (event: MessageEvent<{ type: string, payload: any }>) => {
       // Filter messages to those from our source window.
       // NOTE: the "srcWindow" is determined by the below useHostEvent and usePluginEvent functions
       if (event.source === srcWindow) {
@@ -60,22 +63,19 @@ export function useMessageEvent(srcWindow, type, callback) {
 
 /**
  * Called by the Plugin component to use events that were listened to (ie. PLUGIN_RESIZE)
- *
- * @param {String} type - Event name (eg. PLUGIN_RESIZE)
- * @param {Function} callback - Called when the event is triggered
  */
-export function useHostEvent(type, callback) {
+export function useHostEvent(type: string, callback: MessageEventCallback) {
   useMessageEvent(global.parent, type, callback);
 }
 
 /**
  * Used to listen for events from a wrapped Plugin element (eg. PluginContainerIframe)
  *
- * @param {Object} element - Plugin element (eg. <iframe>)
- * @param {String} type - Event type (eg. PLUGIN_RESIZE)
- * @param {Function} callback - Function to call when the event is triggered
+ * @param element - Plugin element (eg. <iframe>)
+ * @param type - Event type (eg. PLUGIN_RESIZE)
+ * @param callback - Function to call when the event is triggered
  */
-export function usePluginEvent(element, type, callback) {
+export function usePluginEvent(element: HTMLIFrameElement | undefined, type: string, callback: MessageEventCallback) {
   const contentWindow = element ? element.contentWindow : null;
   useMessageEvent(contentWindow, type, callback);
 }
@@ -86,15 +86,15 @@ export function usePluginEvent(element, type, callback) {
  * Base dispatch function called by dispatchHostEvent and dispatchPluginEvent.
  * Uses the `postMessage` method to enable cross-origin communication between Window objects
  *
- * @param {Object} targetWindow - Window that the message event is being dispatched to
- * @param {Object} message - Data object for the message
- * @param {String} targetOrigin - URL for the window that the message event is being dispatched from
+ * @param targetWindow - Window that the message event is being dispatched to
+ * @param message - Data object for the message
+ * @param targetOrigin - URL for the window that the message event is being dispatched from
  */
-export function dispatchMessageEvent(targetWindow, message, targetOrigin) {
+export function dispatchMessageEvent(targetWindow: Window | null, message: any, targetOrigin: string) {
   /** Checking targetOrigin falsiness here since '', null or undefined would all be
    * reasons not to try to post a message to the origin.
    */
-  if (targetOrigin) {
+  if (targetWindow && targetOrigin) {
     targetWindow.postMessage(message, targetOrigin);
   }
 }
@@ -102,20 +102,20 @@ export function dispatchMessageEvent(targetWindow, message, targetOrigin) {
 /**
  * Used to dispatch events for a Plugin
  *
- * @param {Object} element - Plugin element (eg. <iframe>)
- * @param {Object} message - Data object for the message
- * @param {String} targetOrigin - URL for the window that the message event is being dispatched from
+ * @param element - Plugin element (eg. <iframe>)
+ * @param message - Data object for the message
+ * @param targetOrigin - URL for the window that the message event is being dispatched from
  */
-export function dispatchPluginEvent(element, message, targetOrigin) {
+export function dispatchPluginEvent(element: HTMLIFrameElement, message: any, targetOrigin: string) {
   dispatchMessageEvent(element.contentWindow, message, targetOrigin);
 }
 
 /**
  * Used to dispatch events for the Host
  *
- * @param {Object} message - Data object for the message
+ * @param message - Data object for the message
  */
-export function dispatchHostEvent(message) {
+export function dispatchHostEvent(message: any) {
   dispatchMessageEvent(global.parent, message, global.document.referrer);
 }
 
@@ -141,16 +141,13 @@ export function dispatchUnmountedEvent() {
  */
 export function useElementSize() {
   // Holds a reference to the ResizeObserver
-  const observerRef = useRef();
+  const observerRef = useRef<ResizeObserver>();
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  // Reference to the Plugin element (eg. <iframe>)
-  const [element, setElement] = useState(null);
-
+  const [element, setElement] = useState<HTMLIFrameElement | undefined>();
   // Sets a reference to the Plugin element when passed to the Plugin element as a "ref" attribute (eg. <iframe>)
-  const measuredRef = useCallback(_element => {
+  const measuredRef: LegacyRef<HTMLIFrameElement> = useCallback(_element => {
     setElement(_element);
   }, []);
 
@@ -175,8 +172,22 @@ export function useElementSize() {
     }
   }, [element]);
 
-  return useMemo(
-    () => ([measuredRef, element, dimensions.width, dimensions.height, offset.x, offset.y]),
+  return useMemo<{
+    ref: LegacyRef<HTMLIFrameElement>,
+    element: HTMLIFrameElement | undefined,
+    width: number,
+    height: number,
+    x: number,
+    y: number,
+  }>(
+    () => ({
+      ref: measuredRef,
+      element: element,
+      width: dimensions.width,
+      height: dimensions.height,
+      x: offset.x,
+      y: offset.y
+    }),
     [measuredRef, element, dimensions, offset],
   );
 }

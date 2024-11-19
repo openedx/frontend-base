@@ -116,8 +116,6 @@ export type {
   ApplicationModuleConfig,
   ExternalAppConfig,
   FederatedAppConfig,
-  InsertDirectPluginWidget,
-  InsertIframePluginWidget,
   InternalAppConfig,
   ProjectModuleConfig,
   ProjectSiteConfig
