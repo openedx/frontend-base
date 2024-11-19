@@ -9,7 +9,7 @@ import { requiredPluginTypes } from './constants';
  * @returns {Boolean} - returns true if all types are correct and present according to the plugin operation
  */
 const validateRequirements = (requiredTypes, widgetConfig) => Object.keys(requiredTypes).every(
-  // eslint-disable-next-line valid-typeof
+
   (field) => (widgetConfig[field] && (typeof widgetConfig[field] === requiredTypes[field])),
 );
 
@@ -22,11 +22,15 @@ export const validatePlugin = (pluginConfig) => {
   const { op } = pluginConfig;
   let config = pluginConfig;
 
-  if (!op) { logError('There is a config with an invalid PLUGIN_OPERATION. Check to make sure it is configured correctly.'); }
+  if (!op) {
+    logError('There is a config with an invalid PLUGIN_OPERATION. Check to make sure it is configured correctly.');
+  }
 
   if (op === PluginOperations.INSERT) {
     config = config.widget;
-    if (!config) { logError('insert operation config is missing widget object'); }
+    if (!config) {
+      logError('insert operation config is missing widget object');
+    }
 
     requiredTypes = {
       ...requiredPluginTypes[op].base,
@@ -58,7 +62,9 @@ export const organizePlugins = (defaultContents, plugins) => {
       newContents.push(change.widget);
     } else if (change.op === PluginOperations.HIDE) {
       const widget = newContents.find((w) => w.id === change.widgetId);
-      if (widget) { widget.hidden = true; }
+      if (widget) {
+        widget.hidden = true;
+      }
     } else if (change.op === PluginOperations.MODIFY) {
       const widgetIdx = newContents.findIndex((w) => w.id === change.widgetId);
       if (widgetIdx >= 0) {
