@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint react/prop-types: off */
-
 import { fireEvent } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
@@ -11,6 +8,7 @@ import {
 } from '../i18n';
 import { initializeMockApp } from '../testing';
 
+import { FunctionComponent } from 'react';
 import { PluginTypes } from '../../types';
 import {
   PLUGIN_MOUNTED, PLUGIN_READY, PLUGIN_RESIZE
@@ -30,7 +28,7 @@ const iframeConfig = {
 const directConfig = {
   id: 'direct_plugin',
   type: PluginTypes.DIRECT,
-  RenderWidget: ({ id, content }) => (<div data-testid={id}>{content.text}</div>),
+  RenderWidget: ({ id, content }: { id: string, content: Record<string, any> }) => (<div data-testid={id}>{content.text}</div>),
   priority: 2,
   content: { text: 'This is a direct plugin.' },
 };
@@ -39,20 +37,10 @@ const directConfig = {
 global.ResizeObserver = jest.fn(function mockResizeObserver() {
   this.observe = jest.fn();
   this.disconnect = jest.fn();
+  return this;
 });
 
 describe('PluginContainer', () => {
-  it('should return a blank page with a null plugin configuration', () => {
-    // the URL will be empty and an empty div tag will exist where the iFrame should be
-    // the iFrame will still take up the space assigned by the host MFE
-    const component = (
-      <PluginContainer config={null} />
-    );
-
-    const { container } = render(component);
-    expect(container.firstChild).toBeNull();
-  });
-
   it('should render a Plugin iFrame Container when given an iFrame config', async () => {
     const component = (
       <PluginContainer config={iframeConfig} loadingFallback={<div>Loading</div>} />
@@ -66,25 +54,34 @@ describe('PluginContainer', () => {
     expect(iframeElement).toBeInTheDocument();
     expect(fallbackElement).toBeInTheDocument();
 
-    expect(fallbackElement.innerHTML).toEqual('Loading');
+    expect(fallbackElement?.innerHTML).toEqual('Loading');
 
     // Ensure the iframe has the proper attributes
-    expect(iframeElement.attributes.getNamedItem('allow').value).toEqual(IFRAME_FEATURE_POLICY);
-    expect(iframeElement.attributes.getNamedItem('src').value).toEqual(iframeConfig.url);
-    expect(iframeElement.attributes.getNamedItem('title').value).toEqual(iframeConfig.title);
+    expect(iframeElement?.attributes.getNamedItem('allow')?.value).toEqual(IFRAME_FEATURE_POLICY);
+    expect(iframeElement?.attributes.getNamedItem('src')?.value).toEqual(iframeConfig.url);
+    expect(iframeElement?.attributes.getNamedItem('title')?.value).toEqual(iframeConfig.title);
     // The component isn't ready, since the class has 'd-none'
-    expect(iframeElement.attributes.getNamedItem('class').value).toEqual('border border-0 w-100 d-none');
+    expect(iframeElement?.attributes.getNamedItem('class')?.value).toEqual('border border-0 w-100 d-none');
+
+    if (iframeElement === null) {
+      fail('iframeElement was null.');
+    }
+    if (iframeElement?.contentWindow === null) {
+      fail('contentWindow was null.');
+    }
 
     jest.spyOn(iframeElement.contentWindow, 'postMessage');
 
     expect(iframeElement.contentWindow.postMessage).not.toHaveBeenCalled();
 
     // Dispatch a 'mounted' event manually.
-    const mountedEvent = new Event('message');
-    mountedEvent.data = {
-      type: PLUGIN_MOUNTED,
-    };
-    mountedEvent.source = iframeElement.contentWindow;
+    const mountedEvent = new MessageEvent('message', {
+      data: {
+        type: PLUGIN_MOUNTED,
+      },
+      source: iframeElement?.contentWindow
+    });
+
     fireEvent(window, mountedEvent);
 
     expect(iframeElement.contentWindow.postMessage).toHaveBeenCalledWith(
@@ -99,14 +96,14 @@ describe('PluginContainer', () => {
     );
 
     // Dispatch a 'ready' event manually.
-    const readyEvent = new Event('message');
-    readyEvent.data = {
-      type: PLUGIN_READY,
-    };
-    readyEvent.source = iframeElement.contentWindow;
+    const readyEvent = new MessageEvent('message', {
+      data: { type: PLUGIN_READY },
+      source: iframeElement.contentWindow,
+    });
+
     fireEvent(window, readyEvent);
 
-    expect(iframeElement.attributes.getNamedItem('class').value).toEqual('border border-0 w-100');
+    expect(iframeElement.attributes.getNamedItem('class')?.value).toEqual('border border-0 w-100');
   });
 
   it('should render a Plugin Direct Container when given a Direct config', async () => {
@@ -123,13 +120,7 @@ describe('PluginContainer', () => {
 describe('Plugin', () => {
   let logError = jest.fn();
 
-  const error = (
-    <FormattedMessage
-      id="raised.error.message.text"
-      defaultMessage="there is an error in the React component"
-      description="raised error message when an error occurs in React component"
-    />
-  );
+  const error = 'There was an error';
 
   beforeEach(async () => {
     // This is a gross hack to suppress error logs in the invalid parentSelector test
@@ -173,20 +164,23 @@ describe('Plugin', () => {
   );
 
   const PluginPageWrapper = ({
-    params, FallbackComponent, ChildComponent,
-  }) => (
-    <IntlProvider locale="en">
-      <Plugin params={params} ErrorFallbackComponent={FallbackComponent}>
-        <ChildComponent />
-      </Plugin>
-    </IntlProvider>
-  );
+    fallbackComponent, childComponent,
+  }: { fallbackComponent?: FunctionComponent, childComponent: FunctionComponent }) => {
+    const ChildComponent = childComponent;
+    return (
+      <IntlProvider locale="en">
+        <Plugin errorFallbackComponent={fallbackComponent}>
+          <ChildComponent />
+        </Plugin>
+      </IntlProvider>
+    );
+  };
 
   it('should render children if no error', () => {
     const component = (
       <PluginPageWrapper
-        FallbackComponent={ErrorFallbackComponent}
-        ChildComponent={HealthyComponent}
+        fallbackComponent={ErrorFallbackComponent}
+        childComponent={HealthyComponent}
       />
     );
     const { container } = render(component);
@@ -196,9 +190,8 @@ describe('Plugin', () => {
   it('should throw an error if the child component fails', () => {
     const component = (
       <PluginPageWrapper
-        className="bg-light"
-        FallbackComponent={ErrorFallbackComponent}
-        ChildComponent={ExplodingComponent}
+        fallbackComponent={ErrorFallbackComponent}
+        childComponent={ExplodingComponent}
       />
     );
 
@@ -217,7 +210,7 @@ describe('Plugin', () => {
   it('should render the default fallback component when one is not passed into the Plugin', () => {
     const component = (
       <PluginPageWrapper
-        ChildComponent={ExplodingComponent}
+        childComponent={ExplodingComponent}
       />
     );
 

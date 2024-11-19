@@ -1,12 +1,19 @@
-import React, { Suspense } from 'react';
-import PropTypes from 'prop-types';
+import { ReactNode, Suspense } from 'react';
 
-import { directPluginConfigShape, slotOptionsShape } from './data/shapes';
+import { PluginContainerDirectConfig } from '../../types';
 import { mergeRenderWidgetPropsWithPluginContent } from './data/utils';
 
-function PluginContainerDirect({
+interface PluginContainerDirectProps {
+  config: PluginContainerDirectConfig,
+  loadingFallback: NonNullable<ReactNode> | null,
+  slotOptions: {
+    mergeProps: boolean,
+  },
+}
+
+export default function PluginContainerDirect({
   config, slotOptions, loadingFallback, ...props
-}) {
+}: PluginContainerDirectProps) {
   const { RenderWidget, id } = config;
 
   // When applicable, merge base RenderWidget props with custom plugin content, if any.
@@ -22,19 +29,3 @@ function PluginContainerDirect({
     </Suspense>
   );
 }
-
-PluginContainerDirect.propTypes = {
-  /** Configuration for the Plugin in this container (i.e. pluginSlot[id].example_plugin) */
-  config: PropTypes.shape(directPluginConfigShape).isRequired,
-  /** Custom fallback component used when component is not ready (i.e. "loading") */
-  loadingFallback: PropTypes.node,
-  /** Options passed to the PluginSlot */
-  slotOptions: PropTypes.shape(slotOptionsShape),
-};
-
-PluginContainerDirect.defaultProps = {
-  loadingFallback: null,
-  slotOptions: {},
-};
-
-export default PluginContainerDirect;

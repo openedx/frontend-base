@@ -1,55 +1,39 @@
-'use client';
-
-import PropTypes from 'prop-types';
-
 import PluginContainerDirect from './PluginContainerDirect';
 import PluginContainerIframe from './PluginContainerIframe';
 
-import { PluginTypes } from '../../types';
-import { pluginConfigShape, slotOptionsShape } from './data/shapes';
+import { ReactNode } from 'react';
+import { isPluginContainerDirectConfig, isPluginContainerIframeConfig } from './data/utils';
+import { PluginContainerConfig } from '../../types';
 
-function PluginContainer({ config, slotOptions, ...props }) {
-  if (!config) {
-    return null;
-  }
-
-  // this will allow for future plugin types to be inserted in the PluginErrorBoundary
-  let renderer = null;
-  switch (config.type) {
-    case PluginTypes.IFRAME:
-      renderer = (
-        <PluginContainerIframe
-          config={config}
-          {...props}
-        />
-      );
-      break;
-    case PluginTypes.DIRECT:
-      renderer = (
-        <PluginContainerDirect
-          config={config}
-          slotOptions={slotOptions}
-          {...props}
-        />
-      );
-      break;
-    default:
-      break;
-  }
-
-  return renderer;
+interface PluginContainerProps {
+  config: PluginContainerConfig,
+  loadingFallback: NonNullable<ReactNode> | null,
+  slotOptions?: {
+    mergeProps: boolean,
+  },
 }
 
-export default PluginContainer;
+export default function PluginContainer({ config, slotOptions = { mergeProps: false }, loadingFallback, ...props }: PluginContainerProps) {
+  if (isPluginContainerDirectConfig(config)) {
+    return (
+      <PluginContainerDirect
+        config={config}
+        slotOptions={slotOptions}
+        loadingFallback={loadingFallback}
+        {...props}
+      />
+    );
+  }
 
-PluginContainer.propTypes = {
-  /** Configuration for the Plugin in this container — i.e pluginSlot[id].example_plugin */
-  config: PropTypes.shape(pluginConfigShape),
-  /** Options passed to the PluginSlot */
-  slotOptions: PropTypes.shape(slotOptionsShape),
-};
+  if (isPluginContainerIframeConfig(config)) {
+    return (
+      <PluginContainerIframe
+        config={config}
+        loadingFallback={loadingFallback}
+        {...props}
+      />
+    );
+  }
 
-PluginContainer.defaultProps = {
-  config: null,
-  slotOptions: {},
-};
+  return null;
+}

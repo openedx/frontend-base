@@ -1,4 +1,4 @@
-import { ElementType, ReactElement, ReactNode } from 'react';
+import { FunctionComponent, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { IndexRouteObject, NonIndexRouteObject } from 'react-router';
 
@@ -71,12 +71,14 @@ export interface ExternalAppConfig {
 
 export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
 
+export interface PluginSlotConfig {
+  keepDefault: boolean,
+  plugins: PluginChange[],
+}
+
 export interface OptionalSiteConfig {
 
-  pluginSlots: Record<string, {
-    keepDefault: boolean,
-    plugins: Plugin[],
-  }>,
+  pluginSlots: Record<string, PluginSlotConfig>,
 
   header?: HeaderConfig,
   footer?: FooterConfig,
@@ -281,41 +283,53 @@ export enum PluginTypes {
   DIRECT = 'direct',
 }
 
-export interface InsertDirectPluginWidget {
+export interface BasePluginContainerConfig {
   id: string,
-  type: PluginTypes.DIRECT,
+  type: PluginTypes,
   priority: number,
-  RenderWidget: ElementType,
-  content?: Record<string, any>,
+  hidden?: boolean,
+  wrappers?: FunctionComponent[],
 }
 
-export interface InsertIframePluginWidget {
-  id: string,
-  type: PluginTypes.IFRAME,
-  priority: number,
+export interface PluginContainerIframeConfig extends BasePluginContainerConfig {
   url: string,
   title: string,
 }
 
-export type InsertPluginWidget = InsertDirectPluginWidget | InsertIframePluginWidget;
+export interface PluginContainerDirectConfig extends BasePluginContainerConfig {
+  RenderWidget: FunctionComponent<Record<string, any>>,
+  content?: Record<string, any>,
+}
 
-export type PluginWidget = InsertPluginWidget;
+export type PluginContainerConfig = PluginContainerIframeConfig | PluginContainerDirectConfig | DefaultContentsPluginContainerConfig;
+
+export interface DefaultContentsPluginContainerConfig extends Omit<PluginContainerDirectConfig, 'RenderWidget'> {
+  RenderWidget: ReactNode,
+}
+
+export interface MessageEventCallbackParams {
+  type: string,
+  payload: any,
+}
+
+export type MessageEventCallback = ({ type, payload }: MessageEventCallbackParams) => void;
+;
 
 export interface ModifyPlugin {
   op: PluginOperationTypes.MODIFY,
   widgetId: string,
-  fn: (InsertDirectPluginWidget) => InsertDirectPluginWidget,
+  fn: (widget: PluginContainerConfig) => PluginContainerConfig,
 }
 
 export interface InsertPlugin {
   op: PluginOperationTypes.INSERT,
-  widget: PluginWidget,
+  widget: PluginContainerIframeConfig | PluginContainerDirectConfig,
 }
 
 export interface WrapPlugin {
   op: PluginOperationTypes.WRAP,
   widgetId: string,
-  wrapper: ElementType,
+  wrapper: FunctionComponent<{ component: ReactNode }>,
 }
 
 export interface HidePlugin {
@@ -323,7 +337,7 @@ export interface HidePlugin {
   widgetId: string,
 }
 
-export type Plugin = HidePlugin | InsertPlugin | ModifyPlugin | WrapPlugin;
+export type PluginChange = HidePlugin | InsertPlugin | ModifyPlugin | WrapPlugin;
 
 // Learning
 
