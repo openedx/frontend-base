@@ -1,13 +1,22 @@
 import { PluginSlot } from '@openedx/frontend-base';
 import { Stack } from '@openedx/paragon';
 import classNames from 'classnames';
+import { MouseEvent } from 'react';
 
+interface LinkExampleProps {
+  href: string,
+}
 // Example sub-components used as the default childen within a PluginSlot
-const LinkExample = ({ href, ...rest }) => {
+const LinkExample = ({ href, ...rest }: LinkExampleProps) => {
   return <a href={href} {...rest}>Hello world</a>;
 };
 
-const Username = ({ className, onClick, ...rest }) => {
+interface UsernameProps {
+  className: string,
+  onClick: (event: MouseEvent) => void,
+}
+
+const Username = ({ className, onClick, ...rest }: UsernameProps) => {
   const authenticatedUser = { username: 'testuser' };
   const { username } = authenticatedUser;
   return (
@@ -23,7 +32,17 @@ const Username = ({ className, onClick, ...rest }) => {
     </span>
   );
 };
-const UsernameWithPluginContent = ({ className, onClick, content = {} }) => {
+
+interface UsernameWithPluginContentProps {
+  className: string,
+  onClick: (event: MouseEvent) => void,
+  content?: {
+    className?: string,
+    onClick?: (event: MouseEvent) => void,
+  },
+}
+
+function UsernameWithPluginContent({ className, onClick, content = {} }: UsernameWithPluginContentProps) {
   const {
     className: classNameFromPluginContent,
     onClick: onClickFromPluginContent,
@@ -39,8 +58,13 @@ const UsernameWithPluginContent = ({ className, onClick, content = {} }) => {
   return <Username {...updatedProps} {...contentRest} />;
 };
 
+interface PluginSlotWithModifyDefaultContentsProps {
+  id: string,
+  label: string,
+}
+
 // Example PluginSlot usage.
-function PluginSlotWithModifyDefaultContents({ id, label }) {
+export default function PluginSlotWithModifyDefaultContents({ id, label }: PluginSlotWithModifyDefaultContentsProps) {
   return (
     <div className="border border-primary px-3">
       <h3 id={id}>{label}</h3>
@@ -100,7 +124,9 @@ function PluginSlotWithModifyDefaultContents({ id, label }) {
             as="div"
             pluginProps={{
               className: 'bg-accent-b',
-              onClick: (e) => { console.log('Username clicked!', 'pluginProps', e); },
+              onClick: (e) => {
+                console.log('Username clicked!', 'pluginProps', e);
+              },
             }}
             slotOptions={{ mergeProps: true }}
           >
@@ -116,5 +142,3 @@ function PluginSlotWithModifyDefaultContents({ id, label }) {
     </div>
   );
 }
-
-export default PluginSlotWithModifyDefaultContents;
