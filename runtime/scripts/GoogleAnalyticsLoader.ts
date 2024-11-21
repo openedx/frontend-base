@@ -3,6 +3,8 @@
  * @memberof module:GoogleAnalytics
  */
 class GoogleAnalyticsLoader {
+  analyticsId: string;
+
   constructor({ config }) {
     this.analyticsId = config.GOOGLE_ANALYTICS_4_ID;
   }
@@ -13,6 +15,7 @@ class GoogleAnalyticsLoader {
     }
 
     global.googleAnalytics = global.googleAnalytics || [];
+    // @ts-expect-error We just added googleAnalytics to global, it's there.
     const { googleAnalytics } = global;
 
     // If the snippet was invoked do nothing.
@@ -40,6 +43,9 @@ class GoogleAnalyticsLoader {
 
       // Insert our scripts next to the first script element.
       const first = document.getElementsByTagName('script')[0];
+      if (first?.parentNode === null) {
+        throw new Error('No script to insert Google analytics script before.');
+      }
       first.parentNode.insertBefore(scriptSrc, first);
       first.parentNode.insertBefore(scriptGtag, first);
       googleAnalytics._loadOptions = options;
