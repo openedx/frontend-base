@@ -9,6 +9,7 @@ describe('GoogleAnalytics', () => {
   let data;
 
   beforeEach(() => {
+    // @ts-expect-error We're adding it, this is fine.
     window.googleAnalytics = [];
   });
 
