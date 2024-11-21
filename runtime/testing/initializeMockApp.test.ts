@@ -1,14 +1,13 @@
-import initializeMockApp from './initializeMockApp';
 import {
   getAnalyticsService,
   MockAnalyticsService,
   sendTrackEvent,
 } from '../analytics';
 import {
-  MockAuthService,
   ensureAuthenticatedUser,
   getAuthService,
   getLoginRedirectUrl,
+  MockAuthService,
   setAuthenticatedUser,
 } from '../auth';
 import {
@@ -16,6 +15,7 @@ import {
   logInfo,
   MockLoggingService,
 } from '../logging';
+import initializeMockApp from './initializeMockApp';
 
 describe('initializeMockApp', () => {
   it('should create mock analytics, auth, and logging services, and a real i18n service', () => {
