@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router';
 import { patchMessages } from '../../runtime';
-import { getConfig, patchApp } from '../../runtime/config';
+import { patchApp } from '../../runtime/config';
 import { SHELL_ID } from '../data/constants';
 import { getFederatedApps, loadApp } from '../data/moduleUtils';
 
@@ -19,8 +19,6 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
           if (app) {
             const { routes, messages } = app;
 
-            const { apps } = getConfig();
-            apps.push(app);
             patchApp(app);
             patchMessages(messages);
             if (Array.isArray(routes)) {
