@@ -1,17 +1,12 @@
-import { Button } from '@openedx/paragon';
+import { Button, Nav } from '@openedx/paragon';
 import { MenuIcon } from '@openedx/paragon/icons';
 import classNames from 'classnames';
 import { useCallback, useState } from 'react';
 import { FocusOn } from 'react-focus-on';
 import { useMediaQuery } from 'react-responsive';
-import { useAuthenticatedUser } from '../../../runtime';
-import AnonymousMenu from '../anonymous-menu/AnonymousMenu';
-import AuthenticatedMenu from '../authenticated-menu';
-import Logo from '../Logo';
-import MobileNavLinks from './MobileNavLinks';
+import Slot from '../../../runtime/slots/Slot';
 
 export default function MobileLayout() {
-  const authenticatedUser = useAuthenticatedUser();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
@@ -23,29 +18,30 @@ export default function MobileLayout() {
     <>
       <div
         className={classNames(
-          'align-items-center justify-content-between pr-3',
+          'align-items-center justify-content-between pr-3 booyah',
           isMobile ? 'd-flex' : 'd-none',
         )}
       >
-        <div className="flex-grow-1 flex-basis-0">
+        <div className="d-flex flex-grow-1 flex-basis-0 justify-content-start align-items-center">
           <Button onClick={handleMobileButtonClick} variant="outline">
             <MenuIcon />
           </Button>
+          <Slot id="frontend.shell.header.mobile.left.widget" />
         </div>
-        <div className="d-flex justify-content-center flex-grow-1 flex-basis-0">
-          <Logo />
+        <div className="d-flex flex-grow-1 flex-basis-0 justify-content-center align-items-center">
+          <Slot id="frontend.shell.header.mobile.center.widget" />
         </div>
-        <div className="d-flex flex-grow-1 justify-content-end flex-basis-0">
-          {authenticatedUser ? (
-            <AuthenticatedMenu />
-          ) : (
-            <AnonymousMenu />
-          )}
+        <div className="d-flex flex-grow-1 flex-basis-0 justify-content-end align-items-center">
+          <Slot id="frontend.shell.header.mobile.right.widget" />
         </div>
       </div>
       {mobileOpen && (
         <FocusOn onClickOutside={() => setMobileOpen(false)} onEscapeKey={() => setMobileOpen(false)}>
-          <MobileNavLinks />
+          {/* <div>Booyah</div> */}
+          <Nav className="flex-column">
+            <Slot id="frontend.shell.header.mobile.menuLinks.widget" />
+          </Nav>
+          {/* <Slot id="frontend.shell.header.mobile.menu.widget" /> */}
         </FocusOn>
       )}
     </>

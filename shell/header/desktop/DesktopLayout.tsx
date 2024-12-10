@@ -1,15 +1,9 @@
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
-import { useAuthenticatedUser } from '../../../runtime';
-import AnonymousMenu from '../anonymous-menu/AnonymousMenu';
-import AuthenticatedMenu from '../authenticated-menu';
-import Logo from '../Logo';
-import CourseInfo from './CourseInfo';
-import PrimaryNavLinks from './PrimaryNavLinks';
-import SecondaryNavLinks from './SecondaryNavLinks';
+
+import Slot from '../../../runtime/slots/Slot';
 
 export default function DesktopLayout() {
-  const authenticatedUser = useAuthenticatedUser();
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   return (
@@ -19,17 +13,10 @@ export default function DesktopLayout() {
     )}
     >
       <div className="d-flex flex-grow-1 align-items-center">
-        <Logo />
-        <CourseInfo />
-        <PrimaryNavLinks />
+        <Slot id="frontend.shell.header.desktop.left.widget" />
       </div>
       <div className="d-flex align-items-center">
-        <SecondaryNavLinks />
-        {authenticatedUser ? (
-          <AuthenticatedMenu />
-        ) : (
-          <AnonymousMenu />
-        )}
+        <Slot id="frontend.shell.header.desktop.right.widget" />
       </div>
     </div>
   );
