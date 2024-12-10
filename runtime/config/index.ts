@@ -104,6 +104,7 @@ import merge from 'lodash.merge';
 import {
   App,
   EnvironmentTypes,
+  OptionalSiteConfig,
   RequiredSiteConfig,
   SiteConfig
 } from '../../types';
@@ -225,7 +226,7 @@ export function setConfig(newConfig: SiteConfig) {
  *
  * @param {Object} newConfig
  */
-export function mergeConfig(newConfig: RequiredSiteConfig) {
+export function mergeConfig(newConfig: Partial<Partial<OptionalSiteConfig> & RequiredSiteConfig>) {
   config = merge(config, newConfig);
   publish(CONFIG_CHANGED);
 }
