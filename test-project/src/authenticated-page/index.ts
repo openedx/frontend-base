@@ -1,4 +1,4 @@
-import { ApplicationModuleConfig, createUrlMenuItem } from '@openedx/frontend-base';
+import { ApplicationModuleConfig } from '@openedx/frontend-base';
 import messages from './i18n';
 
 const config: ApplicationModuleConfig = {
@@ -11,11 +11,11 @@ const config: ApplicationModuleConfig = {
       };
     },
   },
-  header: {
-    primaryLinks: [
-      createUrlMenuItem('Authenticated Page Link', '#'),
-    ]
-  },
+  // header: {
+  //   primaryLinks: [
+  //     createUrlMenuItem('Authenticated Page Link', '#'),
+  //   ]
+  // },
   messages,
 };
 
