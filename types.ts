@@ -14,9 +14,6 @@ export interface SlotCondition {
 
 export enum SlotOperationTypes {
   APPEND = 'append',
-  PREPEND = 'prepend',
-  INSERT_AFTER = 'insertAfter',
-  INSERT_BEFORE = 'insertBefore',
   OPTIONS = 'options',
   LAYOUT = 'layout',
 }
