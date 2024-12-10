@@ -105,8 +105,26 @@ export {
 } from './runtime';
 
 export type {
+  App,
+  BaseWidgetOperation,
+  ComponentOperation,
+  CourseInfo,
+  ElementOperation,
+  ExternalRoute,
+  FederatedApp,
+  FederatedOperation,
+  IFrameOperation,
+  LayoutOperation,
+  LocalizedMessages,
+  MenuItemName,
+  OptionsOperation,
   ProjectModuleConfig,
-  ProjectSiteConfig
+  ProjectSiteConfig,
+  Remote,
+  SlotCondition,
+  SlotOperation,
+  User,
+  WidgetOperation
 } from './types';
 
 export {
@@ -114,3 +132,15 @@ export {
   PluginOperationTypes,
   PluginTypes
 } from './types';
+
+export {
+  DefaultLayout,
+  DefaultMain,
+  DropdownMenuSlot,
+  Footer,
+  Header,
+  LinkMenuItem,
+  defaultFooterConfig,
+  defaultHeaderConfig,
+  defaultShellConfig
+} from './shell';
