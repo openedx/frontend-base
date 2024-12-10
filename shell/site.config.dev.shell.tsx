@@ -7,7 +7,7 @@ import userConfig from './dev-project/user/userConfig';
 import defaultFooterConfig from './footer/defaultFooterConfig';
 import defaultHeaderConfig from './header/defaultHeaderConfig';
 
-import './index.scss';
+import './app.scss';
 import DropdownMenuSlot from './menus/DropdownMenuSlot';
 import LinkMenuItem from './menus/LinkMenuItem';
 

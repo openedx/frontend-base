@@ -21,7 +21,7 @@ As a best practice, a project should have a top-level SCSS file as a peer to the
 The `project.scss` file should import the stylesheet from the shell:
 
 ```diff
-+ @import '@openedx/frontend-base/shell/index.scss';
++ @import '@openedx/frontend-base/shell/app.scss';
 
 // other styles
 ```
