@@ -1,7 +1,7 @@
-import { ApplicationModuleConfig } from '@openedx/frontend-base';
+import { App } from '@openedx/frontend-base';
 
-const config: ApplicationModuleConfig = {
-  route: {
+const config: App = {
+  routes: [{
     path: '/plugins',
     lazy: async () => {
       const { default: Component } = await import('./PluginPage');
@@ -9,7 +9,7 @@ const config: ApplicationModuleConfig = {
         Component,
       };
     },
-  }
+  }]
 };
 
 export default config;
