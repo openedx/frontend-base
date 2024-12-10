@@ -1,20 +1,20 @@
 import { Button, Collapsible } from '@openedx/paragon';
 import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
-import { useContext } from 'react';
 
-import MenuItem from '../menus/MenuItem';
-import FooterContext from './FooterContext';
+import { useSlotOptions, useSlotWidgets } from '../../runtime/slots/hooks';
+import messages from '../Shell.messages';
 
 export default function RevealLinks() {
-  const { revealMenu } = useContext(FooterContext);
+  const widgets = useSlotWidgets();
+  const options = useSlotOptions();
 
-  if (revealMenu === undefined) {
+  const label = options.label ?? messages['footer.revealLinks.more'];
+
+  if (widgets.length === 0) {
     return (
       <div className="border-top" />
     );
   }
-
-  const { label, links } = revealMenu;
 
   return (
     <Collapsible.Advanced>
@@ -35,9 +35,7 @@ export default function RevealLinks() {
       </div>
       <Collapsible.Body>
         <div className="d-flex justify-content-center gap-3 align-items-center my-3">
-          {links.map((item) => (
-            <MenuItem key={item.id} item={item} />
-          ))}
+          {widgets}
         </div>
       </Collapsible.Body>
     </Collapsible.Advanced>

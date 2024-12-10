@@ -1,21 +1,24 @@
 import { Hyperlink, Image } from '@openedx/paragon';
-import { useContext } from 'react';
 
-import FooterContext from './FooterContext';
+interface LogoProps {
+  imageUrl?: string,
+  destinationUrl?: string | null,
+}
 
-export default function Logo() {
-  const { logoDestinationUrl, logoUrl } = useContext(FooterContext);
-
+export default function Logo({
+  imageUrl = 'https://edx-cdn.org/v3/default/logo.svg',
+  destinationUrl = null
+}: LogoProps) {
   const image = (
-    <Image src={logoUrl} style={{ maxHeight: '2rem' }} />
+    <Image src={imageUrl} style={{ maxHeight: '2rem' }} />
   );
 
-  if (logoDestinationUrl === null) {
+  if (destinationUrl === null) {
     return image;
   }
 
   return (
-    <Hyperlink destination={logoDestinationUrl} className="p-0">
+    <Hyperlink destination={destinationUrl} className="p-0">
       {image}
     </Hyperlink>
   );

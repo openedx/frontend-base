@@ -1,60 +1,60 @@
 import { Dropdown, Hyperlink, NavDropdown, NavLink } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
 
-import { getAppUrl } from '../../runtime/routing';
+import { getUrlByRole } from '../../runtime/routing';
 import {
-  LinkMenuItemConfig
+  MenuItemName
 } from '../../types';
 import {
-  getItemLabel,
-  isAppMenuItem,
-  isUrlMenuItem
+  getItemLabel
 } from './data/utils';
 
 interface LinkMenuItemProps {
-  item: LinkMenuItemConfig,
+  label: MenuItemName,
+  role?: string,
+  url?: string,
   variant?: 'hyperlink' | 'navLink' | 'navDropdownItem' | 'dropdownItem',
 }
 
-export default function LinkMenuItem({ item, variant = 'hyperlink' }: LinkMenuItemProps) {
+export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }: LinkMenuItemProps) {
   const intl = useIntl();
-  const label = getItemLabel(item, intl);
+  const finalLabel = getItemLabel(label, intl);
 
-  let url: string | null = null;
-  if (isAppMenuItem(item)) {
-    url = getAppUrl(item.appId);
-  } else if (isUrlMenuItem(item)) {
-    url = item.url;
+  let finalUrl: string | null | undefined;
+  if (role !== undefined) {
+    finalUrl = getUrlByRole(role);
+  } else if (url !== undefined) {
+    finalUrl = url;
   }
 
   // The URL will only be null if the item is an "app" menu item, and if the app is not loaded.
   // We automatically hide the link if this is the case.
-  if (url === null) {
+  if (!finalUrl) {
     return null;
   }
 
   if (variant === 'hyperlink') {
     return (
-      <Hyperlink destination={url}>
-        {label}
+      <Hyperlink destination={finalUrl}>
+        {finalLabel}
       </Hyperlink>
     );
   } else if (variant === 'navLink') {
     return (
-      <NavLink href={url}>
-        {label}
+      <NavLink href={finalUrl}>
+        {finalLabel}
       </NavLink>
     );
   } else if (variant === 'navDropdownItem') {
     return (
-      <NavDropdown.Item href={url}>
-        {label}
+      <NavDropdown.Item href={finalUrl}>
+        {finalLabel}
       </NavDropdown.Item>
     );
   } else if (variant === 'dropdownItem') {
     return (
-      <Dropdown.Item href={url}>
-        {label}
+      <Dropdown.Item href={finalUrl}>
+        {finalLabel}
       </Dropdown.Item>
     );
   }

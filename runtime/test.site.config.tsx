@@ -1,32 +1,29 @@
 import { EnvironmentTypes, ProjectSiteConfig } from '../types';
-import { createExternalAppConfig, createFederatedAppConfig, createInternalAppConfig } from './config';
 
 const config: ProjectSiteConfig = {
   apps: [
-    createInternalAppConfig(
-      'test-app-1',
-      {
-        route: {
+    {
+      routes: [
+        {
           path: '/app1',
           element: (
             <div>Test App 1</div>
-          )
+          ),
+          handle: {
+            role: 'test-app-1'
+          }
         }
+      ]
+    },
+  ],
+  federatedApps: [
+    {
+      moduleId: 'testApp2',
+      remoteId: 'remoteApps',
+      rolePaths: {
+        'test-app-2': '/app2',
       }
-    ),
-    createInternalAppConfig(
-      'test-app-2',
-      {
-        route: {
-          path: '/app2',
-          element: (
-            <div>Test App 2</div>
-          )
-        }
-      },
-      '/overridePathApp2'),
-    createFederatedAppConfig('test-app-3', 'TestApp3', 'testLibrary', 'http://localhost/testLibrary/remoteEntry.js', '/app3'),
-    createExternalAppConfig('test-app-4', 'http://localhost/testApp4'),
+    },
   ],
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   ACCOUNT_PROFILE_URL: 'http://localhost:1995',

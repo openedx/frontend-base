@@ -32,14 +32,6 @@ export {
 } from './auth';
 
 export {
-  createAppMenuItem,
-  createComponentMenuItem,
-  createDropdownMenuItem,
-  createExternalAppConfig,
-  createFederatedAppConfig,
-  createInternalAppConfig,
-  createLabeledMenu,
-  createUrlMenuItem,
   getConfig,
   mergeConfig,
   setConfig
@@ -81,7 +73,7 @@ export {
   injectIntl,
   intlShape,
   isRtl,
-  mergeMessages,
+  patchMessages,
   updateLocale,
   useIntl
 } from './i18n';
