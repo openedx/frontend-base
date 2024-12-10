@@ -20,7 +20,7 @@ export default function CopyrightNotice({ title, destination }: CopyrightNoticeP
   // If destination has explicitly been set to 'null', that means no link.
   const finalDestination = destination !== undefined ? destination : config.MARKETING_SITE_BASE_URL;
   return (
-    <span>
+    <div className="text-center x-small">
       <span>&copy;&nbsp;{new Date().getFullYear()}&nbsp;</span>
       {finalDestination !== null ? (
         <Hyperlink
@@ -33,6 +33,6 @@ export default function CopyrightNotice({ title, destination }: CopyrightNoticeP
         <span>{finalTitle}</span>
       )}
       <span>.</span>
-    </span>
+    </div>
   );
 }
