@@ -49,10 +49,8 @@ const config: ProjectSiteConfig = {
     defaultHeaderConfig,
     defaultFooterConfig,
     examplePageConfig,
-    // authenticatedPageConfig,
     pluginPageConfig,
     iframePluginConfig,
-
   ],
   federatedApps: [
     {
@@ -64,13 +62,6 @@ const config: ProjectSiteConfig = {
         ]
       }
     }
-    // createFederatedAppConfig(
-    //   'authenticatedPage',
-    //   'AuthenticatedPage',
-    //   'testProject',
-    //   'http://localhost:8081/remoteEntry.js',
-    //   '/authenticated',
-    // ),
   ],
   remotes: [
     {
