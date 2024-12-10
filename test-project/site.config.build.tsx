@@ -1,18 +1,17 @@
-import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
+import { defaultFooterConfig, defaultHeaderConfig, defaultShellConfig, EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
 
-import { createInternalAppConfig, EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
+import { authenticatedPageConfig, examplePageConfig, iframePluginConfig, pluginPageConfig } from './src';
 import './src/project.scss';
 
 const config: ProjectSiteConfig = {
   apps: [
-    createInternalAppConfig('examplePage', examplePageConfig),
-    createInternalAppConfig('authenticatedPage', authenticatedPageConfig),
-    createInternalAppConfig('pluginPage', pluginPageConfig),
-
-    // This site is serving its own iframe plugin and embedding it in the PluginPage.  This is
-    // obviously not quite like a real world use case, but it helps us test the mechanism without
-    // adding another test project to the library.
-    createInternalAppConfig('iframePlugin', iframePluginConfig),
+    defaultShellConfig,
+    defaultHeaderConfig,
+    defaultFooterConfig,
+    examplePageConfig,
+    authenticatedPageConfig,
+    pluginPageConfig,
+    iframePluginConfig,
   ],
 
   ENVIRONMENT: EnvironmentTypes.PRODUCTION,
