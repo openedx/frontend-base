@@ -1,31 +1,29 @@
 import { loadRemote } from '@module-federation/runtime';
-import { getConfig, mergeMessages } from '../../runtime';
+import { getConfig, patchMessages } from '../../runtime';
 import {
-  AppConfig, AppConfigTypes, ApplicationModuleConfig,
-  FederatedAppConfig,
-  InternalAppConfig
+  App
 } from '../../types';
 
-function filterAppsByType<T extends AppConfig>(apps: AppConfig[], type: AppConfigTypes): T[] {
-  return apps.filter((app): app is T => app.type === type);
-}
-
-export function getFederatedModules() {
-  const { apps } = getConfig();
-  return filterAppsByType<FederatedAppConfig>(apps, AppConfigTypes.FEDERATED);
+export function getFederatedApps() {
+  const { federatedApps } = getConfig();
+  return federatedApps;
 }
 
 export function getFederationRemotes() {
-  return getFederatedModules().map((app: FederatedAppConfig) => ({
-    name: app.federation.libraryId,
-    entry: app.federation.remoteUrl
-  }));
+  const { remotes } = getConfig();
+  if (Array.isArray(remotes)) {
+    return remotes.map((remote) => ({
+      name: remote.id,
+      entry: remote.url
+    }));
+  }
+  return [];
 }
 
-export async function loadModuleConfig(module, scope) {
-  let config: ApplicationModuleConfig | null = null;
+export async function loadApp(module, scope) {
+  let config: App | null = null;
   try {
-    const loadedRemote = await loadRemote<{ default: ApplicationModuleConfig }>(`${scope}/${module}`);
+    const loadedRemote = await loadRemote<{ default: App }>(`${scope}/${module}`);
     if (loadedRemote !== null) {
       config = loadedRemote.default;
     }
@@ -35,13 +33,9 @@ export async function loadModuleConfig(module, scope) {
   return config;
 }
 
-export function getInternalModules() {
+export function addAppMessages() {
   const { apps } = getConfig();
-  return filterAppsByType<InternalAppConfig>(apps, AppConfigTypes.INTERNAL);
-}
-
-export function mergeInternalMessages() {
-  getInternalModules().forEach((module) => {
-    mergeMessages(module.config.messages);
+  apps.forEach((app) => {
+    patchMessages(app.messages);
   });
 }
