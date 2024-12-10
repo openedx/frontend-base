@@ -1,23 +1,18 @@
 import { RouteObject } from 'react-router';
 
-import { InternalAppConfig } from '../../types';
-import { getInternalModules } from '../data/moduleUtils';
-import patchAppIdIntoRouteHandle from './patchAppIdIntoRouteHandle';
+import { getConfig } from '../../runtime';
+import { App } from '../../types';
 
 export default function createInternalRoutes() {
-  const internalModules = getInternalModules();
+  const { apps } = getConfig();
 
-  const routes: RouteObject[] = [];
+  let routes: RouteObject[] = [];
 
-  internalModules.forEach(
-    (internalModule: InternalAppConfig) => {
-      const route = { ...internalModule.config.route };
-      // Route path override
-      if (internalModule.path) {
-        route.path = internalModule.path;
+  apps.forEach(
+    (app: App) => {
+      if (Array.isArray(app.routes)) {
+        routes = routes.concat(app.routes);
       }
-      patchAppIdIntoRouteHandle(internalModule.id, route);
-      routes.push(route);
     }
   );
   return routes;

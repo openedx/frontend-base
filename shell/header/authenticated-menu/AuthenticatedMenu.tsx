@@ -1,13 +1,11 @@
 import { DropdownButton } from '@openedx/paragon';
 import { Person } from '@openedx/paragon/icons';
 
-import { useContext } from 'react';
 import {
   useAuthenticatedUser
 } from '../../../runtime';
 
-import ChildMenuItem from '../../menus/ChildMenuItem';
-import HeaderContext from '../HeaderContext';
+import Slot from '../../../runtime/slots/Slot';
 
 interface AuthenticatedMenuProps {
   className?: string,
@@ -15,8 +13,6 @@ interface AuthenticatedMenuProps {
 
 export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps) {
   const authenticatedUser = useAuthenticatedUser();
-
-  const { authenticatedLinks } = useContext(HeaderContext);
 
   const title = (
     <div className="d-flex mr-2 align-items-center gap-2">
@@ -27,9 +23,7 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
 
   return (
     <DropdownButton size="sm" id="user-nav-dropdown" title={title} variant="outline-primary" className={className}>
-      {authenticatedLinks.map((item) => (
-        <ChildMenuItem key={item.id} item={item} variant="dropdownItem" />
-      ))}
+      <Slot id="frontend.shell.header.authenticatedMenu.widget" />
     </DropdownButton>
   );
 }

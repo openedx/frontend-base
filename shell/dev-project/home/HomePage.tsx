@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useIntl } from '../../../runtime';
-import { getAppUrl } from '../../../runtime/routing';
+import { getUrlByRole } from '../../../runtime/routing';
 import messages from './messages';
 
 export default function HomePage() {
-  const coursewareUrl = getAppUrl('courseware');
-  const dashboardUrl = getAppUrl('learnerDashboard');
+  const coursewareUrl = getUrlByRole('courseware');
+  const dashboardUrl = getUrlByRole('learnerDashboard');
   const intl = useIntl();
 
   return (

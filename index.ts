@@ -45,15 +45,7 @@ export {
   configureI18n,
   configureLogging,
   convertKeyNames,
-  createAppMenuItem,
-  createComponentMenuItem,
-  createDropdownMenuItem,
-  createExternalAppConfig,
-  createFederatedAppConfig,
-  createInternalAppConfig,
   createIntl,
-  createLabeledMenu,
-  createUrlMenuItem,
   defineMessages,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
@@ -88,10 +80,10 @@ export {
   logError,
   logInfo,
   mergeConfig,
-  mergeMessages,
   mockMessages,
   modifyObjectKeys,
   parseURL,
+  patchMessages,
   publish,
   redirectToLogin,
   redirectToLogout,
@@ -113,16 +105,11 @@ export {
 } from './runtime';
 
 export type {
-  ApplicationModuleConfig,
-  ExternalAppConfig,
-  FederatedAppConfig,
-  InternalAppConfig,
   ProjectModuleConfig,
   ProjectSiteConfig
 } from './types';
 
 export {
-  AppConfigTypes,
   EnvironmentTypes,
   PluginOperationTypes,
   PluginTypes

@@ -102,25 +102,13 @@
 
 import merge from 'lodash.merge';
 import {
-  AppConfigTypes, ApplicationModuleConfig, ConfigurableAppConfig, EnvironmentTypes,
+  App,
+  EnvironmentTypes,
+  RequiredSiteConfig,
   SiteConfig
 } from '../../types';
-import { CONFIG_CHANGED } from '../constants';
+import { APPS_CHANGED, CONFIG_CHANGED } from '../constants';
 import { publish } from '../subscriptions';
-
-export {
-  createExternalAppConfig,
-  createFederatedAppConfig,
-  createInternalAppConfig
-} from './appConfigHelpers';
-
-export {
-  createAppMenuItem,
-  createComponentMenuItem,
-  createDropdownMenuItem,
-  createLabeledMenu,
-  createUrlMenuItem
-} from './menuConfigHelpers';
 
 let config: SiteConfig = {
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
@@ -150,6 +138,10 @@ let config: SiteConfig = {
   PUBLISHER_BASE_URL: null,
 
   apps: [],
+  remotes: [],
+  federatedApps: [],
+  externalRoutes: [],
+
   pluginSlots: {},
   custom: {},
 
@@ -233,19 +225,14 @@ export function setConfig(newConfig: SiteConfig) {
  *
  * @param {Object} newConfig
  */
-export function mergeConfig(newConfig: Partial<SiteConfig>) {
+export function mergeConfig(newConfig: RequiredSiteConfig) {
   config = merge(config, newConfig);
   publish(CONFIG_CHANGED);
 }
 
-export function patchAppModuleConfig(appId: string, appModuleConfig: ApplicationModuleConfig) {
-  if (config.apps[appId] !== undefined) {
-    const app = config.apps[appId];
-    if (app.type === AppConfigTypes.INTERNAL || app.type === AppConfigTypes.FEDERATED) {
-      const configurableApp = app as ConfigurableAppConfig;
-      configurableApp.config = appModuleConfig;
-    }
-  }
+export function patchApp(app: App) {
+  config.apps.push(app);
+  publish(APPS_CHANGED);
 }
 
 /**

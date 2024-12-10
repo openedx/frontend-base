@@ -1,12 +1,11 @@
-import { useContext } from 'react';
-
-import FooterContext from './FooterContext';
-import LinkGrid from './LinkGrid';
+import { useSlotWidgets } from '../../runtime/slots/hooks';
 
 export default function CenterLinks() {
-  const { centerLinks } = useContext(FooterContext);
+  const widgets = useSlotWidgets();
 
   return (
-    <LinkGrid items={centerLinks} />
+    <div className="d-flex flex-wrap column-gap-6 row-gap-4">
+      {widgets}
+    </div>
   );
 }

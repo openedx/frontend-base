@@ -226,7 +226,7 @@ export function handleRtl() {
  * @returns {Object}
  * @memberof module:Internationalization
  */
-export function mergeMessages(newMessages = {}) {
+export function patchMessages(newMessages = {}) {
   const msgs = Array.isArray(newMessages) ? merge({}, ...newMessages) : newMessages;
   messages = merge(messages, msgs);
 

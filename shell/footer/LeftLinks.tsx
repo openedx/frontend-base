@@ -1,16 +1,11 @@
-import { useContext } from 'react';
-
-import MenuItem from '../menus/MenuItem';
-import FooterContext from './FooterContext';
+import { useSlotWidgets } from '../../runtime/slots/hooks';
 
 export default function LeftLinks() {
-  const { leftLinks } = useContext(FooterContext);
+  const widgets = useSlotWidgets();
 
   return (
     <div className="d-flex flex-column">
-      {leftLinks.map((item) => (
-        <MenuItem key={item.id} item={item} />
-      ))}
+      {widgets}
     </div>
   );
 }

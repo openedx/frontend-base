@@ -1,73 +1,144 @@
 import { FunctionComponent, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
-import { IndexRouteObject, NonIndexRouteObject } from 'react-router';
+import { RouteObject } from 'react-router';
 
-export type AppConfig = ExternalAppConfig | InternalAppConfig | FederatedAppConfig | HydratedFederatedAppConfig;
+// Slots
 
-export type ConfigurableAppConfig = InternalAppConfig | HydratedFederatedAppConfig;
-
-export enum AppConfigTypes {
-  EXTERNAL = 'external',
-  INTERNAL = 'internal',
-  FEDERATED = 'federated',
+export interface SlotCondition {
+  active?: string,
+  inactive?: string,
+  authenticated?: boolean,
 }
 
-export interface AppModuleHandle {
-  appId: string,
-  [key: string]: any,
+// Slot operations
+
+export enum SlotOperationTypes {
+  APPEND = 'append',
+  OPTIONS = 'options',
+  LAYOUT = 'layout',
 }
 
-// We extend the react-router RouteObject to make path required. `path` is not required for
-// 'layout' routes, which for now we won't support as the route of a module.
-// Documentation of this here: https://reactrouter.com/en/main/route/route#layout-routes
-export interface AppModuleIndexRouteObject extends IndexRouteObject {
-  path: string,
-}
+// Widget slot operations
 
-export interface AppModuleNonIndexRouteObject extends NonIndexRouteObject {
-  path: string,
-}
-
-export type AppModuleRouteObject = AppModuleIndexRouteObject | AppModuleNonIndexRouteObject;
-
-export type LocalizedMessages = Record<string, Record<string, string>>;
-
-export interface ApplicationModuleConfig {
-  route: AppModuleRouteObject,
-  header?: HeaderConfig,
-  footer?: FooterConfig,
-  messages?: LocalizedMessages,
-}
-
-export interface InternalAppConfig {
+export interface BaseWidgetOperation {
+  slotId: `${string}.widget`,
   id: string,
-  type: AppConfigTypes.INTERNAL,
-  config: ApplicationModuleConfig,
-  path?: string,
+  role?: string,
+  op: SlotOperationTypes,
+  condition?: SlotCondition,
 }
 
-export interface FederationConfig {
-  libraryId: string,
+export interface ComponentOperation extends BaseWidgetOperation {
+  component: React.ComponentType,
+
+}
+
+export interface OptionsOperation extends BaseWidgetOperation {
+  options?: Record<string, any>,
+}
+
+export interface ElementOperation extends BaseWidgetOperation {
+  element: ReactNode,
+}
+
+export interface IFrameOperation extends BaseWidgetOperation {
+  url: string,
+  title: string,
+}
+
+export interface FederatedOperation extends BaseWidgetOperation {
+  remoteId: string,
   moduleId: string,
-  remoteUrl: string,
 }
 
-export interface FederatedAppConfig {
-  id: string,
-  type: AppConfigTypes.FEDERATED,
-  federation: FederationConfig,
-  path: string,
+export interface LayoutOperation extends BaseWidgetOperation {
+  layout: React.ComponentType,
 }
 
-export interface HydratedFederatedAppConfig extends FederatedAppConfig {
-  config: ApplicationModuleConfig,
-}
+export type WidgetOperation = ComponentOperation | OptionsOperation | ElementOperation | IFrameOperation | FederatedOperation | LayoutOperation;
 
-export interface ExternalAppConfig {
-  id: string,
-  type: AppConfigTypes.EXTERNAL,
+// Slot operation
+
+export type SlotOperation = WidgetOperation;
+
+// Apps
+
+export interface ExternalRoute {
+  role: string,
   url: string,
 }
+
+export interface App {
+  messages?: LocalizedMessages,
+  routes?: RouteObject[],
+  slots?: SlotOperation[],
+}
+
+export interface FederatedApp {
+  remoteId: string,
+  moduleId: string,
+  // rolePaths are used to find out the paths to certain roles before loading the app via module federation.  This means we can form links without needing to load the whole thing.
+  rolePaths?: Record<string, string>,
+  hints?: {
+    // The path hints are used by our react-router patchRoutesOnNavigation handler to load the
+    // federated app when one of its paths has been requested.  This can happen, for instance, when
+    // a path is loaded via the rolePaths above.
+    paths?: string[],
+    // The slot hints are used to load the federated app when one of it's related slots is being
+    // displayed.
+    slots?: string[],
+  },
+}
+
+export interface Remote {
+  id: string,
+  url: string,
+}
+
+// Site Config
+
+export interface RequiredSiteConfig {
+  APP_ID: string,
+  SITE_NAME: string,
+  BASE_URL: string,
+  ENVIRONMENT: EnvironmentTypes,
+
+  // Backends
+  LMS_BASE_URL: string,
+  STUDIO_BASE_URL: string,
+
+  // Branding
+  FAVICON_URL: string,
+  LOGO_TRADEMARK_URL: string,
+  LOGO_URL: string,
+  LOGO_WHITE_URL: string,
+
+  // Frontends
+  ACCOUNT_PROFILE_URL: string,
+  ACCOUNT_SETTINGS_URL: string,
+  LEARNER_DASHBOARD_URL: string,
+  LEARNING_BASE_URL: string,
+  LOGIN_URL: string,
+  LOGOUT_URL: string,
+  MARKETING_SITE_BASE_URL: string,
+}
+
+/*
+
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+BOOOYAHHHH
+
+*/
+
+export type LocalizedMessages = Record<string, Record<string, string>>;
 
 export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
 
@@ -77,11 +148,12 @@ export interface PluginSlotConfig {
 }
 
 export interface OptionalSiteConfig {
+  apps: App[],
+  federatedApps: FederatedApp[],
+  remotes: Remote[],
+  externalRoutes: ExternalRoute[],
 
   pluginSlots: Record<string, PluginSlotConfig>,
-
-  header?: HeaderConfig,
-  footer?: FooterConfig,
 
   // Cookies
   ACCESS_TOKEN_COOKIE_NAME: string,
@@ -120,33 +192,6 @@ export interface OptionalSiteConfig {
   custom: Record<string, any>,
 }
 
-export interface RequiredSiteConfig {
-  apps: AppConfig[],
-
-  APP_ID: string,
-  BASE_URL: string,
-  SITE_NAME: string,
-
-  // Frontends
-  ACCOUNT_PROFILE_URL: string,
-  ACCOUNT_SETTINGS_URL: string,
-  LEARNER_DASHBOARD_URL: string,
-  LEARNING_BASE_URL: string,
-  LOGIN_URL: string,
-  LOGOUT_URL: string,
-  MARKETING_SITE_BASE_URL: string,
-
-  // Backends
-  LMS_BASE_URL: string,
-  STUDIO_BASE_URL: string,
-
-  // Branding
-  FAVICON_URL: string,
-  LOGO_TRADEMARK_URL: string,
-  LOGO_URL: string,
-  LOGO_WHITE_URL: string,
-}
-
 export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
 
 export interface ProjectModuleConfig {
@@ -175,83 +220,6 @@ export enum EnvironmentTypes {
 // Menu Items
 
 export type MenuItemName = string | MessageDescriptor | ReactElement;
-
-export interface AppMenuItemConfig {
-  id: string,
-  label: MenuItemName,
-  appId: string,
-}
-
-export interface DropdownMenuItemConfig {
-  id: string,
-  label: MessageDescriptor | string,
-  items: ChildMenuItemConfig[],
-}
-
-export interface UrlMenuItemConfig {
-  id: string,
-  label: MenuItemName,
-  url: string,
-}
-
-export interface ComponentMenuItemConfig {
-  id: string,
-  component: ReactElement,
-}
-
-export interface LabeledMenuConfig {
-  id: string,
-  label: MenuItemName,
-  links: MenuItemConfig[],
-}
-
-export type LinkMenuItemConfig = AppMenuItemConfig | UrlMenuItemConfig;
-
-export type ChildMenuItemConfig = LinkMenuItemConfig | ComponentMenuItemConfig;
-
-export type MenuItemConfig = DropdownMenuItemConfig | ChildMenuItemConfig;
-
-// Header
-
-export interface HeaderConfig {
-  logoUrl?: string,
-  logoDestinationUrl?: string | null,
-  primaryLinks?: MenuItemConfig[],
-  secondaryLinks?: MenuItemConfig[],
-  anonymousLinks?: MenuItemConfig[],
-  authenticatedLinks?: ChildMenuItemConfig[],
-}
-
-export interface ResolvedHeaderConfig {
-  logoUrl: string,
-  logoDestinationUrl: string | null,
-  primaryLinks: MenuItemConfig[],
-  secondaryLinks: MenuItemConfig[],
-  anonymousLinks: MenuItemConfig[],
-  authenticatedLinks: ChildMenuItemConfig[],
-}
-
-// Footer
-
-export interface FooterConfig {
-  logoUrl?: string,
-  logoDestinationUrl?: string | null,
-  leftLinks?: ChildMenuItemConfig[],
-  centerLinks?: LabeledMenuConfig[],
-  rightLinks?: ChildMenuItemConfig[],
-  revealMenu?: LabeledMenuConfig,
-  copyrightNotice?: ReactNode,
-}
-
-export interface ResolvedFooterConfig {
-  logoUrl: string,
-  logoDestinationUrl: string | null,
-  leftLinks: ChildMenuItemConfig[],
-  centerLinks: LabeledMenuConfig[],
-  rightLinks: ChildMenuItemConfig[],
-  revealMenu?: LabeledMenuConfig, // this can be undefined
-  copyrightNotice?: ReactNode, // this can be undefined
-}
 
 // Plugin Types
 

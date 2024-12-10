@@ -50,6 +50,11 @@ const messages = defineMessages({
     id: 'footer.trademark.notice',
     defaultMessage: 'edX and Open edX are registered trademarks of edX LLC.',
     description: 'A legal notice that "edX LLC" owns the trademarks on "edX" and "Open edX".  Please do not translate these three proper names.'
+  },
+  'footer.revealLinks.more': {
+    id: 'footer.revealLinks.more',
+    defaultMessage: 'More',
+    description: 'Text for a button that reveals more links and content in the footer.',
   }
 });
 
