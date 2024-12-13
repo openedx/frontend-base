@@ -1,4 +1,4 @@
-import { useSlotOptions, useSlotWidgets } from '../../runtime/slots/hooks';
+import { useSlotOptions, useSlotWidgets } from '../../runtime/slots/data/hooks';
 
 export default function LabeledLinkColumn() {
   const widgets = useSlotWidgets();
