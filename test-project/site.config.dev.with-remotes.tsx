@@ -54,7 +54,7 @@ const config: ProjectSiteConfig = {
   ],
   federatedApps: [
     {
-      moduleId: 'AuthenticatedPage',
+      moduleId: 'authenticated-page',
       remoteId: 'testProject',
       hints: {
         paths: [
