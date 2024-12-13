@@ -132,6 +132,7 @@ export {
   convertKeyNames,
   getPath,
   getQueryParameters,
+  isValidVariableName,
   modifyObjectKeys,
   parseURL,
   snakeCaseObject
