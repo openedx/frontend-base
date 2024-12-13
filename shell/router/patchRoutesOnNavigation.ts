@@ -3,6 +3,7 @@ import { patchMessages } from '../../runtime';
 import { patchApp } from '../../runtime/config';
 import { SHELL_ID } from '../data/constants';
 import { getFederatedApps, loadApp } from '../data/moduleUtils';
+import { initializeRemotes } from '../federation/initializeRemotes';
 
 interface PatchRoutesOnNavigationArgs {
   path: string,
@@ -17,9 +18,12 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
         if (path.startsWith(hintPath)) {
           const app = await loadApp(federatedApp.moduleId, federatedApp.remoteId);
           if (app) {
-            const { routes, messages } = app;
+            const { routes, messages, remotes } = app;
 
             patchApp(app);
+            if (remotes !== undefined) {
+              initializeRemotes();
+            }
             mergeMessages(messages);
             if (Array.isArray(routes)) {
               patch(SHELL_ID, routes);

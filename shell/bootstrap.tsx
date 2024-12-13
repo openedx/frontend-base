@@ -1,4 +1,3 @@
-import { init } from '@module-federation/runtime';
 import ReactDOM from 'react-dom';
 import { RouterProvider } from 'react-router-dom';
 
@@ -8,17 +7,13 @@ import {
   initialize,
   subscribe
 } from '../runtime';
-
-import { SHELL_ID } from './data/constants';
 import { addAppMessages, getFederatedAppsWithoutHints, getFederationRemotes, preloadFederatedApps } from './data/moduleUtils';
+import { initializeRemotes } from './federation/initializeRemotes';
 import messages from './i18n';
 import createRouter from './router/createRouter';
 
 subscribe(APP_READY, async () => {
-  init({
-    name: SHELL_ID,
-    remotes: getFederationRemotes(),
-  });
+  initializeRemotes();
 
   const federatedAppsWithoutHints = getFederatedAppsWithoutHints();
   await preloadFederatedApps(federatedAppsWithoutHints);
