@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
+import { useSlotLayoutById } from './data/hooks';
 import DefaultSlotLayout from './DefaultSlotLayout';
-import { useSlotLayoutById } from './hooks';
 import SlotContext from './SlotContext';
 
 interface SlotProps {

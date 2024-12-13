@@ -1,6 +1,6 @@
-import { ComponentOperation, ElementOperation, LayoutOperation, OptionsOperation, SlotOperation, WidgetOperation } from '../../types';
-import { getAuthenticatedUser } from '../auth';
-import { getConfig } from '../config';
+import { ComponentOperation, ElementOperation, LayoutOperation, OptionsOperation, SlotOperation, WidgetOperation } from '../../../types';
+import { getAuthenticatedUser } from '../../auth';
+import { getConfig } from '../../config';
 
 export function getSlotOperations(id: string) {
   const { apps } = getConfig();
@@ -18,7 +18,7 @@ export function getSlotOperations(id: string) {
   return ops;
 }
 
-export function isOperationConditionSatisfied(operation: SlotOperation) {
+export function isWidgetOperationConditionSatisfied(operation: SlotOperation) {
   const { condition } = operation;
   if (condition?.authenticated !== undefined) {
     const isAuthenticated = getAuthenticatedUser() !== null;
