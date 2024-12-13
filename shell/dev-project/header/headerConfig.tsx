@@ -1,5 +1,5 @@
 import { NavDropdownMenuSlot } from '../..';
-import { App, SlotOperationTypes } from '../../../types';
+import { App, WidgetOperationTypes } from '../../../types';
 import LinkMenuItem from '../../menus/LinkMenuItem';
 import CoursesLink from './CoursesLink';
 
@@ -8,7 +8,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.primaryLinks.widget',
       id: 'header.learnerDashboard.link',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <LinkMenuItem
           label={<CoursesLink />}
@@ -20,7 +20,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.primaryLinks.widget',
       id: 'header.booyah.primaryLinks.dropdown',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <NavDropdownMenuSlot id="frontend.shell.header.primaryLinks.dropdown.widget" label="Resources" />
       )
@@ -28,7 +28,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.primaryLinks.dropdown.widget',
       id: 'header.booyah.primaryLinks.dropdown.1',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <LinkMenuItem label="Resource 1" url="#" variant="dropdownItem" />
       )

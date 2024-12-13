@@ -1,5 +1,4 @@
-import { App, LinkMenuItem } from '@openedx/frontend-base';
-import { SlotOperationTypes } from '@openedx/frontend-base/types';
+import { App, LinkMenuItem, WidgetOperationTypes } from '@openedx/frontend-base';
 import messages from './i18n';
 
 const config: App = {
@@ -16,7 +15,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.primaryLinks.widget',
       id: 'authenticatedPageLink',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <LinkMenuItem label="Authy Page" url="/authenticated" variant="navLink" />
       )
