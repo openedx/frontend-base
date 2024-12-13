@@ -1,9 +1,10 @@
 import { RouteObject } from 'react-router';
 import { mergeMessages } from '../../runtime';
 import { patchApp } from '../../runtime/config';
-import { SHELL_ID } from '../data/constants';
-import { getFederatedApps, loadApp } from '../data/moduleUtils';
+import { SHELL_ID } from '../federation/constants';
+import { getFederatedApps } from '../federation/getFederatedApps';
 import { initializeRemotes } from '../federation/initializeRemotes';
+import { loadFederatedApp } from '../federation/loadFederatedApp';
 
 interface PatchRoutesOnNavigationArgs {
   path: string,
@@ -16,7 +17,7 @@ export default async function patchRoutesOnNavigation({ path, patch: patchRoutes
     if (federatedApp.hints?.paths) {
       for (const hintPath of federatedApp.hints.paths) {
         if (path.startsWith(hintPath)) {
-          const app = await loadApp(federatedApp.moduleId, federatedApp.remoteId);
+          const app = await loadFederatedApp(federatedApp);
           if (app) {
             const { routes, messages, remotes } = app;
 
