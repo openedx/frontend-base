@@ -73,7 +73,7 @@ export {
   injectIntl,
   intlShape,
   isRtl,
-  patchMessages,
+  mergeMessages,
   updateLocale,
   useIntl
 } from './i18n';

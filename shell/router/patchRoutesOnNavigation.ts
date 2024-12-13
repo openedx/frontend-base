@@ -20,7 +20,7 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
             const { routes, messages } = app;
 
             patchApp(app);
-            patchMessages(messages);
+            mergeMessages(messages);
             if (Array.isArray(routes)) {
               patch(SHELL_ID, routes);
             }

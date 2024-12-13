@@ -6,7 +6,7 @@ import {
   getPrimaryLanguageSubtag,
   handleRtl,
   isRtl,
-  patchMessages,
+  mergeMessages,
 } from './lib';
 
 jest.mock('universal-cookie');
@@ -144,14 +144,14 @@ describe('lib', () => {
   });
 });
 
-describe('patchMessages', () => {
+describe('mergeMessages', () => {
   it('should merge objects', () => {
     configure({
       messages: {
         ar: { message: 'ar-hah' },
       },
     });
-    const result = patchMessages({ en: { foo: 'bar' }, de: { buh: 'baz' }, jp: { gah: 'wut' } });
+    const result = mergeMessages({ en: { foo: 'bar' }, de: { buh: 'baz' }, jp: { gah: 'wut' } });
     expect(result).toEqual({
       ar: { message: 'ar-hah' },
       en: { foo: 'bar' },
@@ -166,7 +166,7 @@ describe('patchMessages', () => {
         ar: { message: 'ar-hah' },
       },
     });
-    const result = patchMessages([{ foo: 'bar' }, { buh: 'baz' }, { gah: 'wut' }]);
+    const result = mergeMessages([{ foo: 'bar' }, { buh: 'baz' }, { gah: 'wut' }]);
     expect(result).toEqual({
       ar: { message: 'ar-hah' },
       foo: 'bar',
@@ -193,7 +193,7 @@ describe('patchMessages', () => {
       },
     ];
 
-    const result = patchMessages(messages);
+    const result = mergeMessages(messages);
     expect(result).toEqual({
       en: {
         init: 'initial',
@@ -212,19 +212,19 @@ describe('patchMessages', () => {
     configure({
       messages: {},
     });
-    expect(patchMessages(undefined)).toEqual({});
-    expect(patchMessages(null)).toEqual({});
-    expect(patchMessages([])).toEqual({});
-    expect(patchMessages({})).toEqual({});
+    expect(mergeMessages(undefined)).toEqual({});
+    expect(mergeMessages(null)).toEqual({});
+    expect(mergeMessages([])).toEqual({});
+    expect(mergeMessages({})).toEqual({});
   });
 
   it('should return the original object if no messages', () => {
     configure({
       messages: { en: { hello: 'world ' } },
     });
-    expect(patchMessages(undefined)).toEqual({ en: { hello: 'world ' } });
-    expect(patchMessages(null)).toEqual({ en: { hello: 'world ' } });
-    expect(patchMessages([])).toEqual({ en: { hello: 'world ' } });
-    expect(patchMessages({})).toEqual({ en: { hello: 'world ' } });
+    expect(mergeMessages(undefined)).toEqual({ en: { hello: 'world ' } });
+    expect(mergeMessages(null)).toEqual({ en: { hello: 'world ' } });
+    expect(mergeMessages([])).toEqual({ en: { hello: 'world ' } });
+    expect(mergeMessages({})).toEqual({ en: { hello: 'world ' } });
   });
 });
