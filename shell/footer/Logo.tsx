@@ -2,18 +2,18 @@ import { Hyperlink, Image } from '@openedx/paragon';
 
 interface LogoProps {
   imageUrl?: string,
-  destinationUrl?: string | null,
+  destinationUrl?: string,
 }
 
 export default function Logo({
   imageUrl = 'https://edx-cdn.org/v3/default/logo.svg',
-  destinationUrl = null
+  destinationUrl
 }: LogoProps) {
   const image = (
     <Image src={imageUrl} style={{ maxHeight: '2rem' }} />
   );
 
-  if (destinationUrl === null) {
+  if (destinationUrl === undefined) {
     return image;
   }
 
