@@ -3,7 +3,7 @@ import { App, WidgetOperationTypes } from '../../types';
 import CopyrightNotice from './CopyrightNotice';
 import LabeledLinkColumn from './LabeledLinkColumn';
 import LanguageMenu from './LanguageMenu';
-import Logo from './Logo';
+import Logo from '../Logo';
 
 const config: App = {
   slots: [
