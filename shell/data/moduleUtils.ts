@@ -1,6 +1,7 @@
 import { loadRemote } from '@module-federation/runtime';
 import { getConfig, patchMessages } from '../../runtime';
 import { patchApp } from '../../runtime/config';
+import { isValidVariableName } from '../../runtime/utils';
 import {
   App,
   FederatedApp
@@ -14,6 +15,13 @@ export function getFederatedApps() {
 export function getFederationRemotes() {
   const { remotes } = getConfig();
   if (Array.isArray(remotes)) {
+    // Validate the remote IDs are valid names.
+    remotes.forEach(remote => {
+      if (!isValidVariableName(remote.id)) {
+        throw new Error(`Module federation error.\n\nThe remote ID "${remote.id}" is invalid. This remote's URL is "${remote.url}".\n\nThe identifier must be a valid JavaScript variable name.  It must start with a letter, cannot be a reserved word, and can only contain letters, digits, underscores and dollar signs.`);
+      }
+    });
+
     return remotes.map((remote) => ({
       name: remote.id,
       // We add a date here to ensure that we cache bust the remote entry file regardless of what
