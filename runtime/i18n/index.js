@@ -97,6 +97,7 @@ export {
 } from 'react-intl';
 
 export {
+  addAppMessages,
   configure,
   getLocale,
   getLocalizedLanguageName,

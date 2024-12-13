@@ -233,6 +233,18 @@ export function mergeMessages(newMessages = {}) {
   return messages;
 }
 
+/**
+ * Adds all the messages found in the loaded apps.
+ *
+ * @memberof module:Internationalization
+ */
+export function addAppMessages() {
+  const { apps } = getConfig();
+  apps.forEach((app) => {
+    mergeMessages(app.messages);
+  });
+}
+
 interface ConfigureI18nOptions {
   messages: LocalizedMessages[] | LocalizedMessages,
 }
