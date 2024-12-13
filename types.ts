@@ -80,6 +80,7 @@ export interface App {
   messages?: LocalizedMessages,
   routes?: RouteObject[],
   slots?: SlotOperation[],
+  remotes?: Remote[],
 }
 
 export interface FederatedApp {
