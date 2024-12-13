@@ -105,6 +105,7 @@ import {
   App,
   EnvironmentTypes,
   OptionalSiteConfig,
+  Remote,
   RequiredSiteConfig,
   SiteConfig
 } from '../../types';
@@ -238,4 +239,22 @@ export function patchApp(app: App) {
 }
 
 /**
+ * This function will attempt to add the supplied remotes to the SiteConfig.  If a remote with that
+ * ID already exists, it will not be added.  If changes are made to the SiteConfig, the
+ * CONFIG_CHANGED event will be published.
+ *
+ * @param remotes An array of Remote objects to merge into the SiteConfig's `remotes` array.
  */
+export function mergeRemotes(remotes: Remote[]) {
+  const remoteIds = config.remotes.map(remote => remote.id);
+  let changed = false;
+  for (const remote of remotes) {
+    if (!remoteIds.includes(remote.id)) {
+      config.remotes.push(remote);
+      changed = true;
+    }
+  }
+  if (changed) {
+    publish(CONFIG_CHANGED);
+  }
+}
