@@ -1,6 +1,6 @@
 import { NavDropdown } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
-import { useSlotOptionsById, useSlotWidgetsById } from '../../runtime/slots/hooks';
+import { useSlotOptionsById, useSlotWidgetsById } from '../../runtime/slots/data/hooks';
 import {
   MenuItemName
 } from '../../types';

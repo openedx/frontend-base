@@ -1,4 +1,4 @@
-import { useSlotWidgets } from '../../runtime/slots/hooks';
+import { useSlotWidgets } from '../../runtime/slots/data/hooks';
 
 export default function CenterLinks() {
   const widgets = useSlotWidgets();

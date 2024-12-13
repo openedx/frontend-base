@@ -1,7 +1,7 @@
 import { Button, Collapsible } from '@openedx/paragon';
 import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
 
-import { useSlotOptions, useSlotWidgets } from '../../runtime/slots/hooks';
+import { useSlotOptions, useSlotWidgets } from '../../runtime/slots/data/hooks';
 import messages from '../Shell.messages';
 
 export default function RevealLinks() {

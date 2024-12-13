@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { useSlotWidgets } from '../../runtime/slots/hooks';
+import { useSlotWidgets } from '../../runtime/slots/data/hooks';
 import messages from '../Shell.messages';
 
 export default function LegalNotices() {
