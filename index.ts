@@ -129,8 +129,10 @@ export type {
 
 export {
   EnvironmentTypes,
+  LayoutOperationTypes,
   PluginOperationTypes,
   PluginTypes,
+  WidgetOperationTypes
 } from './types';
 
 export {

@@ -1,4 +1,4 @@
-import { App, SlotOperationTypes } from '../../../types';
+import { App, WidgetOperationTypes } from '../../../types';
 import LoginButton from '../../header/anonymous-menu/LoginButton';
 import RegisterButton from '../../header/anonymous-menu/RegisterButton';
 import LinkMenuItem from '../../menus/LinkMenuItem';
@@ -9,19 +9,19 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.anonymousMenu.widget',
       id: 'user.anonymousMenu.loginButton',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: LoginButton,
     },
     {
       slotId: 'frontend.shell.header.anonymousMenu.widget',
       id: 'user.anonymousMenu.registerButton',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: RegisterButton,
     },
     {
       slotId: 'frontend.shell.header.authenticatedMenu.widget',
       id: 'user.authenticatedMenu.logout',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <LinkMenuItem
           label={messages['header.user.menu.logout']}

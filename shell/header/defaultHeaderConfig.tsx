@@ -1,4 +1,4 @@
-import { App, SlotOperationTypes } from '../../types';
+import { App, WidgetOperationTypes } from '../../types';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
 import AuthenticatedMenu from './authenticated-menu';
 import CourseInfo from './desktop/CourseInfo';
@@ -16,13 +16,13 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.desktop.layout.widget',
       id: 'default.header.desktop.layout',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: DesktopLayout
     },
     {
       slotId: 'frontend.shell.header.mobile.layout.widget',
       id: 'default.header.mobile.layout',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: MobileLayout
     },
 
@@ -30,31 +30,31 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.desktop.left.widget',
       id: 'default.header.desktop.logo',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
     {
       slotId: 'frontend.shell.header.desktop.left.widget',
       id: 'default.header.desktop.courseInfo',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: CourseInfo
     },
     {
       slotId: 'frontend.shell.header.desktop.left.widget',
       id: 'default.header.desktop.primaryLinks',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: PrimaryNavLinks
     },
     {
       slotId: 'frontend.shell.header.desktop.right.widget',
       id: 'default.header.desktop.secondaryLinks',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: SecondaryNavLinks
     },
     {
       slotId: 'frontend.shell.header.desktop.right.widget',
       id: 'default.header.desktop.authenticatedMenu',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: <AuthenticatedMenu />,
       condition: {
         authenticated: true,
@@ -63,7 +63,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.desktop.right.widget',
       id: 'default.header.desktop.anonymousMenu',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: <AnonymousMenu />,
       condition: {
         authenticated: false,
@@ -74,19 +74,19 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.mobile.center.widget',
       id: 'default.header.mobile.logo',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
     {
       slotId: 'frontend.shell.header.mobile.menu.widget',
       id: 'default.header.mobile.menuLinks',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: MobileNavLinks
     },
     {
       slotId: 'frontend.shell.header.mobile.right.widget',
       id: 'default.header.mobile.authenticatedMenu',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: <AuthenticatedMenu />,
       condition: {
         authenticated: true,
@@ -95,7 +95,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.header.mobile.right.widget',
       id: 'default.header.mobile.anonymousMenu',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: <AnonymousMenu />,
       condition: {
         authenticated: false,

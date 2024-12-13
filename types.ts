@@ -12,8 +12,7 @@ export interface SlotCondition {
 
 // Slot operations
 
-export enum SlotOperationTypes {
-  APPEND = 'append',
+export enum LayoutOperationTypes {
   OPTIONS = 'options',
   LAYOUT = 'layout',
 }
@@ -24,34 +23,43 @@ export interface BaseWidgetOperation {
   slotId: `${string}.widget`,
   id: string,
   role?: string,
-  op: SlotOperationTypes,
   condition?: SlotCondition,
 }
 
+export enum WidgetOperationTypes {
+  APPEND = 'append',
+}
+
 export interface ComponentOperation extends BaseWidgetOperation {
+  op: WidgetOperationTypes,
   component: React.ComponentType,
 
 }
 
 export interface OptionsOperation extends BaseWidgetOperation {
+  op: LayoutOperationTypes.OPTIONS,
   options?: Record<string, any>,
 }
 
 export interface ElementOperation extends BaseWidgetOperation {
+  op: WidgetOperationTypes,
   element: ReactNode,
 }
 
 export interface IFrameOperation extends BaseWidgetOperation {
+  op: WidgetOperationTypes,
   url: string,
   title: string,
 }
 
 export interface FederatedOperation extends BaseWidgetOperation {
+  op: WidgetOperationTypes,
   remoteId: string,
   moduleId: string,
 }
 
 export interface LayoutOperation extends BaseWidgetOperation {
+  op: LayoutOperationTypes.LAYOUT,
   layout: React.ComponentType,
 }
 

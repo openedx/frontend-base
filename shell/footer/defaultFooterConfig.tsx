@@ -1,5 +1,5 @@
 import Slot from '../../runtime/slots/Slot';
-import { App, SlotOperationTypes } from '../../types';
+import { App, WidgetOperationTypes } from '../../types';
 import CopyrightNotice from './CopyrightNotice';
 import LabeledLinkColumn from './LabeledLinkColumn';
 import LanguageMenu from './LanguageMenu';
@@ -11,7 +11,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.footer.desktop.centerLinks.widget',
       id: 'default.footer.desktop.centerLinks.first',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="frontend.shell.footer.desktop.centerLinks.first.widget" layout={LabeledLinkColumn} />
       ),
@@ -19,7 +19,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.footer.desktop.centerLinks.widget',
       id: 'default.footer.desktop.centerLinks.second',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="frontend.shell.footer.desktop.centerLinks.second.widget" layout={LabeledLinkColumn} />
       ),
@@ -27,7 +27,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.footer.desktop.centerLinks.widget',
       id: 'default.footer.desktop.centerLinks.third',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="frontend.shell.footer.desktop.centerLinks.third.widget" layout={LabeledLinkColumn} />
       ),
@@ -35,7 +35,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.footer.desktop.centerLinks.widget',
       id: 'default.footer.desktop.centerLinks.fourth',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="frontend.shell.footer.desktop.centerLinks.fourth.widget" layout={LabeledLinkColumn} />
       ),
@@ -45,7 +45,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.footer.desktop.leftLinks.widget',
       id: 'default.footer.desktop.leftLinks.Logo',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
 
@@ -53,7 +53,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.footer.desktop.rightLinks.widget',
       id: 'default.footer.desktop.rightLinks.languageMenu',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       component: LanguageMenu,
     },
 
@@ -61,7 +61,7 @@ const config: App = {
     {
       slotId: 'frontend.shell.footer.desktop.legalNotices.widget',
       id: 'default.footer.desktop.copyrightNotice',
-      op: SlotOperationTypes.APPEND,
+      op: WidgetOperationTypes.APPEND,
       element: (
         <CopyrightNotice />
       ),
