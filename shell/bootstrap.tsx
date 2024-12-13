@@ -10,15 +10,18 @@ import {
 } from '../runtime';
 
 import { SHELL_ID } from './data/constants';
-import { addAppMessages, getFederationRemotes } from './data/moduleUtils';
+import { addAppMessages, getFederatedAppsWithoutHints, getFederationRemotes, preloadFederatedApps } from './data/moduleUtils';
 import messages from './i18n';
 import createRouter from './router/createRouter';
 
-subscribe(APP_READY, () => {
+subscribe(APP_READY, async () => {
   init({
     name: SHELL_ID,
     remotes: getFederationRemotes(),
   });
+
+  const federatedAppsWithoutHints = getFederatedAppsWithoutHints();
+  await preloadFederatedApps(federatedAppsWithoutHints);
 
   const router = createRouter();
 
