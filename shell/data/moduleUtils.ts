@@ -1,7 +1,9 @@
 import { loadRemote } from '@module-federation/runtime';
 import { getConfig, patchMessages } from '../../runtime';
+import { patchApp } from '../../runtime/config';
 import {
-  App
+  App,
+  FederatedApp
 } from '../../types';
 
 export function getFederatedApps() {
@@ -14,10 +16,34 @@ export function getFederationRemotes() {
   if (Array.isArray(remotes)) {
     return remotes.map((remote) => ({
       name: remote.id,
-      entry: remote.url
+      // We add a date here to ensure that we cache bust the remote entry file regardless of what
+      // headers it returns to us.  This ensures that even if operators haven't set up their
+      // caching headers correctly, we always get the most recent version.
+      entry: `${remote.url}?${new Date().getTime()}`,
     }));
   }
   return [];
+}
+
+export function getFederatedAppsWithoutHints() {
+  const federatedApps = getFederatedApps();
+
+  return federatedApps.filter((federatedApp) => {
+    return !federatedAppHasHints(federatedApp);
+  });
+}
+
+function federatedAppHasHints(federatedApp: FederatedApp) {
+  if (typeof federatedApp.hints === 'object') {
+    const { paths, slots } = federatedApp.hints;
+    if (Array.isArray(paths) && paths.length > 0) {
+      return true;
+    }
+    if (Array.isArray(slots) && slots.length > 0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export async function loadApp(module, scope) {
@@ -31,6 +57,17 @@ export async function loadApp(module, scope) {
     console.error(`Error loading remote module ${scope}/${module}:`, error);
   }
   return app;
+}
+
+export async function preloadFederatedApps(federatedApps: FederatedApp[]) {
+  for (const federatedApp of federatedApps) {
+    const app = await loadApp(federatedApp.moduleId, federatedApp.remoteId);
+    if (app) {
+      patchApp(app);
+    } else {
+      throw new Error(`Failed to load app ${federatedApp.moduleId} from ${federatedApp.remoteId} remote.`);
+    }
+  }
 }
 
 export function addAppMessages() {
