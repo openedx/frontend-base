@@ -1,10 +1,10 @@
 import { ComponentType, Fragment, ReactNode, useContext, useEffect, useState } from 'react';
 
-import { SlotOperation } from '../../types';
-import { APPS_CHANGED } from '../constants';
-import { useAppEvent } from '../react';
-import SlotContext from './SlotContext';
-import { getSlotOperations, isComponentOperation, isElementOperation, isOperationConditionSatisfied, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetSlot } from './utils';
+import { SlotOperation } from '../../../types';
+import { APPS_CHANGED } from '../../constants';
+import { useAppEvent } from '../../react';
+import SlotContext from '../SlotContext';
+import { getSlotOperations, isComponentOperation, isElementOperation, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetOperationConditionSatisfied, isWidgetSlot } from './utils';
 
 export function useSlotContext() {
   return useContext(SlotContext);
@@ -35,7 +35,7 @@ export function useSlotWidgetsById(id: string) {
   if (isWidgetSlot(id)) {
     for (const operation of operations) {
       if (isWidgetOperation(operation)) {
-        if (isOperationConditionSatisfied(operation)) {
+        if (isWidgetOperationConditionSatisfied(operation)) {
           if (isComponentOperation(operation)) {
             widgets.push(<operation.component key={operation.id} />);
           } else if (isElementOperation(operation)) {
@@ -66,7 +66,7 @@ export function useSlotOptionsById(id: string) {
   if (isWidgetSlot(id)) {
     for (const operation of operations) {
       if (isWidgetOperation(operation)) {
-        if (isOperationConditionSatisfied(operation)) {
+        if (isWidgetOperationConditionSatisfied(operation)) {
           if (isOptionsOperation(operation)) {
             options = { ...options, ...operation.options };
           }
@@ -83,7 +83,7 @@ export function useSlotLayoutById(id: string, defaultLayout: ComponentType) {
   if (isWidgetSlot(id)) {
     for (const operation of operations) {
       if (isWidgetOperation(operation)) {
-        if (isOperationConditionSatisfied(operation)) {
+        if (isWidgetOperationConditionSatisfied(operation)) {
           if (isReplaceOperation(operation)) {
             layout = operation.layout;
           }
