@@ -8,8 +8,8 @@ import defaultFooterConfig from './footer/defaultFooterConfig';
 import defaultHeaderConfig from './header/defaultHeaderConfig';
 
 import './app.scss';
-import DropdownMenuSlot from './menus/DropdownMenuSlot';
 import LinkMenuItem from './menus/LinkMenuItem';
+import NavDropdownMenuSlot from './menus/NavDropdownMenuSlot';
 
 const config: ProjectSiteConfig = {
   apps: [
@@ -34,14 +34,18 @@ const config: ProjectSiteConfig = {
         },
         {
           slotId: 'frontend.shell.header.primaryLinks.widget',
-          id: 'header.booyah.link',
+          id: 'header.booyah.primaryLinks.dropdown',
           op: SlotOperationTypes.APPEND,
           element: (
-            <LinkMenuItem
-              label="Booyah"
-              url="#"
-              variant="navLink"
-            />
+            <NavDropdownMenuSlot id="frontend.shell.header.primaryLinks.dropdown.widget" label="Resources" />
+          )
+        },
+        {
+          slotId: 'frontend.shell.header.primaryLinks.dropdown.widget',
+          id: 'header.booyah.primaryLinks.dropdown.1',
+          op: SlotOperationTypes.APPEND,
+          element: (
+            <LinkMenuItem label="Resource 1" url="#" variant="dropdownItem" />
           )
         },
         {

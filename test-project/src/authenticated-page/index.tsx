@@ -18,7 +18,7 @@ const config: App = {
       id: 'authenticatedPageLink',
       op: SlotOperationTypes.APPEND,
       element: (
-        <LinkMenuItem label="Authenticated Page Link" url="#" variant="navLink" />
+        <LinkMenuItem label="Authy Page" url="/authenticated" variant="navLink" />
       )
     }
   ],

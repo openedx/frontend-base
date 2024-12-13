@@ -136,7 +136,7 @@ export {
 export {
   DefaultLayout,
   DefaultMain,
-  DropdownMenuSlot,
+  NavDropdownMenuSlot,
   Footer,
   Header,
   LinkMenuItem,
