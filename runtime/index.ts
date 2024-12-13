@@ -1,11 +1,11 @@
 export {
-  MockAnalyticsService,
-  SegmentAnalyticsService,
   configure as configureAnalytics,
   getAnalyticsService,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
+  MockAnalyticsService,
   resetAnalyticsService,
+  SegmentAnalyticsService,
   sendPageEvent,
   sendTrackEvent,
   sendTrackingLogEvent
@@ -15,17 +15,17 @@ export {
   AUTHENTICATED_USER_CHANGED,
   AUTHENTICATED_USER_TOPIC,
   AxiosJwtAuthService,
-  MockAuthService,
   configure as configureAuth,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
-  getAuthService,
   getAuthenticatedHttpClient,
   getAuthenticatedUser,
+  getAuthService,
   getHttpClient,
   getLoginRedirectUrl,
   getLogoutRedirectUrl,
   hydrateAuthenticatedUser,
+  MockAuthService,
   redirectToLogin,
   redirectToLogout,
   setAuthenticatedUser
@@ -52,18 +52,15 @@ export {
 } from './constants';
 
 export {
+  configure as configureI18n,
+  createIntl,
+  defineMessages,
   FormattedDate,
   FormattedMessage,
   FormattedNumber,
   FormattedPlural,
   FormattedRelativeTime,
   FormattedTime,
-  IntlProvider,
-  LOCALE_CHANGED,
-  LOCALE_TOPIC,
-  configure as configureI18n,
-  createIntl,
-  defineMessages,
   getLocale,
   getLocalizedLanguageName,
   getMessages,
@@ -71,8 +68,11 @@ export {
   getSupportedLanguageList,
   handleRtl,
   injectIntl,
+  IntlProvider,
   intlShape,
   isRtl,
+  LOCALE_CHANGED,
+  LOCALE_TOPIC,
   mergeMessages,
   updateLocale,
   useIntl
@@ -87,12 +87,12 @@ export {
 } from './initialize';
 
 export {
-  MockLoggingService,
-  NewRelicLoggingService,
   configure as configureLogging,
   getLoggingService,
   logError,
   logInfo,
+  MockLoggingService,
+  NewRelicLoggingService,
   resetLoggingService
 } from './logging';
 
