@@ -29,9 +29,9 @@
 		"lint:tools": "cd ./tools && eslint . && cd ..",
 		"test": "npm run test:tools && npm run test:app && npm run test:runtime && npm run test:shell",
 		"test:app": "npm --prefix ./test-project i; npm --prefix ./test-project run build",
-		"test:tools": "jest tools --config tools/jest.config.js --no-cache",
-		"test:runtime": "jest runtime --config runtime/jest.config.js --no-cache",
-		"test:shell": "jest shell --config shell/jest.config.js --no-cache --passWithNoTests"
+		"test:tools": "jest tools --config tools/jest.config.js",
+		"test:runtime": "jest runtime --config runtime/jest.config.js",
+		"test:shell": "jest shell --config shell/jest.config.js --passWithNoTests --coverage"
 	},
 	"repository": {
 		"type": "git",
