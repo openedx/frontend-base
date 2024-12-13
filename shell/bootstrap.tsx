@@ -7,7 +7,7 @@ import {
   initialize,
   subscribe
 } from '../runtime';
-import { addAppMessages, getFederatedAppsWithoutHints, getFederationRemotes, preloadFederatedApps } from './data/moduleUtils';
+import { addAppMessages } from '../runtime/i18n';
 import { initializeRemotes } from './federation/initializeRemotes';
 import messages from './i18n';
 import createRouter from './router/createRouter';
@@ -15,8 +15,6 @@ import createRouter from './router/createRouter';
 subscribe(APP_READY, async () => {
   initializeRemotes();
 
-  const federatedAppsWithoutHints = getFederatedAppsWithoutHints();
-  await preloadFederatedApps(federatedAppsWithoutHints);
 
   const router = createRouter();
 
