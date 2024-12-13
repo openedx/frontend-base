@@ -1,5 +1,5 @@
 import { RouteObject } from 'react-router';
-import { patchMessages } from '../../runtime';
+import { mergeMessages } from '../../runtime';
 import { patchApp } from '../../runtime/config';
 import { SHELL_ID } from '../data/constants';
 import { getFederatedApps, loadApp } from '../data/moduleUtils';
