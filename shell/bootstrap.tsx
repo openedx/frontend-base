@@ -9,12 +9,14 @@ import {
 } from '../runtime';
 import { addAppMessages } from '../runtime/i18n';
 import { initializeRemotes } from './federation/initializeRemotes';
+import { preloadHintlessFederatedApps } from './federation/preloadHintlessFederatedApps';
 import messages from './i18n';
 import createRouter from './router/createRouter';
 
 subscribe(APP_READY, async () => {
   initializeRemotes();
 
+  await preloadHintlessFederatedApps();
 
   const router = createRouter();
 
