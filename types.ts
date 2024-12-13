@@ -93,9 +93,6 @@ export interface FederatedApp {
     // federated app when one of its paths has been requested.  This can happen, for instance, when
     // a path is loaded via the rolePaths above.
     paths?: string[],
-    // The slot hints are used to load the federated app when one of it's related slots is being
-    // displayed.
-    slots?: string[],
   },
 }
 
