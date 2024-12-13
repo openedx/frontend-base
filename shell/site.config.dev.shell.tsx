@@ -1,15 +1,13 @@
-import { Button } from '@openedx/paragon';
-import { EnvironmentTypes, ProjectSiteConfig, SlotOperationTypes } from '../types';
+import { EnvironmentTypes, ProjectSiteConfig } from '../types';
 import defaultShellConfig from './defaultShellConfig';
-import CoursesLink from './dev-project/header/CoursesLink';
+import footerConfig from './dev-project/footer/footerConfig';
+import headerConfig from './dev-project/header/headerConfig';
 import homeConfig from './dev-project/home';
 import userConfig from './dev-project/user/userConfig';
 import defaultFooterConfig from './footer/defaultFooterConfig';
 import defaultHeaderConfig from './header/defaultHeaderConfig';
 
 import './app.scss';
-import LinkMenuItem from './menus/LinkMenuItem';
-import NavDropdownMenuSlot from './menus/NavDropdownMenuSlot';
 
 const config: ProjectSiteConfig = {
   apps: [
@@ -18,70 +16,8 @@ const config: ProjectSiteConfig = {
     defaultFooterConfig,
     userConfig,
     homeConfig,
-    {
-      slots: [
-        {
-          slotId: 'frontend.shell.header.primaryLinks.widget',
-          id: 'header.learnerDashboard.link',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <LinkMenuItem
-              label={<CoursesLink />}
-              url="#"
-              variant="navLink"
-            />
-          )
-        },
-        {
-          slotId: 'frontend.shell.header.primaryLinks.widget',
-          id: 'header.booyah.primaryLinks.dropdown',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <NavDropdownMenuSlot id="frontend.shell.header.primaryLinks.dropdown.widget" label="Resources" />
-          )
-        },
-        {
-          slotId: 'frontend.shell.header.primaryLinks.dropdown.widget',
-          id: 'header.booyah.primaryLinks.dropdown.1',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <LinkMenuItem label="Resource 1" url="#" variant="dropdownItem" />
-          )
-        },
-        {
-          slotId: 'frontend.shell.footer.desktop.top.widget',
-          id: 'footer.booyah.revealed',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <Button>I are button</Button>
-          )
-        },
-        {
-          slotId: 'frontend.shell.footer.desktop.top.widget',
-          id: 'footer.booyah.revealed.options',
-          op: SlotOperationTypes.OPTIONS,
-          options: {
-            label: 'I Reveal Buttons',
-          }
-        },
-        {
-          slotId: 'frontend.shell.footer.desktop.top.widget',
-          id: 'footer.booyah.revealed.linky',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <Button>I Are Another Button</Button>
-          )
-        },
-        {
-          slotId: 'frontend.shell.footer.desktop.centerLinks.first.widget',
-          id: 'footer.booyah.centerLinks.first.1',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <LinkMenuItem label="Link 1" url="#" />
-          )
-        },
-      ]
-    }
+    headerConfig,
+    footerConfig,
   ],
   externalRoutes: [
     {
