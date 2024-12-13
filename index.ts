@@ -83,7 +83,7 @@ export {
   mockMessages,
   modifyObjectKeys,
   parseURL,
-  patchMessages,
+  mergeMessages,
   publish,
   redirectToLogin,
   redirectToLogout,

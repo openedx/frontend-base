@@ -108,7 +108,7 @@ export {
   handleRtl,
   intlShape,
   isRtl,
-  patchMessages,
+  mergeMessages,
   updateLocale
 } from './lib';
 
