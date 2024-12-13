@@ -18,7 +18,7 @@ export default async function patchRoutesOnNavigation({ path, patch: patchRoutes
       for (const hintPath of federatedApp.hints.paths) {
         if (path.startsWith(hintPath)) {
           const app = await loadFederatedApp(federatedApp);
-          if (app) {
+          if (app !== null) {
             const { routes, messages, remotes } = app;
 
             patchApp(app);
