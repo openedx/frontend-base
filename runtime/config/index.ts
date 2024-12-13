@@ -2,7 +2,7 @@
  * #### Import members from **@edx/frontend-base**
  *
  * The configuration module provides utilities for working with an application's configuration
- * document (ConfigDocument).  Configuration variables can be supplied to the
+ * document (SiteConfig).  Configuration variables can be supplied to the
  * application in three different ways.  They are applied in the following order:
  *
  * - Site Configuration File (site.config.tsx)
@@ -184,14 +184,14 @@ let config: SiteConfig = {
  * } = getConfig();
  * ```
  *
- * @returns {ConfigDocument}
+ * @returns {SiteConfig}
   */
 export function getConfig() {
   return config;
 }
 
 /**
- * Replaces the existing ConfigDocument.  This is not commonly used, but can be helpful for tests.
+ * Replaces the existing SiteConfig.  This is not commonly used, but can be helpful for tests.
  *
  * Example:
  *
@@ -203,7 +203,7 @@ export function getConfig() {
  * });
  * ```
  *
- * @param {ConfigDocument} newConfig
+ * @param newConfig A replacement SiteConfig which will completely override the current SiteConfig.
  */
 export function setConfig(newConfig: SiteConfig) {
   config = newConfig;
@@ -237,43 +237,4 @@ export function patchApp(app: App) {
 }
 
 /**
- * An object describing the current application configuration.
- *
- * In its most basic form, this document contains some sensible defaults. The initialization
- * process then merges additional configuration into this document using the configuration methods
- * described above. (Site configuration file, initialization config handler, and runtime
- * configuration)
- *
- * @name ConfigDocument
- * @memberof module:Config
- * @property {string} ACCESS_TOKEN_COOKIE_NAME
- * @property {string} ACCOUNT_PROFILE_URL
- * @property {string} ACCOUNT_SETTINGS_URL
- * @property {string} BASE_URL The URL of the current application.
- * @property {string} CREDENTIALS_BASE_URL
- * @property {string} CSRF_TOKEN_API_PATH
- * @property {string} DISCOVERY_API_BASE_URL
- * @property {string} PUBLISHER_BASE_URL
- * @property {string} ECOMMERCE_BASE_URL
- * @property {string} ENVIRONMENT This is one of: development, production, or test.
- * @property {string} IGNORED_ERROR_REGEX
- * @property {string} LANGUAGE_PREFERENCE_COOKIE_NAME
- * @property {string} LEARNING_BASE_URL
- * @property {string} LMS_BASE_URL
- * @property {string} LOGIN_URL
- * @property {string} LOGOUT_URL
- * @property {string} STUDIO_BASE_URL
- * @property {string} MARKETING_SITE_BASE_URL
- * @property {string} ORDER_HISTORY_URL
- * @property {string} REFRESH_ACCESS_TOKEN_API_PATH
- * @property {string} SEGMENT_KEY
- * @property {string} SITE_NAME
- * @property {string} USER_INFO_COOKIE_NAME
- * @property {string} LOGO_URL
- * @property {string} LOGO_TRADEMARK_URL
- * @property {string} LOGO_WHITE_URL
- * @property {string} FAVICON_URL
- * @property {string} MFE_CONFIG_API_URL
- * @property {string} APP_ID
- * @property {string} SUPPORT_URL
  */
