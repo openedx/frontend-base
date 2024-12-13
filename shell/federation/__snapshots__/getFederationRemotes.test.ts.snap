@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getFederationRemotes should throw an error if a remote ID is not a valid variable name 1`] = `
+"Module federation error.
+
+The remote ID "remote-2" is invalid. This remote's URL is "http://localhost:8002/remoteEntry.js".
+
+The identifier must be a valid JavaScript variable name.  It must start with a letter, cannot be a reserved word, and can only contain letters, digits, underscores and dollar signs."
+`;
