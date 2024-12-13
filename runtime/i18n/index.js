@@ -84,6 +84,8 @@
  */
 
 export {
+  createIntl,
+  defineMessages,
   FormattedDate,
   FormattedMessage,
   FormattedNumber,
@@ -91,14 +93,10 @@ export {
   FormattedRelativeTime,
   FormattedTime,
   IntlProvider,
-  createIntl,
-  defineMessages,
   useIntl
 } from 'react-intl';
 
 export {
-  LOCALE_CHANGED,
-  LOCALE_TOPIC,
   configure,
   getLocale,
   getLocalizedLanguageName,
@@ -108,6 +106,8 @@ export {
   handleRtl,
   intlShape,
   isRtl,
+  LOCALE_CHANGED,
+  LOCALE_TOPIC,
   mergeMessages,
   updateLocale
 } from './lib';
