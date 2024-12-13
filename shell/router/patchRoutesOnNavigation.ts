@@ -10,7 +10,7 @@ interface PatchRoutesOnNavigationArgs {
   patch: (routeId: string | null, children: RouteObject[]) => void,
 }
 
-export default async function patchRoutesOnNavigation({ path, patch }: PatchRoutesOnNavigationArgs) {
+export default async function patchRoutesOnNavigation({ path, patch: patchRoutes }: PatchRoutesOnNavigationArgs) {
   const federatedApps = getFederatedApps();
   for (const federatedApp of federatedApps) {
     if (federatedApp.hints?.paths) {
@@ -26,7 +26,7 @@ export default async function patchRoutesOnNavigation({ path, patch }: PatchRout
             }
             mergeMessages(messages);
             if (Array.isArray(routes)) {
-              patch(SHELL_ID, routes);
+              patchRoutes(SHELL_ID, routes);
             }
           } else {
             throw new Error(`Failed to load app ${federatedApp.moduleId} from ${federatedApp.remoteId} remote.`);
