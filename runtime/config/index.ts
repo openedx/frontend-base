@@ -234,6 +234,7 @@ export function mergeConfig(newConfig: Partial<Partial<OptionalSiteConfig> & Req
 export function patchApp(app: App) {
   config.apps.push(app);
   publish(APPS_CHANGED);
+  publish(CONFIG_CHANGED);
 }
 
 /**
