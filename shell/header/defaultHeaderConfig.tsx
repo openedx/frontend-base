@@ -1,11 +1,11 @@
 import { App, WidgetOperationTypes } from '../../types';
+import Logo from '../Logo';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
 import AuthenticatedMenu from './authenticated-menu';
 import CourseInfo from './desktop/CourseInfo';
 import DesktopLayout from './desktop/DesktopLayout';
 import PrimaryNavLinks from './desktop/PrimaryNavLinks';
 import SecondaryNavLinks from './desktop/SecondaryNavLinks';
-import Logo from './Logo';
 import MobileLayout from './mobile/MobileLayout';
 import MobileNavLinks from './mobile/MobileNavLinks';
 
