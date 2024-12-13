@@ -7,7 +7,7 @@ export async function preloadHintlessFederatedApps() {
   const federatedApps = getFederatedAppsWithoutHints();
   for (const federatedApp of federatedApps) {
     const app = await loadFederatedApp(federatedApp);
-    if (app) {
+    if (app !== null) {
       patchApp(app);
     } else {
       throw new Error(`Failed to load app ${federatedApp.moduleId} from ${federatedApp.remoteId} remote.`);
@@ -15,7 +15,7 @@ export async function preloadHintlessFederatedApps() {
   }
 }
 
-function getFederatedAppsWithoutHints() {
+export function getFederatedAppsWithoutHints() {
   const federatedApps = getFederatedApps();
 
   return federatedApps.filter((federatedApp) => {
@@ -23,13 +23,10 @@ function getFederatedAppsWithoutHints() {
   });
 }
 
-function federatedAppHasHints(federatedApp: FederatedApp) {
+export function federatedAppHasHints(federatedApp: FederatedApp) {
   if (typeof federatedApp.hints === 'object') {
-    const { paths, slots } = federatedApp.hints;
+    const { paths } = federatedApp.hints;
     if (Array.isArray(paths) && paths.length > 0) {
-      return true;
-    }
-    if (Array.isArray(slots) && slots.length > 0) {
       return true;
     }
   }
