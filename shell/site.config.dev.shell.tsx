@@ -80,22 +80,6 @@ const config: ProjectSiteConfig = {
             <LinkMenuItem label="Link 1" url="#" />
           )
         },
-        {
-          slotId: 'frontend.shell.footer.desktop.centerLinks.fourth.widget',
-          id: 'footer.booyah.centerLinks.fourth.dropdown',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <DropdownMenuSlot id="frontend.shell.footer.desktop.centerLinks.fourth.dropdown.widget" label="Resources" />
-          )
-        },
-        {
-          slotId: 'frontend.shell.footer.desktop.centerLinks.fourth.dropdown.widget',
-          id: 'footer.booyah.centerLinks.fourth.dropdown.1',
-          op: SlotOperationTypes.APPEND,
-          element: (
-            <LinkMenuItem label="Resource 1" url="#" variant="navDropdownItem" />
-          )
-        }
       ]
     }
   ],
