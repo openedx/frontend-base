@@ -21,16 +21,16 @@ export function getFederationRemotes() {
 }
 
 export async function loadApp(module, scope) {
-  let config: App | null = null;
+  let app: App | null = null;
   try {
     const loadedRemote = await loadRemote<{ default: App }>(`${scope}/${module}`);
     if (loadedRemote !== null) {
-      config = loadedRemote.default;
+      app = loadedRemote.default;
     }
   } catch (error) {
     console.error(`Error loading remote module ${scope}/${module}:`, error);
   }
-  return config;
+  return app;
 }
 
 export function addAppMessages() {
