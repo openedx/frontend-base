@@ -485,7 +485,6 @@ const config: ProjectSiteConfig = {
   IGNORED_ERROR_REGEX: null,
   PUBLIC_PATH: '/',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
-  STUDIO_BASE_URL: 'http://localhost:18010',
 };
 
 export default config;

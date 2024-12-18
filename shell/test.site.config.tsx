@@ -19,7 +19,6 @@ const config: ProjectSiteConfig = {
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   SEGMENT_KEY: 'segment_whoa',
   SITE_NAME: 'edX',
-  STUDIO_BASE_URL: 'http://localhost:18010',
   SUPPORT_URL: 'https://support.edx.org',
   // We include these for some tests that need them.
   SUPPORT_EMAIL: null,
