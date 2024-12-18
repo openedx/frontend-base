@@ -128,7 +128,6 @@ let config: SiteConfig = {
 
   // Optional Frontends
   SUPPORT_URL: null,
-  TERMS_OF_SERVICE_URL: null,
 
   apps: [],
   remotes: [],
