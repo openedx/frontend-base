@@ -481,7 +481,6 @@ const config: ProjectSiteConfig = {
   USER_INFO_COOKIE_NAME: 'edx-user-info',
   APP_ID: 'authn',
   ENVIRONMENT: 'dev',
-  DISCOVERY_API_BASE_URL: 'http://localhost:18381',
   IGNORED_ERROR_REGEX: null,
   PUBLIC_PATH: '/',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
