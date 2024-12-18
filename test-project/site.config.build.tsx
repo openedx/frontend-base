@@ -23,7 +23,6 @@ const config: ProjectSiteConfig = {
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',
   LOGOUT_URL: 'http://localhost:18000/logout',
-  STUDIO_BASE_URL: 'http://localhost:18010',
   SITE_NAME: 'localhost',
 
   LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',

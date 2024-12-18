@@ -34,7 +34,6 @@ const config: ProjectSiteConfig = {
 
   // Frontend URLs
   LOGIN_URL: 'http://local.openedx.io:8000/login',
-  STUDIO_BASE_URL: 'http://studio.local.openedx.io:8001',
   LOGOUT_URL: 'http://local.openedx.io:8000/logout',
 
   // API URLs

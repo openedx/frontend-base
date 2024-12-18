@@ -156,7 +156,6 @@ let config: SiteConfig = {
 
   // Backends
   LMS_BASE_URL: '',
-  STUDIO_BASE_URL: '',
 
   // Branding
   FAVICON_URL: '',

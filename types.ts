@@ -111,7 +111,6 @@ export interface RequiredSiteConfig {
 
   // Backends
   LMS_BASE_URL: string,
-  STUDIO_BASE_URL: string,
 
   // Branding
   FAVICON_URL: string,
