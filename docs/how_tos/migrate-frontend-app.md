@@ -195,7 +195,7 @@ Create a `tsconfig.json` file and add the following contents to it:
     "src/**/*",
     "app.d.ts",
     "babel.config.js",
-    ".eslintrc.js",
+    "eslint.config.js",
     "jest.config.js",
     "test.site.config.tsx",
     "site.config.*.tsx",
@@ -540,7 +540,7 @@ This file will be ignored via `.gitignore`, as it is part of your 'project', not
 
 Your modules will need environment variables that your system merged into config in index.jsx - we need to document and expect those when the module is loaded.  You'll need this list in the next step.
 
-## 27. Stop using process.env
+## 26. Stop using process.env
 
 Instead, custom variables must go through site config.
 
@@ -549,19 +549,29 @@ Instead, custom variables must go through site config.
 
 As we decide on the module boundaries of our library, we'll be able to move these into module-specific configuration in site config.  `custom` is a temporary home for this config.
 
-## 26. More art than science: find your module boundaries
+## 27. Convert @import to @use in SCSS files.
 
-From this step on, things get a bit more subjective.  At this point you need to ensure that the modules in your library are decoupled and well-bounded.  If you use Redux, this may mean creating individual redux stores for each module, including adding a context so that they're separate from any "upstream" redux stores that may exist.
+@import is deprecated in the most recent versions of SASS.
 
-https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
+When you do this, you will find that variables and mixins from Paragon, in particular, are likely to result in errors when building the app in webpack.  To fix this, you must `@use` the paragon core SCSS file in the file where you want to use the variable or mixin:
 
-## 27. Subdomains!?
+```
+@use "@openedx/paragon/scss/core/core" as paragon;
+```
 
-## 28. Add LEARNER_DASHBOARD_URL to config
+And then prefix the variable/mixin usage with `paragon.`:
 
-## 29. Convert @import to @use in SCSS files.
+```
+// Using a mixin
+@include paragon.media-breakpoint-up(lg) {
 
-## 30. Changes to i81n
+}
+
+// Or a variable
+paragon.$primary-700
+```
+
+## 28. Changes to i18n
 
 configureI18n no longer takes `config` or `loggingService` as options
 
@@ -573,11 +583,13 @@ The `getLoggingService` export from _i18n_ has also been removed.  No one should
 
 `getCountryList` has been removed.  MFEs that need a list of countries should install `i18n-iso-countries` or `countries-list` as a dependency.
 
+The getCountryList function can be reproduced from this file in frontend-platform: https://github.com/openedx/frontend-platform/blob/master/src/i18n/countries.js
+
 frontend-app-account should use the supported language list from frontend-base, rather than the hard-coded list in https://github.com/openedx/frontend-app-account/blob/master/src/account-settings/site-language/constants.js
 
 This would help it match the behavior of the footer's language dropdown.
 
-## Removal of pubsub-js
+## 29. Removal of pubsub-js
 
 frontend-platform used pubsub-js behind the scenes for event subscriptions/publishing.  It used it in a very rudimentary way, and the library was noisy in test suites, complaining about being re-initialized.  Because of these reasons, we've removed our dependency on pubsub-js and replaced it with a simple subscription system with a very similar API:
 
@@ -589,3 +601,9 @@ frontend-platform used pubsub-js behind the scenes for event subscriptions/publi
 The unsubscribe function as a different API than pubsub-js's unsubscribe function, taking a topic and a callback rather than an unsubscribe token.
 
 Consumers who were using the `PubSub` global variable should instead import the above functions directly from `@openedx/frontend-base`.
+
+## 30. More art than science: find your module boundaries
+
+From this step on, things get a bit more subjective.  At this point you need to ensure that the modules in your library are decoupled and well-bounded.  If you use Redux, this may mean creating individual redux stores for each module, including adding a context so that they're separate from any "upstream" redux stores that may exist.
+
+https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
