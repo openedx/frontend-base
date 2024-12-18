@@ -121,7 +121,6 @@ export interface RequiredSiteConfig {
 
   // Frontends
   LEARNER_DASHBOARD_URL: string,
-  LEARNING_BASE_URL: string,
   LOGIN_URL: string,
   LOGOUT_URL: string,
   MARKETING_SITE_BASE_URL: string,

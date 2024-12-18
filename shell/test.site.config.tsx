@@ -11,7 +11,6 @@ const config: ProjectSiteConfig = {
   ENVIRONMENT: EnvironmentTypes.TEST,
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
   LEARNER_DASHBOARD_URL: 'http://localhost:18000/dashboard',
-  LEARNING_BASE_URL: 'http://localhost:2000',
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',
   LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
