@@ -133,7 +133,6 @@ let config: SiteConfig = {
   ACCESSIBILITY_URL: null,
 
   // Optional Backends
-  CREDENTIALS_BASE_URL: null,
   PUBLISHER_BASE_URL: null,
 
   apps: [],
