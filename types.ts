@@ -177,8 +177,6 @@ export interface OptionalSiteConfig {
   // Frontends
   SUPPORT_URL: string | null,
 
-  SUPPORT_EMAIL: string | null,
-
   custom: Record<string, any>,
 }
 

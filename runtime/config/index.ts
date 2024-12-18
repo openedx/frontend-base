@@ -124,7 +124,6 @@ let config: SiteConfig = {
   MFE_CONFIG_API_URL: null,
 
   SEGMENT_KEY: null,
-  SUPPORT_EMAIL: null,
 
   // Optional Frontends
   SUPPORT_URL: null,

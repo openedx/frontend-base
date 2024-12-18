@@ -16,8 +16,6 @@ const config: ProjectSiteConfig = {
   SEGMENT_KEY: 'segment_whoa',
   SITE_NAME: 'edX',
   SUPPORT_URL: 'https://support.edx.org',
-  // We include these for some tests that need them.
-  SUPPORT_EMAIL: null,
 };
 
 export default config;
