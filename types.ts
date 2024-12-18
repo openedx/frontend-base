@@ -120,7 +120,6 @@ export interface RequiredSiteConfig {
   LOGO_WHITE_URL: string,
 
   // Frontends
-  LEARNER_DASHBOARD_URL: string,
   LOGIN_URL: string,
   LOGOUT_URL: string,
 }

@@ -151,7 +151,6 @@ let config: SiteConfig = {
   SITE_NAME: '',
 
   // Frontends
-  LEARNER_DASHBOARD_URL: '',
   LOGIN_URL: '',
   LOGOUT_URL: '',
 

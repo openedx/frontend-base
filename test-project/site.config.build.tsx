@@ -20,7 +20,6 @@ const config: ProjectSiteConfig = {
   DISCOVERY_API_BASE_URL: 'http://localhost:18381',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   ECOMMERCE_BASE_URL: 'http://localhost:18130',
-  LEARNER_DASHBOARD_URL: 'http://localhost:18000/dashboard',
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',
   LOGOUT_URL: 'http://localhost:18000/logout',

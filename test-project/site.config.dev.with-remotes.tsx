@@ -71,7 +71,6 @@ const config: ProjectSiteConfig = {
   ],
   ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
   BASE_URL: 'http://apps.local.openedx.io:8080',
-  LEARNER_DASHBOARD_URL: 'http://local.openedx.io:8000/dashboard',
   LMS_BASE_URL: 'http://local.openedx.io:8000',
   LOGIN_URL: 'http://local.openedx.io:8000/login',
   LOGOUT_URL: 'http://local.openedx.io:8000/logout',
