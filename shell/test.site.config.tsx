@@ -10,7 +10,6 @@ const config: ProjectSiteConfig = {
   ECOMMERCE_BASE_URL: 'http://localhost:18130',
   ENVIRONMENT: EnvironmentTypes.TEST,
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  LEARNER_DASHBOARD_URL: 'http://localhost:18000/dashboard',
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',
   LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',

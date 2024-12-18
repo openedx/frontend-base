@@ -33,7 +33,6 @@ const config: ProjectSiteConfig = {
   SITE_NAME: 'My Open edX Site',
 
   // Frontend URLs
-  LEARNER_DASHBOARD_URL: 'http://local.openedx.io:8000/dashboard',
   LOGIN_URL: 'http://local.openedx.io:8000/login',
   STUDIO_BASE_URL: 'http://studio.local.openedx.io:8001',
   LOGOUT_URL: 'http://local.openedx.io:8000/logout',
