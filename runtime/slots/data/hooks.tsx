@@ -3,8 +3,9 @@ import { ComponentType, Fragment, ReactNode, useContext, useEffect, useState } f
 import { SlotOperation } from '../../../types';
 import { APPS_CHANGED } from '../../constants';
 import { useAppEvent } from '../../react';
+import FederatedWidget from '../FederatedWidget';
 import SlotContext from '../SlotContext';
-import { getSlotOperations, isComponentOperation, isElementOperation, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetOperationConditionSatisfied, isWidgetSlot } from './utils';
+import { getSlotOperations, isComponentOperation, isElementOperation, isFederationOperation, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetOperationConditionSatisfied, isWidgetSlot } from './utils';
 
 export function useSlotContext() {
   return useContext(SlotContext);
@@ -46,6 +47,10 @@ export function useSlotWidgetsById(id: string) {
                 {operation.element}
               </Fragment>
             ));
+          } else if (isFederationOperation(operation)) {
+            widgets.push(
+              <FederatedWidget key={operation.id} remoteId={operation.remoteId} moduleId={operation.moduleId} />
+            );
           }
         }
       }

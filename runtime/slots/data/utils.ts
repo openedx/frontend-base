@@ -1,4 +1,4 @@
-import { ComponentOperation, ElementOperation, LayoutOperation, OptionsOperation, SlotOperation, WidgetOperation } from '../../../types';
+import { ComponentOperation, ElementOperation, FederatedOperation, LayoutOperation, OptionsOperation, SlotOperation, WidgetOperation } from '../../../types';
 import { getAuthenticatedUser } from '../../auth';
 import { getConfig } from '../../config';
 
@@ -52,6 +52,10 @@ export function isComponentOperation(operation: WidgetOperation): operation is C
 
 export function isElementOperation(operation: WidgetOperation): operation is ElementOperation {
   return isWidgetOperation(operation) && 'element' in operation;
+}
+
+export function isFederationOperation(operation: WidgetOperation): operation is FederatedOperation {
+  return isWidgetOperation(operation) && 'remoteId' in operation;
 }
 
 export function isOptionsOperation(operation: WidgetOperation): operation is OptionsOperation {
