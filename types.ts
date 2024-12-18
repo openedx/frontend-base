@@ -179,7 +179,6 @@ export interface OptionalSiteConfig {
 
   SUPPORT_EMAIL: string | null,
   TERMS_OF_SERVICE_URL: string | null,
-  PRIVACY_POLICY_URL: string | null,
 
   custom: Record<string, any>,
 }

@@ -19,7 +19,6 @@ const config: ProjectSiteConfig = {
   // We include these for some tests that need them.
   SUPPORT_EMAIL: null,
   TERMS_OF_SERVICE_URL: null,
-  PRIVACY_POLICY_URL: null,
 };
 
 export default config;
