@@ -132,9 +132,6 @@ let config: SiteConfig = {
   PRIVACY_POLICY_URL: null,
   ACCESSIBILITY_URL: null,
 
-  // Optional Backends
-  PUBLISHER_BASE_URL: null,
-
   apps: [],
   remotes: [],
   federatedApps: [],

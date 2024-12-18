@@ -174,9 +174,6 @@ export interface OptionalSiteConfig {
   MFE_CONFIG_API_URL: string | null,
   PUBLIC_PATH: string,
 
-  // Backends
-  PUBLISHER_BASE_URL: string | null,
-
   // Frontends
   SUPPORT_URL: string | null,
 
