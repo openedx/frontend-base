@@ -59,7 +59,6 @@ const newConfig = {
     SEGMENT_KEY: '',
     USER_INFO_COOKIE_NAME: 'edx-user-info',
     IGNORED_ERROR_REGEX: '',
-    CREDENTIALS_BASE_URL: 'http://test.example.com:18150',
   },
   auth: {
     INFO_EMAIL: 'openedx@example.com',

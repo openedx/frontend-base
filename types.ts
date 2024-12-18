@@ -175,7 +175,6 @@ export interface OptionalSiteConfig {
   PUBLIC_PATH: string,
 
   // Backends
-  CREDENTIALS_BASE_URL: string | null,
   PUBLISHER_BASE_URL: string | null,
 
   // Frontends

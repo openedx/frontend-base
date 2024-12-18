@@ -16,7 +16,6 @@ const config: ProjectSiteConfig = {
 
   ENVIRONMENT: EnvironmentTypes.PRODUCTION,
   BASE_URL: 'http://localhost:8080',
-  CREDENTIALS_BASE_URL: 'http://localhost:18150',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',

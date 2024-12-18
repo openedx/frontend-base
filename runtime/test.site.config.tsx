@@ -27,7 +27,6 @@ const config: ProjectSiteConfig = {
   ],
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
   BASE_URL: 'http://localhost:8080',
-  CREDENTIALS_BASE_URL: 'http://localhost:18150',
   CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
