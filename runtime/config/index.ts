@@ -130,7 +130,6 @@ let config: SiteConfig = {
   SUPPORT_URL: null,
   TERMS_OF_SERVICE_URL: null,
   PRIVACY_POLICY_URL: null,
-  ACCESSIBILITY_URL: null,
 
   apps: [],
   remotes: [],
