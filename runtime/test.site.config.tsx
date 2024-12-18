@@ -26,7 +26,6 @@ const config: ProjectSiteConfig = {
     },
   ],
   ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-  ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
   BASE_URL: 'http://localhost:8080',
   CREDENTIALS_BASE_URL: 'http://localhost:18150',
   CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',

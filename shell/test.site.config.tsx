@@ -2,7 +2,7 @@ import { EnvironmentTypes, ProjectSiteConfig } from '../types';
 
 const config: ProjectSiteConfig = {
   apps: [],
-  ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
+
   APP_ID: 'runtime',
   BASE_URL: 'http://localhost:8080',
   CREDENTIALS_BASE_URL: 'http://localhost:18150',

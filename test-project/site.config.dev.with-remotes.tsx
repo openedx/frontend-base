@@ -70,7 +70,6 @@ const config: ProjectSiteConfig = {
     }
   ],
   ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
-  ACCOUNT_SETTINGS_URL: 'http://apps.local.openedx.io:1997',
   BASE_URL: 'http://apps.local.openedx.io:8080',
   LEARNER_DASHBOARD_URL: 'http://local.openedx.io:8000/dashboard',
   LEARNING_BASE_URL: 'http://apps.local.openedx.io:2000',
