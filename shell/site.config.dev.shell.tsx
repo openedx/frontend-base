@@ -33,7 +33,6 @@ const config: ProjectSiteConfig = {
   SITE_NAME: 'My Open edX Site',
 
   // Frontend URLs
-  ACCOUNT_PROFILE_URL: 'http://apps.local.openedx.io:1995',
   ACCOUNT_SETTINGS_URL: 'http://apps.local.openedx.io:1997',
   LEARNER_DASHBOARD_URL: 'http://local.openedx.io:8000/dashboard',
   LEARNING_BASE_URL: 'http://apps.local.openedx.io:2000',

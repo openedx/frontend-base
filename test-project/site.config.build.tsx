@@ -15,7 +15,6 @@ const config: ProjectSiteConfig = {
   ],
 
   ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-  ACCOUNT_PROFILE_URL: 'http://localhost:1995',
   ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
   BASE_URL: 'http://localhost:8080',
   CREDENTIALS_BASE_URL: 'http://localhost:18150',
