@@ -18,7 +18,6 @@ const config: ProjectSiteConfig = {
   SUPPORT_URL: 'https://support.edx.org',
   // We include these for some tests that need them.
   SUPPORT_EMAIL: null,
-  TERMS_OF_SERVICE_URL: null,
 };
 
 export default config;
