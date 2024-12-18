@@ -466,7 +466,6 @@ const config: ProjectSiteConfig = {
   BASE_URL: 'http://localhost:8080',
   CREDENTIALS_BASE_URL: 'http://localhost:18150',
   CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-  ECOMMERCE_BASE_URL: 'http://localhost:18130',
   LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',

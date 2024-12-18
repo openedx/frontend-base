@@ -176,7 +176,6 @@ export interface OptionalSiteConfig {
 
   // Backends
   CREDENTIALS_BASE_URL: string | null,
-  ECOMMERCE_BASE_URL: string | null,
   PUBLISHER_BASE_URL: string | null,
 
   // Frontends

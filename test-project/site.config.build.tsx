@@ -18,7 +18,6 @@ const config: ProjectSiteConfig = {
   BASE_URL: 'http://localhost:8080',
   CREDENTIALS_BASE_URL: 'http://localhost:18150',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
-  ECOMMERCE_BASE_URL: 'http://localhost:18130',
   LMS_BASE_URL: 'http://localhost:18000',
   LOGIN_URL: 'http://localhost:18000/login',
   LOGOUT_URL: 'http://localhost:18000/logout',
