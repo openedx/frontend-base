@@ -154,7 +154,6 @@ let config: SiteConfig = {
   LEARNER_DASHBOARD_URL: '',
   LOGIN_URL: '',
   LOGOUT_URL: '',
-  MARKETING_SITE_BASE_URL: '',
 
   // Backends
   LMS_BASE_URL: '',

@@ -76,7 +76,6 @@ const config: ProjectSiteConfig = {
   LOGIN_URL: 'http://local.openedx.io:8000/login',
   LOGOUT_URL: 'http://local.openedx.io:8000/logout',
   STUDIO_BASE_URL: 'http://studio.local.openedx.io:8001',
-  MARKETING_SITE_BASE_URL: 'http://local.openedx.io:8000',
   SITE_NAME: 'My Open edX Site',
   MFE_CONFIG_API_URL: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
 

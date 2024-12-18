@@ -38,7 +38,6 @@ const config: ProjectSiteConfig = {
   LOGIN_URL: 'http://localhost:18000/login',
   LOGOUT_URL: 'http://localhost:18000/logout',
   STUDIO_BASE_URL: 'http://localhost:18010',
-  MARKETING_SITE_BASE_URL: 'http://localhost:18000',
   REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
   SEGMENT_KEY: 'segment_whoa',
   SITE_NAME: 'edX',

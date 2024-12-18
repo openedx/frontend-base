@@ -36,7 +36,6 @@ const config: ProjectSiteConfig = {
   LEARNER_DASHBOARD_URL: 'http://local.openedx.io:8000/dashboard',
   LOGIN_URL: 'http://local.openedx.io:8000/login',
   STUDIO_BASE_URL: 'http://studio.local.openedx.io:8001',
-  MARKETING_SITE_BASE_URL: 'http://local.openedx.io:8000',
   LOGOUT_URL: 'http://local.openedx.io:8000/logout',
 
   // API URLs
