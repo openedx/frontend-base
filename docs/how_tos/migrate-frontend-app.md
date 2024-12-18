@@ -481,7 +481,6 @@ const config: ProjectSiteConfig = {
   ENVIRONMENT: 'dev',
   IGNORED_ERROR_REGEX: null,
   PUBLIC_PATH: '/',
-  PUBLISHER_BASE_URL: 'http://localhost:18400',
 };
 
 export default config;
