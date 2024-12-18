@@ -6,7 +6,6 @@ const config: ProjectSiteConfig = {
   APP_ID: 'runtime',
   BASE_URL: 'http://localhost:8080',
   CREDENTIALS_BASE_URL: 'http://localhost:18150',
-  DISCOVERY_API_BASE_URL: 'http://localhost:18381',
   ECOMMERCE_BASE_URL: 'http://localhost:18130',
   ENVIRONMENT: EnvironmentTypes.TEST,
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',

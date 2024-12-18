@@ -50,7 +50,6 @@ const newConfig = {
     ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
     FAVICON_URL: 'http://test.example.com:18000/theme/favicon.ico',
     CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-    DISCOVERY_API_BASE_URL: 'http://test.example.com:18381',
     PUBLISHER_BASE_URL: 'http://test.example.com:18400',
     ECOMMERCE_BASE_URL: 'http://test.example.com:18130',
     LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
