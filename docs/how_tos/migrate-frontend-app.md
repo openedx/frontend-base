@@ -476,7 +476,6 @@ const config: ProjectSiteConfig = {
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
   MARKETING_SITE_BASE_URL: 'http://localhost:18000',
-  ORDER_HISTORY_URL: 'http://localhost:1996/orders',
   REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
   SEGMENT_KEY: '',
   SITE_NAME: 'localhost',

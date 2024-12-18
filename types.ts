@@ -184,7 +184,6 @@ export interface OptionalSiteConfig {
   PUBLISHER_BASE_URL: string | null,
 
   // Frontends
-  ORDER_HISTORY_URL: string | null,
   SUPPORT_URL: string | null,
 
   SUPPORT_EMAIL: string | null,

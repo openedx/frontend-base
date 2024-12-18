@@ -35,7 +35,6 @@ const config: ProjectSiteConfig = {
   // Frontend URLs
   LEARNER_DASHBOARD_URL: 'http://local.openedx.io:8000/dashboard',
   LOGIN_URL: 'http://local.openedx.io:8000/login',
-  ORDER_HISTORY_URL: 'http://apps.local.openedx.io:1996/orders',
   STUDIO_BASE_URL: 'http://studio.local.openedx.io:8001',
   MARKETING_SITE_BASE_URL: 'http://local.openedx.io:8000',
   LOGOUT_URL: 'http://local.openedx.io:8000/logout',
