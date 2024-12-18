@@ -26,7 +26,6 @@ const config: ProjectSiteConfig = {
   LOGOUT_URL: 'http://localhost:18000/logout',
   STUDIO_BASE_URL: 'http://localhost:18010',
   MARKETING_SITE_BASE_URL: 'http://localhost:18000',
-  ORDER_HISTORY_URL: 'http://localhost:1996/orders',
   SITE_NAME: 'localhost',
 
   LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',

@@ -127,7 +127,6 @@ let config: SiteConfig = {
   SUPPORT_EMAIL: null,
 
   // Optional Frontends
-  ORDER_HISTORY_URL: null,
   SUPPORT_URL: null,
   TERMS_OF_SERVICE_URL: null,
   PRIVACY_POLICY_URL: null,
