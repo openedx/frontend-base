@@ -54,7 +54,6 @@ const newConfig = {
     PUBLISHER_BASE_URL: 'http://test.example.com:18400',
     ECOMMERCE_BASE_URL: 'http://test.example.com:18130',
     LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-    LEARNING_BASE_URL: 'http://test.example.com:2000',
     LMS_BASE_URL: 'http://test.example.com:18000',
     LOGIN_URL: 'http://test.example.com:18000/login',
     LOGOUT_URL: 'http://test.example.com:18000/logout',

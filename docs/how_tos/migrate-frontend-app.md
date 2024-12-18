@@ -485,7 +485,6 @@ const config: ProjectSiteConfig = {
   ENVIRONMENT: 'dev',
   DISCOVERY_API_BASE_URL: 'http://localhost:18381',
   IGNORED_ERROR_REGEX: null,
-  LEARNING_BASE_URL: 'http://localhost:2000',
   PUBLIC_PATH: '/',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   STUDIO_BASE_URL: 'http://localhost:18010',
