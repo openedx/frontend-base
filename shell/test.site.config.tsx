@@ -17,7 +17,6 @@ const config: ProjectSiteConfig = {
   LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   LOGOUT_URL: 'http://localhost:18000/logout',
-  MARKETING_SITE_BASE_URL: 'http://localhost:18000',
   PUBLISHER_BASE_URL: 'http://localhost:18400',
   SEGMENT_KEY: 'segment_whoa',
   SITE_NAME: 'edX',

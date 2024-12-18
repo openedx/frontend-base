@@ -5,11 +5,10 @@ import { useConfig } from '../../runtime';
 interface CopyrightNoticeProps {
   title?: string,
   /**
-   * The URL that the copyright notice should link to when a user clicks on the title.  A destination of `null` means the title should not be a link.
-   *
-   * @default SiteConfig.MARKETING_SITE_BASE_URL
+   * The URL that the copyright notice should link to when a user clicks on the title.  If not set,
+   * the title will not be a link.
    */
-  destination?: string | null,
+  destination?: string,
 }
 
 export default function CopyrightNotice({ title, destination }: CopyrightNoticeProps) {
@@ -17,14 +16,13 @@ export default function CopyrightNotice({ title, destination }: CopyrightNoticeP
 
   // Allow overrides via props and fallback to defaults.
   const finalTitle = title ?? config.SITE_NAME;
-  // If destination has explicitly been set to 'null', that means no link.
-  const finalDestination = destination !== undefined ? destination : config.MARKETING_SITE_BASE_URL;
+
   return (
     <div className="text-center x-small">
       <span>&copy;&nbsp;{new Date().getFullYear()}&nbsp;</span>
-      {finalDestination !== null ? (
+      {destination !== undefined ? (
         <Hyperlink
-          destination={config.MARKETING_SITE_BASE_URL}
+          destination={destination}
           target="_blank"
         >
           {finalTitle}

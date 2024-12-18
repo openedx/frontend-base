@@ -58,7 +58,6 @@ const newConfig = {
     LOGIN_URL: 'http://test.example.com:18000/login',
     LOGOUT_URL: 'http://test.example.com:18000/logout',
     STUDIO_BASE_URL: 'http://studio.example.com:18010',
-    MARKETING_SITE_BASE_URL: 'http://test.example.com:18000',
     REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
     SEGMENT_KEY: '',
     USER_INFO_COOKIE_NAME: 'edx-user-info',
