@@ -101,7 +101,7 @@ Load up your translation files
 
       configure({
         messages,
-        config: getConfig(), // ENVIRONMENT and LANGUAGE_PREFERENCE_COOKIE_NAME are required
+        config: getConfig(), // environment and languagePreferenceCookieName are required
         loggingService: getLoggingService(), // An object with logError and logInfo methods
       });
 

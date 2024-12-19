@@ -98,7 +98,7 @@ describe('useConfig', () => {
   it('returns the site config', () => {
     const { result } = renderHook(() => useConfig());
     expect(result.current).toHaveProperty('apps', siteConfig.apps);
-    expect(result.current).toHaveProperty('ENVIRONMENT', EnvironmentTypes.TEST);
-    expect(result.current).toHaveProperty('BASE_URL', 'http://localhost:8080');
+    expect(result.current).toHaveProperty('environment', EnvironmentTypes.TEST);
+    expect(result.current).toHaveProperty('baseUrl', 'http://localhost:8080');
   });
 });

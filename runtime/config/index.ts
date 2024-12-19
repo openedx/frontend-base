@@ -33,7 +33,7 @@
  * Exporting a config object:
  * ```
  * const config = {
- *   LMS_BASE_URL: 'http://localhost:18000'
+ *   lmsBaseUrl: 'http://localhost:18000'
  * };
  *
  * export default config;
@@ -43,7 +43,7 @@
  * ```
  * function getConfig() {
  *   return {
- *     LMS_BASE_URL: 'http://localhost:18000'
+ *     lmsBaseUrl: 'http://localhost:18000'
  *   };
  * }
  * ```
@@ -53,7 +53,7 @@
  * function getAsyncConfig() {
  *   return new Promise((resolve, reject) => {
  *     resolve({
- *       LMS_BASE_URL: 'http://localhost:18000'
+ *       lmsBaseUrl: 'http://localhost:18000'
  *     });
  *   });
  * }
@@ -73,7 +73,7 @@
  *     config: () => {
  *       mergeConfig({
  *         CUSTOM_VARIABLE: 'custom value',
- *         LMS_BASE_URL: 'http://localhost:18001' // You can override variables, but this is uncommon.
+ *         lmsBaseUrl: 'http://localhost:18001' // You can override variables, but this is uncommon.
   *       }, 'App config override handler');
  *     },
  *   },
@@ -88,7 +88,7 @@
  *
  * https://github.com/openedx/edx-platform/blob/master/lms/djangoapps/mfe_config_api/docs/decisions/0001-mfe-config-api.rst
  *
- * The runtime configuration method can be enabled by supplying a MFE_CONFIG_API_URL via one of the other
+ * The runtime configuration method can be enabled by supplying a mfeConfigApiUrl via one of the other
  * two configuration methods above.
  *
  * Runtime configuration is particularly useful if you need to supply different configurations to
@@ -113,17 +113,17 @@ import { APPS_CHANGED, CONFIG_CHANGED } from '../constants';
 import { publish } from '../subscriptions';
 
 let config: SiteConfig = {
-  ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-  CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-  ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-  IGNORED_ERROR_REGEX: null,
-  LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-  PUBLIC_PATH: '/',
-  REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
-  USER_INFO_COOKIE_NAME: 'edx-user-info',
-  MFE_CONFIG_API_URL: null,
+  accessTokenCookieName: 'edx-jwt-cookie-header-payload',
+  csrfTokenApiPath: '/csrf/api/v1/token',
+  environment: EnvironmentTypes.PRODUCTION,
+  ignoredErrorRegex: null,
+  languagePreferenceCookieName: 'openedx-language-preference',
+  publicPath: '/',
+  refreshAccessTokenApiPath: '/login_refresh',
+  userInfoCookieName: 'edx-user-info',
+  mfeConfigApiUrl: null,
 
-  SEGMENT_KEY: null,
+  segmentKey: null,
 
   apps: [],
   remotes: [],
@@ -133,22 +133,16 @@ let config: SiteConfig = {
   pluginSlots: {},
   custom: {},
 
-  APP_ID: '',
-  BASE_URL: '',
-  SITE_NAME: '',
+  appId: '',
+  baseUrl: '',
+  siteName: '',
 
   // Frontends
-  LOGIN_URL: '',
-  LOGOUT_URL: '',
+  loginUrl: '',
+  logoutUrl: '',
 
   // Backends
-  LMS_BASE_URL: '',
-
-  // Branding
-  FAVICON_URL: '',
-  LOGO_TRADEMARK_URL: '',
-  LOGO_URL: '',
-  LOGO_WHITE_URL: ''
+  lmsBaseUrl: '',
 };
 
 /**
@@ -161,7 +155,7 @@ let config: SiteConfig = {
  * import { getConfig } from '@openedx/frontend-base';
  *
  * const {
- *   LMS_BASE_URL,
+ *   lmsBaseUrl,
  * } = getConfig();
  * ```
  *
@@ -180,7 +174,7 @@ export function getConfig() {
  * import { setConfig } from '@openedx/frontend-base';
  *
  * setConfig({
- *   LMS_BASE_URL, // This is overriding the ENTIRE document - this is not merged in!
+ *   lmsBaseUrl, // This is overriding the ENTIRE document - this is not merged in!
  * });
  * ```
  *

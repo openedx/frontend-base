@@ -15,7 +15,7 @@ export default function CopyrightNotice({ title, destination }: CopyrightNoticeP
   const config = useConfig();
 
   // Allow overrides via props and fallback to defaults.
-  const finalTitle = title ?? config.SITE_NAME;
+  const finalTitle = title ?? config.siteName;
 
   return (
     <div className="text-center x-small">

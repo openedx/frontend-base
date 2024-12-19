@@ -143,7 +143,7 @@ export function getLocale(locale?: string) {
   }
   // 2. User setting in cookie
 
-  const cookieLangPref = cookies.get(getConfig().LANGUAGE_PREFERENCE_COOKIE_NAME);
+  const cookieLangPref = cookies.get(getConfig().languagePreferenceCookieName);
   if (cookieLangPref) {
     return findSupportedLocale(cookieLangPref.toLowerCase());
   }

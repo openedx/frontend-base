@@ -20,7 +20,7 @@ const injectIntlWithShim = (WrappedComponent) => {
           value: (definition, ...args) => {
             if (definition === undefined || definition.id === undefined) {
               const error = new Error('i18n error: An undefined message was supplied to intl.formatMessage.');
-              if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
+              if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
                 console.error(error); // eslint-disable-line no-console
                 return '!!! Missing message supplied to intl.formatMessage !!!';
               }

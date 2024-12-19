@@ -14,18 +14,13 @@ const config: ProjectSiteConfig = {
     iframePluginConfig,
   ],
 
-  ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-  BASE_URL: 'http://localhost:8080',
-  LMS_BASE_URL: 'http://localhost:18000',
-  LOGIN_URL: 'http://localhost:18000/login',
-  LOGOUT_URL: 'http://localhost:18000/logout',
-  SITE_NAME: 'localhost',
-
-  LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',
-  LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
-  LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
-  FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  APP_ID: 'shell',
+  environment: EnvironmentTypes.PRODUCTION,
+  baseUrl: 'http://localhost:8080',
+  lmsBaseUrl: 'http://localhost:18000',
+  loginUrl: 'http://localhost:18000/login',
+  logoutUrl: 'http://localhost:18000/logout',
+  siteName: 'localhost',
+  appId: 'shell',
 
   custom: {
     FALSE_VALUE: false,

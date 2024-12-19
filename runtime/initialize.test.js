@@ -43,21 +43,17 @@ jest.mock('history');
 let config = null;
 const newConfig = {
   common: {
-    SITE_NAME: 'Test Case',
-    LOGO_URL: 'http://test.example.com:18000/theme/logo.png',
-    LOGO_TRADEMARK_URL: 'http://test.example.com:18000/theme/logo.png',
-    LOGO_WHITE_URL: 'http://test.example.com:18000/theme/logo.png',
-    ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-    FAVICON_URL: 'http://test.example.com:18000/theme/favicon.ico',
-    CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-    LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-    LMS_BASE_URL: 'http://test.example.com:18000',
-    LOGIN_URL: 'http://test.example.com:18000/login',
-    LOGOUT_URL: 'http://test.example.com:18000/logout',
-    REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
-    SEGMENT_KEY: '',
-    USER_INFO_COOKIE_NAME: 'edx-user-info',
-    IGNORED_ERROR_REGEX: '',
+    siteName: 'Test Case',
+    accessTokenCookieName: 'edx-jwt-cookie-header-payload',
+    csrfTokenApiPath: '/csrf/api/v1/token',
+    languagePreferenceCookieName: 'openedx-language-preference',
+    lmsBaseUrl: 'http://test.example.com:18000',
+    loginUrl: 'http://test.example.com:18000/login',
+    logoutUrl: 'http://test.example.com:18000/logout',
+    refreshAccessTokenApiPath: '/login_refresh',
+    segmentKey: '',
+    userInfoCookieName: 'edx-user-info',
+    ignoredErrorRegex: '',
   },
   auth: {
     INFO_EMAIL: 'openedx@example.com',
@@ -281,8 +277,8 @@ describe('initialize', () => {
       handlers: {
         config: () => {
           mergeConfig({
-            MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
-            APP_ID: 'auth',
+            mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
+            appId: 'auth',
           });
         }
       }
@@ -308,7 +304,7 @@ describe('initialize', () => {
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
     expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
     expect(logError).not.toHaveBeenCalled();
-    expect(getConfig().SITE_NAME).toBe(newConfig.common.SITE_NAME);
+    expect(getConfig().siteName).toBe(newConfig.common.siteName);
     expect(getConfig().INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
     expect(Object.values(getConfig()).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
   });
@@ -331,8 +327,8 @@ describe('initialize', () => {
         handlers: {
           config: () => {
             mergeConfig({
-              MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
-              APP_ID: 'auth',
+              mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
+              appId: 'auth',
             });
           }
         }

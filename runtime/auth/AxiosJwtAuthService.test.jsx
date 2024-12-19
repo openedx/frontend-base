@@ -70,7 +70,7 @@ Object.keys(jwtTokens).forEach((jwtTokenName) => {
 });
 
 const mockCsrfToken = 'thetokenvalue';
-const mockApiEndpointPath = `${authOptions.config.BASE_URL}/api/v1/test`;
+const mockApiEndpointPath = `${authOptions.config.baseUrl}/api/v1/test`;
 
 global.location ??= { ...global.location, assign: jest.fn() };
 
@@ -87,7 +87,7 @@ let cachedClient = null;
 // Helpers
 const setJwtCookieTo = (jwtCookieValue) => {
   mockCookies.get.mockImplementation((cookieName) => {
-    if (cookieName === authOptions.config.ACCESS_TOKEN_COOKIE_NAME) {
+    if (cookieName === authOptions.config.accessTokenCookieName) {
       return jwtCookieValue;
     }
     return undefined;
@@ -105,16 +105,16 @@ const setJwtTokenRefreshResponseTo = (status, jwtCookieValue, responseEpochSecon
   });
 };
 
-function expectLogout(redirectUrl = authOptions.config.BASE_URL) {
+function expectLogout(redirectUrl = authOptions.config.baseUrl) {
   const encodedRedirectUrl = encodeURIComponent(redirectUrl);
   expect(global.location.assign)
-    .toHaveBeenCalledWith(`${authOptions.config.LOGOUT_URL}?redirect_url=${encodedRedirectUrl}`);
+    .toHaveBeenCalledWith(`${authOptions.config.logoutUrl}?redirect_url=${encodedRedirectUrl}`);
 }
 
-function expectLogin(redirectUrl = authOptions.config.BASE_URL) {
+function expectLogin(redirectUrl = authOptions.config.baseUrl) {
   const encodedRedirectUrl = encodeURIComponent(redirectUrl);
   expect(global.location.assign)
-    .toHaveBeenCalledWith(`${authOptions.config.LOGIN_URL}?next=${encodedRedirectUrl}`);
+    .toHaveBeenCalledWith(`${authOptions.config.loginUrl}?next=${encodedRedirectUrl}`);
 }
 
 // customAttributes is sent into expect.objectContaining
@@ -319,7 +319,7 @@ describe('authenticatedHttpClient usage', () => {
               expectRequestToHaveCsrfToken(axiosMock.history[method][0]);
               expectRequestToHaveJwtAuth(axiosMock.history[method][0]);
               expect(csrfTokensAxiosMock.history.get[0].url)
-                .toEqual(`${global.location.origin}${authOptions.config.CSRF_TOKEN_API_PATH}`);
+                .toEqual(`${global.location.origin}${authOptions.config.csrfTokenApiPath}`);
             });
           });
         });
@@ -730,7 +730,7 @@ describe('redirectToLogin', () => {
     service.redirectToLogin('http://edx.org/dashboard');
     expectLogin('http://edx.org/dashboard');
     service.redirectToLogin();
-    expectLogin(authOptions.config.BASE_URL);
+    expectLogin(authOptions.config.baseUrl);
   });
 });
 
@@ -739,7 +739,7 @@ describe('redirectToLogout', () => {
     service.redirectToLogout('http://edx.org/');
     expectLogout('http://edx.org/');
     service.redirectToLogout();
-    expectLogout(authOptions.config.BASE_URL);
+    expectLogout(authOptions.config.baseUrl);
   });
 });
 
@@ -762,7 +762,7 @@ describe('hydrateAuthenticatedUser', () => {
       administrator: false,
       name: 'test user',
     });
-    axiosMock.onGet(`${authOptions.config.LMS_BASE_URL}/api/user/v1/accounts/the_user`).reply(200, {
+    axiosMock.onGet(`${authOptions.config.lmsBaseUrl}/api/user/v1/accounts/the_user`).reply(200, {
       additional: 'data',
     });
     await service.hydrateAuthenticatedUser();
@@ -825,15 +825,15 @@ describe('ensureAuthenticatedUser', () => {
     it('attempts to refresh a missing jwt token and redirects user to login', () => {
       setJwtCookieTo(null);
       expect.hasAssertions();
-      return service.ensureAuthenticatedUser(`${authOptions.config.BASE_URL}/route`).catch((unauthorizedError) => {
+      return service.ensureAuthenticatedUser(`${authOptions.config.baseUrl}/route`).catch((unauthorizedError) => {
         expect(unauthorizedError.isRedirecting).toBe(true);
         expectSingleCallToJwtTokenRefresh();
-        expectLogin(`${authOptions.config.BASE_URL}/route`);
+        expectLogin(`${authOptions.config.baseUrl}/route`);
       });
     });
 
     it('throws an error and does not redirect if the referrer is the login page', () => {
-      jest.spyOn(global.document, 'referrer', 'get').mockReturnValue(authOptions.config.LOGIN_URL);
+      jest.spyOn(global.document, 'referrer', 'get').mockReturnValue(authOptions.config.loginUrl);
       setJwtCookieTo(null);
       expect.hasAssertions();
       return service.ensureAuthenticatedUser().catch(() => {

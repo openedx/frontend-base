@@ -19,7 +19,7 @@ export async function updateSiteLanguage(locale: string) {
 
 async function patchUserPreferences(username: string, locale: string) {
   await getAuthenticatedHttpClient().patch(
-    `${getConfig().LMS_BASE_URL}/api/user/v1/preferences/${username}`,
+    `${getConfig().lmsBaseUrl}/api/user/v1/preferences/${username}`,
     {
       'pref-lang': locale
     },
@@ -36,7 +36,7 @@ async function postSetlang(locale: string) {
   formData.append('language', locale);
 
   await getAuthenticatedHttpClient().post(
-    `${getConfig().LMS_BASE_URL}/i18n/setlang/`,
+    `${getConfig().lmsBaseUrl}/i18n/setlang/`,
     formData,
     {
       headers: {
