@@ -38,7 +38,7 @@ export default function ExamplePage() {
 
   return (
     <Container>
-      <h1>{config.SITE_NAME} test page</h1>
+      <h1>{config.siteName} test page</h1>
 
       <h2>Links</h2>
       <p>Visit <Link to="/authenticated">authenticated page</Link>.</p>

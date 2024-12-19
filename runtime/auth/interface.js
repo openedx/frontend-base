@@ -56,13 +56,13 @@ export const AUTHENTICATED_USER_CHANGED = `${AUTHENTICATED_USER_TOPIC}.CHANGED`;
 
 const optionsShape = {
   config: PropTypes.shape({
-    BASE_URL: PropTypes.string.isRequired,
-    LMS_BASE_URL: PropTypes.string.isRequired,
-    LOGIN_URL: PropTypes.string.isRequired,
-    LOGOUT_URL: PropTypes.string.isRequired,
-    REFRESH_ACCESS_TOKEN_API_PATH: PropTypes.string.isRequired,
-    ACCESS_TOKEN_COOKIE_NAME: PropTypes.string.isRequired,
-    CSRF_TOKEN_API_PATH: PropTypes.string.isRequired,
+    baseUrl: PropTypes.string.isRequired,
+    lmsBaseUrl: PropTypes.string.isRequired,
+    loginUrl: PropTypes.string.isRequired,
+    logoutUrl: PropTypes.string.isRequired,
+    refreshAccessTokenApiPath: PropTypes.string.isRequired,
+    accessTokenCookieName: PropTypes.string.isRequired,
+    csrfTokenApiPath: PropTypes.string.isRequired,
   }).isRequired,
   loggingService: PropTypes.shape({
     logError: PropTypes.func.isRequired,
@@ -225,7 +225,7 @@ export async function fetchAuthenticatedUser(options = {}) {
  * Ensures a user is authenticated. It will redirect to login when not
  * authenticated.
  *
- * @param {string} [redirectUrl=config.BASE_URL] to return user after login when not
+ * @param {string} [redirectUrl=config.baseUrl] to return user after login when not
  * authenticated.
  * @returns {Promise<UserData>}
  */

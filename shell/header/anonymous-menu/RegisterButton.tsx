@@ -8,7 +8,7 @@ export default function RegisterButton({ ...props }) {
   const intl = useIntl();
 
   return (
-    <Button size="sm" variant="outline-primary" href={`${config.LMS_BASE_URL}/register`} {...props}>
+    <Button size="sm" variant="outline-primary" href={`${config.lmsBaseUrl}/register`} {...props}>
       {intl.formatMessage(messages['header.user.menu.register'])}
     </Button>
   );

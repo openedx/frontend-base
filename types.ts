@@ -104,39 +104,18 @@ export interface Remote {
 // Site Config
 
 export interface RequiredSiteConfig {
-  APP_ID: string,
-  SITE_NAME: string,
-  BASE_URL: string,
-  ENVIRONMENT: EnvironmentTypes,
+  appId: string,
+  siteName: string,
+  baseUrl: string,
+  environment: EnvironmentTypes,
 
   // Backends
-  LMS_BASE_URL: string,
-
-  // Branding
-  FAVICON_URL: string,
-  LOGO_TRADEMARK_URL: string,
-  LOGO_URL: string,
-  LOGO_WHITE_URL: string,
+  lmsBaseUrl: string,
 
   // Frontends
-  LOGIN_URL: string,
-  LOGOUT_URL: string,
+  loginUrl: string,
+  logoutUrl: string,
 }
-
-/*
-
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-BOOOYAHHHH
-
-*/
 
 export type LocalizedMessages = Record<string, Record<string, string>>;
 
@@ -156,23 +135,23 @@ export interface OptionalSiteConfig {
   pluginSlots: Record<string, PluginSlotConfig>,
 
   // Cookies
-  ACCESS_TOKEN_COOKIE_NAME: string,
-  LANGUAGE_PREFERENCE_COOKIE_NAME: string,
-  USER_INFO_COOKIE_NAME: string,
+  accessTokenCookieName: string,
+  languagePreferenceCookieName: string,
+  userInfoCookieName: string,
 
   // Paths
-  CSRF_TOKEN_API_PATH: string,
-  REFRESH_ACCESS_TOKEN_API_PATH: string,
+  csrfTokenApiPath: string,
+  refreshAccessTokenApiPath: string,
 
   // Logging
-  IGNORED_ERROR_REGEX: RegExp | null,
+  ignoredErrorRegex: RegExp | null,
 
   // Analytics
-  SEGMENT_KEY: string | null,
+  segmentKey: string | null,
 
-  ENVIRONMENT: EnvironmentTypes,
-  MFE_CONFIG_API_URL: string | null,
-  PUBLIC_PATH: string,
+  environment: EnvironmentTypes,
+  mfeConfigApiUrl: string | null,
+  publicPath: string,
 
   custom: Record<string, any>,
 }

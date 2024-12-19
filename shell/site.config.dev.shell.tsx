@@ -27,24 +27,18 @@ const config: ProjectSiteConfig = {
   ],
 
   // General
-  APP_ID: 'shell',
-  BASE_URL: 'http://apps.local.openedx.io:8080',
-  ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
-  SITE_NAME: 'My Open edX Site',
+  appId: 'shell',
+  baseUrl: 'http://apps.local.openedx.io:8080',
+  environment: EnvironmentTypes.DEVELOPMENT,
+  siteName: 'My Open edX Site',
 
   // Frontend URLs
-  LOGIN_URL: 'http://local.openedx.io:8000/login',
-  LOGOUT_URL: 'http://local.openedx.io:8000/logout',
+  loginUrl: 'http://local.openedx.io:8000/login',
+  logoutUrl: 'http://local.openedx.io:8000/logout',
 
   // API URLs
-  LMS_BASE_URL: 'http://local.openedx.io:8000',
-  MFE_CONFIG_API_URL: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
-
-  // Brand URLs
-  FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
-  LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',
-  LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
+  lmsBaseUrl: 'http://local.openedx.io:8000',
+  mfeConfigApiUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
 };
 
 export default config;

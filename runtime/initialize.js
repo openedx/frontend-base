@@ -104,7 +104,7 @@ import { getPath } from './utils';
  * falls back to memory history.
  */
 export const getHistory = () => ((typeof window !== 'undefined')
-  ? createBrowserHistory({ basename: getPath(getConfig().PUBLIC_PATH) })
+  ? createBrowserHistory({ basename: getPath(getConfig().publicPath) })
   : createMemoryHistory());
 
 /**
@@ -117,7 +117,7 @@ export const getHistory = () => ((typeof window !== 'undefined')
  * as an ENV variable in the Docker file, and we read it here from that configuration so that it
  * can be passed into a Router later.
  */
-export const getBasename = () => getPath(getConfig().PUBLIC_PATH);
+export const getBasename = () => getPath(getConfig().publicPath);
 
 /**
  * The default handler for the initialization lifecycle's `initError` phase.  Logs the error to the
@@ -184,15 +184,15 @@ async function fileConfig() {
  */
 async function runtimeConfig() {
   try {
-    const { MFE_CONFIG_API_URL, APP_ID } = getConfig();
+    const { mfeConfigApiUrl, appId } = getConfig();
 
-    if (MFE_CONFIG_API_URL) {
+    if (mfeConfigApiUrl) {
       const apiConfig = { headers: { accept: 'application/json' } };
       const apiService = await configureCache();
 
       const params = new URLSearchParams();
-      params.append('mfe', APP_ID);
-      const url = `${MFE_CONFIG_API_URL}?${params.toString()}`;
+      params.append('mfe', appId);
+      const url = `${mfeConfigApiUrl}?${params.toString()}`;
 
       const { data } = await apiService.get(url, apiConfig);
       mergeConfig(data);
@@ -279,7 +279,7 @@ function applyOverrideHandlers(overrides) {
  * redirection for unauthenticated users.  Defaults to false, meaning that by default the
  * application will allow anonymous/unauthenticated sessions.
  * @param {*} [options.hydrateAuthenticatedUser=false] If true, makes an API call to the user
- * account endpoint (`${App.config.LMS_BASE_URL}/api/user/v1/accounts/${username}`) to fetch
+ * account endpoint (`${App.config.lmsBaseUrl}/api/user/v1/accounts/${username}`) to fetch
  * detailed account information for the authenticated user. This data is merged into the return
  * value of `getAuthenticatedUser`, overriding any duplicate keys that already exist. Defaults to
  * false, meaning that no additional account information will be loaded.

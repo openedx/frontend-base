@@ -17,11 +17,11 @@ The implementation of this uses templatization and string interpolation to
 replace any instance of ``process.env.XXXX`` with the value of the environment
 variable named ``XXXX``.  As an example, in our source code we may write::
 
-    const LMS_BASE_URL = process.env.LMS_BASE_URL;
+    const lmsBaseUrl = process.env.lmsBaseUrl;
 
 After the build process runs, the compiled source code will instead read::
 
-    const LMS_BASE_URL = 'http://localhost:18000';
+    const lmsBaseUrl = 'http://localhost:18000';
 
 Put another way, `process.env` is not actually an object available at runtime,
 it's a templatization token that helps the build replace it with a string
@@ -76,7 +76,7 @@ This method makes use of an ``site.config.tsx`` file to supply configuration
 variables to an application::
 
     const config = {
-      LMS_BASE_URL: 'http://localhost:18000',
+      lmsBaseUrl: 'http://localhost:18000',
       BOOLEAN_VAR: false,
       NULL_VAR: null,
       NUMBER_VAR: 123

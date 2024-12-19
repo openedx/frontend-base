@@ -69,20 +69,14 @@ const config: ProjectSiteConfig = {
       url: 'http://localhost:8081/remoteEntry.js',
     }
   ],
-  ENVIRONMENT: EnvironmentTypes.DEVELOPMENT,
-  BASE_URL: 'http://apps.local.openedx.io:8080',
-  LMS_BASE_URL: 'http://local.openedx.io:8000',
-  LOGIN_URL: 'http://local.openedx.io:8000/login',
-  LOGOUT_URL: 'http://local.openedx.io:8000/logout',
-
-  SITE_NAME: 'My Open edX Site',
-  MFE_CONFIG_API_URL: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
-
-  LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',
-  LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
-  LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
-  FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  APP_ID: 'shell',
+  environment: EnvironmentTypes.DEVELOPMENT,
+  baseUrl: 'http://apps.local.openedx.io:8080',
+  lmsBaseUrl: 'http://local.openedx.io:8000',
+  loginUrl: 'http://local.openedx.io:8000/login',
+  logoutUrl: 'http://local.openedx.io:8000/logout',
+  siteName: 'My Open edX Site',
+  mfeConfigApiUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
+  appId: 'shell',
 
   // pluginSlots: {
   //   slot_with_insert_operation: {

@@ -9,8 +9,8 @@ class SegmentAnalyticsService {
   constructor({ httpClient, loggingService, config }) {
     this.loggingService = loggingService;
     this.httpClient = httpClient;
-    this.trackingLogApiUrl = `${config.LMS_BASE_URL}/event`;
-    this.segmentKey = config.SEGMENT_KEY;
+    this.trackingLogApiUrl = `${config.lmsBaseUrl}/event`;
+    this.segmentKey = config.segmentKey;
     this.hasIdentifyBeenCalled = false;
     this.segmentInitialized = false;
 
