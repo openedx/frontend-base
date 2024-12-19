@@ -15,7 +15,6 @@ const config: ProjectSiteConfig = {
   LOGOUT_URL: 'http://localhost:18000/logout',
   SEGMENT_KEY: 'segment_whoa',
   SITE_NAME: 'edX',
-  SUPPORT_URL: 'https://support.edx.org',
 };
 
 export default config;
