@@ -125,9 +125,6 @@ let config: SiteConfig = {
 
   SEGMENT_KEY: null,
 
-  // Optional Frontends
-  SUPPORT_URL: null,
-
   apps: [],
   remotes: [],
   federatedApps: [],

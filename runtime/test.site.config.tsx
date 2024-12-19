@@ -41,7 +41,6 @@ const config: ProjectSiteConfig = {
   LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
   FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
   APP_ID: 'runtime',
-  SUPPORT_URL: 'https://support.edx.org',
   ENVIRONMENT: EnvironmentTypes.TEST,
   IGNORED_ERROR_REGEX: null,
   PUBLIC_PATH: '/'
