@@ -2,7 +2,7 @@ import { WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
-import AuthenticatedMenu from './authenticated-menu';
+import AuthenticatedMenu from './AuthenticatedMenu';
 import CourseInfo from './desktop/CourseInfo';
 import DesktopLayout from './desktop/DesktopLayout';
 import PrimaryNavLinks from './desktop/PrimaryNavLinks';
