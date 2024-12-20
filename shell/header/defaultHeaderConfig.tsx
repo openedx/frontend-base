@@ -1,4 +1,5 @@
-import { App, WidgetOperationTypes } from '../../types';
+import { WidgetOperationTypes } from '../../runtime';
+import { App } from '../../types';
 import Logo from '../Logo';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
 import AuthenticatedMenu from './authenticated-menu';

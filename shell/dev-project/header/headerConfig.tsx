@@ -1,5 +1,6 @@
 import { NavDropdownMenuSlot } from '../..';
-import { App, WidgetOperationTypes } from '../../../types';
+import { WidgetOperationTypes } from '../../../runtime';
+import { App } from '../../../types';
 import LinkMenuItem from '../../menus/LinkMenuItem';
 import CoursesLink from './CoursesLink';
 

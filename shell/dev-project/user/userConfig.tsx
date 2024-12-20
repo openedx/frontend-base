@@ -1,4 +1,5 @@
-import { App, WidgetOperationTypes } from '../../../types';
+import { WidgetOperationTypes } from '../../../runtime';
+import { App } from '../../../types';
 import LoginButton from '../../header/anonymous-menu/LoginButton';
 import RegisterButton from '../../header/anonymous-menu/RegisterButton';
 import LinkMenuItem from '../../menus/LinkMenuItem';

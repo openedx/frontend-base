@@ -1,10 +1,10 @@
 import { ComponentType, useContext, useEffect, useState } from 'react';
 
-import { SlotOperation, WidgetOperation } from '../../../types';
 import { AUTHENTICATED_USER_CHANGED } from '../../auth';
 import { APPS_CHANGED } from '../../constants';
 import { useAppEvent } from '../../react';
 import SlotContext from '../SlotContext';
+import { SlotOperation, WidgetOperation } from '../types';
 import { createWidgets, getSlotOperations, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetOperationConditionSatisfied, isWidgetSlot, sortWidgetOperations } from './utils';
 
 export function useSlotContext() {
