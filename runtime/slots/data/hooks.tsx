@@ -1,6 +1,7 @@
 import { ComponentType, Fragment, ReactNode, useContext, useEffect, useState } from 'react';
 
 import { SlotOperation } from '../../../types';
+import { AUTHENTICATED_USER_CHANGED } from '../../auth';
 import { APPS_CHANGED } from '../../constants';
 import { useAppEvent } from '../../react';
 import FederatedWidget from '../FederatedWidget';
@@ -14,6 +15,10 @@ export function useSlotContext() {
 export function useSlotOperations(id: string) {
   const [operations, setOperations] = useState<SlotOperation[]>([]);
   useAppEvent(APPS_CHANGED, () => {
+    const ops = getSlotOperations(id);
+    setOperations(ops);
+  });
+  useAppEvent(AUTHENTICATED_USER_CHANGED, () => {
     const ops = getSlotOperations(id);
     setOperations(ops);
   });
