@@ -3,9 +3,9 @@ import { Person } from '@openedx/paragon/icons';
 
 import {
   useAuthenticatedUser
-} from '../../../runtime';
+} from '../../runtime';
 
-import Slot from '../../../runtime/slots/Slot';
+import Slot from '../../runtime/slots/Slot';
 
 interface AuthenticatedMenuProps {
   className?: string,
