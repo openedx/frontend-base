@@ -1,12 +1,11 @@
-import { ComponentType, Fragment, ReactNode, useContext, useEffect, useState } from 'react';
+import { ComponentType, useContext, useEffect, useState } from 'react';
 
-import { SlotOperation } from '../../../types';
+import { SlotOperation, WidgetOperation } from '../../../types';
 import { AUTHENTICATED_USER_CHANGED } from '../../auth';
 import { APPS_CHANGED } from '../../constants';
 import { useAppEvent } from '../../react';
-import FederatedWidget from '../FederatedWidget';
 import SlotContext from '../SlotContext';
-import { getSlotOperations, isComponentOperation, isElementOperation, isFederationOperation, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetOperationConditionSatisfied, isWidgetSlot } from './utils';
+import { createWidgets, getSlotOperations, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetOperationConditionSatisfied, isWidgetSlot, sortWidgetOperations } from './utils';
 
 export function useSlotContext() {
   return useContext(SlotContext);
@@ -35,33 +34,24 @@ export function useSlotWidgets() {
 }
 
 export function useSlotWidgetsById(id: string) {
-  const operations = useSlotOperations(id);
-  const widgets: ReactNode[] = [];
-
-  if (isWidgetSlot(id)) {
-    for (const operation of operations) {
-      if (isWidgetOperation(operation)) {
-        if (isWidgetOperationConditionSatisfied(operation)) {
-          if (isComponentOperation(operation)) {
-            widgets.push(<operation.component key={operation.id} />);
-          } else if (isElementOperation(operation)) {
-            widgets.push((
-              // This fragment is here so that we can use the operation ID as a key, meaning
-              // developers don't need to add it to their operation's element.
-              <Fragment key={operation.id}>
-                {operation.element}
-              </Fragment>
-            ));
-          } else if (isFederationOperation(operation)) {
-            widgets.push(
-              <FederatedWidget key={operation.id} remoteId={operation.remoteId} moduleId={operation.moduleId} />
-            );
-          }
-        }
-      }
-    }
+  const operations = useSortedWidgetOperations(id);
+  if (!isWidgetSlot(id)) {
+    return [];
   }
-  return widgets;
+  return createWidgets(operations);
+}
+
+export function useSortedWidgetOperations(id) {
+  const operations = useSlotOperations(id);
+
+  const [sortedOperations, setSortedOperations] = useState<WidgetOperation[]>(sortWidgetOperations(operations));
+
+  useEffect(() => {
+    const sortedActiveOperations = sortWidgetOperations(operations);
+    setSortedOperations(sortedActiveOperations);
+  }, [operations]);
+
+  return sortedOperations;
 }
 
 export function useSlotOptions() {
