@@ -1,8 +1,8 @@
 import { Fragment, ReactNode } from 'react';
-import { AbsoluteWidgetOperations, ComponentOperation, ElementOperation, FederatedOperation, LayoutOptionsOperation, RelativeWidgetOperations, ReplaceLayoutOperation, SlotOperation, WidgetOperation, WidgetOperationTypes } from '../../../types';
 import { getAuthenticatedUser } from '../../auth';
 import { getConfig } from '../../config';
 import FederatedWidget from '../FederatedWidget';
+import { AbsoluteWidgetOperations, ComponentOperation, ElementOperation, FederatedOperation, LayoutOptionsOperation, RelativeWidgetOperations, ReplaceLayoutOperation, SlotOperation, WidgetOperation, WidgetOperationTypes } from '../types';
 
 export function getSlotOperations(id: string) {
   const { apps } = getConfig();

@@ -137,3 +137,7 @@ export {
   parseURL,
   snakeCaseObject
 } from './utils';
+
+export type * from './slots';
+
+export * from './slots';

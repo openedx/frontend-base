@@ -1,5 +1,6 @@
 import { Button } from '@openedx/paragon';
-import { App, LayoutOperationTypes, WidgetOperationTypes } from '../../../types';
+import { LayoutOperationTypes, WidgetOperationTypes } from '../../../runtime';
+import { App, } from '../../../types';
 import LinkMenuItem from '../../menus/LinkMenuItem';
 
 const config: App = {

@@ -1,4 +1,5 @@
-import { App, WidgetOperationTypes } from '../types';
+import { WidgetOperationTypes } from '../runtime';
+import { App } from '../types';
 import Footer from './footer/Footer';
 import { Header } from './header';
 

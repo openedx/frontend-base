@@ -1,9 +1,10 @@
+import { WidgetOperationTypes } from '../../runtime';
 import Slot from '../../runtime/slots/Slot';
-import { App, WidgetOperationTypes } from '../../types';
+import { App } from '../../types';
+import Logo from '../Logo';
 import CopyrightNotice from './CopyrightNotice';
 import LabeledLinkColumn from './LabeledLinkColumn';
 import LanguageMenu from './LanguageMenu';
-import Logo from '../Logo';
 
 const config: App = {
   slots: [
