@@ -53,7 +53,7 @@ export function createWidgetNode(operation: UiOperation) {
         {operation.element}
       </Fragment>
     );
-  } else if (isFederationOperation(operation)) {
+  } else if (isFederatedOperation(operation)) {
     widget = (
       <FederatedWidget key={operation.id} remoteId={operation.remoteId} moduleId={operation.moduleId} />
     );
@@ -162,7 +162,7 @@ export function isElementOperation(operation: UiOperation): operation is Element
   return isUiOperation(operation) && 'element' in operation;
 }
 
-export function isFederationOperation(operation: UiOperation): operation is FederatedOperation {
+export function isFederatedOperation(operation: UiOperation): operation is FederatedOperation {
   return isUiOperation(operation) && 'remoteId' in operation;
 }
 
