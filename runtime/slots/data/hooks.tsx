@@ -4,8 +4,8 @@ import { AUTHENTICATED_USER_CHANGED } from '../../auth';
 import { APPS_CHANGED } from '../../constants';
 import { useAppEvent } from '../../react';
 import SlotContext from '../SlotContext';
-import { SlotOperation, WidgetOperation } from '../types';
-import { createWidgets, getSlotOperations, isOptionsOperation, isReplaceOperation, isWidgetOperation, isWidgetOperationConditionSatisfied, isWidgetSlot, sortWidgetOperations } from './utils';
+import { SlotOperation, UiOperation } from '../types';
+import { createWidgets, getSlotOperations, isOptionsOperation, isReplaceOperation, isSlotOperationConditionSatisfied, isUiSlot, isUiOperation, sortWidgetOperations } from './utils';
 
 export function useSlotContext() {
   return useContext(SlotContext);
@@ -35,7 +35,7 @@ export function useSlotWidgets() {
 
 export function useSlotWidgetsById(id: string) {
   const operations = useSortedWidgetOperations(id);
-  if (!isWidgetSlot(id)) {
+  if (!isUiSlot(id)) {
     return [];
   }
   return createWidgets(operations);
@@ -44,7 +44,7 @@ export function useSlotWidgetsById(id: string) {
 export function useSortedWidgetOperations(id) {
   const operations = useSlotOperations(id);
 
-  const [sortedOperations, setSortedOperations] = useState<WidgetOperation[]>(sortWidgetOperations(operations));
+  const [sortedOperations, setSortedOperations] = useState<UiOperation[]>(sortWidgetOperations(operations));
 
   useEffect(() => {
     const sortedActiveOperations = sortWidgetOperations(operations);
@@ -63,10 +63,10 @@ export function useSlotOptionsById(id: string) {
   const operations = useSlotOperations(id);
   let options: Record<string, any> = {};
 
-  if (isWidgetSlot(id)) {
+  if (isUiSlot(id)) {
     for (const operation of operations) {
-      if (isWidgetOperation(operation)) {
-        if (isWidgetOperationConditionSatisfied(operation)) {
+      if (isUiOperation(operation)) {
+        if (isSlotOperationConditionSatisfied(operation)) {
           if (isOptionsOperation(operation)) {
             options = { ...options, ...operation.options };
           }
@@ -80,10 +80,10 @@ export function useSlotOptionsById(id: string) {
 export function useSlotLayoutById(id: string, defaultLayout: ComponentType) {
   const operations = useSlotOperations(id);
   let layout: ComponentType | null = defaultLayout;
-  if (isWidgetSlot(id)) {
+  if (isUiSlot(id)) {
     for (const operation of operations) {
-      if (isWidgetOperation(operation)) {
-        if (isWidgetOperationConditionSatisfied(operation)) {
+      if (isUiOperation(operation)) {
+        if (isSlotOperationConditionSatisfied(operation)) {
           if (isReplaceOperation(operation)) {
             layout = operation.layout;
           }
