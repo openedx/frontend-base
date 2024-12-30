@@ -15,13 +15,13 @@ const config: App = {
 
     // Layouts
     {
-      slotId: 'frontend.shell.header.desktop.layout.widget',
+      slotId: 'frontend.shell.header.desktop.layout.ui',
       id: 'default.header.desktop.layout',
       op: WidgetOperationTypes.APPEND,
       component: DesktopLayout
     },
     {
-      slotId: 'frontend.shell.header.mobile.layout.widget',
+      slotId: 'frontend.shell.header.mobile.layout.ui',
       id: 'default.header.mobile.layout',
       op: WidgetOperationTypes.APPEND,
       component: MobileLayout
@@ -29,31 +29,31 @@ const config: App = {
 
     // Desktop
     {
-      slotId: 'frontend.shell.header.desktop.left.widget',
+      slotId: 'frontend.shell.header.desktop.left.ui',
       id: 'default.header.desktop.logo',
       op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
     {
-      slotId: 'frontend.shell.header.desktop.left.widget',
+      slotId: 'frontend.shell.header.desktop.left.ui',
       id: 'default.header.desktop.courseInfo',
       op: WidgetOperationTypes.APPEND,
       component: CourseInfo
     },
     {
-      slotId: 'frontend.shell.header.desktop.left.widget',
+      slotId: 'frontend.shell.header.desktop.left.ui',
       id: 'default.header.desktop.primaryLinks',
       op: WidgetOperationTypes.APPEND,
       component: PrimaryNavLinks
     },
     {
-      slotId: 'frontend.shell.header.desktop.right.widget',
+      slotId: 'frontend.shell.header.desktop.right.ui',
       id: 'default.header.desktop.secondaryLinks',
       op: WidgetOperationTypes.APPEND,
       component: SecondaryNavLinks
     },
     {
-      slotId: 'frontend.shell.header.desktop.right.widget',
+      slotId: 'frontend.shell.header.desktop.right.ui',
       id: 'default.header.desktop.authenticatedMenu',
       op: WidgetOperationTypes.APPEND,
       element: <AuthenticatedMenu />,
@@ -62,7 +62,7 @@ const config: App = {
       }
     },
     {
-      slotId: 'frontend.shell.header.desktop.right.widget',
+      slotId: 'frontend.shell.header.desktop.right.ui',
       id: 'default.header.desktop.anonymousMenu',
       op: WidgetOperationTypes.APPEND,
       element: <AnonymousMenu />,
@@ -73,19 +73,19 @@ const config: App = {
 
     // Mobile
     {
-      slotId: 'frontend.shell.header.mobile.center.widget',
+      slotId: 'frontend.shell.header.mobile.center.ui',
       id: 'default.header.mobile.logo',
       op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
     {
-      slotId: 'frontend.shell.header.mobile.menu.widget',
+      slotId: 'frontend.shell.header.mobile.menu.ui',
       id: 'default.header.mobile.menuLinks',
       op: WidgetOperationTypes.APPEND,
       component: MobileNavLinks
     },
     {
-      slotId: 'frontend.shell.header.mobile.right.widget',
+      slotId: 'frontend.shell.header.mobile.right.ui',
       id: 'default.header.mobile.authenticatedMenu',
       op: WidgetOperationTypes.APPEND,
       element: <AuthenticatedMenu />,
@@ -94,7 +94,7 @@ const config: App = {
       }
     },
     {
-      slotId: 'frontend.shell.header.mobile.right.widget',
+      slotId: 'frontend.shell.header.mobile.right.ui',
       id: 'default.header.mobile.anonymousMenu',
       op: WidgetOperationTypes.APPEND,
       element: <AnonymousMenu />,

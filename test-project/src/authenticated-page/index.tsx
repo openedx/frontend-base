@@ -13,7 +13,7 @@ const config: App = {
   }],
   slots: [
     {
-      slotId: 'frontend.shell.header.primaryLinks.widget',
+      slotId: 'frontend.shell.header.primaryLinks.ui',
       id: 'authenticatedPageLink',
       op: WidgetOperationTypes.APPEND,
       element: (

@@ -146,11 +146,11 @@ export function sortWidgetOperations(operations: WidgetOperation[]) {
 }
 
 export function isWidgetSlot(id: string) {
-  return id.endsWith('.widget');
+  return id.endsWith('.ui');
 }
 
 export function isWidgetOperation(operation: SlotOperation): operation is WidgetOperation {
-  return operation.slotId.endsWith('.widget');
+  return operation.slotId.endsWith('.ui');
 }
 
 export function isComponentOperation(operation: WidgetOperation): operation is ComponentOperation {

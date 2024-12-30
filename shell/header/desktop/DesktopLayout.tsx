@@ -13,10 +13,10 @@ export default function DesktopLayout() {
     )}
     >
       <div className="d-flex flex-grow-1 align-items-center">
-        <Slot id="frontend.shell.header.desktop.left.widget" />
+        <Slot id="frontend.shell.header.desktop.left.ui" />
       </div>
       <div className="d-flex align-items-center">
-        <Slot id="frontend.shell.header.desktop.right.widget" />
+        <Slot id="frontend.shell.header.desktop.right.ui" />
       </div>
     </div>
   );

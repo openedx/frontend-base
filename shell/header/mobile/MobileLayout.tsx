@@ -26,22 +26,20 @@ export default function MobileLayout() {
           <Button onClick={handleMobileButtonClick} variant="outline">
             <MenuIcon />
           </Button>
-          <Slot id="frontend.shell.header.mobile.left.widget" />
+          <Slot id="frontend.shell.header.mobile.left.ui" />
         </div>
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-center align-items-center">
-          <Slot id="frontend.shell.header.mobile.center.widget" />
+          <Slot id="frontend.shell.header.mobile.center.ui" />
         </div>
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-end align-items-center">
-          <Slot id="frontend.shell.header.mobile.right.widget" />
+          <Slot id="frontend.shell.header.mobile.right.ui" />
         </div>
       </div>
       {mobileOpen && (
         <FocusOn onClickOutside={() => setMobileOpen(false)} onEscapeKey={() => setMobileOpen(false)}>
-          {/* <div>Booyah</div> */}
           <Nav className="flex-column">
-            <Slot id="frontend.shell.header.mobile.menuLinks.widget" />
+            <Slot id="frontend.shell.header.mobile.menuLinks.ui" />
           </Nav>
-          {/* <Slot id="frontend.shell.header.mobile.menu.widget" /> */}
         </FocusOn>
       )}
     </>
