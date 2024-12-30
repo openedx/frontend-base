@@ -29,7 +29,7 @@ export type RelativeWidgetOperationTypes = WidgetOperationTypes.INSERT_AFTER | W
 // Widget slot operations
 
 export interface BaseWidgetOperation {
-  slotId: `${string}.widget`,
+  slotId: `${string}.ui`,
   id: string,
   role?: string,
   condition?: SlotCondition,

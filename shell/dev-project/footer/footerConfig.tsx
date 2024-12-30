@@ -6,7 +6,7 @@ import LinkMenuItem from '../../menus/LinkMenuItem';
 const config: App = {
   slots: [
     {
-      slotId: 'frontend.shell.footer.desktop.top.widget',
+      slotId: 'frontend.shell.footer.desktop.top.ui',
       id: 'footer.booyah.revealed',
       op: WidgetOperationTypes.APPEND,
       element: (
@@ -14,7 +14,7 @@ const config: App = {
       )
     },
     {
-      slotId: 'frontend.shell.footer.desktop.top.widget',
+      slotId: 'frontend.shell.footer.desktop.top.ui',
       id: 'footer.booyah.revealed.options',
       op: LayoutOperationTypes.OPTIONS,
       options: {
@@ -22,7 +22,7 @@ const config: App = {
       }
     },
     {
-      slotId: 'frontend.shell.footer.desktop.top.widget',
+      slotId: 'frontend.shell.footer.desktop.top.ui',
       id: 'footer.booyah.revealed.linky',
       op: WidgetOperationTypes.APPEND,
       element: (
@@ -30,7 +30,7 @@ const config: App = {
       )
     },
     {
-      slotId: 'frontend.shell.footer.desktop.centerLinks.first.widget',
+      slotId: 'frontend.shell.footer.desktop.centerLinks.first.ui',
       id: 'footer.booyah.centerLinks.first.1',
       op: WidgetOperationTypes.APPEND,
       element: (

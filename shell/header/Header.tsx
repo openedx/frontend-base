@@ -10,8 +10,8 @@ export default function Header() {
     <header className="border-bottom py-2">
       <nav className="py-2">
         <a className="sr-only sr-only-focusable" href="#main-content">{intl.formatMessage(messages.skipNavLink)}</a>
-        <Slot id="frontend.shell.header.desktop.layout.widget" />
-        <Slot id="frontend.shell.header.mobile.layout.widget" />
+        <Slot id="frontend.shell.header.desktop.layout.ui" />
+        <Slot id="frontend.shell.header.mobile.layout.ui" />
       </nav>
     </header>
   );

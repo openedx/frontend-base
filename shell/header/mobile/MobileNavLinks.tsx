@@ -4,7 +4,7 @@ import Slot from '../../../runtime/slots/Slot';
 export default function MobileNavLinks() {
   return (
     <Nav className="flex-column">
-      <Slot id="frontend.shell.header.mobile.menuLinks.widget" />
+      <Slot id="frontend.shell.header.mobile.menuLinks.ui" />
     </Nav>
   );
 }

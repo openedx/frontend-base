@@ -23,7 +23,7 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
 
   return (
     <DropdownButton size="sm" id="user-nav-dropdown" title={title} variant="outline-primary" className={className}>
-      <Slot id="frontend.shell.header.authenticatedMenu.widget" />
+      <Slot id="frontend.shell.header.authenticatedMenu.ui" />
     </DropdownButton>
   );
 }
