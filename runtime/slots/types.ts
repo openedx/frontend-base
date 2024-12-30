@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+// UI Slots
+
 export interface SlotCondition {
   active?: string,
   inactive?: string,
@@ -26,86 +28,84 @@ export type AbsoluteWidgetOperationTypes = WidgetOperationTypes.APPEND | WidgetO
 
 export type RelativeWidgetOperationTypes = WidgetOperationTypes.INSERT_AFTER | WidgetOperationTypes.INSERT_BEFORE | WidgetOperationTypes.REPLACE;
 
-// Widget slot operations
+// UI slot operations
 
-export interface BaseWidgetOperation {
+export interface BaseUiOperation {
   slotId: `${string}.ui`,
   id: string,
   role?: string,
   condition?: SlotCondition,
 }
 
-// Operations
-
-export interface ComponentOperation extends BaseWidgetOperation {
+export interface ComponentOperation extends BaseUiOperation {
   op: AbsoluteWidgetOperationTypes,
   component: React.ComponentType,
 }
 
-export interface RelativeComponentOperation extends BaseWidgetOperation {
+export interface RelativeComponentOperation extends BaseUiOperation {
   op: RelativeWidgetOperationTypes,
   component: React.ComponentType,
   relatedId: string,
 }
 
-export interface LayoutOptionsOperation extends BaseWidgetOperation {
+export interface LayoutOptionsOperation extends BaseUiOperation {
   op: LayoutOperationTypes.OPTIONS,
   options?: Record<string, any>,
 }
 
-export interface ElementOperation extends BaseWidgetOperation {
+export interface ElementOperation extends BaseUiOperation {
   op: AbsoluteWidgetOperationTypes,
   element: ReactNode,
 }
 
-export interface RelativeElementOperation extends BaseWidgetOperation {
+export interface RelativeElementOperation extends BaseUiOperation {
   op: RelativeWidgetOperationTypes,
   element: ReactNode,
   relatedId: string,
 }
 
-export interface IFrameOperation extends BaseWidgetOperation {
+export interface IFrameOperation extends BaseUiOperation {
   op: AbsoluteWidgetOperationTypes,
   url: string,
   title: string,
 }
 
-export interface RelativeIFrameOperation extends BaseWidgetOperation {
+export interface RelativeIFrameOperation extends BaseUiOperation {
   op: RelativeWidgetOperationTypes,
   url: string,
   title: string,
   relatedId: string,
 }
 
-export interface FederatedOperation extends BaseWidgetOperation {
+export interface FederatedOperation extends BaseUiOperation {
   op: AbsoluteWidgetOperationTypes,
   remoteId: string,
   moduleId: string,
 }
 
-export interface RelativeFederatedOperation extends BaseWidgetOperation {
+export interface RelativeFederatedOperation extends BaseUiOperation {
   op: RelativeWidgetOperationTypes,
   remoteId: string,
   moduleId: string,
   relatedId: string,
 }
 
-export interface RemoveOperation extends BaseWidgetOperation {
+export interface RemoveOperation extends BaseUiOperation {
   op: WidgetOperationTypes.REMOVE,
   relatedId: string,
 }
 
-export interface ReplaceLayoutOperation extends BaseWidgetOperation {
+export interface ReplaceLayoutOperation extends BaseUiOperation {
   op: LayoutOperationTypes.LAYOUT,
   layout: React.ComponentType,
 }
 
-export type AbsoluteWidgetOperations = ComponentOperation | ElementOperation | IFrameOperation | FederatedOperation;
+export type AbsoluteWidgetOperation = ComponentOperation | ElementOperation | IFrameOperation | FederatedOperation;
 
-export type RelativeWidgetOperations = RelativeComponentOperation | RelativeElementOperation | RelativeIFrameOperation | RelativeFederatedOperation | RemoveOperation;
+export type RelativeWidgetOperation = RelativeComponentOperation | RelativeElementOperation | RelativeIFrameOperation | RelativeFederatedOperation | RemoveOperation;
 
 export type LayoutOperations = LayoutOptionsOperation | ReplaceLayoutOperation;
 
-export type WidgetOperation = AbsoluteWidgetOperations | RelativeWidgetOperations | LayoutOperations;
+export type UiOperation = AbsoluteWidgetOperation | RelativeWidgetOperation | LayoutOperations;
 
-export type SlotOperation = WidgetOperation;
+export type SlotOperation = UiOperation;

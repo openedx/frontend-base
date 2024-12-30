@@ -2,7 +2,7 @@ import { Fragment, ReactNode } from 'react';
 import { getAuthenticatedUser } from '../../auth';
 import { getConfig } from '../../config';
 import FederatedWidget from '../FederatedWidget';
-import { AbsoluteWidgetOperations, ComponentOperation, ElementOperation, FederatedOperation, LayoutOptionsOperation, RelativeWidgetOperations, ReplaceLayoutOperation, SlotOperation, WidgetOperation, WidgetOperationTypes } from '../types';
+import { AbsoluteWidgetOperation, ComponentOperation, ElementOperation, FederatedOperation, LayoutOptionsOperation, RelativeWidgetOperation, ReplaceLayoutOperation, SlotOperation, UiOperation, WidgetOperationTypes } from '../types';
 
 export function getSlotOperations(id: string) {
   const { apps } = getConfig();
@@ -19,7 +19,7 @@ export function getSlotOperations(id: string) {
   return ops;
 }
 
-export function isWidgetOperationConditionSatisfied(operation: SlotOperation) {
+export function isSlotOperationConditionSatisfied(operation: SlotOperation) {
   const { condition } = operation;
   if (condition?.authenticated !== undefined) {
     const isAuthenticated = getAuthenticatedUser() !== null;
@@ -39,7 +39,7 @@ export function isWidgetOperationConditionSatisfied(operation: SlotOperation) {
 
 // Widget Slots
 
-export function createWidgetNode(operation: WidgetOperation) {
+export function createWidgetNode(operation: UiOperation) {
   let widget: ReactNode = null;
   if (isComponentOperation(operation)) {
     widget = (
@@ -61,7 +61,7 @@ export function createWidgetNode(operation: WidgetOperation) {
   return widget;
 }
 
-function addRelativeWidget(widget: { id: string, node: ReactNode }, widgets: { id: string, node: ReactNode }[], operation: RelativeWidgetOperations) {
+function addRelativeWidget(widget: { id: string, node: ReactNode }, widgets: { id: string, node: ReactNode }[], operation: RelativeWidgetOperation) {
   for (const candidateRelatedWidget of widgets) {
     if (candidateRelatedWidget.id === operation.relatedId) {
       const relatedIndex = widgets.indexOf(candidateRelatedWidget);
@@ -79,12 +79,12 @@ function addRelativeWidget(widget: { id: string, node: ReactNode }, widgets: { i
   }
 }
 
-export function createWidgets(operations: WidgetOperation[]) {
+export function createWidgets(operations: UiOperation[]) {
   const identifiedWidgets: { id: string, node: ReactNode }[] = [];
 
   for (const operation of operations) {
-    if (isWidgetOperation(operation)) {
-      if (isWidgetOperationConditionSatisfied(operation)) {
+    if (isUiOperation(operation)) {
+      if (isSlotOperationConditionSatisfied(operation)) {
         const node = createWidgetNode(operation);
         const widget = {
           id: operation.id,
@@ -104,27 +104,28 @@ export function createWidgets(operations: WidgetOperation[]) {
   return identifiedWidgets.map(widget => widget.node);
 }
 
-function isAbsolutelyPositionedWidgetOperation(operation: WidgetOperation): operation is AbsoluteWidgetOperations {
+function isAbsolutelyPositionedWidgetOperation(operation: UiOperation): operation is AbsoluteWidgetOperation {
   return operation.op === WidgetOperationTypes.APPEND || operation.op === WidgetOperationTypes.PREPEND;
 }
 
-function isRelativelyPositionedWidgetOperation(operation: WidgetOperation): operation is RelativeWidgetOperations {
+function isRelativelyPositionedWidgetOperation(operation: UiOperation): operation is RelativeWidgetOperation {
   return operation.op === WidgetOperationTypes.INSERT_AFTER || operation.op === WidgetOperationTypes.INSERT_BEFORE;
 }
 
-export function getActiveWidgetOperations(operations: SlotOperation[]) {
+export function getActiveUiOperations(operations: SlotOperation[]) {
   return operations.filter((operation) => {
-    return isWidgetOperation(operation) && isWidgetOperationConditionSatisfied(operation);
+    return isUiOperation(operation) && isSlotOperationConditionSatisfied(operation);
   });
 }
 
 // This function sorts widget operations in an order that guarantees that any 'related' widgets
-// needed by relatively positioned operations (INSERT_AFTER, INSERT_BEFORE) should already exist by the time
-// the relative operations are evaluated.  It means the declaration order of operations in SiteConfig does
-// not prevent an operation from interacting with a widget that was declared 'later'.
-export function sortWidgetOperations(operations: WidgetOperation[]) {
-  const activeOperations = getActiveWidgetOperations(operations);
-  return activeOperations.sort((a: WidgetOperation, b: WidgetOperation) => {
+// needed by relatively positioned operations (INSERT_AFTER, INSERT_BEFORE) should already exist by
+// the time the relative operations are evaluated.  It means the declaration order of operations in
+// SiteConfig does not prevent an operation from interacting with a widget that was declared
+// 'later'.
+export function sortWidgetOperations(operations: UiOperation[]) {
+  const activeOperations = getActiveUiOperations(operations);
+  return activeOperations.sort((a: UiOperation, b: UiOperation) => {
     const aAbsolute = isAbsolutelyPositionedWidgetOperation(a);
     const bAbsolute = isAbsolutelyPositionedWidgetOperation(b);
     if (aAbsolute && bAbsolute) {
@@ -145,30 +146,30 @@ export function sortWidgetOperations(operations: WidgetOperation[]) {
   });
 }
 
-export function isWidgetSlot(id: string) {
+export function isUiSlot(id: string) {
   return id.endsWith('.ui');
 }
 
-export function isWidgetOperation(operation: SlotOperation): operation is WidgetOperation {
+export function isUiOperation(operation: SlotOperation): operation is UiOperation {
   return operation.slotId.endsWith('.ui');
 }
 
-export function isComponentOperation(operation: WidgetOperation): operation is ComponentOperation {
-  return isWidgetOperation(operation) && 'component' in operation;
+export function isComponentOperation(operation: UiOperation): operation is ComponentOperation {
+  return isUiOperation(operation) && 'component' in operation;
 }
 
-export function isElementOperation(operation: WidgetOperation): operation is ElementOperation {
-  return isWidgetOperation(operation) && 'element' in operation;
+export function isElementOperation(operation: UiOperation): operation is ElementOperation {
+  return isUiOperation(operation) && 'element' in operation;
 }
 
-export function isFederationOperation(operation: WidgetOperation): operation is FederatedOperation {
-  return isWidgetOperation(operation) && 'remoteId' in operation;
+export function isFederationOperation(operation: UiOperation): operation is FederatedOperation {
+  return isUiOperation(operation) && 'remoteId' in operation;
 }
 
-export function isOptionsOperation(operation: WidgetOperation): operation is LayoutOptionsOperation {
-  return isWidgetOperation(operation) && 'options' in operation;
+export function isOptionsOperation(operation: UiOperation): operation is LayoutOptionsOperation {
+  return isUiOperation(operation) && 'options' in operation;
 }
 
-export function isReplaceOperation(operation: WidgetOperation): operation is ReplaceLayoutOperation {
-  return isWidgetOperation(operation) && 'layout' in operation;
+export function isReplaceOperation(operation: UiOperation): operation is ReplaceLayoutOperation {
+  return isUiOperation(operation) && 'layout' in operation;
 }
