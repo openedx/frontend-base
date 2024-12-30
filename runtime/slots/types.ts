@@ -50,7 +50,7 @@ export interface RelativeComponentOperation extends BaseUiOperation {
 
 export interface LayoutOptionsOperation extends BaseUiOperation {
   op: LayoutOperationTypes.OPTIONS,
-  options?: Record<string, any>,
+  options: Record<string, any>,
 }
 
 export interface ElementOperation extends BaseUiOperation {
