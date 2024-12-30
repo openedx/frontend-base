@@ -2,7 +2,8 @@ import { Fragment, ReactNode } from 'react';
 import { getAuthenticatedUser } from '../../auth';
 import { getConfig } from '../../config';
 import FederatedWidget from '../FederatedWidget';
-import { AbsoluteWidgetOperation, ComponentOperation, ElementOperation, FederatedOperation, LayoutOptionsOperation, RelativeWidgetOperation, ReplaceLayoutOperation, SlotOperation, UiOperation, WidgetOperationTypes } from '../types';
+import IFrameWidget from '../IFrameWidget';
+import { AbsoluteWidgetOperation, ComponentOperation, ElementOperation, FederatedOperation, IFrameOperation, LayoutOptionsOperation, RelativeWidgetOperation, ReplaceLayoutOperation, SlotOperation, UiOperation, WidgetOperationTypes } from '../types';
 
 export function getSlotOperations(id: string) {
   const { apps } = getConfig();
@@ -56,6 +57,10 @@ export function createWidgetNode(operation: UiOperation) {
   } else if (isFederatedOperation(operation)) {
     widget = (
       <FederatedWidget key={operation.id} remoteId={operation.remoteId} moduleId={operation.moduleId} />
+    );
+  } else if (isIFrameOperation(operation)) {
+    widget = (
+      <IFrameWidget key={operation.id} url={operation.url} title={operation.title} />
     );
   }
   return widget;
@@ -163,7 +168,11 @@ export function isElementOperation(operation: UiOperation): operation is Element
 }
 
 export function isFederatedOperation(operation: UiOperation): operation is FederatedOperation {
-  return isUiOperation(operation) && 'remoteId' in operation;
+  return isUiOperation(operation) && 'remoteId' in operation && 'moduleId' in operation;
+}
+
+export function isIFrameOperation(operation: UiOperation): operation is IFrameOperation {
+  return isUiOperation(operation) && 'url' in operation && 'title' in operation;
 }
 
 export function isOptionsOperation(operation: UiOperation): operation is LayoutOptionsOperation {
