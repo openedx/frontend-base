@@ -10,7 +10,6 @@ export function getSlotOperations(id: string) {
   apps.forEach((app) => {
     if (Array.isArray(app.slots)) {
       app.slots.forEach((operation) => {
-        // TODO: Absorb the slot operation types here and do the right thing when building the array.
         if (operation.slotId === id) {
           ops.push(operation);
         }
