@@ -4,6 +4,28 @@ import HorizontalSlotLayout from './HorizontalSlotLayout';
 import SlotShowcasePage from './SlotShowcasePage';
 import WidgetWithOptions from './WidgetWithOptions';
 
+function Title({ title, op }: { title: string, op?: string }) {
+  return (
+    <span>
+      {title}
+      {op && (
+        <>{' '}(<code>{op}</code>)</>
+      )}
+    </span>
+  );
+}
+
+function Child({ title, op }: { title: string, op?: string }) {
+  return (
+    <div>
+      {title}
+      {op && (
+        <span>{' '}(<code>{op}</code>)</span>
+      )}
+    </div>
+  );
+}
+
 const config: App = {
   routes: [{
     path: '/slots',
@@ -19,19 +41,19 @@ const config: App = {
       slotId: 'frontend.dev-project.slot-showcase.simple.ui',
       id: 'slot-showcase.simple.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.simple.ui',
       id: 'slot-showcase.simple.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.simple.ui',
       id: 'slot-showcase.simple.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
 
     // Custom Layout
@@ -39,19 +61,19 @@ const config: App = {
       slotId: 'frontend.dev-project.slot-showcase.custom.ui',
       id: 'slot-showcase.custom.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.custom.ui',
       id: 'slot-showcase.custom.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.custom.ui',
       id: 'slot-showcase.custom.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
 
     // Override custom layout
@@ -59,19 +81,19 @@ const config: App = {
       slotId: 'frontend.dev-project.slot-showcase.customConfig.ui',
       id: 'slot-showcase.customConfig.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.customConfig.ui',
       id: 'slot-showcase.customConfig.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.customConfig.ui',
       id: 'slot-showcase.customConfig.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.customConfig.ui',
@@ -84,44 +106,44 @@ const config: App = {
       slotId: 'frontend.dev-project.slot-showcase.layoutWithOptions.ui',
       op: LayoutOperationTypes.OPTIONS,
       options: {
-        title: <span>Bar (<code>LayoutOperationTypes.OPTIONS</code>)</span>,
+        title: (<Title title="Bar" op="LayoutOperationTypes.OPTIONS" />),
       }
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.layoutWithOptions.ui',
       id: 'slot-showcase.layoutWithOptions.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.layoutWithOptions.ui',
       id: 'slot-showcase.layoutWithOptions.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.layoutWithOptions.ui',
       id: 'slot-showcase.layoutWithOptions.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.layoutWithOptionsDefault.ui',
       id: 'slot-showcase.layoutWithOptionsDefault.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.layoutWithOptionsDefault.ui',
       id: 'slot-showcase.layoutWithOptionsDefault.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.layoutWithOptionsDefault.ui',
       id: 'slot-showcase.layoutWithOptionsDefault.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
 
     // TODO: Override Layout
@@ -131,19 +153,19 @@ const config: App = {
       slotId: 'frontend.dev-project.slot-showcase.prepending.ui',
       id: 'slot-showcase.prepending.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One (<code>WidgetOperationTypes.APPEND</code>)</div>)
+      element: (<Child title="Child One" op="WidgetOperationTypes.APPEND" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.prepending.ui',
       id: 'slot-showcase.prepending.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two (<code>WidgetOperationTypes.APPEND</code>)</div>)
+      element: (<Child title="Child Two" op="WidgetOperationTypes.APPEND" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.prepending.ui',
       id: 'slot-showcase.prepending.child3',
       op: WidgetOperationTypes.PREPEND,
-      element: (<div>Child Three (<code>WidgetOperationTypes.PREPEND</code>)</div>)
+      element: (<Child title="Child Three" op="WidgetOperationTypes.PREPEND" />)
     },
 
     // Inserting
@@ -152,32 +174,32 @@ const config: App = {
       id: 'slot-showcase.inserting.child4',
       op: WidgetOperationTypes.INSERT_AFTER,
       relatedId: 'slot-showcase.inserting.child2',
-      element: (<div>Child Four (<code>WidgetOperationTypes.INSERT_AFTER</code>)</div>)
+      element: (<Child title="Child Four" op="WidgetOperationTypes.INSERT_AFTER" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
       id: 'slot-showcase.inserting.child5',
       op: WidgetOperationTypes.INSERT_BEFORE,
       relatedId: 'slot-showcase.inserting.child2',
-      element: (<div>Child Five (<code>WidgetOperationTypes.INSERT_BEFORE</code>)</div>)
+      element: (<Child title="Child Five" op="WidgetOperationTypes.INSERT_BEFORE" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
       id: 'slot-showcase.inserting.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
       id: 'slot-showcase.inserting.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
       id: 'slot-showcase.inserting.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
 
     // Replacing
@@ -185,26 +207,26 @@ const config: App = {
       slotId: 'frontend.dev-project.slot-showcase.replacing.ui',
       id: 'slot-showcase.replacing.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.replacing.ui',
       id: 'slot-showcase.replacing.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.replacing.ui',
       id: 'slot-showcase.replacing.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.replacing.ui',
       id: 'slot-showcase.replacing.child4',
       op: WidgetOperationTypes.REPLACE,
       relatedId: 'slot-showcase.replacing.child2',
-      element: (<div>Child Four (<code>WidgetOperationTypes.REPLACE</code>)</div>)
+      element: (<Child title="Child Four" op="WidgetOperationTypes.REPLACE" />)
     },
 
     // Hiding
@@ -212,19 +234,19 @@ const config: App = {
       slotId: 'frontend.dev-project.slot-showcase.removing.ui',
       id: 'slot-showcase.removing.child1',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child One</div>)
+      element: (<Child title="Child One" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.removing.ui',
       id: 'slot-showcase.removing.child2',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Two</div>)
+      element: (<Child title="Child Two" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.removing.ui',
       id: 'slot-showcase.removing.child3',
       op: WidgetOperationTypes.APPEND,
-      element: (<div>Child Three</div>)
+      element: (<Child title="Child Three" />)
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.removing.ui',
@@ -250,7 +272,8 @@ const config: App = {
       relatedId: 'slot-showcase.widgetOptions.child2',
       op: WidgetOperationTypes.OPTIONS,
       options: {
-        title: <span>Bar (<code>WidgetOperationTypes.OPTIONS</code>)</span>,
+        title: (<Title title="Bar" op="WidgetOperationTypes.OPTIONS" />
+        ),
       }
     },
   ]
