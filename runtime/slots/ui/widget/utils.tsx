@@ -1,4 +1,4 @@
-import { Fragment, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { UiOperation } from '../types';
 import { isUiOperation, isUiOperationConditionSatisfied } from '../utils';
 import FederatedWidget from './FederatedWidget';
@@ -83,13 +83,7 @@ function createIdentifiedWidget(operation: WidgetRendererOperation) {
       <operation.component />
     );
   } else if (hasWidgetElementProps(operation)) {
-    widget = (
-      // This fragment is here so that we can use the operation ID as a key, meaning
-      // developers don't need to add it to their operation's element.
-      <Fragment>
-        {operation.element}
-      </Fragment>
-    );
+    widget = operation.element;
   } else if (hasWidgetFederatedProps(operation)) {
     widget = (
       <FederatedWidget remoteId={operation.remoteId} moduleId={operation.moduleId} />
@@ -101,7 +95,7 @@ function createIdentifiedWidget(operation: WidgetRendererOperation) {
   }
 
   return {
-    id: operation.id,
+    id,
     node: (
       <WidgetContext.Provider
         key={id}
