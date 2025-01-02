@@ -77,6 +77,11 @@ export function useSlotOptionsById(id: string) {
   return options;
 }
 
+export function useSlotLayout(defaultLayout: ComponentType) {
+  const { id } = useSlotContext();
+  return useSlotLayoutById(id, defaultLayout);
+}
+
 export function useSlotLayoutById(id: string, defaultLayout: ComponentType) {
   const operations = useSlotOperations(id);
   let layout: ComponentType | null = defaultLayout;
@@ -92,9 +97,4 @@ export function useSlotLayoutById(id: string, defaultLayout: ComponentType) {
     }
   }
   return layout;
-}
-
-export function useSlotLayout(defaultLayout: ComponentType) {
-  const { id } = useSlotContext();
-  return useSlotLayoutById(id, defaultLayout);
 }
