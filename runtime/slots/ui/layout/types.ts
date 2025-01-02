@@ -5,6 +5,7 @@
  * slot.  They have no effect on the widgets loaded into a UI slot.
  */
 
+import { ReactNode } from 'react';
 import { BaseUiOperation } from '../types';
 
 export enum LayoutOperationTypes {
@@ -23,9 +24,20 @@ export type LayoutOptionsOperation = BaseLayoutOperation & {
   options: Record<string, any>,
 };
 
-export type ReplaceLayoutOperation = BaseLayoutOperation & {
+export interface LayoutComponentProps {
+  component: React.ComponentType,
+}
+
+export interface LayoutElementProps {
+  element: ReactNode,
+}
+
+export type LayoutRendererProps = (
+  LayoutComponentProps | LayoutElementProps
+);
+
+export type ReplaceLayoutOperation = BaseLayoutOperation & LayoutRendererProps & {
   op: LayoutOperationTypes.LAYOUT,
-  layout: React.ComponentType,
 };
 
 // Aggregate UI Layout Operations
