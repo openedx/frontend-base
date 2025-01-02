@@ -149,6 +149,20 @@ const config: App = {
     // Inserting
     {
       slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
+      id: 'slot-showcase.inserting.child4',
+      op: WidgetOperationTypes.INSERT_AFTER,
+      relatedId: 'slot-showcase.inserting.child2',
+      element: (<div>Child Four (<code>WidgetOperationTypes.INSERT_AFTER</code>)</div>)
+    },
+    {
+      slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
+      id: 'slot-showcase.inserting.child5',
+      op: WidgetOperationTypes.INSERT_BEFORE,
+      relatedId: 'slot-showcase.inserting.child2',
+      element: (<div>Child Five (<code>WidgetOperationTypes.INSERT_BEFORE</code>)</div>)
+    },
+    {
+      slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
       id: 'slot-showcase.inserting.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<div>Child One</div>)
@@ -164,20 +178,6 @@ const config: App = {
       id: 'slot-showcase.inserting.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<div>Child Three</div>)
-    },
-    {
-      slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
-      id: 'slot-showcase.inserting.child4',
-      op: WidgetOperationTypes.INSERT_AFTER,
-      relatedId: 'slot-showcase.inserting.child2',
-      element: (<div>Child Four (<code>WidgetOperationTypes.INSERT_AFTER</code>)</div>)
-    },
-    {
-      slotId: 'frontend.dev-project.slot-showcase.inserting.ui',
-      id: 'slot-showcase.inserting.child5',
-      op: WidgetOperationTypes.INSERT_BEFORE,
-      relatedId: 'slot-showcase.inserting.child2',
-      element: (<div>Child Five (<code>WidgetOperationTypes.INSERT_BEFORE</code>)</div>)
     },
 
     // Replacing
