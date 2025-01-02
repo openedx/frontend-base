@@ -1,6 +1,6 @@
 import { Spinner } from '@openedx/paragon';
 import { Suspense } from 'react';
-import { useRemoteComponent } from '../../shell/federation/hooks';
+import { useRemoteComponent } from '../../../../shell/federation/hooks';
 
 interface FederatedWidgetProps {
   remoteId: string,

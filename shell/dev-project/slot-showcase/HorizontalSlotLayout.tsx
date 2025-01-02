@@ -1,7 +1,7 @@
-import { useSlotWidgets } from '../../../runtime/slots/data/hooks';
+import { useWidgets } from '../../../runtime';
 
 export default function HorizontalSlotLayout() {
-  const widgets = useSlotWidgets();
+  const widgets = useWidgets();
 
   return (
     <div className="d-flex gap-3">

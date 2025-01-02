@@ -1,4 +1,4 @@
-import Slot from '../runtime/slots/Slot';
+import { Slot } from '../runtime';
 import DefaultMain from './DefaultMain';
 
 export default function DefaultLayout() {

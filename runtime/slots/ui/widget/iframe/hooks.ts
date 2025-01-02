@@ -12,8 +12,8 @@ import {
   useState
 } from 'react';
 
-import { MessageEventCallback } from '../types';
 import { IFRAME_MOUNTED, IFRAME_READY, IFRAME_UNMOUNTED } from './constants';
+import { MessageEventCallback } from './types';
 
 /* Listening for events */
 

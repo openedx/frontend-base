@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
-import { useSlotLayoutById } from './data/hooks';
-import DefaultSlotLayout from './DefaultSlotLayout';
+import DefaultSlotLayout from './layout/DefaultSlotLayout';
+import { useLayoutForSlotId } from './layout/hooks';
 import SlotContext from './SlotContext';
 
 interface SlotProps {
@@ -9,7 +9,7 @@ interface SlotProps {
 }
 
 export default function Slot({ id, layout = DefaultSlotLayout }: SlotProps) {
-  const Layout = useSlotLayoutById(id, layout);
+  const Layout = useLayoutForSlotId(id, layout);
 
   return (
     <SlotContext.Provider value={{ id }}>

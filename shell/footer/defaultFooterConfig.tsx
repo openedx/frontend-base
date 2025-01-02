@@ -1,5 +1,4 @@
-import { WidgetOperationTypes } from '../../runtime';
-import Slot from '../../runtime/slots/Slot';
+import { Slot, WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
 import CopyrightNotice from './CopyrightNotice';

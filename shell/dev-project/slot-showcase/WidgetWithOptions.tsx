@@ -1,4 +1,4 @@
-import { useWidgetOptions } from '../../../runtime/slots/data/hooks';
+import { useWidgetOptions } from '../../../runtime';
 
 export default function WidgetWithOptions() {
   const options = useWidgetOptions();

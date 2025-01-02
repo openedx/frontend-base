@@ -1,4 +1,4 @@
-import Slot from '../../runtime/slots/Slot';
+import { Slot } from '../../runtime';
 import CenterLinks from './CenterLinks';
 import LeftLinks from './LeftLinks';
 import LegalNotices from './LegalNotices';

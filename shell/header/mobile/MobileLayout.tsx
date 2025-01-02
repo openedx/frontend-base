@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useCallback, useState } from 'react';
 import { FocusOn } from 'react-focus-on';
 import { useMediaQuery } from 'react-responsive';
-import Slot from '../../../runtime/slots/Slot';
+import { Slot } from '../../../runtime';
 
 export default function MobileLayout() {
   const isMobile = useMediaQuery({ maxWidth: 768 });

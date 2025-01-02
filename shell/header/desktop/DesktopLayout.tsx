@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
-
-import Slot from '../../../runtime/slots/Slot';
+import { Slot } from '../../../runtime';
 
 export default function DesktopLayout() {
   const isMobile = useMediaQuery({ maxWidth: 768 });

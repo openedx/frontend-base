@@ -1,11 +1,11 @@
 import { Button, Collapsible } from '@openedx/paragon';
 import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
 
-import { useLayoutOptions, useSlotWidgets } from '../../runtime/slots/data/hooks';
+import { useLayoutOptions, useWidgets } from '../../runtime';
 import messages from '../Shell.messages';
 
 export default function RevealLinks() {
-  const widgets = useSlotWidgets();
+  const widgets = useWidgets();
   const options = useLayoutOptions();
 
   const label = options.label ?? messages['footer.revealLinks.more'];
