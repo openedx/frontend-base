@@ -7,13 +7,11 @@ export default function SlotShowcasePage() {
     <div className="p-3">
       <h1>Slot Showcase</h1>
 
-      <p>As a best practice, widgets should pass additional props (<code>...props</code>) to their rendered HTMLElement. This accomplishes two things:
-
-        <ul>
-          <li>It allows custom layouts to add <code>className</code> and <code>style</code> props as necessary for the layout.</li>
-          <li>It allows widgets to be effectively &quot;wrapped&quot; by a parent component to alter their behavior.</li>
-        </ul>
-      </p>
+      <p>As a best practice, widgets should pass additional props (<code>...props</code>) to their rendered HTMLElement. This accomplishes two things:</p>
+      <ul>
+        <li>It allows custom layouts to add <code>className</code> and <code>style</code> props as necessary for the layout.</li>
+        <li>It allows widgets to be effectively &quot;wrapped&quot; by a parent component to alter their behavior.</li>
+      </ul>
 
       <h3>Simple slot with default layout</h3>
       <p>This slot has no opinionated layout, it just renders its children.</p>
