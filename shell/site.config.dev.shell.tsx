@@ -1,11 +1,13 @@
 import { EnvironmentTypes, ProjectSiteConfig } from '../types';
 import defaultShellConfig from './defaultShellConfig';
+import defaultFooterConfig from './footer/defaultFooterConfig';
+import defaultHeaderConfig from './header/defaultHeaderConfig';
+
 import footerConfig from './dev-project/footer/footerConfig';
 import headerConfig from './dev-project/header/headerConfig';
 import homeConfig from './dev-project/home';
+import slotShowcaseConfig from './dev-project/slot-showcase';
 import userConfig from './dev-project/user/userConfig';
-import defaultFooterConfig from './footer/defaultFooterConfig';
-import defaultHeaderConfig from './header/defaultHeaderConfig';
 
 import './app.scss';
 
@@ -18,6 +20,7 @@ const config: ProjectSiteConfig = {
     homeConfig,
     headerConfig,
     footerConfig,
+    slotShowcaseConfig,
   ],
   externalRoutes: [
     {

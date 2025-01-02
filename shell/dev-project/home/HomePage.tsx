@@ -6,6 +6,7 @@ import messages from './messages';
 export default function HomePage() {
   const coursewareUrl = getUrlByRole('courseware');
   const dashboardUrl = getUrlByRole('learnerDashboard');
+  const slotShowcaseUrl = getUrlByRole('slotShowcase');
   const intl = useIntl();
 
   return (
@@ -17,6 +18,9 @@ export default function HomePage() {
         )}
         {dashboardUrl !== null && (
           <li><Link to={dashboardUrl}>Go to dashboard page</Link></li>
+        )}
+        {slotShowcaseUrl !== null && (
+          <li><Link to={slotShowcaseUrl}>Go to slot showcase page</Link></li>
         )}
       </ul>
     </div>

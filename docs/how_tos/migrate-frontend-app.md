@@ -528,12 +528,7 @@ Your modules will need environment variables that your system merged into config
 
 ## 26. Stop using process.env
 
-Instead, custom variables must go through site config.
-
-- Move all your custom variables into the `custom: {}` block of site config.
-- Throughout your app, wherever you use one of these variables, get it from `getConfig().custom` instead of from `process.env`.
-
-As we decide on the module boundaries of our library, we'll be able to move these into module-specific configuration in site config.  `custom` is a temporary home for this config.
+Instead, custom variables must go through site config.  TODO: Explain how to do this.
 
 ## 27. Convert @import to @use in SCSS files.
 

@@ -15,7 +15,6 @@ const config: App = {
     },
     {
       slotId: 'frontend.shell.footer.desktop.top.ui',
-      id: 'footer.booyah.revealed.options',
       op: LayoutOperationTypes.OPTIONS,
       options: {
         label: 'I Reveal Buttons',

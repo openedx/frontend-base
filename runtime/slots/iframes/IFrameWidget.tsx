@@ -2,9 +2,8 @@ import { Spinner } from '@openedx/paragon';
 import { useEffect, useState } from 'react';
 
 import classNames from 'classnames';
-import { PLUGIN_MOUNTED, PLUGIN_READY, PLUGIN_RESIZE } from '../plugins/data/constants';
-import { dispatchPluginEvent, useElementSize, usePluginEvent } from '../plugins/data/hooks';
-import { IFRAME_FEATURE_POLICY } from '../plugins/PluginContainerIframe';
+import { IFRAME_FEATURE_POLICY, IFRAME_MOUNTED, IFRAME_READY, IFRAME_RESIZE } from './data/constants';
+import { dispatchPluginEvent, useElementSize, usePluginEvent } from './data/hooks';
 
 interface IFrameWidgetProps {
   url: string,
@@ -20,7 +19,7 @@ export default function IFrameWidget({ url, title }: IFrameWidgetProps) {
   useEffect(() => {
     if (mounted) {
       dispatchPluginEvent(iframeElement as HTMLIFrameElement, {
-        type: PLUGIN_RESIZE,
+        type: IFRAME_RESIZE,
         payload: {
           width,
           height,
@@ -29,11 +28,11 @@ export default function IFrameWidget({ url, title }: IFrameWidgetProps) {
     }
   }, [iframeElement, mounted, width, height, url]);
 
-  usePluginEvent(iframeElement, PLUGIN_MOUNTED, () => {
+  usePluginEvent(iframeElement, IFRAME_MOUNTED, () => {
     setMounted(true);
   });
 
-  usePluginEvent(iframeElement, PLUGIN_READY, () => {
+  usePluginEvent(iframeElement, IFRAME_READY, () => {
     setReady(true);
   });
 
