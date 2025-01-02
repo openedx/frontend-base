@@ -11,23 +11,9 @@ import {
   useRef,
   useState
 } from 'react';
-import { MessageEventCallback } from '../../../types';
-import { PLUGIN_MOUNTED, PLUGIN_READY, PLUGIN_UNMOUNTED } from './constants';
-import { getConfigSlots } from './utils';
 
-/**
- * Called by PluginSlot to extract a list of plugins from the JS configuration
- *
- * @param id - Name of PluginSlot
- * @returns {PluginSlotConfig} - JS configuration for the PluginSlot
- */
-export function usePluginSlot(id: string) {
-  const configSlots = getConfigSlots()?.[id];
-  if (configSlots) {
-    return configSlots;
-  }
-  return { keepDefault: true, plugins: [] };
-}
+import { MessageEventCallback } from '../types';
+import { IFRAME_MOUNTED, IFRAME_READY, IFRAME_UNMOUNTED } from './constants';
 
 /* Listening for events */
 
@@ -121,16 +107,16 @@ export function dispatchHostEvent(message: any) {
 
 // Called inside Plugin when 'ready' prop is true
 export function dispatchReadyEvent() {
-  dispatchHostEvent({ type: PLUGIN_READY });
+  dispatchHostEvent({ type: IFRAME_READY });
 }
 
 // Below mounted events are called in a useEffect inside Plugin with [] dependencies — https://react.dev/learn/synchronizing-with-effects
 export function dispatchMountedEvent() {
-  dispatchHostEvent({ type: PLUGIN_MOUNTED });
+  dispatchHostEvent({ type: IFRAME_MOUNTED });
 }
 
 export function dispatchUnmountedEvent() {
-  dispatchHostEvent({ type: PLUGIN_UNMOUNTED });
+  dispatchHostEvent({ type: IFRAME_UNMOUNTED });
 }
 
 /**

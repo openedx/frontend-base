@@ -4,16 +4,16 @@ import {
   useEffect, useMemo, useState,
 } from 'react';
 
-import { useIntl } from '../i18n';
-import { ErrorBoundary } from '../react';
-import { PLUGIN_RESIZE } from './data/constants';
+import { useIntl } from '../../i18n';
+import { ErrorBoundary } from '../../react';
+import { IFRAME_RESIZE } from './data/constants';
 import {
   dispatchMountedEvent,
   dispatchReadyEvent,
   dispatchUnmountedEvent,
-  useHostEvent,
+  useHostEvent
 } from './data/hooks';
-import messages from './Plugin.messages';
+import messages from './IFrameContentWrapper.messages';
 
 const ErrorFallbackDefault = () => {
   const { formatMessage } = useIntl();
@@ -26,7 +26,7 @@ const ErrorFallbackDefault = () => {
   );
 };
 
-interface PluginProps {
+interface IFrameContentWrapperProps {
   children: ReactNode,
   className?: string,
   style?: Record<string, string>,
@@ -34,9 +34,9 @@ interface PluginProps {
   errorFallbackComponent?: FunctionComponent,
 }
 
-export default function Plugin({
+export default function IFrameContentWrapper({
   children, className, style = {}, ready = true, errorFallbackComponent,
-}: PluginProps) {
+}: IFrameContentWrapperProps) {
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
@@ -51,7 +51,7 @@ export default function Plugin({
 
   const ErrorFallback = errorFallbackComponent ?? ErrorFallbackDefault;
 
-  useHostEvent(PLUGIN_RESIZE, ({ payload }) => {
+  useHostEvent(IFRAME_RESIZE, ({ payload }) => {
     setDimensions({
       width: payload.width,
       height: payload.height,

@@ -1,8 +1,8 @@
-import { useSlotOptions, useSlotWidgets } from '../../runtime/slots/data/hooks';
+import { useLayoutOptions, useSlotWidgets } from '../../runtime/slots/data/hooks';
 
 export default function LabeledLinkColumn() {
   const widgets = useSlotWidgets();
-  const options = useSlotOptions();
+  const options = useLayoutOptions();
 
   if (widgets.length === 0) {
     return null;

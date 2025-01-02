@@ -9,7 +9,6 @@
       "./authenticated-page": "./src/authenticated-page",
       "./ExamplePage": "./src/example-page",
       "./IframePlugin": "./src/iframe-plugin/IframePlugin",
-      "./PluginPage": "./src/plugin-page"
     }
   },
   "scripts": {

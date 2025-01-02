@@ -2,7 +2,6 @@ import {
   getAuthenticatedUser,
   getConfig,
   logInfo,
-  mergeConfig,
   useAuthenticatedUser,
   useConfig,
   useIntl
@@ -20,12 +19,6 @@ function printTestResult(value) {
   return value ? '✅' : '❌';
 }
 
-mergeConfig({
-  custom: {
-    MERGED_VAR: 'I was merged in.',
-  }
-});
-
 export default function ExamplePage() {
   const config = useConfig();
   const authenticatedUser = useAuthenticatedUser();
@@ -42,7 +35,6 @@ export default function ExamplePage() {
 
       <h2>Links</h2>
       <p>Visit <Link to="/authenticated">authenticated page</Link>.</p>
-      <p>Visit <Link to="/plugins">plugins page</Link>.</p>
       <p>Visit <Link to="/error">error page</Link>.</p>
 
       <h2>Context Config Test</h2>
@@ -78,14 +70,6 @@ export default function ExamplePage() {
       ) : (
         <p>Unauthenticated {printTestResult(authenticatedUser === null)}</p>
       )}
-
-      <h2>Config tests</h2>
-      <p>Non-existent config variable: {printTestResult(getConfig().custom?.I_AM_NOT_HERE === undefined)}</p>
-      <p>Merged var: {printTestResult(getConfig().custom?.MERGED_VAR === 'I was merged in.')}</p>
-      <p><span>site.config boolean test: </span>
-        {printTestResult(getConfig().custom?.FALSE_VALUE === false)}
-      </p>
-      <p>site.config integer test: {printTestResult(Number.isInteger(getConfig().custom?.INTEGER_VALUE))}</p>
 
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>

@@ -1,6 +1,6 @@
 import { NavDropdown } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
-import { useSlotOptionsById, useSlotWidgetsById } from '../../runtime/slots/data/hooks';
+import { useLayoutOptionsById, useSlotWidgetsById } from '../../runtime/slots/data/hooks';
 import {
   MenuItemName
 } from '../../types';
@@ -15,7 +15,7 @@ interface DropdownMenuSlotProps {
 
 export default function DropdownMenuSlot({ id, label }: DropdownMenuSlotProps) {
   const intl = useIntl();
-  const options = useSlotOptionsById(id);
+  const options = useLayoutOptionsById(id);
   const widgets = useSlotWidgetsById(id);
 
   const finalLabel = getItemLabel(options.label ?? label, intl);

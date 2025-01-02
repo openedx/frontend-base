@@ -20,6 +20,14 @@ const config: App = {
     },
     {
       slotId: 'frontend.shell.header.primaryLinks.ui',
+      relatedId: 'header.learnerDashboard.link',
+      op: WidgetOperationTypes.OPTIONS,
+      options: {
+        title: 'Booyah yeah',
+      }
+    },
+    {
+      slotId: 'frontend.shell.header.primaryLinks.ui',
       id: 'header.learnerDashboard.linkAfter3',
       op: WidgetOperationTypes.INSERT_AFTER,
       relatedId: 'header.learnerDashboard.link3',

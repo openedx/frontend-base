@@ -97,11 +97,6 @@ export {
 } from './logging';
 
 export {
-  Plugin,
-  PluginSlot
-} from './plugins';
-
-export {
   AppContext,
   AppProvider,
   AuthenticatedPageRoute,

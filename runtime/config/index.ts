@@ -130,7 +130,6 @@ let config: SiteConfig = {
   federatedApps: [],
   externalRoutes: [],
 
-  pluginSlots: {},
   custom: {},
 
   appId: '',
