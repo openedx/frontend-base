@@ -41,7 +41,7 @@ export default function SlotShowcasePage() {
       <Slot id="frontend.dev-project.slot-showcase.prepending.ui" />
 
       <h3>Slot with inserted elements</h3>
-      <p>This slot has elements inserted before and after the second element.</p>
+      <p>This slot has elements inserted before and after the second element. Also note that the insert operations are declared <em>before</em> the related element is declared, but can still insert themselves relative to it.</p>
       <Slot id="frontend.dev-project.slot-showcase.inserting.ui" />
 
       <h3>Slot with replaced element</h3>
