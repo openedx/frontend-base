@@ -8,7 +8,7 @@
     "exposes": {
       "./authenticated-page": "./src/authenticated-page",
       "./ExamplePage": "./src/example-page",
-      "./IframePlugin": "./src/iframe-plugin/IframePlugin",
+      "./IframePlugin": "./src/iframe-plugin/IframePlugin"
     }
   },
   "scripts": {
