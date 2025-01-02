@@ -20,8 +20,10 @@ export default function SlotShowcasePage() {
       <h2>UI Layout Operations</h2>
 
       <h3>Slot with custom layout</h3>
-      <p>This slot uses a horizontal flexbox layout.</p>
+      <p>This slot uses a horizontal flexbox layout from a component.</p>
       <Slot id="frontend.dev-project.slot-showcase.custom.ui" layout={HorizontalSlotLayout} />
+      <p>This slot uses a horizontal flexbox layout from a JSX element.</p>
+      <Slot id="frontend.dev-project.slot-showcase.custom.ui" layout={<HorizontalSlotLayout />} />
 
       <h3>Slot with override custom layout</h3>
       <p>This slot uses a horizontal flexbox layout, but it was added by a layout replace operation.</p>

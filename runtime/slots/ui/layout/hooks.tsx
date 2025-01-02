@@ -1,24 +1,46 @@
-import { ComponentType, useCallback, useEffect, useState } from 'react';
+import { ComponentType, isValidElement, ReactNode, useCallback, useEffect, useState } from 'react';
 import { useOperations } from '../../hooks';
 import { useSlotContext } from '../hooks';
 import { isUiOperation, isUiOperationConditionSatisfied, isUiSlot } from '../utils';
-import { isLayoutOptionsOperation, isLayoutReplaceOperation } from './utils';
+import { LayoutComponentProps, LayoutElementProps, LayoutOperation } from './types';
+import { isLayoutOperation, isLayoutOptionsOperation, isLayoutReplaceOperation } from './utils';
 
-export function useLayoutForSlotId(id: string, defaultLayout: ComponentType) {
+function hasLayoutComponentProps(operation: LayoutOperation): operation is (LayoutOperation & LayoutComponentProps) {
+  return isLayoutOperation(operation) && 'component' in operation;
+}
+
+function hasLayoutElementProps(operation: LayoutOperation): operation is (LayoutOperation & LayoutElementProps) {
+  return isLayoutOperation(operation) && 'element' in operation;
+}
+
+export function useLayoutForSlotId(id: string, defaultLayout: ComponentType | ReactNode) {
   const operations = useOperations(id);
-  let layout: ComponentType | null = defaultLayout;
+  let layoutElement: ReactNode;
+
+  if (isValidElement(defaultLayout)) {
+    layoutElement = defaultLayout;
+  } else {
+    const DefaultLayout = defaultLayout as ComponentType;
+    layoutElement = <DefaultLayout />;
+  }
   if (isUiSlot(id)) {
     for (const operation of operations) {
       if (isUiOperation(operation)) {
         if (isUiOperationConditionSatisfied(operation)) {
           if (isLayoutReplaceOperation(operation)) {
-            layout = operation.layout;
+            if (hasLayoutComponentProps(operation)) {
+              layoutElement = (
+                <operation.component />
+              );
+            } else if (hasLayoutElementProps(operation)) {
+              layoutElement = operation.element;
+            }
           }
         }
       }
     }
   }
-  return layout;
+  return layoutElement;
 }
 
 /**
