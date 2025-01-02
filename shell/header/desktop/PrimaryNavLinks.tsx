@@ -1,6 +1,5 @@
 import { Nav } from '@openedx/paragon';
-
-import Slot from '../../../runtime/slots/Slot';
+import { Slot } from '../../../runtime';
 
 export default function PrimaryNavLinks() {
   return (

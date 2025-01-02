@@ -2,8 +2,8 @@ import { Spinner } from '@openedx/paragon';
 import { useEffect, useState } from 'react';
 
 import classNames from 'classnames';
-import { IFRAME_FEATURE_POLICY, IFRAME_MOUNTED, IFRAME_READY, IFRAME_RESIZE } from './data/constants';
-import { dispatchPluginEvent, useElementSize, usePluginEvent } from './data/hooks';
+import { dispatchPluginEvent, useElementSize, usePluginEvent } from './hooks';
+import { IFRAME_FEATURE_POLICY, IFRAME_MOUNTED, IFRAME_READY, IFRAME_RESIZE } from './constants';
 
 interface IFrameWidgetProps {
   url: string,

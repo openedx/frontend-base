@@ -1,7 +1,8 @@
 import {
-  AppProvider
+  AppProvider,
+  Slot
 } from '../runtime';
-import Slot from '../runtime/slots/Slot';
+
 import DefaultLayout from './DefaultLayout';
 
 export default function Shell() {

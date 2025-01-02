@@ -1,6 +1,5 @@
-import { useIntl } from '../../runtime';
+import { Slot, useIntl } from '../../runtime';
 
-import Slot from '../../runtime/slots/Slot';
 import messages from '../Shell.messages';
 
 export default function Header() {

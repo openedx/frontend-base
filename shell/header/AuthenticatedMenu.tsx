@@ -2,10 +2,9 @@ import { DropdownButton } from '@openedx/paragon';
 import { Person } from '@openedx/paragon/icons';
 
 import {
+  Slot,
   useAuthenticatedUser
 } from '../../runtime';
-
-import Slot from '../../runtime/slots/Slot';
 
 interface AuthenticatedMenuProps {
   className?: string,

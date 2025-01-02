@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import Slot from '../../../runtime/slots/Slot';
+import { Slot } from '../../../runtime';
 
 interface AnonymousMenuProps {
   className?: string,

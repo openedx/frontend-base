@@ -1,11 +1,11 @@
 import { useIntl } from 'react-intl';
 
-import { useSlotWidgets } from '../../runtime/slots/data/hooks';
+import { useWidgets } from '../../runtime';
 import messages from '../Shell.messages';
 
 export default function LegalNotices() {
   const intl = useIntl();
-  const widgets = useSlotWidgets();
+  const widgets = useWidgets();
 
   return (
     <div className="d-flex flex-column justify-content-center mb-3">

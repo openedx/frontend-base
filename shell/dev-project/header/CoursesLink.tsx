@@ -1,6 +1,7 @@
 import { Icon } from '@openedx/paragon';
 import { BookOpen } from '@openedx/paragon/icons';
-import { useWidgetOptions } from '../../../runtime/slots/data/hooks';
+
+import { useWidgetOptions } from '../../../runtime';
 
 export default function CoursesLink() {
   const options = useWidgetOptions();

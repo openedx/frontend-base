@@ -4,15 +4,15 @@ import {
   useEffect, useMemo, useState,
 } from 'react';
 
-import { useIntl } from '../../i18n';
-import { ErrorBoundary } from '../../react';
-import { IFRAME_RESIZE } from './data/constants';
+import { useIntl } from '../../../../i18n';
+import { ErrorBoundary } from '../../../../react';
+import { IFRAME_RESIZE } from './constants';
 import {
   dispatchMountedEvent,
   dispatchReadyEvent,
   dispatchUnmountedEvent,
   useHostEvent
-} from './data/hooks';
+} from './hooks';
 import messages from './IFrameContentWrapper.messages';
 
 const ErrorFallbackDefault = () => {

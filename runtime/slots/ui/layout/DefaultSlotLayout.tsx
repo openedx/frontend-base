@@ -1,7 +1,7 @@
-import { useSlotWidgets } from './data/hooks';
+import { useWidgets } from '../widget/hooks';
 
 export default function DefaultSlotLayout() {
-  const widgets = useSlotWidgets();
+  const widgets = useWidgets();
 
   return (
     <>{widgets}</>
