@@ -5,7 +5,7 @@ import { UiOperation } from '../types';
 import * as uiUtils from '../utils';
 import { WidgetAppendOperation, WidgetOperationTypes } from '../widget';
 import { useLayoutForSlotId, useLayoutOptions, useLayoutOptionsForId } from './hooks';
-import { LayoutOperationTypes, ReplaceLayoutOperation } from './types';
+import { LayoutOperationTypes, LayoutReplaceOperation } from './types';
 
 jest.mock('../../hooks'); // mocks the useOperations hook
 
@@ -27,9 +27,9 @@ describe('useLayoutForSlotId', () => {
   });
 
   it('should return a layout component when replace layout operation is present', () => {
-    const operation: ReplaceLayoutOperation = {
+    const operation: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       component: MockLayout
     };
 
@@ -39,9 +39,9 @@ describe('useLayoutForSlotId', () => {
   });
 
   it('should return null if the slot is not a ui slot', () => {
-    const operation: ReplaceLayoutOperation = {
+    const operation: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       component: MockLayout
     };
     jest.spyOn(uiUtils, 'isUiSlot').mockReturnValue(false);
@@ -51,9 +51,9 @@ describe('useLayoutForSlotId', () => {
   });
 
   it('should return null if the operation is not a UiOperation', () => {
-    const operation: ReplaceLayoutOperation = {
+    const operation: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       component: MockLayout
     };
 
@@ -64,9 +64,9 @@ describe('useLayoutForSlotId', () => {
   });
 
   it('should return null if the operation condition is not satisfied', () => {
-    const operation: ReplaceLayoutOperation = {
+    const operation: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       component: MockLayout
     };
 
@@ -77,16 +77,16 @@ describe('useLayoutForSlotId', () => {
   });
 
   it('should return a layout element when replace layout operation is present', () => {
-    const operation: ReplaceLayoutOperation = {
+    const operation: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       element: <div>Mock layout</div>
     };
 
     // @ts-expect-error This is an intentionally malformed operation to test what happens when component/element are not present.
     const malformedOperation: UiOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
     };
 
     const unrelatedOperation: WidgetAppendOperation = {
@@ -104,15 +104,15 @@ describe('useLayoutForSlotId', () => {
   it('should return the last layout component in the operations list', () => {
     const SecondMockLayout = () => <div>First Component</div>;
 
-    const operation1: ReplaceLayoutOperation = {
+    const operation1: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       component: MockLayout
     };
 
-    const operation2: ReplaceLayoutOperation = {
+    const operation2: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       component: SecondMockLayout
     };
 
@@ -141,9 +141,9 @@ describe('useLayoutOptionsForId', () => {
       options: mockOptions
     };
 
-    const otherOperation: ReplaceLayoutOperation = {
+    const otherOperation: LayoutReplaceOperation = {
       slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       element: <div>Layout</div>
     };
 

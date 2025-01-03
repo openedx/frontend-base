@@ -10,7 +10,7 @@ import { BaseUiOperation } from '../types';
 
 export enum LayoutOperationTypes {
   OPTIONS = 'layoutOptions',
-  LAYOUT = 'layout',
+  REPLACE = 'layoutReplace',
 }
 
 export interface BaseLayoutOperation extends BaseUiOperation {
@@ -36,10 +36,10 @@ export type LayoutRendererProps = (
   LayoutComponentProps | LayoutElementProps
 );
 
-export type ReplaceLayoutOperation = BaseLayoutOperation & LayoutRendererProps & {
-  op: LayoutOperationTypes.LAYOUT,
+export type LayoutReplaceOperation = BaseLayoutOperation & LayoutRendererProps & {
+  op: LayoutOperationTypes.REPLACE,
 };
 
 // Aggregate UI Layout Operations
 
-export type LayoutOperation = LayoutOptionsOperation | ReplaceLayoutOperation;
+export type LayoutOperation = LayoutOptionsOperation | LayoutReplaceOperation;

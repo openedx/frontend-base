@@ -97,7 +97,7 @@ const config: App = {
     },
     {
       slotId: 'frontend.dev-project.slot-showcase.customConfig.ui',
-      op: LayoutOperationTypes.LAYOUT,
+      op: LayoutOperationTypes.REPLACE,
       element: <HorizontalSlotLayout />,
     },
 

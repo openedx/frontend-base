@@ -21,7 +21,6 @@ export function useLayoutForSlotId(id: string) {
     for (const operation of operations) {
       if (isUiOperation(operation)) {
         if (isUiOperationConditionSatisfied(operation)) {
-          // TODO: Rename the LAYOUT operation to REPLACE
           if (isLayoutReplaceOperation(operation)) {
             if (hasLayoutComponentProps(operation)) {
               layoutElement = operation.component;
