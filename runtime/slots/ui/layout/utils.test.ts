@@ -38,7 +38,7 @@ describe('UI Layout Operation utilities', () => {
     it('should return false for invalid LayoutOptionsOperation', () => {
       const operation: UiOperation = {
         slotId: 'mock.slot.ui',
-        op: LayoutOperationTypes.LAYOUT,
+        op: LayoutOperationTypes.REPLACE,
         element: '',
       };
       expect(isLayoutOptionsOperation(operation)).toBe(false);
@@ -46,16 +46,16 @@ describe('UI Layout Operation utilities', () => {
   });
 
   describe('isLayoutReplaceOperation', () => {
-    it('should return true for valid ReplaceLayoutOperation', () => {
+    it('should return true for valid LayoutReplaceOperation', () => {
       const operation: UiOperation = {
         slotId: 'mock.slot.ui',
-        op: LayoutOperationTypes.LAYOUT,
+        op: LayoutOperationTypes.REPLACE,
         element: '',
       };
       expect(isLayoutReplaceOperation(operation)).toBe(true);
     });
 
-    it('should return false for invalid ReplaceLayoutOperation', () => {
+    it('should return false for invalid LayoutReplaceOperation', () => {
       const operation: UiOperation = {
         slotId: 'mock.slot.ui',
         op: LayoutOperationTypes.OPTIONS,
