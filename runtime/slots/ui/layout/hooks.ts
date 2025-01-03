@@ -1,4 +1,4 @@
-import { ComponentType, isValidElement, ReactNode, useCallback, useEffect, useState } from 'react';
+import { ComponentType, ReactNode, useCallback, useEffect, useState } from 'react';
 import { useOperations } from '../../hooks';
 import { useSlotContext } from '../hooks';
 import { isUiOperation, isUiOperationConditionSatisfied, isUiSlot } from '../utils';
@@ -13,25 +13,18 @@ function hasLayoutElementProps(operation: LayoutOperation): operation is (Layout
   return isLayoutOperation(operation) && 'element' in operation;
 }
 
-export function useLayoutForSlotId(id: string, defaultLayout: ComponentType | ReactNode) {
+export function useLayoutForSlotId(id: string) {
   const operations = useOperations(id);
-  let layoutElement: ReactNode;
+  let layoutElement: ReactNode | ComponentType = null;
 
-  if (isValidElement(defaultLayout)) {
-    layoutElement = defaultLayout;
-  } else {
-    const DefaultLayout = defaultLayout as ComponentType;
-    layoutElement = <DefaultLayout />;
-  }
   if (isUiSlot(id)) {
     for (const operation of operations) {
       if (isUiOperation(operation)) {
         if (isUiOperationConditionSatisfied(operation)) {
+          // TODO: Rename the LAYOUT operation to REPLACE
           if (isLayoutReplaceOperation(operation)) {
             if (hasLayoutComponentProps(operation)) {
-              layoutElement = (
-                <operation.component />
-              );
+              layoutElement = operation.component;
             } else if (hasLayoutElementProps(operation)) {
               layoutElement = operation.element;
             }
