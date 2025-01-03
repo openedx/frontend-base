@@ -15,32 +15,32 @@ export enum WidgetOperationTypes {
   /**
    * Adds a widget to the end of the slot's list of widgets.
    */
-  APPEND = 'append',
+  APPEND = 'widgetAppend',
 
   /**
    * Adds a widget to the beginning of the slot's list of widgets.
    */
-  PREPEND = 'prepend',
+  PREPEND = 'widgetPrepend',
 
   /**
    * Adds a widget after the specified widget ID.  Multiple "insert after" operations on the same widget ID occur in the order they were declared.
    */
-  INSERT_AFTER = 'insertAfter',
+  INSERT_AFTER = 'widgetInsertAfter',
 
   /**
    * Adds a widget before the specified widget ID.  Multiple "insert after" operations on the same widget ID occur in the order they were declared.
    */
-  INSERT_BEFORE = 'insertBefore',
+  INSERT_BEFORE = 'widgetInsertBefore',
 
   /**
    * Removes the specified widget ID and adds a widget in its place.  Multiple "replace" operations on the same widget ID occur in the order they were declared, and only the first will succeed unless the new widget's ID is the same as the one that was removed.
    */
-  REPLACE = 'replace',
+  REPLACE = 'widgetReplace',
 
   /**
    * Removes the specified widget ID from the slot's list of widgets.  Subsequent relative widget operations on that widget ID will not be applied.
    */
-  REMOVE = 'remove',
+  REMOVE = 'widgetRemove',
 
   /**
    * Provides options to the specified widget ID.  Multiple "options" operations on the same widget ID will merge with and override any duplicate properties in the options object - last one in wins.
