@@ -70,9 +70,7 @@ export default function AppProvider({ children }: AppProviderProps) {
   return (
     <IntlProvider locale={locale} messages={getMessages()}>
       <ErrorBoundary>
-        <AppContext.Provider
-          value={appContextValue}
-        >
+        <AppContext.Provider value={appContextValue}>
           <LearningProvider>
             {children}
           </LearningProvider>
