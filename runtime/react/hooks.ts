@@ -1,6 +1,10 @@
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
+import { useMatches } from 'react-router';
 import { sendTrackEvent } from '../analytics';
+import { getActiveRoles, setActiveRouteRoles } from '../config';
+import { ACTIVE_ROLES_CHANGED } from '../constants';
+import { isRoleRouteObject } from '../routing';
 import { subscribe, unsubscribe } from '../subscriptions';
 import AppContext from './AppContext';
 
@@ -58,4 +62,38 @@ export function useAuthenticatedUser() {
 export function useConfig() {
   const { config } = useContext(AppContext);
   return config;
+}
+
+export function useActiveRouteRoleWatcher() {
+  const matches = useMatches();
+
+  // We create this callback so we can use it right away to populate the default state value.
+  const findActiveRouteRoles = useCallback(() => {
+    // Starts with the widget roles and adds the others in.
+    const roles: string[] = [];
+
+    // Route roles
+    for (const match of matches) {
+      if (isRoleRouteObject(match)) {
+        if (!roles.includes(match.handle.role)) {
+          roles.push(match.handle.role);
+        }
+      }
+    }
+
+    return roles;
+  }, [matches]);
+
+  useEffect(() => {
+    setActiveRouteRoles(findActiveRouteRoles());
+  }, [matches, findActiveRouteRoles]);
+}
+
+export function useActiveRoles() {
+  const [roles, setRoles] = useState<string[]>(getActiveRoles());
+  useAppEvent(ACTIVE_ROLES_CHANGED, () => {
+    setRoles(getActiveRoles());
+  });
+
+  return roles;
 }

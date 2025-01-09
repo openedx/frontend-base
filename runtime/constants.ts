@@ -68,3 +68,5 @@ export const CONFIG_CHANGED = `${CONFIG_TOPIC}.CHANGED`;
 export const APPS_TOPIC = 'APPS';
 
 export const APPS_CHANGED = `${APPS_TOPIC}.CHANGED`;
+
+export const ACTIVE_ROLES_CHANGED = 'ACTIVE_ROLES_CHANGED';

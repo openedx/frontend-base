@@ -1,4 +1,5 @@
 import { getAuthenticatedUser } from '../../auth';
+import { getActiveRoles } from '../../config';
 import { SlotOperation } from '../types';
 import { UiOperation } from './types';
 
@@ -6,14 +7,25 @@ export function isUiOperationConditionSatisfied(operation: UiOperation) {
   const { condition } = operation;
   if (condition?.authenticated !== undefined) {
     const isAuthenticated = getAuthenticatedUser() !== null;
-    if (condition.authenticated && isAuthenticated) {
-      return true;
+    // If we failed the authenticated condition, return false.
+    if (condition.authenticated !== isAuthenticated) {
+      return false;
     }
-    if (!condition.authenticated && !isAuthenticated) {
-      return true;
+  }
+
+  if (condition?.active !== undefined) {
+    let activeConditionRoleFound = false;
+    const activeRoles: string[] = getActiveRoles();
+    for (const conditionRole of condition.active) {
+      if (activeRoles.includes(conditionRole)) {
+        activeConditionRoleFound = true;
+        break;
+      }
     }
-    // If the authenticated condition existed but we didn't satisfy it, return false.
-    return false;
+    // If we couldn't find an active role in our list, then we've failed this condition.
+    if (!activeConditionRoleFound) {
+      return false;
+    }
   }
 
   // If there was no condition, we return true.
