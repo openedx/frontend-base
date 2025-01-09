@@ -448,13 +448,89 @@ jest.mock('@openedx/frontend-base', () => ({
 
 In this case, the default implementations of most frontend-base exports are included, and only the three afterward are mocked.  In most cases, this should work.  If you have a more complicated mocking situation in your test, you may need to refactor the test.
 
-## 18. Delete the `.env` and `.env.development` files.
+## 18. Delete the `.env` and `.env.development` files and create site.config files.
+
+Frontend-base uses `site.config.*.tsx` files for configuration, rather than .env files.  The development file is site.config.dev.tsx, and the production file is site.config.prod.tsx.
 
 If you want to run a webpack build from your library, you will need to add a `site.config` file, such as `site.config.dev.tsx`.  These files are ignored via `.gitignore` and will not be checked in.  There will be resources available to help writing these files.
+
+Site config is a new schema for configuration.  Notably, config variables are camelCased like normal JavaScript variables, rather than SCREAMING_SNAKE_CASE.
+
+### Required config
+
+The required configuration at the time of this writing is:
+
+- appId: string
+- siteName: string
+- baseUrl: string
+- lmsBaseUrl: string
+- loginUrl: string
+- logoutUrl: string
+
+### Optional config
+
+Other configuration is now optional, and many values have been given sensible defaults.  But these configuration variables are also available (as of this writing):
+
+- accessTokenCookieName: string
+- languagePreferenceCookieName: string
+- userInfoCookieName: string
+- csrfTokenApiPath: string
+- refreshAccessTokenApiPath: string
+- ignoredErrorRegex: RegExp | null
+- segmentKey: string | null
+- environment: EnvironmentTypes
+- mfeConfigApiUrl: string | null
+- publicPath: string
+
+### URL Config changes
+
+Note that the .env files and env.config.js files also include a number of URLs for various micro-frontends and services.  These URLs should now be expressed as part of the `apps` config as route roles, and used in code via `getUrlForRouteRole()`.
+
+```
+// Creating a route role with for 'example' in an App
+const app: App = {
+  routes: [{
+    path: '/example',
+    id: 'example.page',
+    Component: ExamplePage,
+    handle: {
+      role: 'example'
+    }
+  }],
+};
+
+// Using the role in code to link to the page
+const examplePageUrl = getUrlForRouteRole('example');
+```
+
+### App-specific config values
+
+App-specific configuration can be expressed by adding a `custom` section to SiteConfig which allows arbitrary config variables.
+
+```
+const config: ProjectSiteConfig = {
+  // ... Other config
+
+  custom: {
+    appId: 'myapp',
+    myCustomVariableName: 'my custom variable value',
+  }
+}
+```
+
+These variables can be used in code with the `getAppConfig` function:
+
+```
+getAppConfig('myapp').myCustomVariableName
+```
+
+If you have fully converted your app over to the new module architecture, you can add custom variables to the `config` object in your `App` definition and they will be available via `getAppConfig`.
 
 ## 19. Replace the `.env.test` file with configuration in `test.site.config.tsx` file
 
 We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect a `test.site.config.tsx` file.  If you're initializing an application in your tests, `frontend-base` will pick up this configuration and make it available to `getConfig()`, etc.  If you need to manually access the variables, you can import `site.config` in your test files:
+
+Note that test.site.config.tsx has a different naming scheme than `site.config.*.tsx` because it's intended to be checked in, and `site.config.*.tsx` is git-ignored.
 
 ```diff
 + import config from 'site.config';
@@ -537,7 +613,7 @@ Your modules will need environment variables that your system merged into config
 
 ## 26. Stop using process.env
 
-Instead, custom variables must go through site config.  TODO: Explain how to do this.
+Instead, custom variables must go through site config.  This can be done by adding a 'config' object to the App's definition
 
 ## 27. Convert @import to @use in SCSS files.
 
