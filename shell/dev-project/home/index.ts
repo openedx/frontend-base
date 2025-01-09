@@ -2,7 +2,7 @@ import { App } from '../../../types';
 import HomePage from './HomePage';
 import messages from './i18n';
 
-const config: App = {
+const app: App = {
   routes: [{
     path: '/',
     id: 'dev-project.home',
@@ -14,4 +14,4 @@ const config: App = {
   messages,
 };
 
-export default config;
+export default app;
