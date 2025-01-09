@@ -24,7 +24,13 @@ export interface App {
   routes?: RoleRouteObject[],
   slots?: SlotOperation[],
   remotes?: Remote[],
+  config?: AppConfig,
 }
+
+export type AppConfig = {
+  // An AppConfig must contain an appId if it exists, which allows us to differentiate between app configs.
+  appId,
+} & Record<string, unknown>;
 
 export interface FederatedApp {
   remoteId: string,
@@ -83,19 +89,14 @@ export interface OptionalSiteConfig {
 
   // Analytics
   segmentKey: string | null,
-
   environment: EnvironmentTypes,
   mfeConfigApiUrl: string | null,
   publicPath: string,
+
+  custom: AppConfig,
 }
 
 export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
-
-export interface ProjectModuleConfig {
-  modules?: string[],
-  name?: string,
-  custom?: Record<string, any>,
-}
 
 export interface User {
   administrator: boolean,

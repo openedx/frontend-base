@@ -103,6 +103,7 @@
 import merge from 'lodash.merge';
 import {
   App,
+  AppConfig,
   EnvironmentTypes,
   OptionalSiteConfig,
   Remote,
@@ -140,6 +141,10 @@ let config: SiteConfig = {
 
   // Backends
   lmsBaseUrl: '',
+
+  custom: {
+    appId: '',
+  },
 };
 
 /**
@@ -203,10 +208,42 @@ export function mergeConfig(newConfig: Partial<Partial<OptionalSiteConfig> & Req
   publish(CONFIG_CHANGED);
 }
 
+/**
+ * patchApp is used to lazy load Apps after the initial SiteConfig.apps array has been created.
+ * This is most often used after loading FederatedApps.
+ */
 export function patchApp(app: App) {
   config.apps.push(app);
+  if (app.config !== undefined) {
+    patchAppConfig(app.config);
+  }
   publish(APPS_CHANGED);
   publish(CONFIG_CHANGED);
+}
+
+const appConfigs: Record<string, AppConfig> = {};
+
+/**
+ * addAppConfigs finds any AppConfig objects in the apps in SiteConfig and makes their config
+ * available to be used by Apps via the getAppConfig() function.  This is used at initialization
+ * time to process any AppConfigs bundled with the site.
+ */
+export function addAppConfigs() {
+  const { apps } = getConfig();
+  for (const app of apps) {
+    if (app.config !== undefined) {
+      patchAppConfig(app.config);
+    }
+  }
+  publish(CONFIG_CHANGED);
+}
+
+export function getAppConfig(id: string) {
+  return appConfigs[id];
+}
+
+export function patchAppConfig(appConfig: AppConfig) {
+  appConfigs[appConfig.appId] = appConfig;
 }
 
 /**
