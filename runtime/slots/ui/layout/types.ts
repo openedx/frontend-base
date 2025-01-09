@@ -21,7 +21,7 @@ export interface BaseLayoutOperation extends BaseUiOperation {
 
 export type LayoutOptionsOperation = BaseLayoutOperation & {
   op: LayoutOperationTypes.OPTIONS,
-  options: Record<string, any>,
+  options: Record<string, unknown>,
 };
 
 export interface LayoutComponentProps {
