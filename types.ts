@@ -41,7 +41,6 @@ export interface RequiredSiteConfig {
   appId: string,
   siteName: string,
   baseUrl: string,
-  environment: EnvironmentTypes,
 
   // Backends
   lmsBaseUrl: string,
