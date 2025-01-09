@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { AUTHENTICATED_USER_CHANGED } from '../auth';
 import { APPS_CHANGED } from '../constants';
 import { useAppEvent } from '../react';
 import { SlotOperation } from './types';
@@ -12,15 +11,12 @@ import { getSlotOperations } from './utils';
  * config as it changes.
  */
 export function useOperations(id: string) {
-  const [operations, setOperations] = useState<SlotOperation[]>([]);
+  const [operations, setOperations] = useState<SlotOperation[]>(getSlotOperations(id));
   useAppEvent(APPS_CHANGED, () => {
     const ops = getSlotOperations(id);
     setOperations(ops);
   });
-  useAppEvent(AUTHENTICATED_USER_CHANGED, () => {
-    const ops = getSlotOperations(id);
-    setOperations(ops);
-  });
+
   useEffect(() => {
     const ops = getSlotOperations(id);
     setOperations(ops);
