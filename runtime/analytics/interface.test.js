@@ -1,5 +1,5 @@
 import {
-  configure,
+  configureAnalytics,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
   sendPageEvent,
@@ -59,7 +59,7 @@ describe('Analytics', () => {
 
   describe('with valid segmentKey', () => {
     beforeEach(() => {
-      service = configure(SegmentAnalyticsService, {
+      service = configureAnalytics(SegmentAnalyticsService, {
         loggingService: mockLoggingService,
         httpClient: mockAuthApiClient,
         config: {
@@ -194,7 +194,7 @@ describe('Analytics', () => {
 
   describe('with invalid segmentKey', () => {
     beforeEach(() => {
-      service = configure(SegmentAnalyticsService, {
+      service = configureAnalytics(SegmentAnalyticsService, {
         loggingService: mockLoggingService,
         httpClient: mockAuthApiClient,
         config: {

@@ -5,7 +5,7 @@ How to: Convert SnakeCase to CamelCase automatically for API Requests
 Introduction
 ************
 
-When using the HTTP client from ``@edx/frontend-platform``, you are making an API request to an
+When using the HTTP client from ``@openedx/frontend-base``, you are making an API request to an
 Open edX service which requires you to handle snake-cased <-> camelCase conversions manually. The manual conversion quickly gets
 tedious, and is error prone if you forget to do it.
 
@@ -26,11 +26,11 @@ as a middleware when calling ``initialize`` in the consumer::
         authMiddleware: [axiosCaseConverter],
     });
 
-Or, if you choose to use ``configure`` instead::
+Or, if you choose to use ``configureAuth`` instead::
 
     import axiosCaseConverter from 'axios-case-converter';
 
-    configure({
+    configureAuth({
         loggingService: getLoggingService(),
         config: getConfig(),
         options: {

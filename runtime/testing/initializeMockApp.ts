@@ -1,11 +1,11 @@
 // @ts-expect-error We're using an alias in the jest config to create this 'fake' package; TS doesn't know about it.
 import siteConfig from 'site.config';
 
-import { configure as configureAnalytics, MockAnalyticsService } from '../analytics';
-import { configure as configureAuth, MockAuthService, setAuthenticatedUser } from '../auth';
+import { configureAnalytics, MockAnalyticsService } from '../analytics';
+import { configureAuth, MockAuthService, setAuthenticatedUser } from '../auth';
 import { getConfig, mergeConfig } from '../config';
-import { configure as configureI18n } from '../i18n';
-import { configure as configureLogging, MockLoggingService } from '../logging';
+import { configureI18n } from '../i18n';
+import { configureLogging, MockLoggingService } from '../logging';
 import mockMessages from './mockMessages';
 
 /**
@@ -69,7 +69,7 @@ export default function initializeMockApp({
     loggingService,
   });
 
-  // The i18n service configure function has no return value, since there isn't a service class.
+  // The i18n service configureI18n function has no return value, since there isn't a service class.
   configureI18n({
     messages,
   });

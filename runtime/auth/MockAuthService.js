@@ -60,7 +60,7 @@ const optionsPropTypes = {
  *     administrator: false,
  *   },
  * });
- * configure(MockAuthService, { config: getConfig(), loggingService: mockLoggingService });
+ * configureAuth(MockAuthService, { config: getConfig(), loggingService: mockLoggingService });
  * const mockAdapter = new MockAdapter(getAuthenticatedHttpClient());
  * // Mock calls for your tests.  This configuration can be done in any sort of test setup.
  * mockAdapter.onGet(...);

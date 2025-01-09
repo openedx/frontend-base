@@ -31,9 +31,9 @@ Consumers will install the middleware they want to use and provide it to ``initi
         authMiddleware: [axiosCaseConverter, (client) => axiosRetry(client, { retries: 3 })],
     });
 
-If a consumer chooses not to use ``initialize`` and instead the ``configure`` function, the middleware can be passed in the options param::
+If a consumer chooses not to use ``initialize`` and instead the ``configureAuth`` function, the middleware can be passed in the options param::
 
-   configure({
+   configureAuth({
        loggingService: getLoggingService(),
        config: getConfig(),
        options: {

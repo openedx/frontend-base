@@ -10,14 +10,14 @@
  *
  * ```
  * import {
- *   configure,
+ *   configureAuth,
  *   fetchAuthenticatedUser,
  *   getAuthenticatedHttpClient,
  *   getConfig,
  *   getLoggingService
  * } from '@openedx/frontend-base';
  *
- * configure({
+ * configureAuth({
  *   loggingService: getLoggingService(),
  *   config: getConfig(),
  * });
@@ -92,7 +92,7 @@ let service;
  * @param {*} options
  * @returns {AuthService}
  */
-export function configure(AuthService, options) {
+export function configureAuth(AuthService, options) {
   PropTypes.checkPropTypes(optionsShape, options, 'property', 'Auth');
   service = new AuthService(options);
   PropTypes.checkPropTypes(serviceShape, service, 'property', 'AuthService');

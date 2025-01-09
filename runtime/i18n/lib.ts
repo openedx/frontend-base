@@ -108,7 +108,7 @@ export function getPrimaryLanguageSubtag(code) {
  */
 export function findSupportedLocale(locale) {
   if (messages === undefined) {
-    throw new Error('findSupportedLocale called before configuring i18n. Call configure with messages first.');
+    throw new Error('findSupportedLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
   if (messages[locale] !== undefined) {
@@ -134,7 +134,7 @@ export function findSupportedLocale(locale) {
  */
 export function getLocale(locale?: string) {
   if (messages === null) {
-    throw new Error('getLocale called before configuring i18n. Call configure with messages first.');
+    throw new Error('getLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
   // 1. Explicit application request
@@ -189,7 +189,7 @@ export function updateLocale() {
  */
 export function getMessages(locale = getLocale()) {
   if (messages === undefined) {
-    throw new Error('getMessages called before configuring i18n. Call configure with messages first.');
+    throw new Error('getMessages called before configuring i18n. Call configureI18n with messages first.');
   }
 
   return messages[locale];
@@ -259,7 +259,7 @@ interface ConfigureI18nOptions {
  * @param {Object} options.messages
  * @memberof module:Internationalization
  */
-export function configure(options: ConfigureI18nOptions) {
+export function configureI18n(options: ConfigureI18nOptions) {
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
 
   handleRtl();

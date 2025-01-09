@@ -96,10 +96,10 @@ Load up your translation files
 
 #. In ``App.jsx``, make the following changes::
 
-     import { IntlProvider, getMessages, configure } from '@edx/frontend-platform/i18n';
+     import { IntlProvider, getMessages, configureI18n } from '@edx/frontend-base';
      import messages from './i18n/index'; // A map of all messages by locale
 
-      configure({
+      configureI18n({
         messages,
         config: getConfig(), // environment and languagePreferenceCookieName are required
         loggingService: getLoggingService(), // An object with logError and logInfo methods
@@ -108,12 +108,12 @@ Load up your translation files
       // ...inside ReactDOM.render...
       <IntlProvider locale={this.props.locale} messages={}>
 
-#. As of this writing, ``frontend-platform/i18n`` reads the locale from the user language preference cookie, or, if none is found, from the browser's language setting. You can verify everything is working by changing your language preference in your account settings. If you are not logged in, you can change your browser language to one of the languages you have translations for.
+#. As of this writing, ``frontend-base`` reads the locale from the user language preference cookie, or, if none is found, from the browser's language setting. You can verify everything is working by changing your language preference in your account settings. If you are not logged in, you can change your browser language to one of the languages you have translations for.
 
 
-********************
+*************************
 Migrating to react-intl@5
-********************
+*************************
 
 Initially ``frontend-platform`` used ``react-intl@2`` but as a part of its ``2.0.0`` release the version has been upgraded to ``react-intl@5``. If your application
 used ``frontend-platform`` < ``2.0.0`` and you decided to upgrade, here's a list of breaking changes that you will need to consider during the upgrade:
