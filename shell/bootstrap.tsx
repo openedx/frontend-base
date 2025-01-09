@@ -7,6 +7,7 @@ import {
   initialize,
   subscribe
 } from '../runtime';
+import { addAppConfigs } from '../runtime/config';
 import { addAppMessages } from '../runtime/i18n';
 import { initializeRemotes } from './federation/initializeRemotes';
 import { preloadHintlessFederatedApps } from './federation/preloadHintlessFederatedApps';
@@ -20,6 +21,7 @@ subscribe(APP_READY, async () => {
 
   const router = createRouter();
 
+  addAppConfigs();
   addAppMessages();
 
   ReactDOM.render(

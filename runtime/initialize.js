@@ -73,7 +73,8 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import {
-  getConfig, mergeConfig
+  getConfig, mergeConfig,
+  patchAppConfig
 } from './config';
 import {
   APP_ANALYTICS_INITIALIZED,
@@ -172,6 +173,13 @@ async function fileConfig() {
     config = await siteConfig();
   } else {
     config = siteConfig;
+  }
+
+  // This means the SiteConfig is acting as an app, i.e., 'legacy mode' which allows an MFE to be
+  // built as its own site using the shell.  In that case, we need to move all the 'custom' config
+  // into our appConfigs object so it can be accessed by the code.
+  if (config.custom !== undefined) {
+    patchAppConfig(config.custom);
   }
 
   mergeConfig(config);
