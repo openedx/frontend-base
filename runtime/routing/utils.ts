@@ -1,6 +1,9 @@
+import { RouteObject } from 'react-router';
+
+import { RoleRouteObject } from '../../types';
 import { getConfig } from '../config';
 
-export default function getUrlByRole(role: string) {
+export function getUrlByRouteRole(role: string) {
   const { apps, federatedApps, externalRoutes } = getConfig();
 
   for (const app of apps) {
@@ -28,4 +31,8 @@ export default function getUrlByRole(role: string) {
   }
 
   return null;
+}
+
+export function isRoleRouteObject(match: RouteObject): match is RoleRouteObject {
+  return match.handle !== undefined && 'role' in match.handle;
 }
