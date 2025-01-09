@@ -8,8 +8,7 @@ import { LayoutOperation } from './layout/types';
 import { WidgetOperation } from './widget/types';
 
 export interface UiOperationCondition {
-  active?: string,
-  inactive?: string,
+  active?: string[],
   authenticated?: boolean,
 }
 

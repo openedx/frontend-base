@@ -4,7 +4,7 @@ import { isUiOperation, isUiOperationConditionSatisfied } from '../utils';
 import FederatedWidget from './FederatedWidget';
 import { IFrameWidget } from './iframe';
 import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetFederatedProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
-import WidgetContext from './WidgetContext';
+import WidgetProvider from './WidgetProvider';
 
 export function isWidgetOperation(operation: UiOperation): operation is WidgetOperation {
   return isUiOperation(operation) && Object.values(WidgetOperationTypes).includes(operation.op as WidgetOperationTypes);
@@ -97,15 +97,9 @@ function createIdentifiedWidget(operation: WidgetRendererOperation) {
   return {
     id,
     node: (
-      <WidgetContext.Provider
-        key={id}
-        value={{
-          slotId: operation.slotId,
-          widgetId: operation.id,
-          role: operation.role,
-        }}
-      >{widget}
-      </WidgetContext.Provider>
+      <WidgetProvider key={id} slotId={operation.slotId} widgetId={operation.id} role={operation.role}>
+        {widget}
+      </WidgetProvider>
     ),
   };
 }

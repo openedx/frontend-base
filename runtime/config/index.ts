@@ -109,7 +109,7 @@ import {
   RequiredSiteConfig,
   SiteConfig
 } from '../../types';
-import { APPS_CHANGED, CONFIG_CHANGED } from '../constants';
+import { ACTIVE_ROLES_CHANGED, APPS_CHANGED, CONFIG_CHANGED } from '../constants';
 import { publish } from '../subscriptions';
 
 let config: SiteConfig = {
@@ -228,4 +228,46 @@ export function mergeRemotes(remotes: Remote[]) {
   if (changed) {
     publish(CONFIG_CHANGED);
   }
+}
+
+let activeRouteRoles: string[] = [];
+
+export function setActiveRouteRoles(roles: string[]) {
+  activeRouteRoles = roles;
+  publish(ACTIVE_ROLES_CHANGED);
+}
+
+export function getActiveRouteRoles() {
+  return activeRouteRoles;
+}
+
+const activeWidgetRoles: Record<string, number> = {};
+
+export function addActiveWidgetRole(role: string) {
+  if (activeWidgetRoles[role] === undefined) {
+    activeWidgetRoles[role] = 0;
+  }
+  activeWidgetRoles[role] += 1;
+  publish(ACTIVE_ROLES_CHANGED);
+}
+
+export function removeActiveWidgetRole(role: string) {
+  if (activeWidgetRoles[role] !== undefined) {
+    activeWidgetRoles[role] -= 1;
+  }
+  if (activeWidgetRoles[role] < 1) {
+    delete activeWidgetRoles[role];
+  }
+  publish(ACTIVE_ROLES_CHANGED);
+}
+
+export function getActiveWidgetRoles() {
+  return Object.entries(activeWidgetRoles)
+    .filter(([, count]: [role: string, count: number]) => count !== undefined && count > 0)
+    .map(([role]: [role: string, count: number]) => role);
+}
+
+// Gets all active roles from the route roles and widget roles.
+export function getActiveRoles() {
+  return [...getActiveRouteRoles(), ...getActiveWidgetRoles()];
 }
