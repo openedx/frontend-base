@@ -3,7 +3,7 @@ import { UiOperation } from '../types';
 import { isUiOperation, isUiOperationConditionSatisfied } from '../utils';
 import FederatedWidget from './FederatedWidget';
 import { IFrameWidget } from './iframe';
-import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetFederatedProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
+import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetFederatedProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
 import WidgetProvider from './WidgetProvider';
 
 export function isWidgetOperation(operation: UiOperation): operation is WidgetOperation {
@@ -50,6 +50,14 @@ export function isWidgetRendererOperation(operation: UiOperation): operation is 
   return isWidgetOperation(operation) && hasWidgetRendererProps(operation);
 }
 
+export function isWidgetIdentityOperation(operation: UiOperation): operation is (WidgetOperation & WidgetIdentityProps) {
+  return isWidgetOperation(operation) && hasWidgetIdentityProps(operation);
+}
+
+export function isWidgetIdentityRoleOperation(operation: UiOperation): operation is (WidgetOperation & WidgetIdentityProps & { role: string }) {
+  return isWidgetIdentityOperation(operation) && hasWidgetIdentityRoleProps(operation);
+}
+
 // Widget Operation props helpers
 
 function hasWidgetComponentProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetComponentProps) {
@@ -70,6 +78,14 @@ function hasWidgetIFrameProps(operation: WidgetOperation): operation is (WidgetO
 
 function hasWidgetRendererProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetRendererProps) {
   return hasWidgetComponentProps(operation) || hasWidgetElementProps(operation) || hasWidgetFederatedProps(operation) || hasWidgetIFrameProps(operation);
+}
+
+function hasWidgetIdentityProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetIdentityProps) {
+  return isWidgetOperation(operation) && 'id' in operation;
+}
+
+function hasWidgetIdentityRoleProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetIdentityProps & { role: string }) {
+  return hasWidgetIdentityProps(operation) && 'role' in operation;
 }
 
 /**
