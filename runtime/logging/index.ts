@@ -1,9 +1,9 @@
 export {
+  configureLogging,
   getLoggingService,
-  resetLoggingService,
-  configure,
-  logInfo,
   logError,
+  logInfo,
+  resetLoggingService
 } from './interface';
-export { default as NewRelicLoggingService } from './NewRelicLoggingService';
 export { default as MockLoggingService } from './MockLoggingService';
+export { default as NewRelicLoggingService } from './NewRelicLoggingService';

@@ -1,19 +1,19 @@
+export { default as AxiosJwtAuthService } from './AxiosJwtAuthService';
 export {
-  AUTHENTICATED_USER_TOPIC,
   AUTHENTICATED_USER_CHANGED,
-  configure,
+  AUTHENTICATED_USER_TOPIC,
+  configureAuth,
+  ensureAuthenticatedUser,
+  fetchAuthenticatedUser,
   getAuthenticatedHttpClient,
+  getAuthenticatedUser,
   getAuthService,
   getHttpClient,
   getLoginRedirectUrl,
-  redirectToLogin,
   getLogoutRedirectUrl,
-  redirectToLogout,
-  getAuthenticatedUser,
-  setAuthenticatedUser,
-  fetchAuthenticatedUser,
-  ensureAuthenticatedUser,
   hydrateAuthenticatedUser,
+  redirectToLogin,
+  redirectToLogout,
+  setAuthenticatedUser
 } from './interface';
-export { default as AxiosJwtAuthService } from './AxiosJwtAuthService';
 export { default as MockAuthService } from './MockAuthService';

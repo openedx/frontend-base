@@ -1,5 +1,5 @@
 export {
-  configure as configureAnalytics,
+  configureAnalytics,
   getAnalyticsService,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
@@ -15,7 +15,7 @@ export {
   AUTHENTICATED_USER_CHANGED,
   AUTHENTICATED_USER_TOPIC,
   AxiosJwtAuthService,
-  configure as configureAuth,
+  configureAuth,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
   getAuthenticatedHttpClient,
@@ -52,7 +52,7 @@ export {
 } from './constants';
 
 export {
-  configure as configureI18n,
+  configureI18n,
   createIntl,
   defineMessages,
   FormattedDate,
@@ -87,7 +87,7 @@ export {
 } from './initialize';
 
 export {
-  configure as configureLogging,
+  configureLogging,
   getLoggingService,
   logError,
   logInfo,

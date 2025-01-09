@@ -57,14 +57,14 @@ folder. It points at an `site.config.tsx` file in the root of an project's repos
 */
 import siteConfig from 'site.config';
 import {
-  configure as configureAnalytics,
+  configureAnalytics,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
   SegmentAnalyticsService,
 } from './analytics';
 import {
   AxiosJwtAuthService,
-  configure as configureAuth,
+  configureAuth,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
   getAuthenticatedHttpClient,
@@ -85,9 +85,9 @@ import {
   APP_PUBSUB_INITIALIZED,
   APP_READY,
 } from './constants';
-import { configure as configureI18n } from './i18n';
+import { configureI18n } from './i18n';
 import {
-  configure as configureLogging,
+  configureLogging,
   getLoggingService,
   logError,
   NewRelicLoggingService,

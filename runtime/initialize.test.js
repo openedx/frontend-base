@@ -12,10 +12,10 @@ import {
 } from './constants';
 import { getHistory, initialize } from './initialize';
 
-import { configure as configureAnalytics, SegmentAnalyticsService } from './analytics';
+import { configureAnalytics, SegmentAnalyticsService } from './analytics';
 import {
   AxiosJwtAuthService,
-  configure as configureAuth,
+  configureAuth,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
   getAuthenticatedHttpClient,
@@ -24,9 +24,9 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import { getConfig, mergeConfig } from './config';
-import { configure as configureI18n } from './i18n';
+import { configureI18n } from './i18n';
 import {
-  configure as configureLogging,
+  configureLogging,
   getLoggingService,
   logError,
   NewRelicLoggingService,

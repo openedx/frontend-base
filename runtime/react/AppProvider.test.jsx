@@ -3,7 +3,7 @@ import { initialize } from '../initialize';
 import AppProvider from './AppProvider';
 
 jest.mock('../auth', () => ({
-  configure: () => {},
+  configureAuth: () => { },
   getAuthenticatedUser: () => null,
   fetchAuthenticatedUser: () => null,
   getAuthenticatedHttpClient: () => ({}),
@@ -11,7 +11,7 @@ jest.mock('../auth', () => ({
 }));
 
 jest.mock('../analytics', () => ({
-  configure: () => {},
+  configureAnalytics: () => { },
   identifyAnonymousUser: jest.fn(),
   identifyAuthenticatedUser: jest.fn(),
 }));

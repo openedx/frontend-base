@@ -1,5 +1,5 @@
 import {
-  configure,
+  configureI18n,
   getCookies,
   getLocale,
   getMessages,
@@ -28,7 +28,7 @@ describe('lib', () => {
 
   describe('getLocale', () => {
     beforeEach(() => {
-      configure({
+      configureI18n({
         messages: {
           'es-419': {},
           de: {},
@@ -68,7 +68,7 @@ describe('lib', () => {
 
   describe('getMessages', () => {
     beforeEach(() => {
-      configure({
+      configureI18n({
         messages: {
           'es-419': { message: 'es-hah' },
           de: { message: 'de-hah' },
@@ -120,7 +120,7 @@ describe('lib', () => {
 
     it('should do the right thing for non-RTL languages', () => {
       getCookies().get = jest.fn(() => 'es-419');
-      configure({
+      configureI18n({
         messages: {
           'es-419': { message: 'es-hah' },
         },
@@ -132,7 +132,7 @@ describe('lib', () => {
 
     it('should do the right thing for RTL languages', () => {
       getCookies().get = jest.fn(() => 'ar');
-      configure({
+      configureI18n({
         messages: {
           ar: { message: 'ar-hah' },
         },
@@ -146,7 +146,7 @@ describe('lib', () => {
 
 describe('mergeMessages', () => {
   it('should merge objects', () => {
-    configure({
+    configureI18n({
       messages: {
         ar: { message: 'ar-hah' },
       },
@@ -161,7 +161,7 @@ describe('mergeMessages', () => {
   });
 
   it('should merge objects from an array', () => {
-    configure({
+    configureI18n({
       messages: {
         ar: { message: 'ar-hah' },
       },
@@ -176,7 +176,7 @@ describe('mergeMessages', () => {
   });
 
   it('should merge nested objects from an array', () => {
-    configure({
+    configureI18n({
       messages: {
         en: { init: 'initial' },
         es: { init: 'inicial' },
@@ -209,7 +209,7 @@ describe('mergeMessages', () => {
   });
 
   it('should return an empty object if no messages', () => {
-    configure({
+    configureI18n({
       messages: {},
     });
     expect(mergeMessages(undefined)).toEqual({});
@@ -219,7 +219,7 @@ describe('mergeMessages', () => {
   });
 
   it('should return the original object if no messages', () => {
-    configure({
+    configureI18n({
       messages: { en: { hello: 'world ' } },
     });
     expect(mergeMessages(undefined)).toEqual({ en: { hello: 'world ' } });

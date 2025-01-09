@@ -14,7 +14,7 @@
  * (in our case English), *even if you gave IntlProvider the correct messages object for that
  * locale*.
  *
- * Messages are provided to this module via the configure() function below.
+ * Messages are provided to this module via the configureI18n() function below.
  *
  *
  * @module Internationalization
@@ -98,7 +98,7 @@ export {
 
 export {
   addAppMessages,
-  configure,
+  configureI18n,
   getLocale,
   getLocalizedLanguageName,
   getMessages,

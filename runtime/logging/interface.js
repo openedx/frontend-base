@@ -8,7 +8,7 @@
  * you're not using the `initialize` function, logging (via New Relic) can be configured via:
  *
  * ```
- * import { getConfig, configure, NewRelicLoggingService, logInfo, logError } from '@openedx/frontend-base';
+ * import { getConfig, configureLogging, NewRelicLoggingService, logInfo, logError } from '@openedx/frontend-base';
  *
  * configureLogging(NewRelicLoggingService, {
  *   config: getConfig(),
@@ -41,7 +41,7 @@ let service = null;
 /**
  *
  */
-export function configure(LoggingService, options) {
+export function configureLogging(LoggingService, options) {
   PropTypes.checkPropTypes(optionsShape, options, 'property', 'Logging');
   service = new LoggingService(options);
   PropTypes.checkPropTypes(serviceShape, service, 'property', 'LoggingService');
@@ -82,7 +82,7 @@ export function setCustomAttribute(name, value) {
 
 /**
  *
- * @throws {Error} Thrown if the logging service has not yet been configured via {@link configure}.
+ * @throws {Error} Thrown if the logging service has not yet been configured via {@link configureLogging}.
  * @returns {LoggingService}
  */
 export function getLoggingService() {
