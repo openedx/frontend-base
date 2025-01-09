@@ -50,7 +50,7 @@ export function useLayoutOptionsForId(id: string) {
   const operations = useOperations(id);
 
   const findOptions = useCallback(() => {
-    let nextOptions: Record<string, any> = {};
+    let nextOptions: Record<string, unknown> = {};
     if (isUiSlot(id)) {
       for (const operation of operations) {
         if (isUiOperation(operation)) {
@@ -65,7 +65,7 @@ export function useLayoutOptionsForId(id: string) {
     return nextOptions;
   }, [operations, id]);
 
-  const [options, setOptions] = useState<Record<string, any>>(findOptions());
+  const [options, setOptions] = useState<Record<string, unknown>>(findOptions());
 
   useEffect(() => {
     const nextOptions = findOptions();

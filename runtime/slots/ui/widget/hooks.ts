@@ -90,7 +90,7 @@ export function useWidgetOptionsForId(slotId: string, widgetId: string) {
   const operations = useWidgetOperations(slotId);
 
   const findOptions = useCallback(() => {
-    let nextOptions: Record<string, any> = {};
+    let nextOptions: Record<string, unknown> = {};
     for (const operation of operations) {
       if (isUiOperationConditionSatisfied(operation)) {
         if (isWidgetOptionsOperation(operation)) {
@@ -103,7 +103,7 @@ export function useWidgetOptionsForId(slotId: string, widgetId: string) {
     return nextOptions;
   }, [operations, widgetId]);
 
-  const [options, setOptions] = useState<Record<string, any>>(findOptions());
+  const [options, setOptions] = useState<Record<string, unknown>>(findOptions());
 
   useEffect(() => {
     const nextOptions = findOptions();

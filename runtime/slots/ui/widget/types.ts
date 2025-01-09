@@ -113,7 +113,7 @@ export type WidgetRemoveOperation = BaseWidgetOperation & WidgetRelationshipProp
 
 export type WidgetOptionsOperation = BaseWidgetOperation & WidgetRelationshipProps & {
   op: WidgetOperationTypes.OPTIONS,
-  options: Record<string, any>,
+  options: Record<string, unknown>,
 };
 
 export type WidgetReplaceOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & WidgetRelationshipProps & { op: WidgetOperationTypes.REPLACE };
