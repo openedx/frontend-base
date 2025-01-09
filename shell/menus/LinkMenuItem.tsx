@@ -1,7 +1,7 @@
 import { Dropdown, Hyperlink, NavDropdown, NavLink } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
 
-import { getUrlByRole } from '../../runtime/routing';
+import { getUrlByRouteRole } from '../../runtime/routing';
 import {
   MenuItemName
 } from '../../types';
@@ -22,7 +22,7 @@ export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }
 
   let finalUrl: string | null | undefined;
   if (role !== undefined) {
-    finalUrl = getUrlByRole(role);
+    finalUrl = getUrlByRouteRole(role);
   } else if (url !== undefined) {
     finalUrl = url;
   }

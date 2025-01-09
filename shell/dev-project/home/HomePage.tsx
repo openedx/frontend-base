@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useIntl } from '../../../runtime';
-import { getUrlByRole } from '../../../runtime/routing';
+import { getUrlByRouteRole } from '../../../runtime/routing';
 import messages from './messages';
 
 export default function HomePage() {
-  const coursewareUrl = getUrlByRole('courseware');
-  const dashboardUrl = getUrlByRole('learnerDashboard');
-  const slotShowcaseUrl = getUrlByRole('slotShowcase');
+  const coursewareUrl = getUrlByRouteRole('courseware');
+  const dashboardUrl = getUrlByRouteRole('learnerDashboard');
+  const slotShowcaseUrl = getUrlByRouteRole('slotShowcase');
   const intl = useIntl();
 
   return (
