@@ -1,7 +1,7 @@
 import { defaultFooterConfig, defaultHeaderConfig, defaultShellConfig, EnvironmentTypes } from '@openedx/frontend-base';
 
 import { ProjectSiteConfig } from '@openedx/frontend-base';
-import { examplePageConfig, iframePluginConfig } from './src';
+import { examplePageConfig, iframeWidgetConfig } from './src';
 import './src/project.scss';
 
 const config: ProjectSiteConfig = {
@@ -10,7 +10,7 @@ const config: ProjectSiteConfig = {
     defaultHeaderConfig,
     defaultFooterConfig,
     examplePageConfig,
-    iframePluginConfig,
+    iframeWidgetConfig,
   ],
   federatedApps: [
     {

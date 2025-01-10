@@ -1,6 +1,6 @@
 import { defaultFooterConfig, defaultHeaderConfig, defaultShellConfig, EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
 
-import { authenticatedPageConfig, examplePageConfig, iframePluginConfig } from './src';
+import { authenticatedPageConfig, examplePageConfig, iframeWidgetConfig } from './src';
 import './src/project.scss';
 
 const config: ProjectSiteConfig = {
@@ -10,7 +10,7 @@ const config: ProjectSiteConfig = {
     defaultFooterConfig,
     examplePageConfig,
     authenticatedPageConfig,
-    iframePluginConfig,
+    iframeWidgetConfig,
   ],
 
   environment: EnvironmentTypes.PRODUCTION,
