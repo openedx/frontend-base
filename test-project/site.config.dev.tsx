@@ -12,6 +12,19 @@ const config: ProjectSiteConfig = {
     iframePluginConfig,
   ],
 
+  // federatedApps: [
+  //   {
+  //     remoteId: 'openedxAuthn',
+  //     moduleId: 'authn',
+  //   }
+  // ],
+  // remotes: [
+  //   {
+  //     id: 'openedxAuthn',
+  //     url: 'http://apps.local.openedx.io:8082/remoteEntry.js'
+  //   }
+  // ],
+
   appId: 'shell',
   baseUrl: 'http://apps.local.openedx.io:8080',
   environment: EnvironmentTypes.DEVELOPMENT,
