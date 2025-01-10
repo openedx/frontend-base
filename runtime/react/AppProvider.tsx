@@ -12,7 +12,7 @@ import {
 
 import AppContext from './AppContext';
 import ErrorBoundary from './ErrorBoundary';
-import { useActiveRouteRoleWatcher, useAppEvent, useTrackColorSchemeChoice } from './hooks';
+import { useAppEvent } from './hooks';
 import LearningProvider from './learning/LearningProvider';
 
 interface AppProviderProps {
@@ -46,9 +46,6 @@ export default function AppProvider({ children }: AppProviderProps) {
   const [config, setConfig] = useState(getConfig());
   const [authenticatedUser, setAuthenticatedUser] = useState(getAuthenticatedUser());
   const [locale, setLocale] = useState(getLocale());
-
-  useTrackColorSchemeChoice();
-  useActiveRouteRoleWatcher();
 
   useAppEvent(AUTHENTICATED_USER_CHANGED, () => {
     setAuthenticatedUser(getAuthenticatedUser());
