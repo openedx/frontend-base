@@ -111,9 +111,11 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 ```
   "scripts": {
     "build": "PORT=YOUR_PORT openedx build",
+    "build:legacy": "openedx build:legacy", // TODO: Does this target exist?
     "build:module": "PORT=YOUR_PORT openedx build:module",
     "dev": "PORT=YOUR_PORT openedx dev",
     "dev:module": "PORT=YOUR_PORT openedx dev:module",
+    "dev:legacy": "PORT=YOUR_PORT openedx dev:legacy",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
@@ -145,10 +147,14 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 
 This means that the code from the library can be safely tree-shaken by webpack.
 
-```diff
-+ "sideEffects": false,
+```json
+"sideEffects": [
+  "*.css",
+  "*.scss"
+],
 ```
-+
+
+// TODO: Maybe put scss and css files in side effects.  They have side effects and need to be excluded so they get bundled.
 
 - `config`
 
@@ -167,6 +173,8 @@ The config block must also include an `exposes` configuration that describes you
 + },
 ```
 
+If you used the "exports" field in package.json it changes the way importing/requiring/TS/node works and everything starts to break.
+
 The entries in `exposes` are:
 
 1. A key that is compatible with the [Package entry points](https://nodejs.org/api/packages.html#package-entry-points) specification.  Generally the name of your module prefixed with `./`.
@@ -176,7 +184,7 @@ The entries in `exposes` are:
 
 Create an `app.d.ts` file in the root of your MFE with the following contents:
 
-```
+```ts
 /// <reference types="@openedx/frontend-base" />
 
 declare module 'site.config' {
@@ -193,7 +201,7 @@ declare module '*.svg' {
 
 Create a `tsconfig.json` file and add the following contents to it:
 
-```
+```json
 {
   "extends": "@openedx/frontend-base/config/tsconfig.json",
   "compilerOptions": {
@@ -484,7 +492,7 @@ Other configuration is now optional, and many values have been given sensible de
 
 ### URL Config changes
 
-Note that the .env files and env.config.js files also include a number of URLs for various micro-frontends and services.  These URLs should now be expressed as part of the `apps` config as route roles, and used in code via `getUrlForRouteRole()`.
+Note that the .env files and env.config.js files also include a number of URLs for various micro-frontends and services.  These URLs should now be expressed as part of the `apps` config as route roles, and used in code via `getUrlForRouteRole()`.  Or as externalRoutes.
 
 ```
 // Creating a route role with for 'example' in an App
@@ -569,11 +577,11 @@ export default config;
 
 ## 20. Remove initialization
 
-In your index.(jsx|tsx) file, you need to remove the subscribe and initialization code.  If you have customizations here, they will need to migrate to your `site.config` file instead and take advantage of the shell's provided customization mechanisms.  **This functionality is still a work in progress.**
+In your index.(jsx|tsx) file, you need to remove the subscribe and initialization code.  If you have customizations here, they will need to migrate to your `site.config` file instead and take advantage of the shell's provided customization mechanisms.
 
 ## 21. Migrate header/footer dependencies
 
-If your application uses a custom header or footer, you can use the shell's header and footer plugin slots to provide your custom header/footer components.  This is done through the `site.config` file.  **This functionality is still a work in progress.**
+If your application uses a custom header or footer, you can use the shell's header and footer plugin slots to provide your custom header/footer components.  This is done through the `site.config` file.
 
 ## 22. Export the modules of your app in your index.ts file.
 
@@ -667,6 +675,8 @@ frontend-platform used pubsub-js behind the scenes for event subscriptions/publi
 The unsubscribe function as a different API than pubsub-js's unsubscribe function, taking a topic and a callback rather than an unsubscribe token.
 
 Consumers who were using the `PubSub` global variable should instead import the above functions directly from `@openedx/frontend-base`.
+
+### 31. React router move to data router.
 
 ## 30. More art than science: find your module boundaries
 
