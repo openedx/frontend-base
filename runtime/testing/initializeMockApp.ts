@@ -1,4 +1,3 @@
-// @ts-expect-error We're using an alias in the jest config to create this 'fake' package; TS doesn't know about it.
 import siteConfig from 'site.config';
 
 import { configureAnalytics, MockAnalyticsService } from '../analytics';
