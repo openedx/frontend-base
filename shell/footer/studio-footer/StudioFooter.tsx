@@ -44,12 +44,12 @@ export default function StudioFooter() {
           {isOpen ? (
             <ActionRow key="help-link-button-row" className="py-4" data-testid="helpButtonRow">
               <ActionRow.Spacer />
-              <Button as="a" href="https://docs.edx.org/" size="sm">
+              <Button as="a" href="https://docs.openedx.org/" size="sm">
                 <FormattedMessage {...messages.edxDocumentationButtonLabel} />
               </Button>
               <Button
                 as="a"
-                href="https://open.edx.org/"
+                href="https://openedx.org/"
                 size="sm"
                 data-testid="openEdXPortalButton"
               >
@@ -116,7 +116,7 @@ export default function StudioFooter() {
           <FormattedMessage {...messages.trademarkMessage} />
           <Hyperlink className="ml-1" destination="https://www.edx.org">edX Inc</Hyperlink>.
           <ActionRow.Spacer />
-          <Hyperlink destination="https://open.edx.org" className="float-right">
+          <Hyperlink destination="https://openedx.org" className="float-right">
             <Image
               width="120px"
               alt="Powered by Open edX"
