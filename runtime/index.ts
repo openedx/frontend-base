@@ -31,7 +31,22 @@ export {
   setAuthenticatedUser
 } from './auth';
 
-export * from './config';
+export {
+  getConfig,
+  setConfig,
+  mergeConfig,
+  patchApp,
+  addAppConfigs,
+  getAppConfig,
+  patchAppConfig,
+  mergeRemotes,
+  setActiveRouteRoles,
+  getActiveRouteRoles,
+  addActiveWidgetRole,
+  removeActiveWidgetRole,
+  getActiveWidgetRoles,
+  getActiveRoles
+} from './config';
 
 export * from './constants';
 
