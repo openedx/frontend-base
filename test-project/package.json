@@ -34,6 +34,7 @@
     "redux": "^4.2.1"
   },
   "devDependencies": {
+    "@types/react": "^17.0.0",
     "react-test-renderer": "^17.0.2"
   },
   "dependencies": {
