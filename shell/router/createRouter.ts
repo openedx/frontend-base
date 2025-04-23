@@ -1,9 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { getBasename } from '../../runtime/initialize';
-import { SHELL_ID } from '../data/constants';
+import { SHELL_ID } from '../federation/constants';
 import Shell from '../Shell';
-import createInternalRoutes from './createInternalRoutes';
+
+import getAppRoutes from './getAppRoutes';
 import patchRoutesOnNavigation from './patchRoutesOnNavigation';
 
 export default function createRouter() {
@@ -11,7 +12,7 @@ export default function createRouter() {
     {
       id: SHELL_ID,
       Component: Shell,
-      children: createInternalRoutes(),
+      children: getAppRoutes(),
     }
   ], {
     basename: getBasename(),

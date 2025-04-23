@@ -189,7 +189,7 @@ function generateMainMessagesFile({
   writeFileSync,
   i18nDir,
 }: {
-  processedDirectories: Array<{ directory: string, isWritten: boolean }>,
+  processedDirectories: { directory: string, isWritten: boolean }[],
   log: (message: string) => void,
   writeFileSync: (filename: string, content: string) => void,
   i18nDir: string,
@@ -234,7 +234,7 @@ export function main({
   directories: string | string[],
   log: (message: string) => void,
   writeFileSync: (filename: string, content: string) => void,
-  pwd: string
+  pwd: string,
 }) {
   const i18nDir = `${pwd}/src/i18n`; // The Micro-frontend i18n root directory
 
@@ -248,7 +248,7 @@ export function main({
     log(`${loggingPrefix}: Error: src/i18n directory was not found.\n`);
   } else {
     // If we're here, we know that directories is an array, so cast it as one.
-    const processedDirectories = (<string[]>directories).map((directory: string) => generateSubdirectoryMessageFile({
+    const processedDirectories = (directories as string[]).map((directory: string) => generateSubdirectoryMessageFile({
       directory,
       log,
       writeFileSync,
@@ -269,6 +269,6 @@ if (require.main === module) {
     directories: process.argv.slice(2),
     log: text => process.stdout.write(text),
     writeFileSync: fs.writeFileSync,
-    pwd: process.env.PWD || '.',
+    pwd: process.env.PWD ?? '.',
   });
 }

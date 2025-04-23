@@ -6,15 +6,14 @@
   "config": {
     "name": "testProject",
     "exposes": {
-      "./AuthenticatedPage": "./src/authenticated-page",
-      "./ExamplePage": "./src/example-page",
-      "./IframePlugin": "./src/iframe-plugin/IframePlugin",
-      "./PluginPage": "./src/plugin-page"
+      "./authenticated-page": "./src/authenticated-page",
+      "./example-page": "./src/example-page",
+      "./iframe-widget": "./src/iframe-widget"
     }
   },
   "scripts": {
     "build": "openedx build",
-    "lint": "openedx lint . --no-eslintrc -c .eslintrc.js",
+    "lint": "openedx lint .",
     "dev": "openedx dev",
     "dev:with-remotes": "SITE_CONFIG_PATH=site.config.dev.with-remotes.tsx openedx dev",
     "dev:module": "PORT=8081 openedx dev:module",
@@ -35,6 +34,7 @@
     "redux": "^4.2.1"
   },
   "devDependencies": {
+    "@types/react": "^17.0.0",
     "react-test-renderer": "^17.0.2"
   },
   "dependencies": {

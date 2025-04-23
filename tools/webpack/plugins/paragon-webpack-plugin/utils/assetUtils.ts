@@ -1,4 +1,4 @@
-import { Compilation } from "webpack";
+import { Compilation } from 'webpack';
 
 /**
  * Finds the core CSS asset from the given array of Paragon assets.
@@ -20,7 +20,7 @@ export function findCoreCssAsset(paragonAssets: any) {
  * @param {Object} [options.paragonThemeCss] - The Paragon theme CSS object.
  * @return {Object} - The theme variant CSS assets.
  */
-export function findThemeVariantCssAssets(paragonAssets: Array<any>, {
+export function findThemeVariantCssAssets(paragonAssets: any[], {
   isBrandOverride = false,
   brandThemeCss,
   paragonThemeCss,

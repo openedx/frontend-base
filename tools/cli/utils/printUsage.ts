@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 
 export default function printUsage() {
   console.log('CLI Usage:\n');
@@ -22,7 +22,7 @@ export default function printUsage() {
 
   console.log(`${chalk.bold('lint')} <eslint options>\n`);
   console.group();
-  console.log(`Runs ESLint on the source code. Requires an ${chalk.bold('.eslintrc.js')} file.\n`);
+  console.log(`Runs ESLint on the source code. Requires an ${chalk.bold('eslint.config.js')} file.\n`);
   console.groupEnd();
 
   console.log(`${chalk.bold('test')} <jest options>\n`);

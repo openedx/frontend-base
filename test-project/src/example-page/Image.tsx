@@ -1,12 +1,12 @@
 import { CSSProperties } from 'react';
 
-type ImageProps = {
-  src: string;
-  alt?: string;
-  style?: CSSProperties;
-};
+interface ImageProps {
+  src: string,
+  alt?: string,
+  style?: CSSProperties,
+}
 
-const Image = ({ alt, ...rest }:ImageProps) => <img alt={alt} {...rest} />;
+const Image = ({ alt, ...rest }: ImageProps) => <img alt={alt} {...rest} />;
 
 const defaultProps = {
   alt: undefined,

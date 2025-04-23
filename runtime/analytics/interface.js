@@ -16,7 +16,7 @@
  *   SegmentAnalyticsService
  * } from '@openedx/frontend-base';
  *
- * configure(SegmentAnalyticsService, {
+ * configureAnalytics(SegmentAnalyticsService, {
  *   config: getConfig(),
  *   loggingService: getLoggingService(),
  *   httpClient: getAuthenticatedHttpClient(),
@@ -55,7 +55,7 @@ let service;
  * @param {*} options
  * @returns {AnalyticsService}
  */
-export function configure(AnalyticsService, options) {
+export function configureAnalytics(AnalyticsService, options) {
   PropTypes.checkPropTypes(optionsShape, options, 'property', 'Analytics');
   service = new AnalyticsService(options);
   PropTypes.checkPropTypes(serviceShape, service, 'property', 'AnalyticsService');

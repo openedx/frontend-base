@@ -12,7 +12,7 @@ import { getDescendantByTag } from './tagUtils';
  * @throws {Error} If the head element is missing in the HTML document.
  * @return {number} The insertion point for the stylesheet in the HTML document.
  */
-export function findStylesheetInsertionPoint({ document, source }: { document: Document, source: string}) {
+export function findStylesheetInsertionPoint({ document, source }: { document: Document, source: string }) {
   const headElement = getDescendantByTag(document, 'head');
   if (!headElement) {
     throw new Error('Missing head element in index.html.');
@@ -58,9 +58,9 @@ export function insertStylesheetsIntoDocument({
 
   // insert the brand overrides styles into the HTML document
   const stylesheetInsertionPoint = findStylesheetInsertionPoint({
-    // @ts-ignore Typescript complains this document instance is missing properties.  Is parse5.parse not returning a valid Document instance?
+    // @ts-expect-error Typescript complains this document instance is missing properties.  Is parse5.parse not returning a valid Document instance?
     document,
-    // @ts-ignore We're passing a ReplaceSource here, when we expect a string in the function.
+    // @ts-expect-error We're passing a ReplaceSource here, when we expect a string in the function.
     source: newSource,
   });
 
@@ -83,7 +83,7 @@ export function insertStylesheetsIntoDocument({
   }
 
   if (urls.default) {
-    // @ts-ignore getDescendantByTag requires two parameters.
+    // @ts-expect-error getDescendantByTag requires two parameters.
     const existingDefaultLink = getDescendantByTag(`link[href='${urls.default}']`);
     if (!existingDefaultLink) {
       // create link to inject into the HTML document
@@ -93,7 +93,7 @@ export function insertStylesheetsIntoDocument({
   }
 
   if (urls.brandOverride) {
-    // @ts-ignore getDescendantByTag requires two parameters.
+    // @ts-expect-error getDescendantByTag requires two parameters.
     const existingBrandLink = getDescendantByTag(`link[href='${urls.brandOverride}']`);
     if (!existingBrandLink) {
       // create link to inject into the HTML document

@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history';
-import 'pubsub-js';
+
 import {
   APP_ANALYTICS_INITIALIZED,
   APP_AUTH_INITIALIZED,
@@ -12,10 +12,10 @@ import {
 } from './constants';
 import { getHistory, initialize } from './initialize';
 
-import { configure as configureAnalytics, SegmentAnalyticsService } from './analytics';
+import { configureAnalytics, SegmentAnalyticsService } from './analytics';
 import {
   AxiosJwtAuthService,
-  configure as configureAuth,
+  configureAuth,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
   getAuthenticatedHttpClient,
@@ -24,13 +24,14 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import { getConfig, mergeConfig } from './config';
-import { configure as configureI18n } from './i18n';
+import { configureI18n } from './i18n';
 import {
-  configure as configureLogging,
+  configureLogging,
   getLoggingService,
   logError,
   NewRelicLoggingService,
 } from './logging';
+import { clearAllSubscriptions, subscribe } from './subscriptions';
 
 jest.mock('./logging');
 jest.mock('./auth');
@@ -42,29 +43,17 @@ jest.mock('history');
 let config = null;
 const newConfig = {
   common: {
-    SITE_NAME: 'Test Case',
-    LOGO_URL: 'http://test.example.com:18000/theme/logo.png',
-    LOGO_TRADEMARK_URL: 'http://test.example.com:18000/theme/logo.png',
-    LOGO_WHITE_URL: 'http://test.example.com:18000/theme/logo.png',
-    ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-    FAVICON_URL: 'http://test.example.com:18000/theme/favicon.ico',
-    CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-    DISCOVERY_API_BASE_URL: 'http://test.example.com:18381',
-    PUBLISHER_BASE_URL: 'http://test.example.com:18400',
-    ECOMMERCE_BASE_URL: 'http://test.example.com:18130',
-    LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-    LEARNING_BASE_URL: 'http://test.example.com:2000',
-    LMS_BASE_URL: 'http://test.example.com:18000',
-    LOGIN_URL: 'http://test.example.com:18000/login',
-    LOGOUT_URL: 'http://test.example.com:18000/logout',
-    STUDIO_BASE_URL: 'http://studio.example.com:18010',
-    MARKETING_SITE_BASE_URL: 'http://test.example.com:18000',
-    ORDER_HISTORY_URL: 'http://test.example.com:1996/orders',
-    REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
-    SEGMENT_KEY: '',
-    USER_INFO_COOKIE_NAME: 'edx-user-info',
-    IGNORED_ERROR_REGEX: '',
-    CREDENTIALS_BASE_URL: 'http://test.example.com:18150',
+    siteName: 'Test Case',
+    accessTokenCookieName: 'edx-jwt-cookie-header-payload',
+    csrfTokenApiPath: '/csrf/api/v1/token',
+    languagePreferenceCookieName: 'openedx-language-preference',
+    lmsBaseUrl: 'http://test.example.com:18000',
+    loginUrl: 'http://test.example.com:18000/login',
+    logoutUrl: 'http://test.example.com:18000/logout',
+    refreshAccessTokenApiPath: '/login_refresh',
+    segmentKey: '',
+    userInfoCookieName: 'edx-user-info',
+    ignoredErrorRegex: '',
   },
   auth: {
     INFO_EMAIL: 'openedx@example.com',
@@ -83,7 +72,7 @@ describe('initialize', () => {
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();
     logError.mockReset();
-    global.PubSub.clearAllSubscriptions();
+    clearAllSubscriptions();
   });
 
   it('should call default handlers in the absence of overrides', async () => {
@@ -106,13 +95,13 @@ describe('initialize', () => {
       }
     }
 
-    global.PubSub.subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
-    global.PubSub.subscribe(APP_READY, checkDispatchedDone);
+    subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
+    subscribe(APP_READY, checkDispatchedDone);
 
     const messages = { i_am: 'a message' };
     await initialize({ messages });
@@ -130,8 +119,6 @@ describe('initialize', () => {
     });
     expect(configureI18n).toHaveBeenCalledWith({
       messages,
-      config,
-      loggingService: getLoggingService(),
     });
     expect(fetchAuthenticatedUser).toHaveBeenCalled();
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
@@ -222,7 +209,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
+    subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
@@ -258,7 +245,7 @@ describe('initialize', () => {
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    global.PubSub.subscribe(APP_INIT_ERROR, errorHandler);
+    subscribe(APP_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
@@ -290,8 +277,8 @@ describe('initialize', () => {
       handlers: {
         config: () => {
           mergeConfig({
-            MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
-            APP_ID: 'auth',
+            mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
+            appId: 'auth',
           });
         }
       }
@@ -311,15 +298,13 @@ describe('initialize', () => {
     });
     expect(configureI18n).toHaveBeenCalledWith({
       messages,
-      config,
-      loggingService: getLoggingService(),
     });
 
     expect(fetchAuthenticatedUser).toHaveBeenCalled();
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
     expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
     expect(logError).not.toHaveBeenCalled();
-    expect(getConfig().SITE_NAME).toBe(newConfig.common.SITE_NAME);
+    expect(getConfig().siteName).toBe(newConfig.common.siteName);
     expect(getConfig().INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
     expect(Object.values(getConfig()).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
   });
@@ -342,8 +327,8 @@ describe('initialize', () => {
         handlers: {
           config: () => {
             mergeConfig({
-              MFE_CONFIG_API_URL: 'http://localhost:18000/api/mfe/v1/config',
-              APP_ID: 'auth',
+              mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
+              appId: 'auth',
             });
           }
         }
@@ -364,8 +349,6 @@ describe('initialize', () => {
       });
       expect(configureI18n).toHaveBeenCalledWith({
         messages,
-        config,
-        loggingService: getLoggingService(),
       });
       expect(fetchAuthenticatedUser).toHaveBeenCalled();
       expect(ensureAuthenticatedUser).not.toHaveBeenCalled();

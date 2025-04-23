@@ -132,22 +132,39 @@ Then move the files out of the way (move src to some other sub-dir, mostly) to m
 
 - Cease using `AUTHN_MINIMAL_HEADER`, replace it with an actual minimal header.
 - No more using `process.env` in runtime code.
-- `SUPPORT_URL` is now optional and the support link in the header is hidden if it's not present.
 - Removed dotenv.  Use site.config.tsx.
 - Removed Purge CSS.  We do not believe that Purge CSS works properly with Paragon in general, and it is also fundamentally incompatible with module federation as an architecture.
 - Removed `ensureConfig` function.  This sort of type safety should happen with TypeScript types in the site config file.
 - Removed `ensureDefinedConfig` function.  Similar to ensureConfig, this sort of type safety should be handled by TypeScript.
 - A number of site config variables now have sensible defaults:
-  - ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-  - CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-  - LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-  - USER_INFO_COOKIE_NAME: 'edx-user-info',
-  - PUBLIC_PATH: '/',
-  - ENVIRONMENT: 'production',
+  - accessTokenCookieName: 'edx-jwt-cookie-header-payload',
+  - csrfTokenApiPath: '/csrf/api/v1/token',
+  - languagePreferenceCookieName: 'openedx-language-preference',
+  - userInfoCookieName: 'edx-user-info',
+  - publicPath: '/',
+  - environment: 'production',
 - the `basename` and `history` exports have been replaced by function getters: `getBasename` and `getHistory`.  This is because it may not be possible to determine the values of the original constants at code initialization time, since our config may arrive asynchronously.  This ensures that anyone trying to get these values gets a current value.
 - When using MockAuthService, set the authenticated user by calling setAuthenticatedUser after instantiating the service.  It's not okay for us to add arbitrary config values to the site config.
-- `REFRESH_ACCESS_TOKEN_ENDPOINT` has been replaced with `REFRESH_ACCESS_TOKEN_API_PATH`.  It is now a path that defaults to '/login_refresh'.  The Auth service assumes it is an endpoint on the LMS, and joins the path with `LMS_BASE_URL`.  This change creates more parity with other paths such as `CSRF_TOKEN_API_PATH`.
-- `ENABLE_ACCESSIBILITY_PAGE` has been renamed `ACCESSIBILITY_URL` and is now the URL to an accessibility page.
+- `REFRESH_ACCESS_TOKEN_ENDPOINT` has been replaced with `refreshAccessTokenApiPath`.  It is now a path that defaults to '/login_refresh'.  The Auth service assumes it is an endpoint on the LMS, and joins the path with `lmsBaseUrl`.  This change creates more parity with other paths such as `csrfTokenApiPath`.
+
+The following config variables have been removed, in favor of defining roles for specific modules, `externalRoutes`, or app-specific custom config as necessary:
+
+- ACCOUNT_PROFILE_URL
+- ACCOUNT_SETTINGS_URL
+- LEARNING_BASE_URL
+- ORDER_HISTORY_URL
+- MARKETING_SITE_BASE_URL
+- LEARNER_DASHBOARD_URL
+- STUDIO_BASE_URL
+- ACCESSIBILITY_URL
+- PRIVACY_POLICY_URL
+- TERMS_OF_SERVICE_URL
+- SUPPORT_URL
+- SUPPORT_EMAIL
+- ECOMMERCE_BASE_URL
+- DISCOVERY_API_BASE_URL
+- CREDENTIALS_BASE_URL
+- PUBLISHER_BASE_URL
 
 # Working with Tutor
 

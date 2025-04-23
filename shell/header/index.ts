@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
+export { default as defaultHeaderConfig } from './defaultHeaderConfig';
 export { default as Header } from './Header';

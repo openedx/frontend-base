@@ -1,4 +1,4 @@
-import { Compilation, sources } from "webpack";
+import { Compilation, sources } from 'webpack';
 
 import { getCssAssetsFromCompilation } from './assetUtils';
 import { generateScriptContents, insertScriptContentsIntoDocument } from './scriptUtils';
@@ -60,9 +60,8 @@ export function injectMetadataIntoDocument(compilation: Compilation, {
   const originalSource = file.source.source() as string;
   const newSource = insertScriptContentsIntoDocument({
     originalSource,
-    // @ts-ignore This parameter doesn't exist in the function.
+    // @ts-expect-error This parameter doesn't exist in the function.
     coreCssAsset: paragonCoreCssAsset,
-    // @ts-ignore This parameter doesn't exist in the function.
     themeVariantCssAssets: paragonThemeVariantCssAssets,
     scriptContents,
   });

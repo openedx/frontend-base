@@ -47,7 +47,7 @@ const config: Configuration = {
     rules: [
       ...getCodeRules('dev', resolvedSiteConfigPath),
       getStylesheetRule('dev'),
-       ...getFileLoaderRules(),
+      ...getFileLoaderRules(),
     ],
   },
   optimization: {

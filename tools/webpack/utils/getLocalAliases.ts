@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import fs from 'fs';
 import path from 'path';
 
@@ -27,7 +26,7 @@ Some working examples, as of the time of this writing:
 
 */
 export default function getLocalAliases() {
-  const aliases: { [moduleName: string]: string} = {};
+  const aliases: Record<string, string> = {};
 
   try {
     const moduleConfigPath = path.resolve(process.cwd(), 'module.config.js');
@@ -35,7 +34,7 @@ export default function getLocalAliases() {
       console.log('No local module configuration file found. This is fine.\n');
       return aliases;
     }
-    // eslint-disable-next-line import/no-dynamic-require, global-require
+
     const { localModules } = require(moduleConfigPath);
 
     let allPeerDependencies: string[] = [];
@@ -45,7 +44,7 @@ export default function getLocalAliases() {
     }
     localModules.forEach(({ moduleName, dir, dist = '' }: { moduleName: string, dir: string, dist?: string }) => {
       console.info(`Using local version of ${moduleName} from ${dir}/${dist}.`);
-      // eslint-disable-next-line import/no-dynamic-require, global-require
+
       const { peerDependencies = {}, name } = require(path.resolve(process.cwd(), dir, 'package.json'));
       allPeerDependencies = allPeerDependencies.concat(Object.keys(peerDependencies));
       aliases[moduleName] = path.resolve(process.cwd(), dir, dist);

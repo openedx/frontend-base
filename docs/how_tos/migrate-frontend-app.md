@@ -111,9 +111,11 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 ```
   "scripts": {
     "build": "PORT=YOUR_PORT openedx build",
+    "build:legacy": "openedx build:legacy", // TODO: Does this target exist?
     "build:module": "PORT=YOUR_PORT openedx build:module",
     "dev": "PORT=YOUR_PORT openedx dev",
     "dev:module": "PORT=YOUR_PORT openedx dev:module",
+    "dev:legacy": "PORT=YOUR_PORT openedx dev:legacy",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
@@ -145,10 +147,14 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 
 This means that the code from the library can be safely tree-shaken by webpack.
 
-```diff
-+ "sideEffects": false,
+```json
+"sideEffects": [
+  "*.css",
+  "*.scss"
+],
 ```
-+
+
+// TODO: Maybe put scss and css files in side effects.  They have side effects and need to be excluded so they get bundled.
 
 - `config`
 
@@ -167,6 +173,8 @@ The config block must also include an `exposes` configuration that describes you
 + },
 ```
 
+If you used the "exports" field in package.json it changes the way importing/requiring/TS/node works and everything starts to break.
+
 The entries in `exposes` are:
 
 1. A key that is compatible with the [Package entry points](https://nodejs.org/api/packages.html#package-entry-points) specification.  Generally the name of your module prefixed with `./`.
@@ -176,15 +184,24 @@ The entries in `exposes` are:
 
 Create an `app.d.ts` file in the root of your MFE with the following contents:
 
-```
+```ts
 /// <reference types="@openedx/frontend-base" />
+
+declare module 'site.config' {
+  export default ProjectSiteConfig;
+}
+
+declare module '*.svg' {
+  const content: string;
+  export default content;
+}
 ```
 
 ## 7. Add a tsconfig JSON files
 
 Create a `tsconfig.json` file and add the following contents to it:
 
-```
+```json
 {
   "extends": "@openedx/frontend-base/config/tsconfig.json",
   "compilerOptions": {
@@ -195,7 +212,7 @@ Create a `tsconfig.json` file and add the following contents to it:
     "src/**/*",
     "app.d.ts",
     "babel.config.js",
-    ".eslintrc.js",
+    "eslint.config.js",
     "jest.config.js",
     "test.site.config.tsx",
     "site.config.*.tsx",
@@ -295,35 +312,57 @@ mergeConfig(siteConfig);
 
 ```
 
-## 11. Edit `.eslintrc.js`
+## 11. Replace `.eslintrc.js` with `eslint.config.js`
 
-Replace the import from 'frontend-build' with 'frontend-base'.
+ESLint has been upgraded to v9, which has a new 'flat' file format.  Replace the repository's `.eslintrc.js` file with a new `eslint.config.js` file with the following contents:
+
+```
+// @ts-check
+
+const { createLintConfig } = require('@openedx/frontend-base/config');
+
+module.exports = createLintConfig(
+  {
+    files: [
+      'src/**/*',
+      'site.config.*',
+    ],
+  },
+);
+```
+
+## 12. Replace `.eslintignore`, if it exists, with entries in `eslint.config.js`
+
+The base eslint config provided by frontend-base ignores a number of common folders by default:
+
+```
+  {
+    ignores: [
+      'coverage/*',
+      'dist/*',
+      'node_modules/*',
+      '**/__mocks__/*',
+      '**/__snapshots__/*',
+    ],
+  },
+```
+
+You can configure additional ignores in your own `eslint.config.js` file using the above syntax, as a separate object from the existing 'files' object:
 
 ```diff
-- const { createConfig } = require('@openedx/frontend-build');
-+ const { createConfig } = require('@openedx/frontend-base/config');
-```
-
-Use 'lint' instead of 'eslint' as the config type for createConfig()
-
-```
-module.exports = createConfig('lint', {
-  // ... custom config
-})
-```
-
-You will also need to set the `project` in `parserOptions`.  An uncustomized `.eslintrc.js` file looks like:
-
-```
-const path = require('path');
-
-const { createConfig } = require('@openedx/frontend-base/config');
-
-module.exports = createConfig('lint', {
-  parserOptions: {
-    project: path.resolve(__dirname, './tsconfig.json'),
+module.exports = createLintConfig(
+  {
+    files: [
+      'src/**/*',
+      'site.config.*',
+    ],
   },
-});
++  {
++    ignores: [
++      'ignoredfolder/*'
++    ]
++  }
+);
 ```
 
 ## 12. Search for any other usages of `frontend-build`
@@ -417,13 +456,89 @@ jest.mock('@openedx/frontend-base', () => ({
 
 In this case, the default implementations of most frontend-base exports are included, and only the three afterward are mocked.  In most cases, this should work.  If you have a more complicated mocking situation in your test, you may need to refactor the test.
 
-## 18. Delete the `.env` and `.env.development` files.
+## 18. Delete the `.env` and `.env.development` files and create site.config files.
+
+Frontend-base uses `site.config.*.tsx` files for configuration, rather than .env files.  The development file is site.config.dev.tsx, and the production file is site.config.prod.tsx.
 
 If you want to run a webpack build from your library, you will need to add a `site.config` file, such as `site.config.dev.tsx`.  These files are ignored via `.gitignore` and will not be checked in.  There will be resources available to help writing these files.
+
+Site config is a new schema for configuration.  Notably, config variables are camelCased like normal JavaScript variables, rather than SCREAMING_SNAKE_CASE.
+
+### Required config
+
+The required configuration at the time of this writing is:
+
+- appId: string
+- siteName: string
+- baseUrl: string
+- lmsBaseUrl: string
+- loginUrl: string
+- logoutUrl: string
+
+### Optional config
+
+Other configuration is now optional, and many values have been given sensible defaults.  But these configuration variables are also available (as of this writing):
+
+- accessTokenCookieName: string
+- languagePreferenceCookieName: string
+- userInfoCookieName: string
+- csrfTokenApiPath: string
+- refreshAccessTokenApiPath: string
+- ignoredErrorRegex: RegExp | null
+- segmentKey: string | null
+- environment: EnvironmentTypes
+- mfeConfigApiUrl: string | null
+- publicPath: string
+
+### URL Config changes
+
+Note that the .env files and env.config.js files also include a number of URLs for various micro-frontends and services.  These URLs should now be expressed as part of the `apps` config as route roles, and used in code via `getUrlForRouteRole()`.  Or as externalRoutes.
+
+```
+// Creating a route role with for 'example' in an App
+const app: App = {
+  routes: [{
+    path: '/example',
+    id: 'example.page',
+    Component: ExamplePage,
+    handle: {
+      role: 'example'
+    }
+  }],
+};
+
+// Using the role in code to link to the page
+const examplePageUrl = getUrlForRouteRole('example');
+```
+
+### App-specific config values
+
+App-specific configuration can be expressed by adding a `custom` section to SiteConfig which allows arbitrary config variables.
+
+```
+const config: ProjectSiteConfig = {
+  // ... Other config
+
+  custom: {
+    appId: 'myapp',
+    myCustomVariableName: 'my custom variable value',
+  }
+}
+```
+
+These variables can be used in code with the `getAppConfig` function:
+
+```
+getAppConfig('myapp').myCustomVariableName
+```
+
+If you have fully converted your app over to the new module architecture, you can add custom variables to the `config` object in your `App` definition and they will be available via `getAppConfig`.
 
 ## 19. Replace the `.env.test` file with configuration in `test.site.config.tsx` file
 
 We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect a `test.site.config.tsx` file.  If you're initializing an application in your tests, `frontend-base` will pick up this configuration and make it available to `getConfig()`, etc.  If you need to manually access the variables, you can import `site.config` in your test files:
+
+Note that test.site.config.tsx has a different naming scheme than `site.config.*.tsx` because it's intended to be checked in, and `site.config.*.tsx` is git-ignored.
 
 ```diff
 + import config from 'site.config';
@@ -440,35 +555,21 @@ import { ProjectSiteConfig } from '@openedx/frontend-base';
 
 const config: ProjectSiteConfig = {
   apps: [],
-  ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-  BASE_URL: 'http://localhost:8080',
-  ACCOUNT_PROFILE_URL: 'http://localhost:1995',
-  CREDENTIALS_BASE_URL: 'http://localhost:18150',
-  CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-  ECOMMERCE_BASE_URL: 'http://localhost:18130',
-  LANGUAGE_PREFERENCE_COOKIE_NAME: 'openedx-language-preference',
-  LMS_BASE_URL: 'http://localhost:18000',
-  LOGIN_URL: 'http://localhost:18000/login',
-  LOGOUT_URL: 'http://localhost:18000/logout',
-  LOGO_URL: 'https://edx-cdn.org/v3/default/logo.svg',
-  LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
-  LOGO_WHITE_URL: 'https://edx-cdn.org/v3/default/logo-white.svg',
-  FAVICON_URL: 'https://edx-cdn.org/v3/default/favicon.ico',
-  MARKETING_SITE_BASE_URL: 'http://localhost:18000',
-  ORDER_HISTORY_URL: 'http://localhost:1996/orders',
-  REFRESH_ACCESS_TOKEN_API_PATH: '/login_refresh',
-  SEGMENT_KEY: '',
-  SITE_NAME: 'localhost',
-  USER_INFO_COOKIE_NAME: 'edx-user-info',
-  APP_ID: 'authn',
-  ENVIRONMENT: 'dev',
-  ACCOUNT_SETTINGS_URL: 'http://localhost:1997',
-  DISCOVERY_API_BASE_URL: 'http://localhost:18381',
-  IGNORED_ERROR_REGEX: null,
-  LEARNING_BASE_URL: 'http://localhost:2000',
-  PUBLIC_PATH: '/',
-  PUBLISHER_BASE_URL: 'http://localhost:18400',
-  STUDIO_BASE_URL: 'http://localhost:18010',
+  accessTokenCookieName: 'edx-jwt-cookie-header-payload',
+  baseUrl: 'http://localhost:8080',
+  csrfTokenApiPath: '/csrf/api/v1/token',
+  languagePreferenceCookieName: 'openedx-language-preference',
+  lmsBaseUrl: 'http://localhost:18000',
+  loginUrl: 'http://localhost:18000/login',
+  logoutUrl: 'http://localhost:18000/logout',
+  refreshAccessTokenApiPath: '/login_refresh',
+  segmentKey: '',
+  siteName: 'localhost',
+  userInfoCookieName: 'edx-user-info',
+  appId: 'authn',
+  environment: 'dev',
+  ignoredErrorRegex: null,
+  publicPath: '/',
 };
 
 export default config;
@@ -476,11 +577,11 @@ export default config;
 
 ## 20. Remove initialization
 
-In your index.(jsx|tsx) file, you need to remove the subscribe and initialization code.  If you have customizations here, they will need to migrate to your `site.config` file instead and take advantage of the shell's provided customization mechanisms.  **This functionality is still a work in progress.**
+In your index.(jsx|tsx) file, you need to remove the subscribe and initialization code.  If you have customizations here, they will need to migrate to your `site.config` file instead and take advantage of the shell's provided customization mechanisms.
 
 ## 21. Migrate header/footer dependencies
 
-If your application uses a custom header or footer, you can use the shell's header and footer plugin slots to provide your custom header/footer components.  This is done through the `site.config` file.  **This functionality is still a work in progress.**
+If your application uses a custom header or footer, you can use the shell's header and footer plugin slots to provide your custom header/footer components.  This is done through the `site.config` file.
 
 ## 22. Export the modules of your app in your index.ts file.
 
@@ -518,21 +619,67 @@ This file will be ignored via `.gitignore`, as it is part of your 'project', not
 
 Your modules will need environment variables that your system merged into config in index.jsx - we need to document and expect those when the module is loaded.  You'll need this list in the next step.
 
-## 27. Stop using process.env
+## 26. Stop using process.env
 
-Instead, custom variables must go through site config.
+Instead, custom variables must go through site config.  This can be done by adding a 'config' object to the App's definition
 
-- Move all your custom variables into the `custom: {}` block of site config.
-- Throughout your app, wherever you use one of these variables, get it from `getConfig().custom` instead of from `process.env`.
+## 27. Convert @import to @use in SCSS files.
 
-As we decide on the module boundaries of our library, we'll be able to move these into module-specific configuration in site config.  `custom` is a temporary home for this config.
+@import is deprecated in the most recent versions of SASS.
 
-## 26. More art than science: find your module boundaries
+When you do this, you will find that variables and mixins from Paragon, in particular, are likely to result in errors when building the app in webpack.  To fix this, you must `@use` the paragon core SCSS file in the file where you want to use the variable or mixin:
+
+```
+@use "@openedx/paragon/scss/core/core" as paragon;
+```
+
+And then prefix the variable/mixin usage with `paragon.`:
+
+```
+// Using a mixin
+@include paragon.media-breakpoint-up(lg) {
+
+}
+
+// Or a variable
+paragon.$primary-700
+```
+
+## 28. Changes to i18n
+
+configureI18n no longer takes `config` or `loggingService` as options
+
+The `getLoggingService` export from _i18n_ has also been removed.  No one should be using that.
+
+`getLanguageList` has been removed. Modules that need a list of countries should install `@cospired/i18n-iso-languages` as a dependency.
+
+`getSupportedLanguageList` now returns an array of objects containing the `name` and `code` of all the languages that have translations bundled with the app, rather than a hard-coded list.
+
+`getCountryList` has been removed.  MFEs that need a list of countries should install `i18n-iso-countries` or `countries-list` as a dependency.
+
+The getCountryList function can be reproduced from this file in frontend-platform: https://github.com/openedx/frontend-platform/blob/master/src/i18n/countries.js
+
+frontend-app-account should use the supported language list from frontend-base, rather than the hard-coded list in https://github.com/openedx/frontend-app-account/blob/master/src/account-settings/site-language/constants.js
+
+This would help it match the behavior of the footer's language dropdown.
+
+## 29. Removal of pubsub-js
+
+frontend-platform used pubsub-js behind the scenes for event subscriptions/publishing.  It used it in a very rudimentary way, and the library was noisy in test suites, complaining about being re-initialized.  Because of these reasons, we've removed our dependency on pubsub-js and replaced it with a simple subscription system with a very similar API:
+
+- `subscribe(topic: string, callback: (topic: string, data?: any) => void)`
+- `publish(topic: string, data?: any)`
+- `unsubscribe(topic: string, callback: (topic: string, data?: any) => void)`
+- `clearAllSubscriptions()`
+
+The unsubscribe function as a different API than pubsub-js's unsubscribe function, taking a topic and a callback rather than an unsubscribe token.
+
+Consumers who were using the `PubSub` global variable should instead import the above functions directly from `@openedx/frontend-base`.
+
+### 31. React router move to data router.
+
+## 30. More art than science: find your module boundaries
 
 From this step on, things get a bit more subjective.  At this point you need to ensure that the modules in your library are decoupled and well-bounded.  If you use Redux, this may mean creating individual redux stores for each module, including adding a context so that they're separate from any "upstream" redux stores that may exist.
 
 https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
-
-## 27. Subdomains!?
-
-## 28. Add LEARNER_DASHBOARD_URL to config

@@ -1,11 +1,10 @@
-import { useContext } from 'react';
-import HeaderContext from '../HeaderContext';
-import NavLinks from '../nav-links';
+import { Nav } from '@openedx/paragon';
+import { Slot } from '../../../runtime';
 
 export default function PrimaryNavLinks() {
-  const { primaryLinks } = useContext(HeaderContext);
-
   return (
-    <NavLinks items={primaryLinks} className="flex-nowrap" />
+    <Nav className="flex-nowrap align-items-center">
+      <Slot id="frontend.shell.header.primaryLinks.ui" />
+    </Nav>
   );
 }

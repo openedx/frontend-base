@@ -1,171 +1,111 @@
-import { ElementType, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { MessageDescriptor } from 'react-intl';
-import { IndexRouteObject, NonIndexRouteObject } from 'react-router';
+import { RouteObject } from 'react-router';
+import { SlotOperation } from './runtime/slots/types';
 
-export type AppConfig = ExternalAppConfig | InternalAppConfig | FederatedAppConfig | HydratedFederatedAppConfig;
+// Apps
 
-export type ConfigurableAppConfig = InternalAppConfig | HydratedFederatedAppConfig;
-
-export enum AppConfigTypes {
-  EXTERNAL = 'external',
-  INTERNAL = 'internal',
-  FEDERATED = 'federated',
-}
-
-export interface AppModuleHandle {
-  appId: string,
-  [key: string]: any,
-}
-
-// We extend the react-router RouteObject to make path required. `path` is not required for
-// 'layout' routes, which for now we won't support as the route of a module.
-// Documentation of this here: https://reactrouter.com/en/main/route/route#layout-routes
-export interface AppModuleIndexRouteObject extends IndexRouteObject {
-  path: string,
-}
-
-export interface AppModuleNonIndexRouteObject extends NonIndexRouteObject {
-  path: string,
-}
-
-export type AppModuleRouteObject = AppModuleIndexRouteObject | AppModuleNonIndexRouteObject;
-
-export interface ApplicationModuleConfig {
-  route: AppModuleRouteObject,
-  header?: HeaderConfig,
-}
-
-export interface InternalAppConfig {
-  type: AppConfigTypes.INTERNAL,
-  config: ApplicationModuleConfig,
-  path?: string,
-}
-
-export interface FederatedAppConfig {
-  type: AppConfigTypes.FEDERATED,
-  libraryId: string,
-  remoteUrl: string,
-  moduleId: string,
-  path: string,
-}
-
-export interface HydratedFederatedAppConfig extends FederatedAppConfig {
-  config: ApplicationModuleConfig,
-}
-
-export interface ExternalAppConfig {
-  type: AppConfigTypes.EXTERNAL,
+export interface ExternalRoute {
+  role: string,
   url: string,
 }
+
+export type RoleRouteObject = RouteObject & {
+  handle?: {
+    /**
+     * A route role is used to identify a route that fulfills a particular role in the site, such as "login", "learnerHome", or "profile".
+     */
+    role?: string,
+  },
+};
+
+export interface App {
+  messages?: LocalizedMessages,
+  routes?: RoleRouteObject[],
+  slots?: SlotOperation[],
+  remotes?: Remote[],
+  config?: AppConfig,
+}
+
+export type AppConfig = {
+  // An AppConfig must contain an appId if it exists, which allows us to differentiate between app configs.
+  appId,
+} & Record<string, unknown>;
+
+export interface FederatedApp {
+  remoteId: string,
+  moduleId: string,
+  // rolePaths are used to find out the paths to certain roles before loading the app via module federation.  This means we can form links without needing to load the whole thing.
+  rolePaths?: Record<string, string>,
+  hints?: {
+    // The path hints are used by our react-router patchRoutesOnNavigation handler to load the
+    // federated app when one of its paths has been requested.  This can happen, for instance, when
+    // a path is loaded via the rolePaths above.
+    paths?: string[],
+  },
+}
+
+export interface Remote {
+  id: string,
+  url: string,
+}
+
+// Site Config
+
+export interface RequiredSiteConfig {
+  appId: string,
+  siteName: string,
+  baseUrl: string,
+
+  // Backends
+  lmsBaseUrl: string,
+
+  // Frontends
+  loginUrl: string,
+  logoutUrl: string,
+}
+
+export type LocalizedMessages = Record<string, Record<string, string>>;
 
 export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
 
 export interface OptionalSiteConfig {
-
-  pluginSlots: {
-    [slotName: string]: {
-      keepDefault: boolean,
-      plugins: Array<Plugin>,
-    },
-  },
-
-  header?: HeaderConfig,
+  apps: App[],
+  federatedApps: FederatedApp[],
+  remotes: Remote[],
+  externalRoutes: ExternalRoute[],
 
   // Cookies
-  ACCESS_TOKEN_COOKIE_NAME: string,
-  LANGUAGE_PREFERENCE_COOKIE_NAME: string,
-  USER_INFO_COOKIE_NAME: string,
+  accessTokenCookieName: string,
+  languagePreferenceCookieName: string,
+  userInfoCookieName: string,
 
   // Paths
-  CSRF_TOKEN_API_PATH: string,
-  REFRESH_ACCESS_TOKEN_API_PATH: string,
+  csrfTokenApiPath: string,
+  refreshAccessTokenApiPath: string,
 
   // Logging
-  IGNORED_ERROR_REGEX: RegExp | null,
+  ignoredErrorRegex: RegExp | null,
 
   // Analytics
-  SEGMENT_KEY: string | null,
+  segmentKey: string | null,
+  environment: EnvironmentTypes,
+  mfeConfigApiUrl: string | null,
+  publicPath: string,
 
-  ENVIRONMENT: EnvironmentTypes,
-  MFE_CONFIG_API_URL: string | null,
-  PUBLIC_PATH: string,
-
-  // Backends
-  CREDENTIALS_BASE_URL: string | null,
-  DISCOVERY_API_BASE_URL: string | null,
-  ECOMMERCE_BASE_URL: string | null,
-  PUBLISHER_BASE_URL: string | null,
-
-  // Frontends
-  ORDER_HISTORY_URL: string | null,
-  SUPPORT_URL: string | null,
-
-  SUPPORT_EMAIL: string | null,
-  TERMS_OF_SERVICE_URL: string | null,
-  PRIVACY_POLICY_URL: string | null,
-  ACCESSIBILITY_URL: string | null,
-
-  custom: {
-    [key: string]: any,
-  }
-}
-
-export interface AppsConfig {
-  [appId: string]: AppConfig,
-}
-
-export interface RequiredSiteConfig {
-  apps: AppsConfig,
-
-  APP_ID: string,
-  BASE_URL: string,
-  SITE_NAME: string,
-
-  // Frontends
-  ACCOUNT_PROFILE_URL: string,
-  ACCOUNT_SETTINGS_URL: string,
-  LEARNER_DASHBOARD_URL: string,
-  LEARNING_BASE_URL: string,
-  LOGIN_URL: string,
-  LOGOUT_URL: string,
-  MARKETING_SITE_BASE_URL: string,
-
-  // Backends
-  LMS_BASE_URL: string,
-  STUDIO_BASE_URL: string,
-
-  // Branding
-  FAVICON_URL: string,
-  LOGO_TRADEMARK_URL: string,
-  LOGO_URL: string,
-  LOGO_WHITE_URL: string,
+  custom: AppConfig,
 }
 
 export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
-
-export interface ProjectModuleConfig {
-  modules?: Array<string>,
-  name?: string,
-  plugins?: any,
-  custom?: {
-    [key: string]: any,
-  }
-}
 
 export interface User {
   administrator: boolean,
   email: string,
   name: string,
-  roles: Array<string>,
+  roles: string[],
   userId: number,
   username: string,
   avatar: string,
-}
-
-export enum FooterTypes {
-  DEFAULT = 'default',
-  STUDIO = 'studio',
-  NONE = 'none',
 }
 
 export enum EnvironmentTypes {
@@ -174,131 +114,16 @@ export enum EnvironmentTypes {
   TEST = 'test',
 }
 
-// Header Types
-
-export interface HeaderConfig {
-  logoUrl?: string,
-  logoDestinationUrl?: string | null,
-  primaryLinks?: Array<MenuItem>,
-  secondaryLinks?: Array<MenuItem>,
-  anonymousLinks?: Array<MenuItem>,
-  authenticatedLinks?: Array<ChildMenuItem>,
-}
-
-export interface ResolvedHeaderConfig {
-  logoUrl: string,
-  logoDestinationUrl: string | null,
-  primaryLinks: Array<MenuItem>,
-  secondaryLinks: Array<MenuItem>,
-  anonymousLinks: Array<MenuItem>,
-  authenticatedLinks: Array<ChildMenuItem>,
-}
+// Menu Items
 
 export type MenuItemName = string | MessageDescriptor | ReactElement;
 
-export interface BaseLinkMenuItem {
-  label: MenuItemName,
-}
+// Learning
 
-export interface AppMenuItem extends BaseLinkMenuItem {
-  appId: string,
-}
-
-export interface DropdownMenuItem {
-  label: MessageDescriptor | string,
-  items: Array<ChildMenuItem>,
-}
-
-export interface UrlMenuItem extends BaseLinkMenuItem {
-  url: string,
-}
-
-/**
- * A menu item that displays as a link.
- *
- * There are two sub-types based on how the link is configured.
- *
- * * **AppMenuItem**: Uses an app ID to resolve the link URL.  Used to link directly to another app module.
- * * **UrlMenuItem**: Includes a fully-qualified URL.  Used for external links.
- */
-export type LinkMenuItem = AppMenuItem | UrlMenuItem;
-
-export type MenuItem = LinkMenuItem | DropdownMenuItem | ReactElement;
-
-export type ChildMenuItem = LinkMenuItem | ReactElement;
-
-// Plugin Types
-
-/**
- * Defines the changes to be made to either the default widget(s) or to any
- * that are inserted.
- */
-export enum PluginOperations {
-  /**
-   * Inserts a new widget into the DirectPluginSlot.
-   */
-  INSERT = 'insert',
-  /**
-   * Used to hide a default widget based on the widgetId.
-   */
-  HIDE = 'hide',
-  /**
-   * Used to modify/replace a widget's content.
-   */
-  MODIFY = 'modify',
-  /**
-   * Wraps a widget with a React element or fragment.
-   */
-  WRAP = 'wrap',
-}
-
-export enum PluginTypes {
-  IFRAME = 'iframe',
-  DIRECT = 'direct',
-}
-
-export interface InsertDirectPluginWidget {
-  id: string,
-  type: PluginTypes.DIRECT,
-  priority: number,
-  RenderWidget: ElementType,
-  content?: {
-    [propName: string]: any,
-  }
-}
-
-export interface InsertIframePluginWidget {
-  id: string,
-  type: PluginTypes.IFRAME,
-  priority: number,
-  url: string,
+// TODO: Make this interface match the shape of course info coming back from the server.
+// Check what additional data frontend-app-learning or frontend-app-authoring has and model it here.
+export interface CourseInfo {
   title: string,
+  number: string,
+  org: string,
 }
-
-export type InsertPluginWidget = InsertDirectPluginWidget | InsertIframePluginWidget;
-
-export type PluginWidget = InsertPluginWidget;
-
-export interface ModifyPlugin {
-  op: PluginOperations.MODIFY,
-  widgetId: string,
-  fn: (InsertDirectPluginWidget) => InsertDirectPluginWidget,
-}
-
-export interface InsertPlugin {
-  op: PluginOperations.INSERT,
-  widget: PluginWidget,
-}
-
-export interface WrapPlugin {
-  op: PluginOperations.WRAP,
-  widgetId: string,
-  wrapper: ElementType
-}
-
-export interface HidePlugin {
-  op: PluginOperations.HIDE,
-  widgetId: string
-}
-
-export type Plugin = HidePlugin | InsertPlugin | ModifyPlugin | WrapPlugin;

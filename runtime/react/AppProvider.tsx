@@ -12,7 +12,8 @@ import {
 
 import AppContext from './AppContext';
 import ErrorBoundary from './ErrorBoundary';
-import { useAppEvent, useTrackColorSchemeChoice } from './hooks';
+import { useAppEvent } from './hooks';
+import LearningProvider from './learning/LearningProvider';
 
 interface AppProviderProps {
   children: ReactNode,
@@ -46,8 +47,6 @@ export default function AppProvider({ children }: AppProviderProps) {
   const [authenticatedUser, setAuthenticatedUser] = useState(getAuthenticatedUser());
   const [locale, setLocale] = useState(getLocale());
 
-  useTrackColorSchemeChoice();
-
   useAppEvent(AUTHENTICATED_USER_CHANGED, () => {
     setAuthenticatedUser(getAuthenticatedUser());
   });
@@ -69,10 +68,10 @@ export default function AppProvider({ children }: AppProviderProps) {
   return (
     <IntlProvider locale={locale} messages={getMessages()}>
       <ErrorBoundary>
-        <AppContext.Provider
-          value={appContextValue}
-        >
-          {children}
+        <AppContext.Provider value={appContextValue}>
+          <LearningProvider>
+            {children}
+          </LearningProvider>
         </AppContext.Provider>
       </ErrorBoundary>
     </IntlProvider>

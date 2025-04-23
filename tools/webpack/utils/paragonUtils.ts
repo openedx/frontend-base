@@ -11,7 +11,7 @@ import { ParagonThemeCss, ParagonThemeUrlsFile } from '../types';
  */
 function getBrandPackageName(dir: string) {
   const appDependencies = JSON.parse(fs.readFileSync(path.resolve(dir, 'package.json'), 'utf-8')).dependencies;
-  return Object.keys(appDependencies).find((key) => key.match(/@(open)?edx\/brand/)) || '';
+  return Object.keys(appDependencies).find((key) => /@(open)?edx\/brand/.exec(key)) ?? '';
 }
 
 /**
@@ -104,7 +104,7 @@ export function getParagonCacheGroups(paragonThemeCss: ParagonThemeCss | undefin
   if (!paragonThemeCss) {
     return {};
   }
-  const cacheGroups: { [index: string]: { type: string, name: string, chunks: (chunk: Chunk) => boolean, enforce: boolean } } = {};
+  const cacheGroups: Record<string, { type: string, name: string, chunks: (chunk: Chunk) => boolean, enforce: boolean }> = {};
 
   if (paragonThemeCss.core !== undefined) {
     const { core } = paragonThemeCss;
@@ -113,7 +113,7 @@ export function getParagonCacheGroups(paragonThemeCss: ParagonThemeCss | undefin
       name: paragonThemeCss.core.outputChunkName,
       chunks: (chunk: Chunk) => chunk.name === core.entryName,
       enforce: true,
-    }
+    };
   }
 
   Object.values(paragonThemeCss.variants).forEach(({ entryName, outputChunkName }) => {
@@ -141,7 +141,7 @@ export function getParagonEntryPoints(paragonThemeCss: ParagonThemeCss | undefin
     return {};
   }
 
-  const entryPoints: { [entryName: string]: string } = {};
+  const entryPoints: Record<string, string> = {};
   if (paragonThemeCss.core !== undefined) {
     entryPoints[paragonThemeCss.core.entryName] = path.resolve(process.cwd(), paragonThemeCss.core.filePath);
   }

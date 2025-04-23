@@ -10,14 +10,14 @@
  *
  * ```
  * import {
- *   configure,
+ *   configureAuth,
  *   fetchAuthenticatedUser,
  *   getAuthenticatedHttpClient,
  *   getConfig,
  *   getLoggingService
  * } from '@openedx/frontend-base';
  *
- * configure({
+ * configureAuth({
  *   loggingService: getLoggingService(),
  *   config: getConfig(),
  * });
@@ -35,6 +35,7 @@
  * @module Auth
  */
 import PropTypes from 'prop-types';
+import { publish } from '../subscriptions';
 
 /**
  * @constant
@@ -55,13 +56,13 @@ export const AUTHENTICATED_USER_CHANGED = `${AUTHENTICATED_USER_TOPIC}.CHANGED`;
 
 const optionsShape = {
   config: PropTypes.shape({
-    BASE_URL: PropTypes.string.isRequired,
-    LMS_BASE_URL: PropTypes.string.isRequired,
-    LOGIN_URL: PropTypes.string.isRequired,
-    LOGOUT_URL: PropTypes.string.isRequired,
-    REFRESH_ACCESS_TOKEN_API_PATH: PropTypes.string.isRequired,
-    ACCESS_TOKEN_COOKIE_NAME: PropTypes.string.isRequired,
-    CSRF_TOKEN_API_PATH: PropTypes.string.isRequired,
+    baseUrl: PropTypes.string.isRequired,
+    lmsBaseUrl: PropTypes.string.isRequired,
+    loginUrl: PropTypes.string.isRequired,
+    logoutUrl: PropTypes.string.isRequired,
+    refreshAccessTokenApiPath: PropTypes.string.isRequired,
+    accessTokenCookieName: PropTypes.string.isRequired,
+    csrfTokenApiPath: PropTypes.string.isRequired,
   }).isRequired,
   loggingService: PropTypes.shape({
     logError: PropTypes.func.isRequired,
@@ -91,7 +92,7 @@ let service;
  * @param {*} options
  * @returns {AuthService}
  */
-export function configure(AuthService, options) {
+export function configureAuth(AuthService, options) {
   PropTypes.checkPropTypes(optionsShape, options, 'property', 'Auth');
   service = new AuthService(options);
   PropTypes.checkPropTypes(serviceShape, service, 'property', 'AuthService');
@@ -206,7 +207,7 @@ export function getAuthenticatedUser() {
  */
 export function setAuthenticatedUser(authUser) {
   service.setAuthenticatedUser(authUser);
-  global.PubSub.publish(AUTHENTICATED_USER_CHANGED);
+  publish(AUTHENTICATED_USER_CHANGED);
 }
 
 /**
@@ -224,7 +225,7 @@ export async function fetchAuthenticatedUser(options = {}) {
  * Ensures a user is authenticated. It will redirect to login when not
  * authenticated.
  *
- * @param {string} [redirectUrl=config.BASE_URL] to return user after login when not
+ * @param {string} [redirectUrl=config.baseUrl] to return user after login when not
  * authenticated.
  * @returns {Promise<UserData>}
  */
@@ -247,7 +248,7 @@ export async function ensureAuthenticatedUser(redirectUrl) {
  */
 export async function hydrateAuthenticatedUser() {
   await service.hydrateAuthenticatedUser();
-  global.PubSub.publish(AUTHENTICATED_USER_CHANGED);
+  publish(AUTHENTICATED_USER_CHANGED);
 }
 
 /**

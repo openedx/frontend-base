@@ -1,5 +1,5 @@
 import {
-  configure,
+  configureAnalytics,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
   sendPageEvent,
@@ -57,14 +57,14 @@ describe('Analytics', () => {
     });
   }
 
-  describe('with valid SEGMENT_KEY', () => {
+  describe('with valid segmentKey', () => {
     beforeEach(() => {
-      service = configure(SegmentAnalyticsService, {
+      service = configureAnalytics(SegmentAnalyticsService, {
         loggingService: mockLoggingService,
         httpClient: mockAuthApiClient,
         config: {
-          LMS_BASE_URL: 'https://example.com',
-          SEGMENT_KEY: 'test-key',
+          lmsBaseUrl: 'https://example.com',
+          segmentKey: 'test-key',
         },
       });
 
@@ -192,14 +192,14 @@ describe('Analytics', () => {
     });
   });
 
-  describe('with invalid SEGMENT_KEY', () => {
+  describe('with invalid segmentKey', () => {
     beforeEach(() => {
-      service = configure(SegmentAnalyticsService, {
+      service = configureAnalytics(SegmentAnalyticsService, {
         loggingService: mockLoggingService,
         httpClient: mockAuthApiClient,
         config: {
-          LMS_BASE_URL: 'https://example.com',
-          SEGMENT_KEY: '',
+          lmsBaseUrl: 'https://example.com',
+          segmentKey: '',
         },
       });
 

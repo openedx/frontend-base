@@ -9,22 +9,22 @@ global.newrelic = {
 let service = null;
 const configWithIgnoredErrors = {
   config: {
-    IGNORED_ERROR_REGEX: /^Ignore this error|very minor/,
+    ignoredErrorRegex: /^Ignore this error|very minor/,
   },
 };
 const configWithNullIgnoredErrors = {
   config: {
-    IGNORED_ERROR_REGEX: null,
+    ignoredErrorRegex: null,
   },
 };
 const configWithEmptyIgnoredErrors = {
   config: {
-    IGNORED_ERROR_REGEX: '',
+    ignoredErrorRegex: '',
   },
 };
 const configWithWhitespaceIgnoredErrors = {
   config: {
-    IGNORED_ERROR_REGEX: '     ',
+    ignoredErrorRegex: '     ',
   },
 };
 const configWithMissingIgnoredErrors = {

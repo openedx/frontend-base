@@ -36,7 +36,7 @@ const resolvedSiteConfigPath = getResolvedSiteConfigPath('shell/site.config.dev.
 
 const config: Configuration = {
   entry: {
-    app: path.resolve(process.cwd(), 'shell/index'),
+    app: path.resolve(process.cwd(), 'shell/app'),
     ...getParagonEntryPoints(paragonThemeCss),
     ...getParagonEntryPoints(brandThemeCss),
   },
@@ -114,10 +114,6 @@ const config: Configuration = {
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(process.cwd(), 'shell/public/index.html'),
       chunks: ['app'],
-      FAVICON_URL: process.env.FAVICON_URL || null,
-      OPTIMIZELY_PROJECT_ID: process.env.OPTIMIZELY_PROJECT_ID || null,
-      NODE_ENV: process.env.NODE_ENV || null,
-      SITE_NAME: process.env.SITE_NAME || '',
     }),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin(),

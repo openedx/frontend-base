@@ -45,7 +45,9 @@ export function minifyScript(script: string) {
   return script
     .replace(/>[\r\n ]+</g, '><')
     .replace(/(<.*?>)|\s+/g, (m, $1) => {
-      if ($1) { return $1; }
+      if ($1) {
+        return $1;
+      }
       return ' ';
     })
     .trim();

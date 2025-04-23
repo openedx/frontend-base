@@ -1,6 +1,6 @@
-import { Compilation, Compiler, WebpackPluginInstance, sources } from "webpack";
+import { Compilation, Compiler, WebpackPluginInstance, sources } from 'webpack';
 
-import { ParagonThemeUrls } from "../../types";
+import { ParagonThemeUrls } from '../../types';
 import {
   getParagonThemeCss,
   getParagonVersion,
@@ -24,7 +24,7 @@ const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true 
  */
 export default class ParagonWebpackPlugin implements WebpackPluginInstance {
   pluginName: string;
-  paragonThemeUrlsConfig: ParagonThemeUrls | {};
+  paragonThemeUrlsConfig: ParagonThemeUrls | object;
   processAssetsHandlers: ((compilation: any) => void)[];
   paragonMetadata: any;
 
@@ -49,7 +49,7 @@ export default class ParagonWebpackPlugin implements WebpackPluginInstance {
    */
   async resolveParagonThemeUrlsFromConfig() {
     try {
-      this.paragonThemeUrlsConfig = JSON.parse(process.env.PARAGON_THEME_URLS || '{}');
+      this.paragonThemeUrlsConfig = JSON.parse(process.env.PARAGON_THEME_URLS ?? '{}');
     } catch (error) {
       console.info('Paragon Plugin cannot load PARAGON_THEME_URLS env variable, skipping.');
     }
@@ -103,14 +103,14 @@ export default class ParagonWebpackPlugin implements WebpackPluginInstance {
 
     // Inject theme variant CSS
     newSource = injectParagonThemeVariantStylesheets({
-      // @ts-ignore newSource is possibly undefined here.
+      // @ts-expect-error newSource is possibly undefined here.
       source: newSource.source(),
       paragonThemeVariantCss,
       paragonThemeCss,
       brandThemeCss,
     });
 
-    // @ts-ignore newSource is possibly undefined here.
+    // @ts-expect-error newSource is possibly undefined here.
     compilation.updateAsset('index.html', new sources.RawSource(newSource.source()));
   }
 

@@ -56,17 +56,15 @@ This 'site.config' package is a special 'magic' alias in our webpack configurati
 folder. It points at an `site.config.tsx` file in the root of an project's repository.
 */
 import siteConfig from 'site.config';
-import { getPath } from './utils';
-// eslint-disable-next-line import/no-cycle
 import {
-  configure as configureAnalytics,
+  configureAnalytics,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
   SegmentAnalyticsService,
 } from './analytics';
 import {
   AxiosJwtAuthService,
-  configure as configureAuth,
+  configureAuth,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
   getAuthenticatedHttpClient,
@@ -75,7 +73,8 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import {
-  getConfig, mergeConfig
+  getConfig, mergeConfig,
+  patchAppConfig
 } from './config';
 import {
   APP_ANALYTICS_INITIALIZED,
@@ -87,14 +86,16 @@ import {
   APP_PUBSUB_INITIALIZED,
   APP_READY,
 } from './constants';
-import { configure as configureI18n } from './i18n';
+import { configureI18n } from './i18n';
 import {
-  configure as configureLogging,
+  configureLogging,
   getLoggingService,
   logError,
   NewRelicLoggingService,
 } from './logging';
 import { GoogleAnalyticsLoader } from './scripts';
+import { publish } from './subscriptions';
+import { getPath } from './utils';
 
 /**
  * A browser history or memory history object created by the [history](https://github.com/ReactTraining/history)
@@ -104,7 +105,7 @@ import { GoogleAnalyticsLoader } from './scripts';
  * falls back to memory history.
  */
 export const getHistory = () => ((typeof window !== 'undefined')
-  ? createBrowserHistory({ basename: getPath(getConfig().PUBLIC_PATH) })
+  ? createBrowserHistory({ basename: getPath(getConfig().publicPath) })
   : createMemoryHistory());
 
 /**
@@ -117,7 +118,7 @@ export const getHistory = () => ((typeof window !== 'undefined')
  * as an ENV variable in the Docker file, and we read it here from that configuration so that it
  * can be passed into a Router later.
  */
-export const getBasename = () => getPath(getConfig().PUBLIC_PATH);
+export const getBasename = () => getPath(getConfig().publicPath);
 
 /**
  * The default handler for the initialization lifecycle's `initError` phase.  Logs the error to the
@@ -174,6 +175,13 @@ async function fileConfig() {
     config = siteConfig;
   }
 
+  // This means the SiteConfig is acting as an app, i.e., 'legacy mode' which allows an MFE to be
+  // built as its own site using the shell.  In that case, we need to move all the 'custom' config
+  // into our appConfigs object so it can be accessed by the code.
+  if (config.custom !== undefined) {
+    patchAppConfig(config.custom);
+  }
+
   mergeConfig(config);
 }
 
@@ -184,21 +192,20 @@ async function fileConfig() {
  */
 async function runtimeConfig() {
   try {
-    const { MFE_CONFIG_API_URL, APP_ID } = getConfig();
+    const { mfeConfigApiUrl, appId } = getConfig();
 
-    if (MFE_CONFIG_API_URL) {
+    if (mfeConfigApiUrl) {
       const apiConfig = { headers: { accept: 'application/json' } };
       const apiService = await configureCache();
 
       const params = new URLSearchParams();
-      params.append('mfe', APP_ID);
-      const url = `${MFE_CONFIG_API_URL}?${params.toString()}`;
+      params.append('mfe', appId);
+      const url = `${mfeConfigApiUrl}?${params.toString()}`;
 
       const { data } = await apiService.get(url, apiConfig);
       mergeConfig(data);
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error with config API', error.message);
   }
 }
@@ -220,7 +227,7 @@ export function loadExternalScripts(externalScripts, data) {
  */
 export async function analytics() {
   const authenticatedUser = getAuthenticatedUser();
-  if (authenticatedUser && authenticatedUser.userId) {
+  if (authenticatedUser?.userId) {
     identifyAuthenticatedUser(authenticatedUser.userId);
   } else {
     await identifyAnonymousUser();
@@ -280,7 +287,7 @@ function applyOverrideHandlers(overrides) {
  * redirection for unauthenticated users.  Defaults to false, meaning that by default the
  * application will allow anonymous/unauthenticated sessions.
  * @param {*} [options.hydrateAuthenticatedUser=false] If true, makes an API call to the user
- * account endpoint (`${App.config.LMS_BASE_URL}/api/user/v1/accounts/${username}`) to fetch
+ * account endpoint (`${App.config.lmsBaseUrl}/api/user/v1/accounts/${username}`) to fetch
  * detailed account information for the authenticated user. This data is merged into the return
  * value of `getAuthenticatedUser`, overriding any duplicate keys that already exist. Defaults to
  * false, meaning that no additional account information will be loaded.
@@ -305,20 +312,20 @@ export async function initialize({
   try {
     // Pub/Sub
     await handlers.pubSub();
-    global.PubSub.publish(APP_PUBSUB_INITIALIZED);
+    publish(APP_PUBSUB_INITIALIZED);
 
     // Configuration
     await fileConfig();
     await handlers.config();
     await runtimeConfig();
-    global.PubSub.publish(APP_CONFIG_INITIALIZED);
+    publish(APP_CONFIG_INITIALIZED);
 
     loadExternalScripts(externalScripts, {
       config: getConfig(),
     });
 
     // This allows us to replace the implementations of the logging, analytics, and auth services
-    // based on keys in the ConfigDocument.  The JavaScript File Configuration method is the only
+    // based on keys in the SiteConfig.  The JavaScript File Configuration method is the only
     // one capable of supplying an alternate implementation since it can import other modules.
     // If a service wasn't supplied we fall back to the default parameters on the initialize
     // function signature.
@@ -331,16 +338,14 @@ export async function initialize({
       config: getConfig(),
     });
     await handlers.logging();
-    global.PubSub.publish(APP_LOGGING_INITIALIZED);
+    publish(APP_LOGGING_INITIALIZED);
 
     // Internationalization
     configureI18n({
       messages,
-      config: getConfig(),
-      loggingService: getLoggingService(),
     });
     await handlers.i18n();
-    global.PubSub.publish(APP_I18N_INITIALIZED);
+    publish(APP_I18N_INITIALIZED);
 
     // Authentication
     configureAuth(authServiceImpl, {
@@ -350,7 +355,7 @@ export async function initialize({
     });
 
     await handlers.auth(requireUser, hydrateUser);
-    global.PubSub.publish(APP_AUTH_INITIALIZED);
+    publish(APP_AUTH_INITIALIZED);
 
     // Analytics
     configureAnalytics(analyticsServiceImpl, {
@@ -359,16 +364,16 @@ export async function initialize({
       httpClient: getAuthenticatedHttpClient(),
     });
     await handlers.analytics();
-    global.PubSub.publish(APP_ANALYTICS_INITIALIZED);
+    publish(APP_ANALYTICS_INITIALIZED);
 
     // Application Ready
     await handlers.ready();
-    global.PubSub.publish(APP_READY);
+    publish(APP_READY);
   } catch (error) {
     if (!error.isRedirecting) {
       // Initialization Error
       await handlers.initError(error);
-      global.PubSub.publish(APP_INIT_ERROR, error);
+      publish(APP_INIT_ERROR, error);
     }
   }
 }

@@ -1,32 +1,18 @@
-import { Suspense } from 'react';
-import { Outlet } from 'react-router';
 import {
   AppProvider,
-  PluginSlot
+  Slot
 } from '../runtime';
-import ActiveFooter from './footer';
-import Header from './header/Header';
+import { useActiveRouteRoleWatcher, useTrackColorSchemeChoice } from '../runtime/react/hooks';
+
+import DefaultLayout from './DefaultLayout';
 
 export default function Shell() {
+  useActiveRouteRoleWatcher();
+  useTrackColorSchemeChoice();
+
   return (
     <AppProvider>
-      <div className="d-flex flex-column min-vh-100">
-        <div className="flex-grow-0 flex-shrink-0">
-          <PluginSlot id="org.openedx.frontend.shell.header.v1">
-            <Header />
-          </PluginSlot>
-        </div>
-        <div id="main-content" className="flex-grow-1">
-          <Suspense fallback={<div>Loading</div>}>
-            <Outlet />
-          </Suspense>
-        </div>
-        <div className="flex-grow-0 flex-shrink-0">
-          <PluginSlot id="org.openedx.frontend.shell.footer.v1">
-            <ActiveFooter />
-          </PluginSlot>
-        </div>
-      </div>
+      <Slot id="frontend.shell.layout.ui" layout={DefaultLayout} />
     </AppProvider>
   );
 }

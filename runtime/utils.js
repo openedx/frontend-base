@@ -180,3 +180,35 @@ export function getQueryParameters(search = global.location.search) {
     return Object.assign(params, { [key]: decodeURIComponent(value) });
   }, {});
 }
+
+export function isValidVariableName(name) {
+  // Check if the name is a string and not empty
+  if (typeof name !== 'string' || name === '') {
+    return false;
+  }
+
+  // Check if the first character is a letter, underscore, or dollar sign
+  if (!/^[a-zA-Z_$]/.test(name)) {
+    return false;
+  }
+
+  // Check if the name contains only letters, numbers, underscores, or dollar signs
+  if (!/^[a-zA-Z0-9_$]+$/.test(name)) {
+    return false;
+  }
+
+  // Check if the name is a reserved keyword
+  const reservedKeywords = [
+    'break', 'case', 'catch', 'class', 'const', 'continue',
+    'debugger', 'default', 'delete', 'do', 'else', 'enum',
+    'export', 'extends', 'false', 'finally', 'for', 'function',
+    'if', 'import', 'in', 'instanceof', 'new', 'null', 'return',
+    'super', 'switch', 'this', 'throw', 'true', 'try',
+    'typeof', 'var', 'void', 'while', 'with', 'yield'
+  ];
+  if (reservedKeywords.includes(name)) {
+    return false;
+  }
+
+  return true;
+}

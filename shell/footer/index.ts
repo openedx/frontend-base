@@ -1,3 +1,2 @@
-import ActiveFooter from './ActiveFooter';
-
-export default ActiveFooter;
+export { default as defaultFooterConfig } from './defaultFooterConfig';
+export { default as Footer } from './Footer';

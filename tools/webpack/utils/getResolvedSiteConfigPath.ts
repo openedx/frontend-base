@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 export default function getResolvedSiteConfigPath(defaultFilename: string) {
-  let siteConfigPath = process.env.SITE_CONFIG_PATH;
+  const siteConfigPath = process.env.SITE_CONFIG_PATH;
 
   if (siteConfigPath !== undefined) {
     // We assume siteConfigPath is a relative path.
@@ -22,7 +22,7 @@ export default function getResolvedSiteConfigPath(defaultFilename: string) {
   if (siteConfigPath !== undefined) {
     console.error(`Invalid site config path (${siteConfigPath} specified as an environment variable. Aborting.`);
   } else {
-    console.error(`Default site config file (${defaultPath}) does not exist. Aborting.`)
+    console.error(`Default site config file (${defaultPath}) does not exist. Aborting.`);
   }
   process.exit(1);
 }

@@ -2,7 +2,6 @@ import {
   getAuthenticatedUser,
   getConfig,
   logInfo,
-  mergeConfig,
   useAuthenticatedUser,
   useConfig,
   useIntl
@@ -20,12 +19,6 @@ function printTestResult(value) {
   return value ? '✅' : '❌';
 }
 
-mergeConfig({
-  custom: {
-    MERGED_VAR: 'I was merged in.',
-  }
-});
-
 export default function ExamplePage() {
   const config = useConfig();
   const authenticatedUser = useAuthenticatedUser();
@@ -34,15 +27,14 @@ export default function ExamplePage() {
 
   useEffect(() => {
     logInfo('The example page can log info, which means logging is configured correctly.');
-  }, [])
+  }, []);
 
   return (
     <Container>
-      <h1>{config.SITE_NAME} test page</h1>
+      <h1>{config.siteName} test page</h1>
 
       <h2>Links</h2>
       <p>Visit <Link to="/authenticated">authenticated page</Link>.</p>
-      <p>Visit <Link to="/plugins">plugins page</Link>.</p>
       <p>Visit <Link to="/error">error page</Link>.</p>
 
       <h2>Context Config Test</h2>
@@ -50,7 +42,7 @@ export default function ExamplePage() {
       <p>Is context.authenticatedUser equal to getAuthenticatedUser()? {printTestResult(authenticatedUser === getAuthenticatedUser())}</p>
 
       <h2>SCSS parsing tests</h2>
-      <p><span className="red-text">"The Apples"</span> should be red (<code>color: red;</code> via <code>.red-text</code> CSS class in SCSS stylesheet)</p>
+      <p><span className="red-text">&quot;The Apples&quot;</span> should be red (<code>color: red;</code> via <code>.red-text</code> CSS class in SCSS stylesheet)</p>
 
       <h2>TSX parsing tests</h2>
       <Image src={appleUrl} alt="apple.svg displayed in Image.tsx" style={{ width: '10rem' }} />
@@ -79,17 +71,9 @@ export default function ExamplePage() {
         <p>Unauthenticated {printTestResult(authenticatedUser === null)}</p>
       )}
 
-      <h2>Config tests</h2>
-      <p>Non-existent config variable: {printTestResult(getConfig().custom?.I_AM_NOT_HERE === undefined)}</p>
-      <p>Merged var: {printTestResult(getConfig().custom?.MERGED_VAR === 'I was merged in.')}</p>
-      <p><span>site.config boolean test: </span>
-        {printTestResult(getConfig().custom?.FALSE_VALUE === false)}
-      </p>
-      <p>site.config integer test: {printTestResult(Number.isInteger(getConfig().custom?.INTEGER_VALUE))}</p>
-
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>
       <ParagonPreview />
     </Container>
-  )
+  );
 }

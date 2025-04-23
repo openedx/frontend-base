@@ -10,13 +10,13 @@ const userPropTypes = PropTypes.shape({
 
 const optionsPropTypes = {
   config: PropTypes.shape({
-    BASE_URL: PropTypes.string.isRequired,
-    LMS_BASE_URL: PropTypes.string.isRequired,
-    LOGIN_URL: PropTypes.string.isRequired,
-    LOGOUT_URL: PropTypes.string.isRequired,
-    REFRESH_ACCESS_TOKEN_API_PATH: PropTypes.string.isRequired,
-    ACCESS_TOKEN_COOKIE_NAME: PropTypes.string.isRequired,
-    CSRF_TOKEN_API_PATH: PropTypes.string.isRequired,
+    baseUrl: PropTypes.string.isRequired,
+    lmsBaseUrl: PropTypes.string.isRequired,
+    loginUrl: PropTypes.string.isRequired,
+    logoutUrl: PropTypes.string.isRequired,
+    refreshAccessTokenApiPath: PropTypes.string.isRequired,
+    accessTokenCookieName: PropTypes.string.isRequired,
+    csrfTokenApiPath: PropTypes.string.isRequired,
   }).isRequired,
   loggingService: PropTypes.shape({
     logError: PropTypes.func.isRequired,
@@ -60,7 +60,7 @@ const optionsPropTypes = {
  *     administrator: false,
  *   },
  * });
- * configure(MockAuthService, { config: getConfig(), loggingService: mockLoggingService });
+ * configureAuth(MockAuthService, { config: getConfig(), loggingService: mockLoggingService });
  * const mockAdapter = new MockAdapter(getAuthenticatedHttpClient());
  * // Mock calls for your tests.  This configuration can be done in any sort of test setup.
  * mockAdapter.onGet(...);
@@ -76,13 +76,13 @@ class MockAuthService {
   /**
    * @param {Object} options
    * @param {Object} options.config
-   * @param {string} options.config.BASE_URL
-   * @param {string} options.config.LMS_BASE_URL
-   * @param {string} options.config.LOGIN_URL
-   * @param {string} options.config.LOGOUT_URL
-   * @param {string} options.config.REFRESH_ACCESS_TOKEN_API_PATH
-   * @param {string} options.config.ACCESS_TOKEN_COOKIE_NAME
-   * @param {string} options.config.CSRF_TOKEN_API_PATH
+   * @param {string} options.config.baseUrl
+   * @param {string} options.config.lmsBaseUrl
+   * @param {string} options.config.loginUrl
+   * @param {string} options.config.logoutUrl
+   * @param {string} options.config.refreshAccessTokenApiPath
+   * @param {string} options.config.accessTokenCookieName
+   * @param {string} options.config.csrfTokenApiPath
    * @param {Object} options.loggingService requires logError and logInfo methods
    */
   constructor(options) {
@@ -156,7 +156,7 @@ class MockAuthService {
    * @param {string} redirectUrl The URL the user should be redirected to after logging in.
    */
   getLoginRedirectUrl = jest.fn(
-    (redirectUrl = this.config.BASE_URL) => `${this.config.LOGIN_URL}?next=${encodeURIComponent(redirectUrl)}`,
+    (redirectUrl = this.config.baseUrl) => `${this.config.loginUrl}?next=${encodeURIComponent(redirectUrl)}`,
   );
 
   /**
@@ -166,7 +166,7 @@ class MockAuthService {
    *
    * @param {string} redirectUrl The URL the user should be redirected to after logging in.
    */
-  redirectToLogin = jest.fn((redirectUrl = this.config.BASE_URL) => {
+  redirectToLogin = jest.fn((redirectUrl = this.config.baseUrl) => {
     // Do nothing after getting the URL - this preserves the calls properly, but doesn't redirect.
     this.getLoginRedirectUrl(redirectUrl);
   });
@@ -183,7 +183,7 @@ class MockAuthService {
    *
    * @param {string} redirectUrl The URL the user should be redirected to after logging out.
    */
-  getLogoutRedirectUrl = jest.fn((redirectUrl = this.config.BASE_URL) => `${this.config.LOGOUT_URL}?redirect_url=${encodeURIComponent(redirectUrl)}`);
+  getLogoutRedirectUrl = jest.fn((redirectUrl = this.config.baseUrl) => `${this.config.logoutUrl}?redirect_url=${encodeURIComponent(redirectUrl)}`);
 
   /**
    * A Jest mock function (jest.fn())
@@ -192,7 +192,7 @@ class MockAuthService {
    *
    * @param {string} redirectUrl The URL the user should be redirected to after logging out.
    */
-  redirectToLogout = jest.fn((redirectUrl = this.config.BASE_URL) => {
+  redirectToLogout = jest.fn((redirectUrl = this.config.baseUrl) => {
     // Do nothing after getting the URL - this preserves the calls properly, but doesn't redirect.
     this.getLogoutRedirectUrl(redirectUrl);
   });
@@ -235,12 +235,12 @@ class MockAuthService {
    *
    * Ensures a user is authenticated. It will redirect to login when not authenticated.
    *
-   * @param {string} [redirectUrl=config.BASE_URL] to return user after login when not
+   * @param {string} [redirectUrl=config.baseUrl] to return user after login when not
    * authenticated.
    * @returns {UserData|null} Resolves to the user's access token if they are
    * logged in.
    */
-  ensureAuthenticatedUser = jest.fn((redirectUrl = this.config.BASE_URL) => {
+  ensureAuthenticatedUser = jest.fn((redirectUrl = this.config.baseUrl) => {
     this.fetchAuthenticatedUser();
 
     if (this.getAuthenticatedUser() === null) {

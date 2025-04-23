@@ -1,11 +1,11 @@
 export {
-  MockAnalyticsService,
-  SegmentAnalyticsService,
-  configure as configureAnalytics,
+  configureAnalytics,
   getAnalyticsService,
   identifyAnonymousUser,
   identifyAuthenticatedUser,
+  MockAnalyticsService,
   resetAnalyticsService,
+  SegmentAnalyticsService,
   sendPageEvent,
   sendTrackEvent,
   sendTrackingLogEvent
@@ -15,17 +15,17 @@ export {
   AUTHENTICATED_USER_CHANGED,
   AUTHENTICATED_USER_TOPIC,
   AxiosJwtAuthService,
-  MockAuthService,
-  configure as configureAuth,
+  configureAuth,
   ensureAuthenticatedUser,
   fetchAuthenticatedUser,
-  getAuthService,
   getAuthenticatedHttpClient,
   getAuthenticatedUser,
+  getAuthService,
   getHttpClient,
   getLoginRedirectUrl,
   getLogoutRedirectUrl,
   hydrateAuthenticatedUser,
+  MockAuthService,
   redirectToLogin,
   redirectToLogout,
   setAuthenticatedUser
@@ -33,49 +33,47 @@ export {
 
 export {
   getConfig,
+  setConfig,
   mergeConfig,
-  setConfig
+  patchApp,
+  addAppConfigs,
+  getAppConfig,
+  patchAppConfig,
+  mergeRemotes,
+  setActiveRouteRoles,
+  getActiveRouteRoles,
+  addActiveWidgetRole,
+  removeActiveWidgetRole,
+  getActiveWidgetRoles,
+  getActiveRoles
 } from './config';
 
-export {
-  APP_ANALYTICS_INITIALIZED,
-  APP_AUTH_INITIALIZED,
-  APP_CONFIG_INITIALIZED,
-  APP_I18N_INITIALIZED,
-  APP_INIT_ERROR,
-  APP_LOGGING_INITIALIZED,
-  APP_PUBSUB_INITIALIZED,
-  APP_READY,
-  APP_TOPIC,
-  CONFIG_CHANGED,
-  CONFIG_TOPIC
-} from './constants';
+export * from './constants';
 
 export {
+  configureI18n,
+  createIntl,
+  defineMessages,
   FormattedDate,
   FormattedMessage,
   FormattedNumber,
   FormattedPlural,
   FormattedRelativeTime,
   FormattedTime,
-  IntlProvider,
-  LOCALE_CHANGED,
-  LOCALE_TOPIC,
-  configure as configureI18n,
-  createIntl,
-  defineMessages,
-  getCountryList,
-  getCountryMessages,
-  getLanguageList,
-  getLanguageMessages,
   getLocale,
+  getLocalizedLanguageName,
   getMessages,
   getPrimaryLanguageSubtag,
+  getSupportedLanguageList,
   handleRtl,
   injectIntl,
+  IntlProvider,
   intlShape,
   isRtl,
+  LOCALE_CHANGED,
+  LOCALE_TOPIC,
   mergeMessages,
+  updateLocale,
   useIntl
 } from './i18n';
 
@@ -88,25 +86,14 @@ export {
 } from './initialize';
 
 export {
-  MockLoggingService,
-  NewRelicLoggingService,
-  configure as configureLogging,
+  configureLogging,
   getLoggingService,
   logError,
   logInfo,
+  MockLoggingService,
+  NewRelicLoggingService,
   resetLoggingService
 } from './logging';
-
-export {
-  Plugin,
-  PluginSlot
-} from './plugins';
-
-export {
-  publish,
-  subscribe,
-  unsubscribe
-} from './pubSub';
 
 export {
   AppContext,
@@ -123,6 +110,13 @@ export {
 } from './react';
 
 export {
+  clearAllSubscriptions,
+  publish,
+  subscribe,
+  unsubscribe
+} from './subscriptions';
+
+export {
   initializeMockApp,
   mockMessages
 } from './testing';
@@ -132,7 +126,10 @@ export {
   convertKeyNames,
   getPath,
   getQueryParameters,
+  isValidVariableName,
   modifyObjectKeys,
   parseURL,
   snakeCaseObject
 } from './utils';
+
+export * from './slots';

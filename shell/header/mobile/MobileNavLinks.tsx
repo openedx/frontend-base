@@ -1,22 +1,10 @@
-import { useContext } from 'react';
-import { Divider } from '../../../runtime';
-import HeaderContext from '../HeaderContext';
-import NavLinks from '../nav-links';
+import { Nav } from '@openedx/paragon';
+import { Slot } from '../../../runtime';
 
 export default function MobileNavLinks() {
-  const { primaryLinks, secondaryLinks } = useContext(HeaderContext);
-
-  const allLinks = [
-    ...primaryLinks,
-  ];
-
-  if (primaryLinks.length > 0 && secondaryLinks.length > 0) {
-    allLinks.push(<Divider />);
-  }
-
-  allLinks.push(...secondaryLinks);
-
   return (
-    <NavLinks items={allLinks} className="flex-column" />
+    <Nav className="flex-column">
+      <Slot id="frontend.shell.header.mobile.menuLinks.ui" />
+    </Nav>
   );
 }

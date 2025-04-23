@@ -13,8 +13,7 @@ export default function getResolvedConfigPath(customConfigPath: string | null, c
       return null;
     }
   } else {
-    for (let i = 0; i < configPaths.length; i++) {
-      const configPath = configPaths[i];
+    for (const configPath of configPaths) {
       if (fs.existsSync(configPath)) {
         return configPath;
       }

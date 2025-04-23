@@ -3,72 +3,53 @@ import PropTypes from 'prop-types';
 import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
 
-import '@formatjs/intl-pluralrules/polyfill';
-import '@formatjs/intl-relativetimeformat/polyfill';
-
-import '@formatjs/intl-pluralrules/locale-data/ar';
-import '@formatjs/intl-pluralrules/locale-data/ca';
-import '@formatjs/intl-pluralrules/locale-data/en';
-import '@formatjs/intl-pluralrules/locale-data/es';
-import '@formatjs/intl-pluralrules/locale-data/fr';
-import '@formatjs/intl-pluralrules/locale-data/he';
-import '@formatjs/intl-pluralrules/locale-data/id';
-import '@formatjs/intl-pluralrules/locale-data/ko';
-import '@formatjs/intl-pluralrules/locale-data/pl';
-import '@formatjs/intl-pluralrules/locale-data/pt';
-import '@formatjs/intl-pluralrules/locale-data/ru';
-import '@formatjs/intl-pluralrules/locale-data/th';
-import '@formatjs/intl-pluralrules/locale-data/uk';
-import '@formatjs/intl-pluralrules/locale-data/zh';
-
-import '@formatjs/intl-relativetimeformat/locale-data/ar';
-import '@formatjs/intl-relativetimeformat/locale-data/ca';
-import '@formatjs/intl-relativetimeformat/locale-data/en';
-import '@formatjs/intl-relativetimeformat/locale-data/es';
-import '@formatjs/intl-relativetimeformat/locale-data/fr';
-import '@formatjs/intl-relativetimeformat/locale-data/he';
-import '@formatjs/intl-relativetimeformat/locale-data/id';
-import '@formatjs/intl-relativetimeformat/locale-data/ko';
-import '@formatjs/intl-relativetimeformat/locale-data/pl';
-import '@formatjs/intl-relativetimeformat/locale-data/pt';
-import '@formatjs/intl-relativetimeformat/locale-data/ru';
-import '@formatjs/intl-relativetimeformat/locale-data/th';
-import '@formatjs/intl-relativetimeformat/locale-data/uk';
-import '@formatjs/intl-relativetimeformat/locale-data/zh';
-
-import { EnvironmentTypes, SiteConfig } from '../../types';
-import { LoggingService } from '../logging/types';
+import { LocalizedMessages } from '../../types';
+import { getConfig } from '../config';
+import { publish } from '../subscriptions';
 
 const cookies = new Cookies();
-const supportedLocales = [
-  'ar', // Arabic
-  // NOTE: 'en' is not included in this list intentionally, since it's the fallback.
-  'es-419', // Spanish, Latin American
-  'fa', // Farsi
-  'fa-ir', // Farsi, Iran
-  'fr', // French
-  'zh-cn', // Chinese, Simplified
-  'ca', // Catalan
-  'he', // Hebrew
-  'id', // Indonesian
-  'ko-kr', // Korean (Korea)
-  'pl', // Polish
-  'pt-br', // Portuguese (Brazil)
-  'ru', // Russian
-  'th', // Thai
-  'uk', // Ukrainian
-];
+
+// This list is based on https://help.smartling.com/hc/en-us/articles/1260802028830-Right-to-left-RTL-Languages
+// There are very few resources available online outlining the locale codes for RTL languages;
+// If this list is inaccurate, we should change it.
 const rtlLocales = [
-  'ar', // Arabic
-  'he', // Hebrew
-  'fa', // Farsi (not currently supported)
-  'fa-ir', // Farsi Iran
-  'ur', // Urdu (not currently supported)
+  'ar', // Arabic (International)
+  'ar-ae', // Arabic (United Arab Emirates)
+  'ar-bh', // Arabic (Bahrain)
+  'ar-dj', // Arabic (Djibouti)
+  'ar-dz', // Arabic (Algeria)
+  'ar-eg', // Arabic (Egypt)
+  'ar-iq', // Arabic (Iraq)
+  'ar-jo', // Arabic (Jordan)
+  'ar-kw', // Arabic (Kuwait)
+  'ar-lb', // Arabic (Lebanon)
+  'ar-ly', // Arabic (Libya)
+  'ar-ma', // Arabic (Morocco)
+  'ar-om', // Arabic (Oman)
+  'ar-qa', // Arabic (Qatar)
+  'ar-sa', // Arabic (Saudi Arabia)
+  'ar-sd', // Arabic (Sudan)
+  'ar-sy', // Arabic (Syria)
+  'ar-tn', // Arabic (Tunisia)
+  'ar-ye', // Arabic (Yemen)
+  'fa', // Persian
+  'fa-af', // Dari/Persian (Afghanistan)
+  'fa-ir', // Persian (Iran)
+  'he', // Hebrew (he)
+  'he-il', // Hebrew
+  'iw', // Hebrew (iw)
+  'kd', // Kurdish (Sorani) RTL
+  'pk-pk', // Panjabi-Shahmuki (Pakistan)
+  'ps', // Pushto; Pashto
+  'ug', // Uighur; Uyghur
+  'ur', // Urdu
+  'ur-in', // Urdu (India)
+  'ur-pk', // Urdu (Pakistan)
+  'yi', // Yiddish
+  'yi-us', // Yiddish (United States)
 ];
 
-let config: SiteConfig | null = null;
-let loggingService: LoggingService | null = null;
-let messages: { [locale: string]: Record<string, string> | Record<string, MessageFormatElement[]> | undefined };
+let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
 
 /**
  * @memberof module:Internationalization
@@ -81,13 +62,6 @@ let messages: { [locale: string]: Record<string, string> | Record<string, Messag
  * @deprecated
  */
 export const intlShape = PropTypes.object;
-
-/**
- *
- * @ignore
- * @returns {LoggingService}
- */
-export const getLoggingService = () => loggingService;
 
 /**
  * @memberof module:Internationalization
@@ -134,7 +108,7 @@ export function getPrimaryLanguageSubtag(code) {
  */
 export function findSupportedLocale(locale) {
   if (messages === undefined) {
-    throw new Error('findSupportedLocale called before configuring i18n. Call configure with messages first.');
+    throw new Error('findSupportedLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
   if (messages[locale] !== undefined) {
@@ -159,8 +133,8 @@ export function findSupportedLocale(locale) {
  * @memberof module:Internationalization
  */
 export function getLocale(locale?: string) {
-  if (messages === null || config === null) {
-    throw new Error('getLocale called before configuring i18n. Call configure with messages first.');
+  if (messages === null) {
+    throw new Error('getLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
   // 1. Explicit application request
@@ -168,8 +142,8 @@ export function getLocale(locale?: string) {
     return findSupportedLocale(locale);
   }
   // 2. User setting in cookie
-  const cookieLangPref = cookies
-    .get(config.LANGUAGE_PREFERENCE_COOKIE_NAME);
+
+  const cookieLangPref = cookies.get(getConfig().languagePreferenceCookieName);
   if (cookieLangPref) {
     return findSupportedLocale(cookieLangPref.toLowerCase());
   }
@@ -178,6 +152,32 @@ export function getLocale(locale?: string) {
   // Thus the toLowerCase, for consistency.
   // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/language
   return findSupportedLocale(globalThis.navigator.language.toLowerCase());
+}
+
+export function getLocalizedLanguageName(locale) {
+  const localizedName = (new Intl.DisplayNames([locale], { type: 'language' })).of(locale);
+
+  if (localizedName === undefined) {
+    throw new Error(`Unsupported locale: ${locale}`);
+  }
+
+  return `${localizedName.charAt(0).toLocaleUpperCase(locale)}${localizedName.slice(1)}`;
+}
+
+export function getSupportedLanguageList() {
+  const locales = Object.keys(messages);
+  locales.push('en'); // 'en' is not in the messages object because it's the default.
+  locales.sort();
+
+  return locales.map((locale) => ({
+    code: locale,
+    name: getLocalizedLanguageName(locale),
+  }));
+}
+
+export function updateLocale() {
+  handleRtl();
+  publish(LOCALE_CHANGED);
 }
 
 /**
@@ -189,7 +189,7 @@ export function getLocale(locale?: string) {
  */
 export function getMessages(locale = getLocale()) {
   if (messages === undefined) {
-    throw new Error('getMessages called before configuring i18n. Call configure with messages first.');
+    throw new Error('getMessages called before configuring i18n. Call configureI18n with messages first.');
   }
 
   return messages[locale];
@@ -219,34 +219,6 @@ export function handleRtl() {
   }
 }
 
-const messagesShape = {
-  ar: PropTypes.objectOf(PropTypes.string), // Arabic
-  en: PropTypes.objectOf(PropTypes.string),
-  'es-419': PropTypes.objectOf(PropTypes.string), // Spanish, Latin American
-  fr: PropTypes.objectOf(PropTypes.string), // French
-  'zh-cn': PropTypes.objectOf(PropTypes.string), // Chinese, Simplified
-  ca: PropTypes.objectOf(PropTypes.string), // Catalan
-  he: PropTypes.objectOf(PropTypes.string), // Hebrew
-  id: PropTypes.objectOf(PropTypes.string), // Indonesian
-  'ko-kr': PropTypes.objectOf(PropTypes.string), // Korean (Korea)
-  pl: PropTypes.objectOf(PropTypes.string), // Polish
-  'pt-br': PropTypes.objectOf(PropTypes.string), // Portuguese (Brazil)
-  ru: PropTypes.objectOf(PropTypes.string), // Russian
-  th: PropTypes.objectOf(PropTypes.string), // Thai
-  uk: PropTypes.objectOf(PropTypes.string), // Ukrainian
-};
-
-const optionsShape = {
-  config: PropTypes.object.isRequired,
-  loggingService: PropTypes.shape({
-    logError: PropTypes.func.isRequired,
-  }).isRequired,
-  messages: PropTypes.oneOfType([
-    PropTypes.shape(messagesShape),
-    PropTypes.arrayOf(PropTypes.shape(messagesShape)),
-  ]).isRequired,
-};
-
 /**
  *
  *
@@ -254,17 +226,27 @@ const optionsShape = {
  * @returns {Object}
  * @memberof module:Internationalization
  */
-export function mergeMessages(newMessages) {
+export function mergeMessages(newMessages = {}) {
   const msgs = Array.isArray(newMessages) ? merge({}, ...newMessages) : newMessages;
   messages = merge(messages, msgs);
 
   return messages;
 }
 
+/**
+ * Adds all the messages found in the loaded apps.
+ *
+ * @memberof module:Internationalization
+ */
+export function addAppMessages() {
+  const { apps } = getConfig();
+  apps.forEach((app) => {
+    mergeMessages(app.messages);
+  });
+}
+
 interface ConfigureI18nOptions {
-  loggingService: LoggingService,
-  messages: Array<{ [locale: string]: { [key: string]: string } }> | { [locale: string]: { [key: string]: string } },
-  config: SiteConfig,
+  messages: LocalizedMessages[] | LocalizedMessages,
 }
 
 /**
@@ -274,32 +256,11 @@ interface ConfigureI18nOptions {
  * above), or if an expected locale is not provided.
  *
  * @param {Object} options
- * @param {LoggingService} options.loggingService
- * @param {Object} options.config
  * @param {Object} options.messages
  * @memberof module:Internationalization
  */
-export function configure(options: ConfigureI18nOptions) {
-  PropTypes.checkPropTypes(optionsShape, options, 'property', 'i18n');
-  // eslint-disable-next-line prefer-destructuring
-  loggingService = options.loggingService;
-  // eslint-disable-next-line prefer-destructuring
-  config = options.config;
+export function configureI18n(options: ConfigureI18nOptions) {
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
-
-  if (config.ENVIRONMENT === EnvironmentTypes.DEVELOPMENT && messages !== undefined) {
-    Object.keys(messages).forEach((key) => {
-      if (supportedLocales.indexOf(key) < 0) {
-        console.warn(`Unexpected locale: ${key}`); // eslint-disable-line no-console
-      }
-    });
-
-    supportedLocales.forEach((key) => {
-      if (messages === undefined || messages[key] === undefined) {
-        console.warn(`Missing locale: ${key}`); // eslint-disable-line no-console
-      }
-    });
-  }
 
   handleRtl();
 }

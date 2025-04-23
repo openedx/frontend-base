@@ -1,38 +1,39 @@
 import { RouteObject } from 'react-router';
-import { patchAppModuleConfig } from '../../runtime/config';
-import { FederatedAppConfig } from '../../types';
-import { SHELL_ID } from '../data/constants';
-import { getFederatedModules, loadModuleConfig } from '../data/moduleUtils';
-import patchAppIdIntoRouteHandle from './patchAppIdIntoRouteHandle';
+import { mergeMessages } from '../../runtime';
+import { patchApp } from '../../runtime/config';
+import { SHELL_ID } from '../federation/constants';
+import { getFederatedApps } from '../federation/getFederatedApps';
+import { initializeRemotes } from '../federation/initializeRemotes';
+import { loadFederatedApp } from '../federation/loadFederatedApp';
 
 interface PatchRoutesOnNavigationArgs {
   path: string,
   patch: (routeId: string | null, children: RouteObject[]) => void,
 }
 
-export default async function patchRoutesOnNavigation({ path, patch }: PatchRoutesOnNavigationArgs) {
-  const federatedModules = getFederatedModules();
-  let missingModule: FederatedAppConfig | null = null;
-  let missingAppId: string | null = null;
-  const entries = Object.entries(federatedModules);
-  for (let i = 0; i < entries.length; i++) {
-    const [appId, federatedModule] = entries[i];
-    if (path.startsWith(federatedModule.path)) {
-      missingModule = federatedModule;
-      missingAppId = appId;
-      break;
-    }
-  }
+export default async function patchRoutesOnNavigation({ path, patch: patchRoutes }: PatchRoutesOnNavigationArgs) {
+  const federatedApps = getFederatedApps();
+  for (const federatedApp of federatedApps) {
+    if (federatedApp.hints?.paths) {
+      for (const hintPath of federatedApp.hints.paths) {
+        if (path.startsWith(hintPath)) {
+          const app = await loadFederatedApp(federatedApp);
+          if (app !== null) {
+            const { routes, messages, remotes } = app;
 
-  if (missingModule && missingAppId) {
-    const moduleConfig = await loadModuleConfig(missingModule.moduleId, missingModule.libraryId);
-    if (moduleConfig) {
-      patchAppIdIntoRouteHandle(missingAppId, moduleConfig.route);
-      patch(SHELL_ID, [moduleConfig.route]);
-      patchAppModuleConfig(missingAppId, moduleConfig);
-    } else {
-      // TODO: What do we do if it doesn't work?
-      console.log('uhoh, no module config.');
+            patchApp(app);
+            if (remotes !== undefined) {
+              initializeRemotes();
+            }
+            mergeMessages(messages);
+            if (Array.isArray(routes)) {
+              patchRoutes(SHELL_ID, routes);
+            }
+          } else {
+            throw new Error(`Failed to load app ${federatedApp.moduleId} from ${federatedApp.remoteId} remote.`);
+          }
+        }
+      }
     }
   }
 }

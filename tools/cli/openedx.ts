@@ -41,11 +41,6 @@ switch (commandName) {
     break;
   case CommandTypes.LINT:
     ensureConfigFilenameOption(ConfigTypes.LINT, ['-c', '--config']);
-    // If extensions haven't been specified, add them.  Otherwise we don't get jsx/tsx files.
-    if (process.argv.indexOf('--ext') === -1) {
-      process.argv.push('--ext');
-      process.argv.push('.js,.jsx,.ts,.tsx');
-    }
     require('.bin/eslint');
     break;
   case CommandTypes.TEST:
@@ -77,13 +72,12 @@ switch (commandName) {
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
   case CommandTypes.FORMAT_JS:
-    const commonArgs = [
+    process.argv = process.argv.concat([
       '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/utils/formatter.js',
       '--ignore', 'src/**/*.json',
       '--out-file', './temp/formatjs/Default.messages.json',
       '--', 'src/**/*.js*',
-    ];
-    process.argv = process.argv.concat(commonArgs);
+    ]);
     require('@formatjs/cli/bin/formatjs');
     break;
   case CommandTypes.SERVE:

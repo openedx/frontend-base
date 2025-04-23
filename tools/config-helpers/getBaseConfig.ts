@@ -7,5 +7,5 @@ export default function getBaseConfig(configType: ConfigTypes) {
     throw new Error(`openedx: ${configType} is not a supported config type.`);
   }
 
-  return require(require.resolve(configPaths[configPaths.length - 1]))
+  return require(require.resolve(configPaths[configPaths.length - 1]));
 };

@@ -15,11 +15,11 @@ import path from 'path';
  *
  */
 function gatherJson(dir: string) {
-  const ret: Array<{ id: string, description: string, defaultMessage: string }> = [];
+  const ret: { id: string, description: string, defaultMessage: string }[] = [];
   const files = glob.sync(`${dir}/**/*.json`);
 
   files.forEach((filename) => {
-    const messages = JSON.parse(fs.readFileSync(filename, { encoding: 'utf8'}));
+    const messages = JSON.parse(fs.readFileSync(filename, { encoding: 'utf8' }));
     ret.push(...messages);
   });
   return ret;
@@ -49,7 +49,7 @@ if (process.argv[3] === '--comments') { // prepare to handle the translator note
 
   const hashFile = `${bashScriptsPath}/hashmap.json`;
   process.stdout.write(`${loggingPrefix}: reading hash file ${hashFile}\n`);
-  const messageInfo = JSON.parse(fs.readFileSync(hashFile, { encoding: 'utf8'}));
+  const messageInfo = JSON.parse(fs.readFileSync(hashFile, { encoding: 'utf8' }));
 
   const outputFile = `${bashScriptsPath}/hashed_data.txt`;
   process.stdout.write(`${loggingPrefix}: writing to output file ${outputFile}\n`);
@@ -66,7 +66,7 @@ if (process.argv[3] === '--comments') { // prepare to handle the translator note
     }
   });
 } else {
-  const output: {[id: string]: string } = {};
+  const output: Record<string, string> = {};
 
   messageObjects.forEach((message) => {
     output[message.id] = message.defaultMessage;

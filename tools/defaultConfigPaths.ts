@@ -1,5 +1,5 @@
 import path from 'path';
-import { ConfigTypes } from "./types";
+import { ConfigTypes } from './types';
 
 // These config paths are tested in the order they're defined, so the last ones are the last fallback.
 export const defaultConfigPaths = {
@@ -32,11 +32,11 @@ export const defaultConfigPaths = {
     path.resolve(__dirname, './webpack/webpack.dev.shell.config.js'),
   ],
   [ConfigTypes.LINT]: [
-    path.resolve(process.cwd(), '.eslintrc.js'),
-    path.resolve(__dirname, './eslint/.eslintrc.js'),
+    path.resolve(process.cwd(), 'eslint.config.js'),
+    path.resolve(__dirname, './eslint/base.eslint.config.js'),
   ],
   [ConfigTypes.TEST]: [
     path.resolve(process.cwd(), 'jest.config.js'),
     path.resolve(__dirname, './jest/jest.config.js'),
   ],
-}
+};

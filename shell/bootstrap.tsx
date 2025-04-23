@@ -1,4 +1,3 @@
-import { init } from '@module-federation/runtime';
 import ReactDOM from 'react-dom';
 import { RouterProvider } from 'react-router-dom';
 
@@ -8,20 +7,22 @@ import {
   initialize,
   subscribe
 } from '../runtime';
-
-import { SHELL_ID } from './data/constants';
-import { getFederationRemotes } from './data/moduleUtils';
+import { addAppConfigs } from '../runtime/config';
+import { addAppMessages } from '../runtime/i18n';
+import { initializeRemotes } from './federation/initializeRemotes';
+import { preloadHintlessFederatedApps } from './federation/preloadHintlessFederatedApps';
+import messages from './i18n';
 import createRouter from './router/createRouter';
 
-const messages = [];
+subscribe(APP_READY, async () => {
+  initializeRemotes();
 
-subscribe(APP_READY, () => {
-  init({
-    name: SHELL_ID,
-    remotes: getFederationRemotes(),
-  });
+  await preloadHintlessFederatedApps();
 
   const router = createRouter();
+
+  addAppConfigs();
+  addAppMessages();
 
   ReactDOM.render(
     <RouterProvider router={router} />,

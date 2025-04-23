@@ -36,7 +36,7 @@ const config: Configuration = {
   mode: 'production',
   devtool: 'source-map',
   entry: {
-    app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/index'),
+    app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/app'),
     ...getParagonEntryPoints(paragonThemeCss),
     ...getParagonEntryPoints(brandThemeCss),
   },

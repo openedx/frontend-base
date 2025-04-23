@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 import { SiteConfig, User } from '../../types';
 import { getConfig } from '../config';
 
@@ -18,12 +18,14 @@ import { getConfig } from '../config';
  * `AppContext` is used in a React application like any other `[React Context](https://reactjs.org/docs/context.html)
  * @memberof module:React
  */
-const AppContext = React.createContext<{
+const AppContext = createContext<{
   authenticatedUser: User | null,
-  config: SiteConfig
+  config: SiteConfig,
+  locale: string,
 }>({
   authenticatedUser: null,
   config: getConfig(),
+  locale: 'en',
 });
 
 export default AppContext;

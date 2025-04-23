@@ -1,12 +1,12 @@
 import { waitFor } from '@testing-library/react';
 import {
-  modifyObjectKeys,
   camelCaseObject,
-  snakeCaseObject,
   convertKeyNames,
-  parseURL,
   getPath,
   getQueryParameters,
+  modifyObjectKeys,
+  parseURL,
+  snakeCaseObject,
 } from '.';
 
 describe('modifyObjectKeys', () => {
@@ -167,7 +167,9 @@ describe('ParseURL', () => {
   it('should return empty object in case of document being undefined', () => {
     global.document = undefined;
 
-    waitFor(() => { expect(parseURL(testURL)).toEqual({}); });
+    waitFor(() => {
+      expect(parseURL(testURL)).toEqual({});
+    });
   });
 });
 

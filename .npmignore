@@ -1,6 +1,5 @@
 __mocks__
-.eslintignore
-./.eslintrc.js
+./eslint.config.js
 .github
 .gitignore
 *.test.js

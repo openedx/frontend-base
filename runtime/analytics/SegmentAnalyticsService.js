@@ -9,8 +9,8 @@ class SegmentAnalyticsService {
   constructor({ httpClient, loggingService, config }) {
     this.loggingService = loggingService;
     this.httpClient = httpClient;
-    this.trackingLogApiUrl = `${config.LMS_BASE_URL}/event`;
-    this.segmentKey = config.SEGMENT_KEY;
+    this.trackingLogApiUrl = `${config.lmsBaseUrl}/event`;
+    this.segmentKey = config.segmentKey;
     this.hasIdentifyBeenCalled = false;
     this.segmentInitialized = false;
 
@@ -70,11 +70,11 @@ class SegmentAnalyticsService {
     // for methods in Analytics.js so that you never have to wait
     // for it to load to actually record data. The `method` is
     // stored as the first argument, so we can replay the data.
-    analytics.factory = method => ((...args) => {
+    analytics.factory = method => (...args) => {
       args.unshift(method);
       analytics.push(args);
       return analytics;
-    });
+    };
 
     // For each of our methods, generate a queueing stub.
     analytics.methods.forEach((key) => {
@@ -98,7 +98,7 @@ class SegmentAnalyticsService {
       // Insert our script next to the first script element.
       const first = document.getElementsByTagName('script')[0];
       first.parentNode.insertBefore(script, first);
-      analytics._loadOptions = options; // eslint-disable-line no-underscore-dangle
+      analytics._loadOptions = options;
 
       this.segmentInitialized = true;
     };
@@ -201,7 +201,7 @@ class SegmentAnalyticsService {
       // This is added to handle the google analytics blocked case which is injected into
       // the DOM by segment.min.js.
       setTimeout(() => {
-        if (!global.ga || !global.ga.create || !global.google_tag_manager) {
+        if (!global.ga?.create || !global.google_tag_manager) {
           this.segmentInitialized = false;
           resolve();
         }

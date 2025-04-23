@@ -16,7 +16,7 @@ enum OptionTypes {
 
 type HtmlWebpackNewRelicPluginOptions = {
   [key in OptionTypes]: string | undefined;
-}
+};
 
 export default class HtmlWebpackNewRelicPlugin {
   options: HtmlWebpackNewRelicPluginOptions;
@@ -75,7 +75,7 @@ export default class HtmlWebpackNewRelicPlugin {
       ;NREUM.info={beacon:"bam-cell.nr-data.net",errorBeacon:"bam-cell.nr-data.net",licenseKey:"${this.options.licenseKey}",applicationID:"${this.options.applicationID}",sa:1}
     `;
 
-    const optionKeys = <Array<OptionTypes>>Object.keys(this.options)
+    const optionKeys = Object.keys(this.options) as OptionTypes[];
     optionKeys.forEach((key: OptionTypes) => {
       if (!this.options[key]) {
         throw new Error(`${key} argument is required`);
@@ -87,7 +87,7 @@ export default class HtmlWebpackNewRelicPlugin {
     compiler.hooks.compilation.tap('HtmlWebpackNewRelicPlugin', (compilation) => {
       HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tap(
         'HtmlWebpackNewRelicPlugin',
-        // @ts-ignore
+        // @ts-expect-error TS doesn't like this declaration, but it seems to work fine.
         (data) => {
           const newRelicScriptTag = HtmlWebpackPlugin.createHtmlTagObject(
             'script',

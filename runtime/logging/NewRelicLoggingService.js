@@ -25,8 +25,8 @@ const pageActionNameInfo = 'INFO';
 const pageActionNameIgnoredError = 'IGNORED_ERROR';
 
 function sendPageAction(actionName, message, customAttributes) {
-  if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
-    console.log(actionName, message, customAttributes); // eslint-disable-line
+  if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
+    console.log(actionName, message, customAttributes);
   }
   if (window && typeof window.newrelic !== 'undefined') {
     // https://docs.newrelic.com/docs/browser/new-relic-browser/browser-apis/addpageaction/
@@ -35,8 +35,8 @@ function sendPageAction(actionName, message, customAttributes) {
 }
 
 function sendError(error, customAttributes) {
-  if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
-    console.error(error, customAttributes); // eslint-disable-line
+  if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
+    console.error(error, customAttributes);
   }
   if (window && typeof window.newrelic !== 'undefined') {
     // https://docs.newrelic.com/docs/browser/new-relic-browser/browser-apis/noticeerror/
@@ -45,8 +45,8 @@ function sendError(error, customAttributes) {
 }
 
 function setCustomAttribute(name, value) {
-  if (getConfig().ENVIRONMENT === EnvironmentTypes.DEVELOPMENT) {
-    console.log(name, value); // eslint-disable-line
+  if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
+    console.log(name, value);
   }
   if (window && typeof window.newrelic !== 'undefined') {
     // https://docs.newrelic.com/docs/browser/new-relic-browser/browser-apis/setcustomattribute/
@@ -102,7 +102,7 @@ export default class NewRelicLoggingService {
 
         For example, here's a .env line which ignores two specific errors:
 
-        IGNORED_ERROR_REGEX='^\\[frontend-auth\\] Unimportant Error|Specific non-critical error #[\\d]+'
+        ignoredErrorRegex='^\\[frontend-auth\\] Unimportant Error|Specific non-critical error #[\\d]+'
 
         This example would ignore errors with the following messages:
 
@@ -119,7 +119,7 @@ export default class NewRelicLoggingService {
 
         For edx.org, add new error message regexes in edx-internal YAML as needed.
     */
-    this.ignoredErrorRegexes = config ? config.IGNORED_ERROR_REGEX : undefined;
+    this.ignoredErrorRegexes = config ? config.ignoredErrorRegex : undefined;
   }
 
   /**

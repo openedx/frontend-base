@@ -1,7 +1,5 @@
-/* eslint-disable no-console */
-import { EnvironmentTypes } from '../../types';
 import {
-  configure,
+  configureI18n,
   getCookies,
   getLocale,
   getMessages,
@@ -14,90 +12,6 @@ import {
 jest.mock('universal-cookie');
 
 describe('lib', () => {
-  describe('configure', () => {
-    let originalWarn = null;
-
-    beforeEach(() => {
-      originalWarn = console.warn;
-      console.warn = jest.fn();
-    });
-
-    afterEach(() => {
-      console.warn = originalWarn;
-    });
-
-    it('should not call console.warn in production', () => {
-      configure({
-        loggingService: { logError: jest.fn() },
-        config: {
-          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-          LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-        },
-        messages: {
-          'es-419': {},
-          de: {},
-          'en-us': {},
-        },
-      });
-
-      expect(console.warn).not.toHaveBeenCalled();
-    });
-
-    it('should warn about unexpected locales', () => {
-      configure({
-        loggingService: { logError: jest.fn() },
-        config: {
-          ENVIRONMENT: EnvironmentTypes.DEVELOPMENT, // turn on warnings!
-          LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-        },
-        messages: {
-          ar: {},
-          'es-419': {},
-          fr: {},
-          'zh-cn': {},
-          ca: {},
-          he: {},
-          id: {},
-          'ko-kr': {},
-          pl: {},
-          'pt-br': {},
-          ru: {},
-          th: {},
-          uk: {},
-          uhoh: {}, // invalid locale
-        },
-      });
-
-      expect(console.warn).toHaveBeenCalledWith('Unexpected locale: uhoh');
-    });
-
-    it('should warn about missing locales', () => {
-      configure({
-        loggingService: { logError: jest.fn() },
-        config: {
-          ENVIRONMENT: EnvironmentTypes.DEVELOPMENT, // turn on warnings!
-          LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-        },
-        messages: {},
-      });
-
-      expect(console.warn).toHaveBeenCalledTimes(15);
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: ar');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: es-419');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: fr');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: zh-cn');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: ca');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: he');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: id');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: ko-kr');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: pl');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: pt-br');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: ru');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: th');
-      expect(console.warn).toHaveBeenCalledWith('Missing locale: uk');
-    });
-  });
-
   describe('getPrimaryLanguageSubtag', () => {
     it('should work for primary language subtags', () => {
       expect(getPrimaryLanguageSubtag('en')).toEqual('en');
@@ -114,12 +28,7 @@ describe('lib', () => {
 
   describe('getLocale', () => {
     beforeEach(() => {
-      configure({
-        loggingService: { logError: jest.fn() },
-        config: {
-          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-          LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-        },
+      configureI18n({
         messages: {
           'es-419': {},
           de: {},
@@ -159,12 +68,7 @@ describe('lib', () => {
 
   describe('getMessages', () => {
     beforeEach(() => {
-      configure({
-        loggingService: { logError: jest.fn() },
-        config: {
-          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-          LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-        },
+      configureI18n({
         messages: {
           'es-419': { message: 'es-hah' },
           de: { message: 'de-hah' },
@@ -216,12 +120,7 @@ describe('lib', () => {
 
     it('should do the right thing for non-RTL languages', () => {
       getCookies().get = jest.fn(() => 'es-419');
-      configure({
-        loggingService: { logError: jest.fn() },
-        config: {
-          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-          LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-        },
+      configureI18n({
         messages: {
           'es-419': { message: 'es-hah' },
         },
@@ -233,12 +132,7 @@ describe('lib', () => {
 
     it('should do the right thing for RTL languages', () => {
       getCookies().get = jest.fn(() => 'ar');
-      configure({
-        loggingService: { logError: jest.fn() },
-        config: {
-          ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-          LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-        },
+      configureI18n({
         messages: {
           ar: { message: 'ar-hah' },
         },
@@ -252,12 +146,7 @@ describe('lib', () => {
 
 describe('mergeMessages', () => {
   it('should merge objects', () => {
-    configure({
-      loggingService: { logError: jest.fn() },
-      config: {
-        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-        LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-      },
+    configureI18n({
       messages: {
         ar: { message: 'ar-hah' },
       },
@@ -272,12 +161,7 @@ describe('mergeMessages', () => {
   });
 
   it('should merge objects from an array', () => {
-    configure({
-      loggingService: { logError: jest.fn() },
-      config: {
-        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-        LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-      },
+    configureI18n({
       messages: {
         ar: { message: 'ar-hah' },
       },
@@ -292,12 +176,7 @@ describe('mergeMessages', () => {
   });
 
   it('should merge nested objects from an array', () => {
-    configure({
-      loggingService: { logError: jest.fn() },
-      config: {
-        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-        LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-      },
+    configureI18n({
       messages: {
         en: { init: 'initial' },
         es: { init: 'inicial' },
@@ -330,12 +209,7 @@ describe('mergeMessages', () => {
   });
 
   it('should return an empty object if no messages', () => {
-    configure({
-      loggingService: { logError: jest.fn() },
-      config: {
-        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-        LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-      },
+    configureI18n({
       messages: {},
     });
     expect(mergeMessages(undefined)).toEqual({});
@@ -345,12 +219,7 @@ describe('mergeMessages', () => {
   });
 
   it('should return the original object if no messages', () => {
-    configure({
-      loggingService: { logError: jest.fn() },
-      config: {
-        ENVIRONMENT: EnvironmentTypes.PRODUCTION,
-        LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-      },
+    configureI18n({
       messages: { en: { hello: 'world ' } },
     });
     expect(mergeMessages(undefined)).toEqual({ en: { hello: 'world ' } });

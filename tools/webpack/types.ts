@@ -15,28 +15,20 @@ export interface ParagonThemeVariantCssAsset {
 
 export interface ParagonThemeCss {
   core: ParagonThemeCssAsset | undefined,
-  variants: { [key: string] : ParagonThemeVariantCssAsset }
-  defaults: {
-
-  }
+  variants: Record<string, ParagonThemeVariantCssAsset>,
+  defaults: object,
 }
 
 // This isn't perfect, as it implies having neither url nor urls would be valid.  Feel free to improve it so that one is required.
-export type ParagonThemeUrlsVariant = {
+export interface ParagonThemeUrlsVariant {
   url?: string,
-  urls?: {
-    [urlName: string]: string | undefined,
-  }
+  urls?: Record<string, string | undefined>,
 }
 
 export interface ParagonThemeUrls {
   core: ParagonThemeUrlsVariant,
-  defaults: {
-    [variantName: string]: string,
-  },
-  variants: {
-    [variantName: string]: ParagonThemeUrlsVariant
-  }
+  defaults: Record<string, string>,
+  variants: Record<string, ParagonThemeUrlsVariant>,
 }
 
 export interface ParagonThemeUrlsFile {
@@ -45,20 +37,16 @@ export interface ParagonThemeUrlsFile {
       paths: {
         default: string,
         minified: string,
-      }
+      },
     },
-    defaults: {
-      [variant: string]: string,
-    },
-    variants: {
-      [variant: string]: {
-        paths: {
-          default: string,
-          minified: string,
-        }
-      }
-    }
-  }
+    defaults: Record<string, string>,
+    variants: Record<string, {
+      paths: {
+        default: string,
+        minified: string,
+      },
+    }>,
+  },
 }
 
 export interface ParagonScriptContents {
@@ -68,7 +56,7 @@ export interface ParagonScriptContents {
       core: any,
       variants: any,
       defaults: any,
-    }
+    },
   },
   brand?: {
     version: string,
@@ -76,6 +64,6 @@ export interface ParagonScriptContents {
       core: any,
       variants: any,
       defaults: any,
-    }
-  }
+    },
+  },
 }

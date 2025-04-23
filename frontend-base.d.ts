@@ -1,5 +1,3 @@
-import { ProjectSiteConfig } from "./index";
-
 declare module 'site.config' {
   export default ProjectSiteConfig;
 }
