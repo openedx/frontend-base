@@ -59,7 +59,7 @@
 		"@formatjs/cli": "^6.0.3",
 		"@formatjs/ts-transformer": "^3.13.14",
 		"@module-federation/enhanced": "^0.6.12",
-		"@module-federation/runtime": "^0.6.12",
+		"@module-federation/runtime": "^0.13.0",
 		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
 		"@stylistic/eslint-plugin": "^2.9.0",
 		"@types/eslint__js": "^8.42.3",
