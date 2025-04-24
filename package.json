@@ -116,7 +116,7 @@
 		"react-responsive": "^10.0.0",
 		"react-transition-group": "^4.4.5",
 		"resolve-url-loader": "^5.0.0",
-		"sass-embedded": "^1.80.4",
+		"sass-embedded": "^1.87.0",
 		"sass-loader": "^16.0.2",
 		"sharp": "^0.33.5",
 		"source-map-loader": "4.0.2",

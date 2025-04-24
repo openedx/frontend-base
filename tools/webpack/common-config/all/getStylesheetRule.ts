@@ -81,8 +81,9 @@ function getStyleUseConfig(mode: 'dev' | 'production') {
             path.join(process.cwd(), 'node_modules'),
             path.join(process.cwd(), 'src'),
           ],
-          // silences compiler warnings regarding deprecation warnings
+          // Silences compiler deprecation warnings.  They mostly come from bootstrap and/or paragon.
           quietDeps: true,
+          silenceDeprecations: ['abs-percent', 'color-functions', 'import', 'mixed-decls', 'global-builtin', 'legacy-js-api'],
         },
       },
     },
