@@ -4,7 +4,7 @@ export default function LayoutWithOptions() {
   const widgets = useWidgets();
   const options = useLayoutOptions();
 
-  const title = options.title ?? 'Foo';
+  const title = typeof options.title === 'string' ? options.title : 'Foo';
 
   return (
     <>

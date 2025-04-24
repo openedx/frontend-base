@@ -5,7 +5,7 @@ import { useWidgetOptions } from '../../../runtime';
 
 export default function CoursesLink() {
   const options = useWidgetOptions();
-  const title = options.title ?? 'Courses';
+  const title = typeof options.title === 'string' ? options.title : 'Courses';
 
   return (
     <div className="d-flex">

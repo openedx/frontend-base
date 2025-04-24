@@ -10,7 +10,7 @@ export default function LabeledLinkColumn() {
 
   return (
     <div className="d-flex flex-grow-1 flex-column gap-2 small">
-      {options.label && (
+      {typeof options.label === 'string' && (
         <div className="mb-1 font-weight-bold">{options.label}</div>
       )}
       {widgets}

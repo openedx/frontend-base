@@ -1,3 +1,4 @@
+import { IntlProvider } from 'react-intl';
 import { Hyperlink, Image } from '@openedx/paragon';
 
 interface LogoProps {
@@ -18,8 +19,10 @@ export default function Logo({
   }
 
   return (
-    <Hyperlink destination={destinationUrl} className="p-0">
-      {image}
-    </Hyperlink>
+    <IntlProvider locale="en">
+      <Hyperlink destination={destinationUrl} className="p-0">
+        {image}
+      </Hyperlink>
+    </IntlProvider>
   );
 }

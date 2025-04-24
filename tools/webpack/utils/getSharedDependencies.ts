@@ -2,12 +2,12 @@ export default function getSharedDependencies({ isShell }: { isShell: boolean })
   return {
     react: {
       singleton: true,
-      requiredVersion: '^17.0.0',
+      requiredVersion: '^18.0.0',
       eager: isShell,
     },
     'react-dom': {
       singleton: true,
-      requiredVersion: '^17.0.0',
+      requiredVersion: '^18.0.0',
       eager: isShell,
     },
     '@openedx/paragon': {

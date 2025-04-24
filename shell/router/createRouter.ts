@@ -16,6 +16,6 @@ export default function createRouter() {
     }
   ], {
     basename: getBasename(),
-    unstable_patchRoutesOnNavigation: patchRoutesOnNavigation,
+    patchRoutesOnNavigation,
   });
 }
