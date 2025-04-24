@@ -94,7 +94,9 @@ function getStyleUseConfig(mode: 'dev' | 'production') {
  */
 function getPostCssLoaderPlugins(mode: 'dev' | 'production') {
   const plugins: any[] = [
-    PostCssAutoprefixerPlugin(),
+    PostCssAutoprefixerPlugin({
+      remove: false, // Prevents removing vendor prefixes
+    }),
     PostCssRTLCSS(),
   ];
 
