@@ -71,15 +71,35 @@ switch (commandName) {
     ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV, ['-c', '--config']);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
-  case CommandTypes.FORMAT_JS:
+  case CommandTypes.FORMAT_JS: {
+    /* The include option is used to specify which additional source folders to extract messages from.
+     * To extract more messages on other source folders use: --include=plugins --include=plugins2
+     * The intention use case is to allow extraction from the 'plugins' directory on 'frontend-app-authoring'.
+     * That plugins folder were kept outside the src folder to ensure they remain independent and
+     * can function without relying on the MFE environment's special features.
+     * This approach allows them to be packaged separately as NPM packages. */
+    const additionalSrcFolders = [] as string[];
+    process.argv.forEach((val, index) => {
+      if (val.startsWith('--include=')) {
+        additionalSrcFolders.push(val.split('=')[1]);
+        process.argv.splice(index, 1);
+      }
+    });
+    const srcFolders = ['src'].concat(additionalSrcFolders);
+    let srcFoldersString = srcFolders.join(',');
+    if (srcFolders.length > 1) {
+      srcFoldersString = `{${srcFoldersString}}`;
+    }
     process.argv = process.argv.concat([
       '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/utils/formatter.js',
-      '--ignore', 'src/**/*.json',
+      '--ignore', `${srcFoldersString}/**/*.json`,
+      '--ignore', `${srcFoldersString}/**/*.d.ts`,
       '--out-file', './temp/formatjs/Default.messages.json',
-      '--', 'src/**/*.js*',
+      '--', `${srcFoldersString}/**/*.{j,t}s*`,
     ]);
     require('@formatjs/cli/bin/formatjs');
     break;
+  }
   case CommandTypes.SERVE:
     require('./commands/serve');
     break;
