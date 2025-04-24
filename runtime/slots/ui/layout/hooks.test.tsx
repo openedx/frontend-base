@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useOperations } from '../../hooks';
 import * as uiHooks from '../hooks';
 import { UiOperation } from '../types';

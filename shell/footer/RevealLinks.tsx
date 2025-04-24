@@ -8,7 +8,7 @@ export default function RevealLinks() {
   const widgets = useWidgets();
   const options = useLayoutOptions();
 
-  const label = options.label ?? messages['footer.revealLinks.more'];
+  const label: any = options.label ?? messages['footer.revealLinks.more'];
 
   if (widgets.length === 0) {
     return (

@@ -45,7 +45,7 @@ describe('createRouter', () => {
       ],
       {
         basename: mockBasename,
-        unstable_patchRoutesOnNavigation: patchRoutesOnNavigation,
+        patchRoutesOnNavigation,
       }
     );
 

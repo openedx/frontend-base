@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import siteConfig from 'site.config';
 import { EnvironmentTypes } from '../../types';
 import { sendTrackEvent } from '../analytics';
