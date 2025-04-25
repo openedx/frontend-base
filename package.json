@@ -102,7 +102,7 @@
     "lodash.merge": "^4.6.2",
     "lodash.snakecase": "^4.1.1",
     "mini-css-extract-plugin": "1.6.2",
-    "parse5": "7.1.2",
+    "parse5": "7.3.0",
     "postcss": "^8.4.47",
     "postcss-custom-media": "10.0.8",
     "postcss-loader": "7.3.4",
