@@ -4,6 +4,5 @@ export { default as useActiveRouteRoleWatcher } from './useActiveRouteRoleWatche
 export { default as useActiveRoles } from './useActiveRoles';
 export { default as useSiteConfig } from './useSiteConfig';
 export { default as useSiteEvent } from './useSiteEvent';
-export { default as useTrackColorSchemeChoice } from './useTrackColorSchemeChoice';
 
-export * from './paragon';
+export * from './theme';

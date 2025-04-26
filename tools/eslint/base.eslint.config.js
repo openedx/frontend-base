@@ -39,7 +39,6 @@ module.exports = tseslint.config(
         ...globals.browser,
         ...globals.node,
         ...globals.jest,
-        PARAGON_THEME: 'readonly',
         newrelic: 'readonly',
       },
     },

@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { setAuthenticatedUser } from '../../auth';
 import { initializeMockApp } from '../../testing';
-import AppProvider from '../AppProvider';
+import SiteProvider from '../SiteProvider';
 import useAuthenticatedUser from './useAuthenticatedUser';
 
 describe('useAuthenticatedUser', () => {
@@ -34,7 +34,7 @@ describe('useAuthenticatedUser', () => {
     });
 
     it('returns a User when the user exists', () => {
-      const { result } = renderHook(() => useAuthenticatedUser(), { wrapper: AppProvider });
+      const { result } = renderHook(() => useAuthenticatedUser(), { wrapper: SiteProvider });
       expect(result.current).toBe(user);
     });
   });

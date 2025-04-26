@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react';
-import { sendTrackEvent } from '../../analytics';
+import { sendTrackEvent } from '../../../analytics';
 import useTrackColorSchemeChoice from './useTrackColorSchemeChoice';
 
-jest.mock('../../analytics');
+jest.mock('../../../analytics');
 
 const mockAddEventListener = jest.fn();
 const mockRemoveEventListener = jest.fn();
@@ -20,7 +20,7 @@ describe('useTrackColorSchemeChoice hook', () => {
   afterEach(() => {
     mockAddEventListener.mockClear();
     mockRemoveEventListener.mockClear();
-    sendTrackEvent.mockClear();
+    jest.mocked(sendTrackEvent).mockClear();
   });
 
   it('sends dark preferred color schema event if query matches', async () => {

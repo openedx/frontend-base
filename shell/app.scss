@@ -1,4 +1,5 @@
-@use "@openedx/paragon/scss/core/core.scss";
+@use "@openedx/paragon/dist/core.min.css";
+@use "@openedx/paragon/dist/light.min.css";
 
 .flex-basis-0 {
   flex-basis: 0 !important;

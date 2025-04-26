@@ -60,6 +60,9 @@ export interface OptionalSiteConfig {
   externalLinkUrlOverrides: string[],
   mfeConfigApiUrl: string | null,
 
+  // Theme
+  theme: Theme,
+
   // Cookies
   accessTokenCookieName: string,
   languagePreferenceCookieName: string,
@@ -77,6 +80,23 @@ export interface OptionalSiteConfig {
 }
 
 export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
+
+export interface ThemeVariant {
+  url: string,
+}
+
+export interface ThemeDefaults {
+  light?: string,
+  dark?: string,
+}
+
+export type ThemeVariants = Record<string, ThemeVariant>;
+
+export interface Theme {
+  core?: ThemeVariant,
+  defaults?: ThemeDefaults,
+  variants?: ThemeVariants,
+}
 
 export interface User {
   administrator: boolean,
