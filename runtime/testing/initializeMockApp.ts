@@ -1,5 +1,7 @@
 import siteConfig from 'site.config';
 
+import { LocalizedMessages, User } from '../../types';
+
 import { configureAnalytics, MockAnalyticsService } from '../analytics';
 import { configureAuth, MockAuthService, setAuthenticatedUser } from '../auth';
 import { getSiteConfig, mergeSiteConfig } from '../config';
@@ -47,6 +49,9 @@ import mockMessages from './mockMessages';
 export default function initializeMockApp({
   messages = mockMessages,
   authenticatedUser = null,
+}: {
+  messages?: LocalizedMessages,
+  authenticatedUser?: User | null,
 } = {}) {
   const config = siteConfig;
   mergeSiteConfig(config);

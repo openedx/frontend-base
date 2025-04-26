@@ -76,7 +76,7 @@ Dependencies shared with the shell should be moved to peerDependencies.  These i
 
 ```diff
 "dependencies" {
--  "@openedx/paragon": "^22.8.1",
+-  "@openedx/paragon": "^23.4.5",
 -  "@tanstack/react-query": "^5.81.2",
 -  "react": "^17.0.2",
 -  "react-dom": "^17.0.2",
@@ -84,7 +84,7 @@ Dependencies shared with the shell should be moved to peerDependencies.  These i
 -  "react-router-dom": "^6.26.1",
 },
 "peerDependencies": {
-+  "@openedx/paragon": "^22",
++  "@openedx/paragon": "^23",
 +  "@tanstack/react-query": "^5",
 +  "react": "^18",
 +  "react-dom": "^18",
@@ -784,8 +784,7 @@ This is required if you intend to run builds from the app itself.
 Create a new `app.scss` file at the top of your application.  It's responsible for:
 
 1. Importing the shell's stylesheet, which includes Paragon's core stylesheet.
-2. Importing your brand stylesheet.
-3. Importing the stylesheets from your application.
+2. Importing the stylesheets from your application.
 
 You must then import this new stylesheet into your `site.config` file:
 
@@ -815,26 +814,9 @@ Instead, custom variables must go through site config.  This can be done by addi
 Convert @import to @use in SCSS files
 =====================================
 
-@import is deprecated in the most recent versions of SASS.
+@import is deprecated in the most recent versions of SASS.  It must be converted to @use.
 
-When you do this, you will find that variables and mixins from Paragon, in particular, are likely to result in errors when building the app in webpack.  To fix this, you must `@use` the paragon core SCSS file in the file where you want to use the variable or mixin:
-
-```js
-@use "@openedx/paragon/scss/core/core" as paragon;
-```
-
-And then prefix the variable/mixin usage with `paragon.`:
-
-```
-// Using a mixin
-@include paragon.media-breakpoint-up(lg) {
-
-}
-
-// Or a variable
-paragon.$primary-700
-```
-
+If still importing Paragon SCSS variables, you will find that they, in particular, are likely to result in errors when building the app in webpack.  The app should be migrated to use CSS variables from Paragon 23, as per [the corresponding howto](https://openedx.atlassian.net/wiki/spaces/BPL/pages/3770744958/Migrating+MFEs+to+Paragon+design+tokens+and+CSS+variables).  These do not need to be @used by the app, as they should be loaded into the site HTML by default.
 
 Changes to i18n
 ===============

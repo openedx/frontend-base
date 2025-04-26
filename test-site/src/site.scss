@@ -1,9 +1,7 @@
 @use '@openedx/frontend-base/shell/app.scss';
 
-$h3-color: red;
-
 .red-text {
-  color: $h3-color;
+  color: var(--pgn-color-red);
 }
 
 .text-align-right {

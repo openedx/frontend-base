@@ -11,7 +11,6 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import messages from '../messages';
 import Image from './Image';
-import ParagonPreview from './ParagonPreview';
 import appleImg from './apple.jpg';
 import appleUrl from './apple.svg';
 
@@ -73,7 +72,6 @@ export default function ExamplePage() {
 
       <h2>Right-to-left language handling tests</h2>
       <p className="text-align-right">I&apos;m aligned right, but left in RTL.</p>
-      <ParagonPreview />
     </Container>
   );
 }

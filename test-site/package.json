@@ -14,7 +14,7 @@
   "license": "AGPL-3.0",
   "peerDependencies": {
     "@openedx/frontend-base": "file:../openedx-frontend-base.tgz",
-    "@openedx/paragon": "^22",
+    "@openedx/paragon": "^23",
     "react": "^18",
     "react-dom": "^18",
     "react-router": "^6",

@@ -13,19 +13,10 @@ import {
   getStylesheetRule
 } from './common-config';
 
-import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
-
 import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
-import {
-  getParagonCacheGroups,
-  getParagonEntryPoints,
-  getParagonThemeCss,
-} from './utils/paragonUtils';
 
-const paragonThemeCss = getParagonThemeCss(process.cwd());
-const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.build.tsx');
 
@@ -34,8 +25,6 @@ const config: Configuration = {
   devtool: 'source-map',
   entry: {
     app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/site'),
-    ...getParagonEntryPoints(paragonThemeCss),
-    ...getParagonEntryPoints(brandThemeCss),
   },
   output: {
     filename: '[name].[chunkhash].js',
@@ -62,10 +51,6 @@ const config: Configuration = {
     runtimeChunk: 'single',
     splitChunks: {
       chunks: 'all',
-      cacheGroups: {
-        ...getParagonCacheGroups(paragonThemeCss),
-        ...getParagonCacheGroups(brandThemeCss),
-      },
     },
     minimizer: getImageMinimizer(),
   },
@@ -77,7 +62,6 @@ const config: Configuration = {
 
     new RemoveEmptyScriptsPlugin(),
     // Writes the extracted CSS from each entry to a file in the output directory.
-    new ParagonWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].[chunkhash].css',
     }),

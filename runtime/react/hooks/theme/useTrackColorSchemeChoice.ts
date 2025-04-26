@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { sendTrackEvent } from '../../analytics';
+import { sendTrackEvent } from '../../../analytics';
 
 /**
  * A React hook that tracks user's preferred color scheme (light or dark) and sends respective

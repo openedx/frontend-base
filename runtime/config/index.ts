@@ -124,6 +124,7 @@ let siteConfig: SiteConfig = {
   externalRoutes: [],
   externalLinkUrlOverrides: [],
   mfeConfigApiUrl: null,
+  theme: {},
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
   csrfTokenApiPath: '/csrf/api/v1/token',
   ignoredErrorRegex: null,
@@ -238,9 +239,7 @@ export function getActiveRouteRoles() {
 const activeWidgetRoles: Record<string, number> = {};
 
 export function addActiveWidgetRole(role: string) {
-  if (activeWidgetRoles[role] === undefined) {
-    activeWidgetRoles[role] = 0;
-  }
+  activeWidgetRoles[role] ??= 0;
   activeWidgetRoles[role] += 1;
   publish(ACTIVE_ROLES_CHANGED);
 }

@@ -14,27 +14,16 @@ import {
   getStylesheetRule
 } from './common-config';
 
-import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpackPlugin';
-
 import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
-import {
-  getParagonCacheGroups,
-  getParagonEntryPoints,
-  getParagonThemeCss,
-} from './utils/paragonUtils';
 
-const paragonThemeCss = getParagonThemeCss(process.cwd());
-const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
 
 const config: Configuration = {
   entry: {
     app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/site'),
-    ...getParagonEntryPoints(paragonThemeCss),
-    ...getParagonEntryPoints(brandThemeCss),
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
@@ -59,10 +48,6 @@ const config: Configuration = {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      cacheGroups: {
-        ...getParagonCacheGroups(paragonThemeCss),
-        ...getParagonCacheGroups(brandThemeCss),
-      },
     },
     minimizer: getImageMinimizer(),
   },
@@ -72,7 +57,6 @@ const config: Configuration = {
     // This helps to clean up the final bundle application
     // See: https://www.npmjs.com/package/webpack-remove-empty-scripts#usage-with-mini-css-extract-plugin
     new RemoveEmptyScriptsPlugin(),
-    new ParagonWebpackPlugin(),
     // Writes the extracted CSS from each entry to a file in the output directory.
     new MiniCssExtractPlugin({
       filename: '[name].css',
