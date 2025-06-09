@@ -1,9 +1,8 @@
 import { ReactNode } from 'react';
 import { UiOperation } from '../types';
 import { isUiOperation, isUiOperationConditionSatisfied } from '../utils';
-import FederatedWidget from './FederatedWidget';
 import { IFrameWidget } from './iframe';
-import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetFederatedProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
+import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
 import WidgetProvider from './WidgetProvider';
 
 export function isWidgetOperation(operation: UiOperation): operation is WidgetOperation {
@@ -68,16 +67,12 @@ function hasWidgetElementProps(operation: WidgetOperation): operation is (Widget
   return isWidgetOperation(operation) && 'element' in operation;
 }
 
-function hasWidgetFederatedProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetFederatedProps) {
-  return isWidgetOperation(operation) && 'remoteId' in operation && 'moduleId' in operation;
-}
-
 function hasWidgetIFrameProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetIFrameProps) {
   return isWidgetOperation(operation) && 'url' in operation && 'title' in operation;
 }
 
 function hasWidgetRendererProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetRendererProps) {
-  return hasWidgetComponentProps(operation) || hasWidgetElementProps(operation) || hasWidgetFederatedProps(operation) || hasWidgetIFrameProps(operation);
+  return hasWidgetComponentProps(operation) || hasWidgetElementProps(operation) || hasWidgetIFrameProps(operation);
 }
 
 function hasWidgetIdentityProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetIdentityProps) {
@@ -100,10 +95,6 @@ function createIdentifiedWidget(operation: WidgetRendererOperation) {
     );
   } else if (hasWidgetElementProps(operation)) {
     widget = operation.element;
-  } else if (hasWidgetFederatedProps(operation)) {
-    widget = (
-      <FederatedWidget remoteId={operation.remoteId} moduleId={operation.moduleId} />
-    );
   } else if (hasWidgetIFrameProps(operation)) {
     widget = (
       <IFrameWidget url={operation.url} title={operation.title} />

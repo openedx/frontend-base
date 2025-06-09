@@ -106,7 +106,6 @@ import {
   AppConfig,
   EnvironmentTypes,
   OptionalSiteConfig,
-  Remote,
   RequiredSiteConfig,
   SiteConfig
 } from '../../types';
@@ -127,8 +126,6 @@ let config: SiteConfig = {
   segmentKey: null,
 
   apps: [],
-  remotes: [],
-  federatedApps: [],
   externalRoutes: [],
 
   appId: '',
@@ -208,19 +205,6 @@ export function mergeConfig(newConfig: Partial<Partial<OptionalSiteConfig> & Req
   publish(CONFIG_CHANGED);
 }
 
-/**
- * patchApp is used to lazy load Apps after the initial SiteConfig.apps array has been created.
- * This is most often used after loading FederatedApps.
- */
-export function patchApp(app: App) {
-  config.apps.push(app);
-  if (app.config !== undefined) {
-    patchAppConfig(app.config);
-  }
-  publish(APPS_CHANGED);
-  publish(CONFIG_CHANGED);
-}
-
 const appConfigs: Record<string, AppConfig> = {};
 
 /**
@@ -244,27 +228,6 @@ export function getAppConfig(id: string) {
 
 export function patchAppConfig(appConfig: AppConfig) {
   appConfigs[appConfig.appId] = appConfig;
-}
-
-/**
- * This function will attempt to add the supplied remotes to the SiteConfig.  If a remote with that
- * ID already exists, it will not be added.  If changes are made to the SiteConfig, the
- * CONFIG_CHANGED event will be published.
- *
- * @param remotes An array of Remote objects to merge into the SiteConfig's `remotes` array.
- */
-export function mergeRemotes(remotes: Remote[]) {
-  const remoteIds = config.remotes.map(remote => remote.id);
-  let changed = false;
-  for (const remote of remotes) {
-    if (!remoteIds.includes(remote.id)) {
-      config.remotes.push(remote);
-      changed = true;
-    }
-  }
-  if (changed) {
-    publish(CONFIG_CHANGED);
-  }
 }
 
 let activeRouteRoles: string[] = [];

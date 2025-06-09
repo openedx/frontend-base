@@ -24,7 +24,7 @@ We will move the code from these libraries into `frontend-base`.  We decided we 
 
 ### Migration Order
 
-We chose to move `frontend-build` first as the foundation upon which all the others will be built.  A modified version of `frontend-build` will be used to build the shell and provide build scripts to the frontend apps which support webpack module federation, amongst other things.
+We chose to move `frontend-build` first as the foundation upon which all the others will be built.  A modified version of `frontend-build` will be used to build the shell, amongst other things.
 
 Following frontend build, we will move `frontend-platform` and validate that this repository can act as a replacement for `frontend-build` and `frontend-platform` together. At this point, micro-frontend repositories could be migrated to use this library instead of `frontend-build` and `frontend-platform`.
 

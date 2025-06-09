@@ -3,21 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/index.jsx",
-  "config": {
-    "name": "testProject",
-    "exposes": {
-      "./authenticated-page": "./src/authenticated-page",
-      "./example-page": "./src/example-page",
-      "./iframe-widget": "./src/iframe-widget"
-    }
-  },
   "scripts": {
     "build": "openedx build",
     "lint": "openedx lint .",
     "dev": "openedx dev",
-    "dev:with-remotes": "SITE_CONFIG_PATH=site.config.dev.with-remotes.tsx openedx dev",
-    "dev:module": "PORT=8081 openedx dev:module",
-    "build:module": "PORT=8081 openedx build:module",
     "serve": "openedx serve"
   },
   "keywords": [],

@@ -23,7 +23,6 @@ export interface App {
   messages?: LocalizedMessages,
   routes?: RoleRouteObject[],
   slots?: SlotOperation[],
-  remotes?: Remote[],
   config?: AppConfig,
 }
 
@@ -31,24 +30,6 @@ export type AppConfig = {
   // An AppConfig must contain an appId if it exists, which allows us to differentiate between app configs.
   appId,
 } & Record<string, unknown>;
-
-export interface FederatedApp {
-  remoteId: string,
-  moduleId: string,
-  // rolePaths are used to find out the paths to certain roles before loading the app via module federation.  This means we can form links without needing to load the whole thing.
-  rolePaths?: Record<string, string>,
-  hints?: {
-    // The path hints are used by our react-router patchRoutesOnNavigation handler to load the
-    // federated app when one of its paths has been requested.  This can happen, for instance, when
-    // a path is loaded via the rolePaths above.
-    paths?: string[],
-  },
-}
-
-export interface Remote {
-  id: string,
-  url: string,
-}
 
 // Site Config
 
@@ -71,8 +52,6 @@ export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>
 
 export interface OptionalSiteConfig {
   apps: App[],
-  federatedApps: FederatedApp[],
-  remotes: Remote[],
   externalRoutes: ExternalRoute[],
 
   // Cookies

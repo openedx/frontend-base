@@ -112,9 +112,7 @@ With the exception of any custom scripts, replace the `scripts` section of your 
   "scripts": {
     "build": "PORT=YOUR_PORT openedx build",
     "build:legacy": "openedx build:legacy", // TODO: Does this target exist?
-    "build:module": "PORT=YOUR_PORT openedx build:module",
     "dev": "PORT=YOUR_PORT openedx dev",
-    "dev:module": "PORT=YOUR_PORT openedx dev:module",
     "dev:legacy": "PORT=YOUR_PORT openedx dev:legacy",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
@@ -136,11 +134,10 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 
 ## 5. Other package.json edits
 
-- `main` and `module`
+- `main`
 
 ```diff
 + "main": "src/index.ts",
-+ "module": "src/index.ts",
 ```
 
 - `sideEffects`
@@ -155,30 +152,6 @@ This means that the code from the library can be safely tree-shaken by webpack.
 ```
 
 // TODO: Maybe put scss and css files in side effects.  They have side effects and need to be excluded so they get bundled.
-
-- `config`
-
-You must add a "config" section to package.json that describes the modules that the library exports.  This includes a camelCase `name` for the remote that hosts all your packages.  This name must be unique across all the libraries in a frontend, and so including your organization name is encouraged. For an Open edX default library called `frontend-app-my-library`, a good name would be `openedxMyLibrary`.
-
-The config block must also include an `exposes` configuration that describes your modules.
-
-```diff
-+ "config": {
-+   "name": "openedxMyLibrary",
-+   "exposes": {
-+     "./ModuleOne": "./src/module-one",
-+     "./ModuleTwo": "./src/module-two",
-+     "./ModuleThree": "./src/module-three"
-+   }
-+ },
-```
-
-If you used the "exports" field in package.json it changes the way importing/requiring/TS/node works and everything starts to break.
-
-The entries in `exposes` are:
-
-1. A key that is compatible with the [Package entry points](https://nodejs.org/api/packages.html#package-entry-points) specification.  Generally the name of your module prefixed with `./`.
-2. The actual path to the module in your source code.  In the above example, `./ModuleOne` is the name that module federation will refer to, and `./src/module-one` is pointing to an `./src/module-one/index.tsx` file that exports the module.  It is also acceptable to point at a non-index file such as `./src/module-one/ModuleOne.tsx` if that's how your code is structured.
 
 ## 6. Add a Type Declaration file (app.d.ts)
 
