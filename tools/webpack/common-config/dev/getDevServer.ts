@@ -6,8 +6,6 @@ import getPublicPath from '../../utils/getPublicPath';
 export default function getDevServer(): Configuration {
   return {
     allowedHosts: 'all',
-    // Setting the Access-Control-Allow-Origin header is required to get module federation to work
-    // locally.
     devMiddleware: {
       publicPath: getPublicPath(),
     },

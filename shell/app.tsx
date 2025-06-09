@@ -9,16 +9,10 @@ import {
 } from '../runtime';
 import { addAppConfigs } from '../runtime/config';
 import { addAppMessages } from '../runtime/i18n';
-import { initializeRemotes } from './federation/initializeRemotes';
-import { preloadHintlessFederatedApps } from './federation/preloadHintlessFederatedApps';
 import messages from './i18n';
 import createRouter from './router/createRouter';
 
 subscribe(APP_READY, async () => {
-  initializeRemotes();
-
-  await preloadHintlessFederatedApps();
-
   const router = createRouter();
 
   addAppConfigs();
@@ -31,7 +25,7 @@ subscribe(APP_READY, async () => {
 });
 
 subscribe(APP_INIT_ERROR, (error) => {
-  ReactDOM.render(<div>{error.message}</div>, document.getElementById('root'));
+  ReactDOM.render(<div>{error.message} </div>, document.getElementById('root'));
 });
 
 initialize({

@@ -1,4 +1,3 @@
-import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -11,7 +10,6 @@ import {
   getDevServer,
   getFileLoaderRules,
   getHtmlWebpackPlugin,
-  getIgnoreWarnings,
   getImageMinimizer,
   getStylesheetRule
 } from './common-config';
@@ -21,7 +19,6 @@ import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpac
 import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
-import getSharedDependencies from './utils/getSharedDependencies';
 import {
   getParagonCacheGroups,
   getParagonEntryPoints,
@@ -42,7 +39,6 @@ const config: Configuration = {
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: getPublicPath('auto'),
-    uniqueName: 'mf-shell', // Needed for module federation.
   },
   resolve: {
     alias: {
@@ -51,7 +47,6 @@ const config: Configuration = {
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
-  ignoreWarnings: getIgnoreWarnings(),
   mode: 'development',
   devtool: 'eval-source-map',
   module: {
@@ -85,10 +80,6 @@ const config: Configuration = {
     getHtmlWebpackPlugin(),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin(),
-    new ModuleFederationPlugin({
-      name: 'shell',
-      shared: getSharedDependencies({ isShell: true }),
-    })
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live
   // reloading.

@@ -1,4 +1,3 @@
-import { ModuleFederationPlugin } from '@module-federation/enhanced';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
@@ -10,7 +9,6 @@ import {
   getCodeRules,
   getFileLoaderRules,
   getHtmlWebpackPlugin,
-  getIgnoreWarnings,
   getImageMinimizer,
   getStylesheetRule
 } from './common-config';
@@ -20,7 +18,6 @@ import ParagonWebpackPlugin from './plugins/paragon-webpack-plugin/ParagonWebpac
 import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
-import getSharedDependencies from './utils/getSharedDependencies';
 import {
   getParagonCacheGroups,
   getParagonEntryPoints,
@@ -45,7 +42,6 @@ const config: Configuration = {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: getPublicPath('auto'),
     clean: true, // Clean the output directory before emit.
-    uniqueName: 'mf-shell', // Needed for module federation.
   },
   resolve: {
     alias: {
@@ -54,7 +50,6 @@ const config: Configuration = {
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
-  ignoreWarnings: getIgnoreWarnings(),
   module: {
     rules: [
       ...getCodeRules('production', resolvedSiteConfigPath),
@@ -92,10 +87,6 @@ const config: Configuration = {
       analyzerMode: 'static',
       openAnalyzer: false,
     }),
-    new ModuleFederationPlugin({
-      name: 'shell',
-      shared: getSharedDependencies({ isShell: true })
-    })
   ],
 };
 

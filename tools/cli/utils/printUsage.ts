@@ -35,16 +35,6 @@ export default function printUsage() {
   console.log(`Compiles the source code for deployment as a frontend site.  Requires a ${chalk.bold('site.config.build.tsx')} file.\n`);
   console.groupEnd();
 
-  console.log(`${chalk.bold('build:module')}\n`);
-  console.group();
-  console.log(`Compiles the source code for deployment as federated modules.  Requires a ${chalk.bold('site.config.build.module.tsx')} file.\n`);
-  console.groupEnd();
-
-  console.log(`${chalk.bold('dev:module')}\n`);
-  console.group();
-  console.log(`Compiles the source code and serves it in Webpack dev server as federated modules. Requires a ${chalk.bold('site.config.dev.module.tsx')} file.\n`);
-  console.groupEnd();
-
   console.log(`${chalk.bold('dev')}\n`);
   console.group();
   console.log(`Compiles the source code and serves it in Webpack dev server as a frontend site. Requires a ${chalk.bold('site.config.dev.tsx')} file.\n`);

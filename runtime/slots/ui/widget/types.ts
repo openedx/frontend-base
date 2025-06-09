@@ -66,18 +66,13 @@ export interface WidgetElementProps {
   element: ReactNode,
 }
 
-export interface WidgetFederatedProps {
-  remoteId: string,
-  moduleId: string,
-}
-
 export interface WidgetIFrameProps {
   url: string,
   title: string,
 }
 
 export type WidgetRendererProps = (
-  WidgetComponentProps | WidgetElementProps | WidgetFederatedProps | WidgetIFrameProps
+  WidgetComponentProps | WidgetElementProps | WidgetIFrameProps
 );
 
 export interface WidgetIdentityProps {

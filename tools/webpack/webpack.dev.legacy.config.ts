@@ -10,7 +10,6 @@ import {
   getDevServer,
   getFileLoaderRules,
   getHtmlWebpackPlugin,
-  getIgnoreWarnings,
   getImageMinimizer,
   getStylesheetRule
 } from './common-config';
@@ -40,7 +39,6 @@ const config: Configuration = {
   output: {
     path: path.resolve(process.cwd(), './dist'),
     publicPath: getPublicPath('auto'),
-    uniqueName: 'mf-shell', // Needed for module federation.
   },
   resolve: {
     alias: {
@@ -49,7 +47,6 @@ const config: Configuration = {
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
-  ignoreWarnings: getIgnoreWarnings(),
   mode: 'development',
   devtool: 'eval-source-map',
   module: {

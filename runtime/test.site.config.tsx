@@ -16,15 +16,6 @@ const config: ProjectSiteConfig = {
       ]
     },
   ],
-  federatedApps: [
-    {
-      moduleId: 'testApp2',
-      remoteId: 'remoteApps',
-      rolePaths: {
-        'test-app-2': '/app2',
-      }
-    },
-  ],
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
   baseUrl: 'http://localhost:8080',
   csrfTokenApiPath: '/csrf/api/v1/token',

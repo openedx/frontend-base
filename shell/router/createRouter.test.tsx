@@ -1,10 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { getBasename } from '../../runtime/initialize';
-import { SHELL_ID } from '../federation/constants';
 import Shell from '../Shell';
 import createRouter from './createRouter';
 import getAppRoutes from './getAppRoutes';
-import patchRoutesOnNavigation from './patchRoutesOnNavigation';
 
 jest.mock('react-router-dom', () => ({
   createBrowserRouter: jest.fn(),
@@ -16,7 +14,6 @@ jest.mock('../../runtime/initialize', () => ({
 
 jest.mock('../Shell', () => jest.fn());
 jest.mock('./getAppRoutes', () => jest.fn());
-jest.mock('./patchRoutesOnNavigation', () => jest.fn());
 
 describe('createRouter', () => {
   beforeEach(() => {
@@ -38,14 +35,12 @@ describe('createRouter', () => {
     expect(createBrowserRouter).toHaveBeenCalledWith(
       [
         {
-          id: SHELL_ID,
           Component: Shell,
           children: mockRoutes,
         },
       ],
       {
         basename: mockBasename,
-        patchRoutesOnNavigation,
       }
     );
 
