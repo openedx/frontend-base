@@ -102,14 +102,13 @@
 
 import merge from 'lodash.merge';
 import {
-  App,
   AppConfig,
   EnvironmentTypes,
   OptionalSiteConfig,
   RequiredSiteConfig,
   SiteConfig
 } from '../../types';
-import { ACTIVE_ROLES_CHANGED, APPS_CHANGED, CONFIG_CHANGED } from '../constants';
+import { ACTIVE_ROLES_CHANGED, CONFIG_CHANGED } from '../constants';
 import { publish } from '../subscriptions';
 
 let config: SiteConfig = {
@@ -127,6 +126,7 @@ let config: SiteConfig = {
 
   apps: [],
   externalRoutes: [],
+  externalLinkUrlOverrides: [],
 
   appId: '',
   baseUrl: '',
@@ -270,4 +270,32 @@ export function getActiveWidgetRoles() {
 // Gets all active roles from the route roles and widget roles.
 export function getActiveRoles() {
   return [...getActiveRouteRoles(), ...getActiveWidgetRoles()];
+}
+
+/**
+ * Get an external link URL based on the URL provided. If the passed in URL is overridden in the
+ * `externalLinkUrlOverrides` object, it will return the overridden URL. Otherwise, it will return
+ * the provided URL.
+ *
+ *
+ * @param {string} url - The default URL.
+ * @returns {string} - The external link URL. Defaults to the input URL if not found in the
+ * `externalLinkUrlOverrides` object. If the input URL is invalid, '#' is returned.
+ *
+ * @example
+ * import { getExternalLinkUrl } from '@openedx/frontend-base';
+ *
+ * <Hyperlink
+ *   destination={getExternalLinkUrl(data.helpLink)}
+ *   target="_blank"
+ * >
+ */
+export function getExternalLinkUrl(url: string): string {
+  // Guard against whitespace-only strings
+  if (typeof url !== 'string' || !url.trim()) {
+    return '#';
+  }
+
+  const overriddenLinkUrls = getConfig().externalLinkUrlOverrides ?? {};
+  return overriddenLinkUrls[url] ?? url;
 }
