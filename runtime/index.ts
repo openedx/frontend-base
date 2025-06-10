@@ -43,7 +43,8 @@ export {
   addActiveWidgetRole,
   removeActiveWidgetRole,
   getActiveWidgetRoles,
-  getActiveRoles
+  getActiveRoles,
+  getExternalLinkUrl
 } from './config';
 
 export * from './constants';

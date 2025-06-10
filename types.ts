@@ -53,6 +53,7 @@ export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>
 export interface OptionalSiteConfig {
   apps: App[],
   externalRoutes: ExternalRoute[],
+  externalLinkUrlOverrides: string[],
 
   // Cookies
   accessTokenCookieName: string,
