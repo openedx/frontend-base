@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
 import ErrorBoundary from './ErrorBoundary';
@@ -10,7 +9,7 @@ describe('ErrorBoundary', () => {
   beforeEach(async () => {
     // This is a gross hack to suppress error logs in the invalid parentSelector test
     jest.spyOn(console, 'error');
-    global.console.error.mockImplementation(() => {});
+    global.console.error.mockImplementation(() => { });
 
     const { loggingService } = initializeMockApp();
     logError = loggingService.logError;

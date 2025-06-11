@@ -9,7 +9,7 @@
  */
 
 import { ReactNode } from 'react';
-import { BaseUiOperation } from '../types';
+import { BaseSlotOperation } from '../types';
 
 export enum WidgetOperationTypes {
   /**
@@ -52,7 +52,7 @@ export type AbsoluteWidgetOperationTypes = WidgetOperationTypes.APPEND | WidgetO
 
 export type RelativeWidgetOperationTypes = WidgetOperationTypes.INSERT_AFTER | WidgetOperationTypes.INSERT_BEFORE | WidgetOperationTypes.REPLACE | WidgetOperationTypes.OPTIONS;
 
-export interface BaseWidgetOperation extends BaseUiOperation {
+export interface BaseWidgetOperation extends BaseSlotOperation {
   op: WidgetOperationTypes,
 }
 

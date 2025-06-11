@@ -6,14 +6,14 @@
  */
 
 import { ReactNode } from 'react';
-import { BaseUiOperation } from '../types';
+import { BaseSlotOperation } from '../types';
 
 export enum LayoutOperationTypes {
   OPTIONS = 'layoutOptions',
   REPLACE = 'layoutReplace',
 }
 
-export interface BaseLayoutOperation extends BaseUiOperation {
+export interface BaseLayoutOperation extends BaseSlotOperation {
   op: LayoutOperationTypes,
 }
 

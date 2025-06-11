@@ -1,4 +1,4 @@
-import { defineMessages } from '../../../../i18n';
+import { defineMessages } from '../../../i18n';
 
 const messages = defineMessages({
   loading: {

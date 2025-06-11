@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useOperations } from '../../hooks';
-import { useSlotContext } from '../hooks';
-import { isUiOperationConditionSatisfied } from '../utils';
+import { useSlotContext, useSlotOperations } from '../hooks';
+import { isSlotOperationConditionSatisfied } from '../utils';
 import { WidgetOperation } from './types';
 import { createWidgets, isWidgetAbsoluteOperation, isWidgetOperation, isWidgetOptionsOperation, isWidgetRelativeOperation } from './utils';
 import WidgetContext from './WidgetContext';
@@ -17,11 +16,11 @@ export function useWidgetsForId(id: string) {
 }
 
 export function useWidgetOperations(id) {
-  const operations = useOperations(id);
+  const operations = useSlotOperations(id);
 
   const filterOperations = useCallback(() => {
     return operations.filter((operation): operation is WidgetOperation => {
-      return isWidgetOperation(operation) && isUiOperationConditionSatisfied(operation);
+      return isWidgetOperation(operation) && isSlotOperationConditionSatisfied(operation);
     });
   }, [operations]);
 
@@ -92,7 +91,7 @@ export function useWidgetOptionsForId(slotId: string, widgetId: string) {
   const findOptions = useCallback(() => {
     let nextOptions: Record<string, unknown> = {};
     for (const operation of operations) {
-      if (isUiOperationConditionSatisfied(operation)) {
+      if (isSlotOperationConditionSatisfied(operation)) {
         if (isWidgetOptionsOperation(operation)) {
           if (operation.relatedId === widgetId) {
             nextOptions = { ...nextOptions, ...operation.options };

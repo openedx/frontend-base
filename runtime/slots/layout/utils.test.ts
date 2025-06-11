@@ -1,4 +1,4 @@
-import { UiOperation } from '../types';
+import { SlotOperation } from '../types';
 import { WidgetOperationTypes } from '../widget';
 import { LayoutOperationTypes } from './types';
 import { isLayoutOperation, isLayoutOptionsOperation, isLayoutReplaceOperation } from './utils';
@@ -6,7 +6,7 @@ import { isLayoutOperation, isLayoutOptionsOperation, isLayoutReplaceOperation }
 describe('UI Layout Operation utilities', () => {
   describe('isLayoutOperation', () => {
     it('should return true for valid LayoutOperation', () => {
-      const operation: UiOperation = {
+      const operation: SlotOperation = {
         slotId: 'mock.slot.ui',
         op: LayoutOperationTypes.OPTIONS,
         options: {},
@@ -15,7 +15,7 @@ describe('UI Layout Operation utilities', () => {
     });
 
     it('should return false for invalid LayoutOperation', () => {
-      const operation: UiOperation = {
+      const operation: SlotOperation = {
         slotId: 'mock.slot.ui',
         op: WidgetOperationTypes.APPEND,
         id: 'mock.slot.widget',
@@ -27,7 +27,7 @@ describe('UI Layout Operation utilities', () => {
 
   describe('isLayoutOptionsOperation', () => {
     it('should return true for valid LayoutOptionsOperation', () => {
-      const operation: UiOperation = {
+      const operation: SlotOperation = {
         slotId: 'mock.slot.ui',
         op: LayoutOperationTypes.OPTIONS,
         options: {},
@@ -36,7 +36,7 @@ describe('UI Layout Operation utilities', () => {
     });
 
     it('should return false for invalid LayoutOptionsOperation', () => {
-      const operation: UiOperation = {
+      const operation: SlotOperation = {
         slotId: 'mock.slot.ui',
         op: LayoutOperationTypes.REPLACE,
         element: '',
@@ -47,7 +47,7 @@ describe('UI Layout Operation utilities', () => {
 
   describe('isLayoutReplaceOperation', () => {
     it('should return true for valid LayoutReplaceOperation', () => {
-      const operation: UiOperation = {
+      const operation: SlotOperation = {
         slotId: 'mock.slot.ui',
         op: LayoutOperationTypes.REPLACE,
         element: '',
@@ -56,7 +56,7 @@ describe('UI Layout Operation utilities', () => {
     });
 
     it('should return false for invalid LayoutReplaceOperation', () => {
-      const operation: UiOperation = {
+      const operation: SlotOperation = {
         slotId: 'mock.slot.ui',
         op: LayoutOperationTypes.OPTIONS,
         options: {},
