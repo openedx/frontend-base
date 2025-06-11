@@ -4,7 +4,7 @@ import { Slot } from '../../../runtime';
 export default function PrimaryNavLinks() {
   return (
     <Nav className="flex-nowrap align-items-center">
-      <Slot id="frontend.shell.header.primaryLinks.ui" />
+      <Slot id="org.openedx.frontend.slot.header.primaryLinks.v1" />
     </Nav>
   );
 }

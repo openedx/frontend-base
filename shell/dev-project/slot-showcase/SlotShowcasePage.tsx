@@ -15,46 +15,46 @@ export default function SlotShowcasePage() {
 
       <h3>Simple slot with default layout</h3>
       <p>This slot has no opinionated layout, it just renders its children.</p>
-      <Slot id="frontend.dev-project.slot-showcase.simple.ui" />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseSimple" />
 
       <h2>UI Layout Operations</h2>
 
       <h3>Slot with custom layout</h3>
       <p>This slot uses a horizontal flexbox layout from a component.</p>
-      <Slot id="frontend.dev-project.slot-showcase.custom.ui" layout={HorizontalSlotLayout} />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseCustom" layout={HorizontalSlotLayout} />
       <p>This slot uses a horizontal flexbox layout from a JSX element.</p>
-      <Slot id="frontend.dev-project.slot-showcase.custom.ui" layout={<HorizontalSlotLayout />} />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseCustom" layout={<HorizontalSlotLayout />} />
 
       <h3>Slot with override custom layout</h3>
       <p>This slot uses a horizontal flexbox layout, but it was added by a layout replace operation.</p>
-      <Slot id="frontend.dev-project.slot-showcase.customConfig.ui" />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseCustomConfig" />
 
       <h3>Slot with layout options</h3>
       <p>These slots use a custom layout that takes options.  The first shows the default title, the second shows it set to &quot;Bar&quot;</p>
-      <Slot id="frontend.dev-project.slot-showcase.layoutWithOptionsDefault.ui" layout={LayoutWithOptions} />
-      <Slot id="frontend.dev-project.slot-showcase.layoutWithOptions.ui" layout={LayoutWithOptions} />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptionsDefault" layout={LayoutWithOptions} />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptions" layout={LayoutWithOptions} />
 
       <h2>UI Widget Operations</h2>
 
       <h3>Slot with prepended element</h3>
       <p>This slot has a prepended element (and two appended elements).</p>
-      <Slot id="frontend.dev-project.slot-showcase.prepending.ui" />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcasePrepending" />
 
       <h3>Slot with inserted elements</h3>
       <p>This slot has elements inserted before and after the second element. Also note that the insert operations are declared <em>before</em> the related element is declared, but can still insert themselves relative to it.</p>
-      <Slot id="frontend.dev-project.slot-showcase.inserting.ui" />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseInserting" />
 
       <h3>Slot with replaced element</h3>
       <p>This slot has an element replacing element two.</p>
-      <Slot id="frontend.dev-project.slot-showcase.replacing.ui" />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseReplacing" />
 
       <h3>Slot with removed element</h3>
       <p>This slot has removed element two (<code>WidgetOperationTypes.REMOVE</code>).</p>
-      <Slot id="frontend.dev-project.slot-showcase.removing.ui" />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseRemoving" />
 
       <h3>Slot with widget with options.</h3>
       <p>Both widgets accept options.  The first shows the default title, the second shows it set to &quot;Bar&quot;</p>
-      <Slot id="frontend.dev-project.slot-showcase.widgetOptions.ui" />
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseWidgetOptions" />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Slot } from '../../../runtime';
 export default function MobileNavLinks() {
   return (
     <Nav className="flex-column">
-      <Slot id="frontend.shell.header.mobile.menuLinks.ui" />
+      <Slot id="org.openedx.frontend.slot.header.mobileMenuLinks.v1" />
     </Nav>
   );
 }

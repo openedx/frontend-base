@@ -8,19 +8,19 @@ import messages from '../../Shell.messages';
 const config: App = {
   slots: [
     {
-      slotId: 'frontend.shell.header.anonymousMenu.ui',
+      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
       id: 'user.anonymousMenu.loginButton',
       op: WidgetOperationTypes.APPEND,
       component: LoginButton,
     },
     {
-      slotId: 'frontend.shell.header.anonymousMenu.ui',
+      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
       id: 'user.anonymousMenu.registerButton',
       op: WidgetOperationTypes.APPEND,
       component: RegisterButton,
     },
     {
-      slotId: 'frontend.shell.header.authenticatedMenu.ui',
+      slotId: 'org.openedx.frontend.slot.header.authenticatedMenu.v1',
       id: 'user.authenticatedMenu.logout',
       op: WidgetOperationTypes.APPEND,
       element: (
