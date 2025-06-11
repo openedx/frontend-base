@@ -16,13 +16,13 @@ const config: App = {
     // Layouts
     {
       slotId: 'org.openedx.frontend.slot.header.desktop.v1',
-      id: 'default.header.desktop.layout',
+      id: 'org.openedx.frontend.widget.defaultHeader.desktopLayout.v1',
       op: WidgetOperationTypes.APPEND,
       component: DesktopLayout
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobile.v1',
-      id: 'default.header.mobile.layout',
+      id: 'org.openedx.frontend.widget.defaultHeader.mobileLayout.v1',
       op: WidgetOperationTypes.APPEND,
       component: MobileLayout
     },
@@ -30,31 +30,31 @@ const config: App = {
     // Desktop
     {
       slotId: 'org.openedx.frontend.slot.header.desktopLeft.v1',
-      id: 'default.header.desktop.logo',
+      id: 'org.openedx.frontend.widget.defaultHeader.desktopLogo.v1',
       op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.desktopLeft.v1',
-      id: 'default.header.desktop.courseInfo',
+      id: 'org.openedx.frontend.widget.defaultHeader.desktopCourseInfo.v1',
       op: WidgetOperationTypes.APPEND,
       component: CourseInfo
     },
     {
       slotId: 'org.openedx.frontend.slot.header.desktopLeft.v1',
-      id: 'default.header.desktop.primaryLinks',
+      id: 'org.openedx.frontend.widget.defaultHeader.desktopPrimaryLinks.v1',
       op: WidgetOperationTypes.APPEND,
       component: PrimaryNavLinks
     },
     {
       slotId: 'org.openedx.frontend.slot.header.desktopRight.v1',
-      id: 'default.header.desktop.secondaryLinks',
+      id: 'org.openedx.frontend.widget.defaultHeader.desktopSecondaryLinks.v1',
       op: WidgetOperationTypes.APPEND,
       component: SecondaryNavLinks
     },
     {
       slotId: 'org.openedx.frontend.slot.header.desktopRight.v1',
-      id: 'default.header.desktop.authenticatedMenu',
+      id: 'org.openedx.frontend.widget.defaultHeader.desktopAuthenticatedMenu.v1',
       op: WidgetOperationTypes.APPEND,
       element: <AuthenticatedMenu />,
       condition: {
@@ -63,7 +63,7 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.header.desktopRight.v1',
-      id: 'default.header.desktop.anonymousMenu',
+      id: 'org.openedx.frontend.widget.defaultHeader.desktopAnonymousMenu.v1',
       op: WidgetOperationTypes.APPEND,
       element: <AnonymousMenu />,
       condition: {
@@ -74,19 +74,19 @@ const config: App = {
     // Mobile
     {
       slotId: 'org.openedx.frontend.slot.header.mobileCenter.v1',
-      id: 'default.header.mobile.logo',
+      id: 'org.openedx.frontend.widget.defaultHeader.mobileLogo.v1',
       op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobileMenu.v1',
-      id: 'default.header.mobile.menuLinks',
+      id: 'org.openedx.frontend.widget.defaultHeader.mobileMenuLinks.v1',
       op: WidgetOperationTypes.APPEND,
       component: MobileNavLinks
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
-      id: 'default.header.mobile.authenticatedMenu',
+      id: 'org.openedx.frontend.widget.defaultHeader.mobileAuthenticatedMenu.v1',
       op: WidgetOperationTypes.APPEND,
       element: <AuthenticatedMenu />,
       condition: {
@@ -95,7 +95,7 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
-      id: 'default.header.mobile.anonymousMenu',
+      id: 'org.openedx.frontend.widget.defaultHeader.mobileAnonymousMenu.v1',
       op: WidgetOperationTypes.APPEND,
       element: <AnonymousMenu />,
       condition: {
