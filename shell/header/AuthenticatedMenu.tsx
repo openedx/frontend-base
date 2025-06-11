@@ -22,7 +22,7 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
 
   return (
     <DropdownButton size="sm" id="user-nav-dropdown" title={title} variant="outline-primary" className={className}>
-      <Slot id="frontend.shell.header.authenticatedMenu.ui" />
+      <Slot id="org.openedx.frontend.slot.header.authenticatedMenu.v1" />
     </DropdownButton>
   );
 }

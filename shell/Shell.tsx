@@ -12,7 +12,7 @@ export default function Shell() {
 
   return (
     <AppProvider>
-      <Slot id="frontend.shell.layout.ui" layout={DefaultLayout} />
+      <Slot id="org.openedx.frontend.slot.layout.main.v1" layout={DefaultLayout} />
     </AppProvider>
   );
 }

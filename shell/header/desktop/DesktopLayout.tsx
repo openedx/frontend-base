@@ -12,10 +12,10 @@ export default function DesktopLayout() {
     )}
     >
       <div className="d-flex flex-grow-1 align-items-center">
-        <Slot id="frontend.shell.header.desktop.left.ui" />
+        <Slot id="org.openedx.frontend.slot.header.desktopLeft.v1" />
       </div>
       <div className="d-flex align-items-center">
-        <Slot id="frontend.shell.header.desktop.right.ui" />
+        <Slot id="org.openedx.frontend.slot.header.desktopRight.v1" />
       </div>
     </div>
   );

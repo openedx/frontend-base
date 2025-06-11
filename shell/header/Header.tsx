@@ -9,8 +9,8 @@ export default function Header() {
     <header className="border-bottom py-2">
       <nav className="py-2">
         <a className="sr-only sr-only-focusable" href="#main-content">{intl.formatMessage(messages.skipNavLink)}</a>
-        <Slot id="frontend.shell.header.desktop.layout.ui" />
-        <Slot id="frontend.shell.header.mobile.layout.ui" />
+        <Slot id="org.openedx.frontend.slot.header.desktop.v1" />
+        <Slot id="org.openedx.frontend.slot.header.mobile.v1" />
       </nav>
     </header>
   );

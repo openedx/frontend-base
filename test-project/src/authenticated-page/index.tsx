@@ -13,7 +13,7 @@ const config: App = {
   }],
   slots: [
     {
-      slotId: 'frontend.shell.header.primaryLinks.ui',
+      slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',
       id: 'authenticatedPageLink',
       op: WidgetOperationTypes.APPEND,
       element: (

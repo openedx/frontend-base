@@ -6,13 +6,13 @@ import { Header } from './header';
 const config: App = {
   slots: [
     {
-      slotId: 'frontend.shell.header.ui',
+      slotId: 'org.openedx.frontend.slot.header.main.v1',
       id: 'default.header',
       op: WidgetOperationTypes.APPEND,
       component: Header,
     },
     {
-      slotId: 'frontend.shell.footer.ui',
+      slotId: 'org.openedx.frontend.slot.footer.main.v1',
       id: 'default.footer',
       op: WidgetOperationTypes.APPEND,
       component: Footer,

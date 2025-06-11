@@ -26,19 +26,19 @@ export default function MobileLayout() {
           <Button onClick={handleMobileButtonClick} variant="outline">
             <MenuIcon />
           </Button>
-          <Slot id="frontend.shell.header.mobile.left.ui" />
+          <Slot id="org.openedx.frontend.slot.header.mobileLeft.v1" />
         </div>
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-center align-items-center">
-          <Slot id="frontend.shell.header.mobile.center.ui" />
+          <Slot id="org.openedx.frontend.slot.header.mobileCenter.v1" />
         </div>
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-end align-items-center">
-          <Slot id="frontend.shell.header.mobile.right.ui" />
+          <Slot id="org.openedx.frontend.slot.header.mobileRight.v1" />
         </div>
       </div>
       {mobileOpen && (
         <FocusOn onClickOutside={() => setMobileOpen(false)} onEscapeKey={() => setMobileOpen(false)}>
           <Nav className="flex-column">
-            <Slot id="frontend.shell.header.mobile.menuLinks.ui" />
+            <Slot id="org.openedx.frontend.slot.header.mobileMenuLinks.v1" />
           </Nav>
         </FocusOn>
       )}
