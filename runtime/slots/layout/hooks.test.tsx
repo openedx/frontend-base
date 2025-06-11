@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react';
-import { useOperations } from '../../hooks';
-import * as uiHooks from '../hooks';
-import { UiOperation } from '../types';
-import * as uiUtils from '../utils';
+import { SlotOperation } from '../types';
+import * as slotHooks from '../hooks';
+import * as slotUtils from '../utils';
 import { WidgetAppendOperation, WidgetOperationTypes } from '../widget';
 import { useLayoutForSlotId, useLayoutOptions, useLayoutOptionsForId } from './hooks';
 import { LayoutOperationTypes, LayoutReplaceOperation } from './types';
 
-jest.mock('../../hooks'); // mocks the useOperations hook
+jest.mock('../hooks'); // mocks the useSlotOperations hook
 
 function MockLayout() {
   return (
@@ -21,7 +20,7 @@ describe('useLayoutForSlotId', () => {
   });
 
   it('should return null when no replace layout operations are provided', () => {
-    (useOperations as jest.Mock).mockReturnValue([]);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([]);
     const { result } = renderHook(() => useLayoutForSlotId('test-slot.ui'));
     expect(result.current).toBeNull();
   });
@@ -33,34 +32,9 @@ describe('useLayoutForSlotId', () => {
       component: MockLayout
     };
 
-    (useOperations as jest.Mock).mockReturnValue([operation]);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation]);
     const { result } = renderHook(() => useLayoutForSlotId('test-slot.ui'));
     expect(result.current).toEqual(MockLayout);
-  });
-
-  it('should return null if the slot is not a ui slot', () => {
-    const operation: LayoutReplaceOperation = {
-      slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.REPLACE,
-      component: MockLayout
-    };
-    jest.spyOn(uiUtils, 'isUiSlot').mockReturnValue(false);
-    (useOperations as jest.Mock).mockReturnValue([operation]);
-    const { result } = renderHook(() => useLayoutForSlotId('test-slot.ui'));
-    expect(result.current).toBeNull();
-  });
-
-  it('should return null if the operation is not a UiOperation', () => {
-    const operation: LayoutReplaceOperation = {
-      slotId: 'test-slot.ui',
-      op: LayoutOperationTypes.REPLACE,
-      component: MockLayout
-    };
-
-    jest.spyOn(uiUtils, 'isUiOperation').mockReturnValue(false);
-    (useOperations as jest.Mock).mockReturnValue([operation]);
-    const { result } = renderHook(() => useLayoutForSlotId('test-slot.ui'));
-    expect(result.current).toBeNull();
   });
 
   it('should return null if the operation condition is not satisfied', () => {
@@ -70,8 +44,8 @@ describe('useLayoutForSlotId', () => {
       component: MockLayout
     };
 
-    jest.spyOn(uiUtils, 'isUiOperationConditionSatisfied').mockReturnValue(false);
-    (useOperations as jest.Mock).mockReturnValue([operation]);
+    jest.spyOn(slotUtils, 'isSlotOperationConditionSatisfied').mockReturnValue(false);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation]);
     const { result } = renderHook(() => useLayoutForSlotId('test-slot.ui'));
     expect(result.current).toBeNull();
   });
@@ -84,7 +58,7 @@ describe('useLayoutForSlotId', () => {
     };
 
     // @ts-expect-error This is an intentionally malformed operation to test what happens when component/element are not present.
-    const malformedOperation: UiOperation = {
+    const malformedOperation: SlotOperation = {
       slotId: 'test-slot.ui',
       op: LayoutOperationTypes.REPLACE,
     };
@@ -96,7 +70,7 @@ describe('useLayoutForSlotId', () => {
       element: <div>Widget</div>
     };
 
-    (useOperations as jest.Mock).mockReturnValue([operation, malformedOperation, unrelatedOperation]);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation, malformedOperation, unrelatedOperation]);
     const { result } = renderHook(() => useLayoutForSlotId('test-slot.ui'));
     expect(result.current).toEqual(<div>Mock layout</div>);
   });
@@ -116,7 +90,7 @@ describe('useLayoutForSlotId', () => {
       component: SecondMockLayout
     };
 
-    (useOperations as jest.Mock).mockReturnValue([operation1, operation2]);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation1, operation2]);
     const { result } = renderHook(() => useLayoutForSlotId('test-slot.ui'));
     expect(result.current).toEqual(SecondMockLayout);
   });
@@ -128,7 +102,7 @@ describe('useLayoutOptionsForId', () => {
   });
 
   it('should return an empty object whent here are no layout options operations', () => {
-    (useOperations as jest.Mock).mockReturnValue([]);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([]);
     const { result } = renderHook(() => useLayoutOptionsForId('test-slot.ui'));
     expect(result.current).toEqual({});
   });
@@ -147,7 +121,7 @@ describe('useLayoutOptionsForId', () => {
       element: <div>Layout</div>
     };
 
-    (useOperations as jest.Mock).mockReturnValue([operation, otherOperation]);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation, otherOperation]);
     const { result } = renderHook(() => useLayoutOptionsForId('test-slot.ui'));
     expect(result.current).toEqual(mockOptions);
   });
@@ -160,23 +134,9 @@ describe('useLayoutOptionsForId', () => {
       options: mockOptions
     };
 
-    it('should return an empty object if the slot is not a UI slot.', () => {
-      jest.spyOn(uiUtils, 'isUiSlot').mockReturnValue(false);
-      (useOperations as jest.Mock).mockReturnValue([operation]);
-      const { result } = renderHook(() => useLayoutOptionsForId('test-slot.ui'));
-      expect(result.current).toEqual({});
-    });
-
-    it('should return an empty object if the operation is not a UiOperation.', () => {
-      jest.spyOn(uiUtils, 'isUiOperation').mockReturnValue(false);
-      (useOperations as jest.Mock).mockReturnValue([operation]);
-      const { result } = renderHook(() => useLayoutOptionsForId('test-slot.ui'));
-      expect(result.current).toEqual({});
-    });
-
     it('should return an empty object if the operation condition is not satisfied.', () => {
-      jest.spyOn(uiUtils, 'isUiOperationConditionSatisfied').mockReturnValue(false);
-      (useOperations as jest.Mock).mockReturnValue([operation]);
+      jest.spyOn(slotUtils, 'isSlotOperationConditionSatisfied').mockReturnValue(false);
+      (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation]);
       const { result } = renderHook(() => useLayoutOptionsForId('test-slot.ui'));
       expect(result.current).toEqual({});
     });
@@ -196,7 +156,7 @@ describe('useLayoutOptionsForId', () => {
       options: mockOptions2
     };
 
-    (useOperations as jest.Mock).mockReturnValue([operation1, operation2]);
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation1, operation2]);
     const { result } = renderHook(() => useLayoutOptionsForId('test-slot.ui'));
     expect(result.current).toEqual({ option1: 'value1', option2: 'value2', optionOverride: 'bar' });
   });
@@ -210,8 +170,8 @@ describe('useLayoutOptions', () => {
       op: LayoutOperationTypes.OPTIONS,
       options: mockOptions1
     };
-    (useOperations as jest.Mock).mockReturnValue([operation]);
-    jest.spyOn(uiHooks, 'useSlotContext').mockReturnValue({ id: 'test-slot.ui' });
+    (slotHooks.useSlotOperations as jest.Mock).mockReturnValue([operation]);
+    jest.spyOn(slotHooks, 'useSlotContext').mockReturnValue({ id: 'test-slot.ui' });
     const { result } = renderHook(() => useLayoutOptions());
     expect(result.current).toEqual({ option1: 'value1' });
   });

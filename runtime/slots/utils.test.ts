@@ -1,7 +1,7 @@
 import { getConfig } from '../config';
 import { SlotOperation } from './types';
-import { WidgetOperationTypes } from './ui';
 import { getSlotOperations } from './utils';
+import { WidgetOperationTypes } from '.';
 
 jest.mock('../config');
 

@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { UiOperation } from '../types';
-import { isUiOperation, isUiOperationConditionSatisfied } from '../utils';
+import { SlotOperation } from '../types';
+import { isSlotOperationConditionSatisfied } from '../utils';
 import { IFrameWidget } from './iframe';
 import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
 import WidgetProvider from './WidgetProvider';
 
-export function isWidgetOperation(operation: UiOperation): operation is WidgetOperation {
-  return isUiOperation(operation) && Object.values(WidgetOperationTypes).includes(operation.op as WidgetOperationTypes);
+export function isWidgetOperation(operation: SlotOperation): operation is WidgetOperation {
+  return Object.values(WidgetOperationTypes).includes(operation.op as WidgetOperationTypes);
 }
 
 export function isWidgetAbsoluteOperation(operation: WidgetOperation): operation is WidgetAbsoluteOperation {
@@ -17,43 +17,43 @@ export function isWidgetRelativeOperation(operation: WidgetOperation): operation
   return operation.op === WidgetOperationTypes.INSERT_AFTER || operation.op === WidgetOperationTypes.INSERT_BEFORE;
 }
 
-export function isWidgetAppendOperation(operation: UiOperation): operation is WidgetAppendOperation {
+export function isWidgetAppendOperation(operation: SlotOperation): operation is WidgetAppendOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.APPEND;
 }
 
-export function isWidgetInsertAfterOperation(operation: UiOperation): operation is WidgetInsertAfterOperation {
+export function isWidgetInsertAfterOperation(operation: SlotOperation): operation is WidgetInsertAfterOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.INSERT_AFTER;
 }
 
-export function isWidgetInsertBeforeOperation(operation: UiOperation): operation is WidgetInsertBeforeOperation {
+export function isWidgetInsertBeforeOperation(operation: SlotOperation): operation is WidgetInsertBeforeOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.INSERT_BEFORE;
 }
 
-export function isWidgetPrependOperation(operation: UiOperation): operation is WidgetPrependOperation {
+export function isWidgetPrependOperation(operation: SlotOperation): operation is WidgetPrependOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.PREPEND;
 }
 
-export function isWidgetRemoveOperation(operation: UiOperation): operation is WidgetRemoveOperation {
+export function isWidgetRemoveOperation(operation: SlotOperation): operation is WidgetRemoveOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.REMOVE;
 }
 
-export function isWidgetReplaceOperation(operation: UiOperation): operation is WidgetReplaceOperation {
+export function isWidgetReplaceOperation(operation: SlotOperation): operation is WidgetReplaceOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.REPLACE;
 }
 
-export function isWidgetOptionsOperation(operation: UiOperation): operation is WidgetOptionsOperation {
+export function isWidgetOptionsOperation(operation: SlotOperation): operation is WidgetOptionsOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.OPTIONS;
 }
 
-export function isWidgetRendererOperation(operation: UiOperation): operation is WidgetRendererOperation {
+export function isWidgetRendererOperation(operation: SlotOperation): operation is WidgetRendererOperation {
   return isWidgetOperation(operation) && hasWidgetRendererProps(operation);
 }
 
-export function isWidgetIdentityOperation(operation: UiOperation): operation is (WidgetOperation & WidgetIdentityProps) {
+export function isWidgetIdentityOperation(operation: SlotOperation): operation is (WidgetOperation & WidgetIdentityProps) {
   return isWidgetOperation(operation) && hasWidgetIdentityProps(operation);
 }
 
-export function isWidgetIdentityRoleOperation(operation: UiOperation): operation is (WidgetOperation & WidgetIdentityProps & { role: string }) {
+export function isWidgetIdentityRoleOperation(operation: SlotOperation): operation is (WidgetOperation & WidgetIdentityProps & { role: string }) {
   return isWidgetIdentityOperation(operation) && hasWidgetIdentityRoleProps(operation);
 }
 
@@ -165,7 +165,7 @@ export function createWidgets(operations: WidgetOperation[]) {
   const identifiedWidgets: IdentifiedWidget[] = [];
 
   for (const operation of operations) {
-    if (isUiOperationConditionSatisfied(operation)) {
+    if (isSlotOperationConditionSatisfied(operation)) {
       if (isWidgetAppendOperation(operation)) {
         appendWidget(operation, identifiedWidgets);
       } else if (isWidgetPrependOperation(operation)) {

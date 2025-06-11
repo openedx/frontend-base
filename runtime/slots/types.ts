@@ -1,3 +1,22 @@
-import { UiOperation } from './ui';
+/**
+ * Base Slot Operations
+ *
+ * These are properties shared by all slot operations defined below.
+ */
 
-export type SlotOperation = UiOperation;
+import { LayoutOperation } from './layout/types';
+import { WidgetOperation } from './widget/types';
+
+export interface SlotOperationCondition {
+  active?: string[],
+  authenticated?: boolean,
+}
+
+export interface BaseSlotOperation {
+  slotId: string,
+  condition?: SlotOperationCondition,
+}
+
+// Aggregate Slot Operations
+
+export type SlotOperation = WidgetOperation | LayoutOperation;

@@ -1,7 +1,6 @@
 import { ComponentType, ReactNode, useCallback, useEffect, useState } from 'react';
-import { useOperations } from '../../hooks';
-import { useSlotContext } from '../hooks';
-import { isUiOperation, isUiOperationConditionSatisfied, isUiSlot } from '../utils';
+import { useSlotContext, useSlotOperations } from '../hooks';
+import { isSlotOperationConditionSatisfied } from '../utils';
 import { LayoutComponentProps, LayoutElementProps, LayoutOperation } from './types';
 import { isLayoutOperation, isLayoutOptionsOperation, isLayoutReplaceOperation } from './utils';
 
@@ -14,20 +13,16 @@ function hasLayoutElementProps(operation: LayoutOperation): operation is (Layout
 }
 
 export function useLayoutForSlotId(id: string) {
-  const operations = useOperations(id);
+  const operations = useSlotOperations(id);
   let layoutElement: ReactNode | ComponentType = null;
 
-  if (isUiSlot(id)) {
-    for (const operation of operations) {
-      if (isUiOperation(operation)) {
-        if (isUiOperationConditionSatisfied(operation)) {
-          if (isLayoutReplaceOperation(operation)) {
-            if (hasLayoutComponentProps(operation)) {
-              layoutElement = operation.component;
-            } else if (hasLayoutElementProps(operation)) {
-              layoutElement = operation.element;
-            }
-          }
+  for (const operation of operations) {
+    if (isSlotOperationConditionSatisfied(operation)) {
+      if (isLayoutReplaceOperation(operation)) {
+        if (hasLayoutComponentProps(operation)) {
+          layoutElement = operation.component;
+        } else if (hasLayoutElementProps(operation)) {
+          layoutElement = operation.element;
         }
       }
     }
@@ -47,18 +42,14 @@ export function useLayoutOptions() {
 }
 
 export function useLayoutOptionsForId(id: string) {
-  const operations = useOperations(id);
+  const operations = useSlotOperations(id);
 
   const findOptions = useCallback(() => {
     let nextOptions: Record<string, unknown> = {};
-    if (isUiSlot(id)) {
-      for (const operation of operations) {
-        if (isUiOperation(operation)) {
-          if (isUiOperationConditionSatisfied(operation)) {
-            if (isLayoutOptionsOperation(operation)) {
-              nextOptions = { ...nextOptions, ...operation.options };
-            }
-          }
+    for (const operation of operations) {
+      if (isSlotOperationConditionSatisfied(operation)) {
+        if (isLayoutOptionsOperation(operation)) {
+          nextOptions = { ...nextOptions, ...operation.options };
         }
       }
     }

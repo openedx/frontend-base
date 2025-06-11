@@ -4,8 +4,8 @@ import {
   useEffect, useMemo, useState,
 } from 'react';
 
-import { useIntl } from '../../../../i18n';
-import { ErrorBoundary } from '../../../../react';
+import { useIntl } from '../../../i18n';
+import { ErrorBoundary } from '../../../react';
 import { IFRAME_RESIZE } from './constants';
 import {
   dispatchMountedEvent,

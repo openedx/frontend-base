@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react';
 
-import { addActiveWidgetRole, removeActiveWidgetRole } from '../../../config';
+import { addActiveWidgetRole, removeActiveWidgetRole } from '../../config';
 import WidgetContext from './WidgetContext';
 
 interface WidgetProviderProps {
