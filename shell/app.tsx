@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 
 import {
@@ -18,14 +18,15 @@ subscribe(APP_READY, async () => {
   addAppConfigs();
   addAppMessages();
 
-  ReactDOM.render(
+  const root = createRoot(document.getElementById('root') as HTMLElement);
+  root.render(
     <RouterProvider router={router} />,
-    document.getElementById('root'),
   );
 });
 
 subscribe(APP_INIT_ERROR, (error) => {
-  ReactDOM.render(<div>{error.message} </div>, document.getElementById('root'));
+  const root = createRoot(document.getElementById('root') as HTMLElement);
+  root.render(<div>{error.message}</div>);
 });
 
 initialize({
