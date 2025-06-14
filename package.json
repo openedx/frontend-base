@@ -142,7 +142,7 @@
     "nodemon": "^3.1.4"
   },
   "peerDependencies": {
-    "@openedx/paragon": "^22.17.0",
+    "@openedx/paragon": "^22.20.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^8.1.3",
