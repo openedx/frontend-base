@@ -1,4 +1,4 @@
-import { LayoutOperationTypes, WidgetOperationTypes } from '../../../runtime';
+import { LayoutOperationTypes, WidgetOperationTypes, useSlotContext } from '../../../runtime';
 import { App } from '../../../types';
 import HorizontalSlotLayout from './HorizontalSlotLayout';
 import SlotShowcasePage from './SlotShowcasePage';
@@ -23,6 +23,20 @@ function Child({ title, op }: { title: string, op?: string }) {
         <span>{' '}(<code>{op}</code>)</span>
       )}
     </div>
+  );
+}
+
+function TakesProps({ aSlotProp }: { aSlotProp: string }) {
+  return (
+    <div>And this is a slot prop that was passed down via props: <code>{aSlotProp}</code></div>
+  );
+}
+
+function TakesPropsViaContext() {
+  const slotContext = useSlotContext();
+  const aSlotProp = typeof slotContext.aSlotProp === 'string' ? slotContext.aSlotProp : 'foo';
+  return (
+    <div>And this is the same prop, but accessed via slot context: <code>{aSlotProp}</code></div>
   );
 }
 
@@ -54,6 +68,18 @@ const config: App = {
       id: 'slot-showcase.simple.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseSimpleWithDefaultContent',
+      id: 'slot-showcase.simple.child4',
+      op: WidgetOperationTypes.APPEND,
+      component: TakesProps
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseSimpleWithDefaultContent',
+      id: 'slot-showcase.simple.child4',
+      op: WidgetOperationTypes.APPEND,
+      component: TakesPropsViaContext
     },
 
     // Custom Layout
@@ -272,8 +298,7 @@ const config: App = {
       relatedId: 'slot-showcase.widgetOptions.child2',
       op: WidgetOperationTypes.OPTIONS,
       options: {
-        title: (<Title title="Bar" op="WidgetOperationTypes.OPTIONS" />
-        ),
+        title: (<Title title="Bar" op="WidgetOperationTypes.OPTIONS" />),
       }
     },
   ]

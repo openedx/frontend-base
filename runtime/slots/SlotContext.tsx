@@ -1,7 +1,8 @@
-import { createContext } from 'react';
+import { createContext, ReactNode } from 'react';
 
-const SlotContext = createContext<{ id: string }>({
+const SlotContext = createContext<{ id: string, children?: ReactNode, [key: string]: unknown }>({
   id: '',
+  children: null,
 });
 
 export default SlotContext;

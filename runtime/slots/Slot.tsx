@@ -5,13 +5,16 @@ import SlotContext from './SlotContext';
 
 interface SlotProps {
   id: string,
+  children?: ReactNode,
   layout?: ComponentType | ReactNode,
+  [key: string]: unknown,
 }
 
-export default function Slot({ id, layout = DefaultSlotLayout }: SlotProps) {
+export default function Slot({ id, children, layout = DefaultSlotLayout, ...props }: SlotProps) {
   let layoutElement: ComponentType | ReactNode = layout;
 
   const overrideLayout = useLayoutForSlotId(id);
+
   // Weed out any ReactNode types that aren't actually JSX.
   if (overrideLayout && overrideLayout !== null && overrideLayout !== undefined && typeof overrideLayout !== 'boolean') {
     layoutElement = overrideLayout;
@@ -22,7 +25,7 @@ export default function Slot({ id, layout = DefaultSlotLayout }: SlotProps) {
   }
 
   return (
-    <SlotContext.Provider value={{ id }}>
+    <SlotContext.Provider value={{ id, children, ...props }}>
       {layoutElement}
     </SlotContext.Provider>
   );

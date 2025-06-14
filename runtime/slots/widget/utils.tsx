@@ -86,12 +86,12 @@ function hasWidgetIdentityRoleProps(operation: WidgetOperation): operation is (W
 /**
  * An 'identified' widget just means a data structure with an ID and a ReactNode.
  */
-function createIdentifiedWidget(operation: WidgetRendererOperation) {
+function createIdentifiedWidget(operation: WidgetRendererOperation, componentProps?: Record<string, unknown>) {
   let widget: ReactNode = null;
   const { id } = operation;
   if (hasWidgetComponentProps(operation)) {
     widget = (
-      <operation.component />
+      <operation.component {...componentProps} />
     );
   } else if (hasWidgetElementProps(operation)) {
     widget = operation.element;
@@ -120,34 +120,34 @@ function findRelatedWidgetIndex(id: string, widgets: IdentifiedWidget[]) {
   return null;
 }
 
-function appendWidget(operation: WidgetAppendOperation, widgets: IdentifiedWidget[]) {
-  const widget = createIdentifiedWidget(operation);
+function appendWidget(operation: WidgetAppendOperation, widgets: IdentifiedWidget[], componentProps?: Record<string, unknown>) {
+  const widget = createIdentifiedWidget(operation, componentProps);
   widgets.push(widget);
 }
 
-function prependWidget(operation: WidgetPrependOperation, widgets: IdentifiedWidget[]) {
-  const widget = createIdentifiedWidget(operation);
+function prependWidget(operation: WidgetPrependOperation, widgets: IdentifiedWidget[], componentProps?: Record<string, unknown>) {
+  const widget = createIdentifiedWidget(operation, componentProps);
   widgets.unshift(widget);
 }
 
-function insertAfterWidget(operation: WidgetInsertAfterOperation, widgets: IdentifiedWidget[]) {
-  const widget = createIdentifiedWidget(operation);
+function insertAfterWidget(operation: WidgetInsertAfterOperation, widgets: IdentifiedWidget[], componentProps?: Record<string, unknown>) {
+  const widget = createIdentifiedWidget(operation, componentProps);
   const relatedIndex = findRelatedWidgetIndex(operation.relatedId, widgets);
   if (relatedIndex !== null) {
     widgets.splice(relatedIndex + 1, 0, widget);
   }
 }
 
-function insertBeforeWidget(operation: WidgetInsertBeforeOperation, widgets: IdentifiedWidget[]) {
-  const widget = createIdentifiedWidget(operation);
+function insertBeforeWidget(operation: WidgetInsertBeforeOperation, widgets: IdentifiedWidget[], componentProps?: Record<string, unknown>) {
+  const widget = createIdentifiedWidget(operation, componentProps);
   const relatedIndex = findRelatedWidgetIndex(operation.relatedId, widgets);
   if (relatedIndex !== null) {
     widgets.splice(relatedIndex, 0, widget);
   }
 }
 
-function replaceWidget(operation: WidgetReplaceOperation, widgets: IdentifiedWidget[]) {
-  const widget = createIdentifiedWidget(operation);
+function replaceWidget(operation: WidgetReplaceOperation, widgets: IdentifiedWidget[], componentProps?: Record<string, unknown>) {
+  const widget = createIdentifiedWidget(operation, componentProps);
   const relatedIndex = findRelatedWidgetIndex(operation.relatedId, widgets);
   if (relatedIndex !== null) {
     widgets.splice(relatedIndex, 1, widget);
@@ -161,21 +161,21 @@ function removeWidget(operation: WidgetRemoveOperation, widgets: IdentifiedWidge
   }
 }
 
-export function createWidgets(operations: WidgetOperation[]) {
+export function createWidgets(operations: WidgetOperation[], componentProps?: Record<string, unknown>) {
   const identifiedWidgets: IdentifiedWidget[] = [];
 
   for (const operation of operations) {
     if (isSlotOperationConditionSatisfied(operation)) {
       if (isWidgetAppendOperation(operation)) {
-        appendWidget(operation, identifiedWidgets);
+        appendWidget(operation, identifiedWidgets, componentProps);
       } else if (isWidgetPrependOperation(operation)) {
-        prependWidget(operation, identifiedWidgets);
+        prependWidget(operation, identifiedWidgets, componentProps);
       } else if (isWidgetInsertAfterOperation(operation)) {
-        insertAfterWidget(operation, identifiedWidgets);
+        insertAfterWidget(operation, identifiedWidgets, componentProps);
       } else if (isWidgetInsertBeforeOperation(operation)) {
-        insertBeforeWidget(operation, identifiedWidgets);
+        insertBeforeWidget(operation, identifiedWidgets, componentProps);
       } else if (isWidgetReplaceOperation(operation)) {
-        replaceWidget(operation, identifiedWidgets);
+        replaceWidget(operation, identifiedWidgets, componentProps);
       } else if (isWidgetRemoveOperation(operation)) {
         removeWidget(operation, identifiedWidgets);
       }

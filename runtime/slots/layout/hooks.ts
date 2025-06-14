@@ -54,7 +54,7 @@ export function useLayoutOptionsForId(id: string) {
       }
     }
     return nextOptions;
-  }, [operations, id]);
+  }, [operations]);
 
   const [options, setOptions] = useState<Record<string, unknown>>(findOptions());
 

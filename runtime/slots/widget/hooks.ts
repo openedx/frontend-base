@@ -6,16 +6,17 @@ import { createWidgets, isWidgetAbsoluteOperation, isWidgetOperation, isWidgetOp
 import WidgetContext from './WidgetContext';
 
 export function useWidgets() {
-  const { id } = useSlotContext();
-  return useWidgetsForId(id);
+  const { id, ...props } = useSlotContext();
+  delete props.children;
+  return useWidgetsForId(id, props);
 }
 
-export function useWidgetsForId(id: string) {
+export function useWidgetsForId(id: string, componentProps?: Record<string, unknown>) {
   const operations = useSortedWidgetOperations(id);
-  return createWidgets(operations);
+  return createWidgets(operations, componentProps);
 }
 
-export function useWidgetOperations(id) {
+export function useWidgetOperations(id: string) {
   const operations = useSlotOperations(id);
 
   const filterOperations = useCallback(() => {
@@ -33,7 +34,7 @@ export function useWidgetOperations(id) {
   return widgetOperations;
 }
 
-export function useSortedWidgetOperations(id) {
+export function useSortedWidgetOperations(id: string) {
   const operations = useWidgetOperations(id);
 
   // This function sorts widget operations in an order that guarantees that any 'related' widgets
