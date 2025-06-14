@@ -21,7 +21,7 @@ import {
  * @extends {Component}
  */
 function ErrorPage({
-  message,
+  message = null,
 }) {
   const [locale, setLocale] = useState(getLocale());
 
@@ -67,10 +67,6 @@ function ErrorPage({
 
 ErrorPage.propTypes = {
   message: PropTypes.string,
-};
-
-ErrorPage.defaultProps = {
-  message: null,
 };
 
 export default ErrorPage;

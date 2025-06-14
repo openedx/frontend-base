@@ -21,7 +21,7 @@ import { useAuthenticatedUser } from './hooks';
  * @param {string} props.redirectUrl The URL anonymous users should be redirected to, rather than
  * viewing the route's contents.
  */
-export default function AuthenticatedPageRoute({ redirectUrl, children }) {
+export default function AuthenticatedPageRoute({ redirectUrl = null, children }) {
   const authenticatedUser = useAuthenticatedUser();
   if (authenticatedUser === null) {
     const destination = redirectUrl || getLoginRedirectUrl(global.location.href);
@@ -40,8 +40,4 @@ export default function AuthenticatedPageRoute({ redirectUrl, children }) {
 AuthenticatedPageRoute.propTypes = {
   redirectUrl: PropTypes.string,
   children: PropTypes.node.isRequired,
-};
-
-AuthenticatedPageRoute.defaultProps = {
-  redirectUrl: null,
 };
