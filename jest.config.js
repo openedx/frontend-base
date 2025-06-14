@@ -1,3 +1,7 @@
-const { createConfig } = require('./tools');
-
-module.exports = createConfig('test');
+module.exports = {
+  projects: [
+    'tools',
+    'runtime',
+    'shell',
+  ],
+};

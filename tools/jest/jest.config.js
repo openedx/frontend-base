@@ -20,10 +20,10 @@ module.exports = {
     '/node_modules/(?!(@openedx|@edx)/)',
   ],
   modulePathIgnorePatterns: [
-    '<rootDir>/dist/',
+    '/dist/',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '<rootDir>/dist/',
+    '/dist/',
   ],
 };
