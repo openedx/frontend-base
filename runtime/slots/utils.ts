@@ -2,9 +2,14 @@ import { getAuthenticatedUser } from '../auth';
 import { getActiveRoles, getConfig } from '../config';
 import { SlotOperation } from './types';
 
-export function getSlotOperations(id: string) {
+export function getSlotOperations(id: string, defaultOperation?: SlotOperation) {
   const { apps } = getConfig();
   const ops: SlotOperation[] = [];
+
+  if (defaultOperation) {
+    ops.push(defaultOperation);
+  }
+
   apps.forEach((app) => {
     if (Array.isArray(app.slots)) {
       app.slots.forEach((operation) => {
@@ -14,6 +19,7 @@ export function getSlotOperations(id: string) {
       });
     }
   });
+
   return ops;
 }
 

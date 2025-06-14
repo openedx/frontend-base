@@ -17,6 +17,12 @@ export default function SlotShowcasePage() {
       <p>This slot has no opinionated layout, it just renders its children.</p>
       <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseSimple" />
 
+      <h3>Simple slot with default content and props</h3>
+      <p>This slot has default content, and it exposes a slot prop to widgets.</p>
+      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseSimpleWithDefaultContent" aSlotProp="hello!">
+        <div>Look, I&apos;m default content!</div>
+      </Slot>
+
       <h2>UI Layout Operations</h2>
 
       <h3>Slot with custom layout</h3>

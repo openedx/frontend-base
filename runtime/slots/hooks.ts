@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { APPS_CHANGED } from '../constants';
 import { useAppEvent } from '../react';
 
+import { WidgetOperation, WidgetOperationTypes } from './widget';
 import { SlotOperation } from './types';
 import { getSlotOperations } from './utils';
 import SlotContext from './SlotContext';
@@ -13,16 +14,27 @@ import SlotContext from './SlotContext';
  * config as it changes.
  */
 export function useSlotOperations(id: string) {
-  const [operations, setOperations] = useState<SlotOperation[]>(getSlotOperations(id));
+  const { children } = useSlotContext();
+  let defaultOperation: WidgetOperation | undefined = undefined;
+  if (children) {
+    defaultOperation = {
+      slotId: id,
+      id: `defaultContent`,
+      op: WidgetOperationTypes.APPEND,
+      element: children
+    };
+  }
+
+  const [operations, setOperations] = useState<SlotOperation[]>(getSlotOperations(id, defaultOperation));
   useAppEvent(APPS_CHANGED, () => {
-    const ops = getSlotOperations(id);
+    const ops = getSlotOperations(id, defaultOperation);
     setOperations(ops);
   });
 
   useEffect(() => {
-    const ops = getSlotOperations(id);
+    const ops = getSlotOperations(id, defaultOperation);
     setOperations(ops);
-  }, [id]);
+  }, [id, defaultOperation]);
   return operations;
 }
 
