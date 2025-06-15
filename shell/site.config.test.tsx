@@ -1,6 +1,6 @@
-import { EnvironmentTypes, ProjectSiteConfig } from '../types';
+import { EnvironmentTypes, SiteConfig } from '../types';
 
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   apps: [],
 
   appId: 'runtime',

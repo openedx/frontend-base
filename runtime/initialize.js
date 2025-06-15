@@ -53,7 +53,7 @@ import {
 } from 'history';
 /*
 This 'site.config' package is a special 'magic' alias in our webpack configuration in the `config`
-folder. It points at an `site.config.tsx` file in the root of an project's repository.
+folder. It points at an `site.config.tsx` file in the root of a site's repository.
 */
 import siteConfig from 'site.config';
 import {

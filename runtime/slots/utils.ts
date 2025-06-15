@@ -10,15 +10,17 @@ export function getSlotOperations(id: string, defaultOperation?: SlotOperation) 
     ops.push(defaultOperation);
   }
 
-  apps.forEach((app) => {
-    if (Array.isArray(app.slots)) {
-      app.slots.forEach((operation) => {
-        if (operation.slotId === id) {
-          ops.push(operation);
-        }
-      });
-    }
-  });
+  if (apps) {
+    apps.forEach((app) => {
+      if (Array.isArray(app.slots)) {
+        app.slots.forEach((operation) => {
+          if (operation.slotId === id) {
+            ops.push(operation);
+          }
+        });
+      }
+    });
+  }
 
   return ops;
 }
