@@ -128,7 +128,7 @@ let config: SiteConfig = {
   externalRoutes: [],
   externalLinkUrlOverrides: [],
 
-  appId: '',
+  siteId: '',
   baseUrl: '',
   siteName: '',
 
@@ -139,7 +139,7 @@ let config: SiteConfig = {
   // Backends
   lmsBaseUrl: '',
 
-  custom: {
+  standalone: {
     appId: '',
   },
 };
@@ -200,7 +200,7 @@ export function setConfig(newConfig: SiteConfig) {
  *
  * @param {Object} newConfig
  */
-export function mergeConfig(newConfig: Partial<Partial<OptionalSiteConfig> & RequiredSiteConfig>) {
+export function mergeConfig(newConfig: Partial<SiteConfig>) {
   config = merge(config, newConfig);
   publish(CONFIG_CHANGED);
 }
@@ -214,6 +214,8 @@ const appConfigs: Record<string, AppConfig> = {};
  */
 export function addAppConfigs() {
   const { apps } = getConfig();
+  if (!apps) return;
+
   for (const app of apps) {
     if (app.config !== undefined) {
       patchAppConfig(app.config);

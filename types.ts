@@ -34,7 +34,7 @@ export type AppConfig = {
 // Site Config
 
 export interface RequiredSiteConfig {
-  appId: string,
+  siteId: string,
   siteName: string,
   baseUrl: string,
 
@@ -47,8 +47,6 @@ export interface RequiredSiteConfig {
 }
 
 export type LocalizedMessages = Record<string, Record<string, string>>;
-
-export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
 
 export interface OptionalSiteConfig {
   apps: App[],
@@ -73,10 +71,10 @@ export interface OptionalSiteConfig {
   mfeConfigApiUrl: string | null,
   publicPath: string,
 
-  custom: AppConfig,
+  standalone: AppConfig,
 }
 
-export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
+export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
 
 export interface User {
   administrator: boolean,

@@ -8,12 +8,14 @@ export default function getAppRoutes() {
 
   let routes: RouteObject[] = [];
 
-  apps.forEach(
-    (app: App) => {
-      if (Array.isArray(app.routes)) {
-        routes = routes.concat(app.routes);
+  if (apps) {
+    apps.forEach(
+      (app: App) => {
+        if (Array.isArray(app.routes)) {
+          routes = routes.concat(app.routes);
+        }
       }
-    }
-  );
+    );
+  }
   return routes;
 }

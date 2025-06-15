@@ -1,6 +1,6 @@
-import { EnvironmentTypes, ProjectSiteConfig } from '../types';
+import { EnvironmentTypes, SiteConfig } from '../types';
 
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   apps: [
     {
       routes: [
@@ -25,9 +25,9 @@ const config: ProjectSiteConfig = {
   logoutUrl: 'http://localhost:18000/logout',
   refreshAccessTokenApiPath: '/login_refresh',
   segmentKey: 'segment_whoa',
+  siteId: 'runtime',
   siteName: 'edX',
   userInfoCookieName: 'edx-user-info',
-  appId: 'runtime',
   environment: EnvironmentTypes.TEST,
   ignoredErrorRegex: null,
   publicPath: '/'

@@ -14,7 +14,7 @@
     "frontend-base.d.ts",
   ],
   "exclude": [
-    "test-project/**/*",
+    "test-site/**/*",
     "dist/**/*",
     "coverage/**/*",
     "tools/**/*",

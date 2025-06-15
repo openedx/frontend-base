@@ -128,9 +128,9 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 ```
   "scripts": {
     "build": "PORT=YOUR_PORT openedx build",
-    "build:legacy": "openedx build:legacy", // TODO: Does this target exist?
+    "build:standalone": "openedx build:standalone",
     "dev": "PORT=YOUR_PORT openedx dev",
-    "dev:legacy": "PORT=YOUR_PORT openedx dev:legacy",
+    "dev:standalone": "PORT=YOUR_PORT openedx dev:standalone",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
@@ -182,7 +182,7 @@ Create an `app.d.ts` file in the root of your MFE with the following contents:
 /// <reference types="@openedx/frontend-base" />
 
 declare module 'site.config' {
-  export default ProjectSiteConfig;
+  export default SiteConfig;
 }
 
 declare module '*.svg' {
@@ -210,7 +210,6 @@ Create a `tsconfig.json` file and add the following contents to it:
     "babel.config.js",
     "eslint.config.js",
     "jest.config.js",
-    "test.site.config.tsx",
     "site.config.*.tsx",
   ],
 }
@@ -388,7 +387,7 @@ Description fields are now required on all i18n messages in the repository.  Thi
 SVGR "ReactComponent" imports have been removed
 ===============================================
 
-We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `test-project/src/ExamplePage.tsx`.
+We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `test-site/src/ExamplePage.tsx`.
 
 
 Import createConfig and getBaseConfig from @openedx/frontend-base/config
@@ -490,7 +489,7 @@ Required config
 
 The required configuration at the time of this writing is:
 
-- appId: string
+- siteId: string
 - siteName: string
 - baseUrl: string
 - lmsBaseUrl: string
@@ -538,13 +537,13 @@ const examplePageUrl = getUrlForRouteRole('example');
 App-specific config values
 --------------------------
 
-App-specific configuration can be expressed by adding a `custom` section to SiteConfig which allows arbitrary config variables.
+App-specific configuration can be expressed by adding a `standalone` section to SiteConfig which allows arbitrary config variables.
 
 ```
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   // ... Other config
 
-  custom: {
+  standalone: {
     appId: 'myapp',
     myCustomVariableName: 'my custom variable value',
   }
@@ -557,30 +556,28 @@ These variables can be used in code with the `getAppConfig` function:
 getAppConfig('myapp').myCustomVariableName
 ```
 
-If you have fully converted your app over to the new module architecture, you can add custom variables to the `config` object in your `App` definition and they will be available via `getAppConfig`.
+If you have fully converted your app over to the new architecture, you can add custom variables to the `config` object in your `App` definition and they will be available via `getAppConfig`.
 
 
-Replace the .env.test file with configuration in test.site.config.tsx file
+Replace the .env.test file with configuration in site.config.test.tsx file
 ==========================================================================
 
-We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect a `test.site.config.tsx` file.  If you're initializing an application in your tests, `frontend-base` will pick up this configuration and make it available to `getConfig()`, etc.  If you need to manually access the variables, you can import `site.config` in your test files:
-
-Note that test.site.config.tsx has a different naming scheme than `site.config.*.tsx` because it's intended to be checked in, and `site.config.*.tsx` is git-ignored.
+We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect a `site.config.test.tsx` file.  If you're initializing an application in your tests, `frontend-base` will pick up this configuration and make it available to `getConfig()`, etc.  If you need to manually access the variables, you can import `site.config` in your test files:
 
 ```diff
 + import config from 'site.config';
 ```
 
-The Jest configuration has been set up to find `site.config` in a `test.site.config.tsx` file.
+The Jest configuration has been set up to find `site.config` in a `site.config.test.tsx` file.
 
 Once you've verified your test suite still works, you should delete the `.env.test` file.
 
-A sample `test.site.config.tsx` file:
+A sample `site.config.test.tsx` file:
 
 ```
-import { ProjectSiteConfig } from '@openedx/frontend-base';
+import { SiteConfig } from '@openedx/frontend-base';
 
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   apps: [],
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
   baseUrl: 'http://localhost:8080',
@@ -591,9 +588,9 @@ const config: ProjectSiteConfig = {
   logoutUrl: 'http://localhost:18000/logout',
   refreshAccessTokenApiPath: '/login_refresh',
   segmentKey: '',
+  siteId: 'test',
   siteName: 'localhost',
   userInfoCookieName: 'edx-user-info',
-  appId: 'authn',
   environment: 'dev',
   ignoredErrorRegex: null,
   publicPath: '/',
@@ -629,12 +626,12 @@ Remove core-js and regenerator-runtime
 We don't need these libraries anymore, remove them from the package.json dependencies and remove any imports of them in the code.
 
 
-Create a project.scss file 
-==========================
+Create a site.scss file 
+=======================
 
 This is required if you intend to run builds from the app itself.
 
-Create a new `project.scss` file at the top of your application.  It's responsible for:
+Create a new `site.scss` file at the top of your application.  It's responsible for:
 
 1. Importing the shell's stylesheet, which includes Paragon's core stylesheet.
 2. Importing your brand stylesheet.
@@ -643,16 +640,16 @@ Create a new `project.scss` file at the top of your application.  It's responsib
 You must then import this new stylesheet into your `site.config` file:
 
 ```diff
-+ import './project.scss';
++ import './site.scss';
 
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   // config document
 }
 
 export default config;
 ```
 
-This file will be ignored via `.gitignore`, as it is part of your 'project', not the module library.
+This file will be ignored via `.gitignore`, as it is part of your 'site', not the module library.
 
 
 Document module-specific configuration needs
@@ -731,7 +728,7 @@ Refactor plugin-slots
 
 First, rename `src/plugin-slots`, if it exists, to `src/slots`.  Modify imports and documentation across the codebase accordingly.
 
-Next, the frontend-base equivalent to `<PluginSlot />` is `<Slot />`, and has a different API.   This includes a change in the slot ID, according to the [new slot naming ADR](../decisions/0009-slot-naming-and-lifecycle.rst) in this repository.  Rename them accordingly. You can refer to the `src/shell/dev-project` in this repository for examples.
+Next, the frontend-base equivalent to `<PluginSlot />` is `<Slot />`, and has a different API.   This includes a change in the slot ID, according to the [new slot naming ADR](../decisions/0009-slot-naming-and-lifecycle.rst) in this repository.  Rename them accordingly. You can refer to the `src/shell/dev-site` in this repository for examples.
 
 
 Find your module boundaries

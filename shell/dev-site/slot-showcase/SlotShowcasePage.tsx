@@ -15,11 +15,11 @@ export default function SlotShowcasePage() {
 
       <h3>Simple slot with default layout</h3>
       <p>This slot has no opinionated layout, it just renders its children.</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseSimple" />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseSimple" />
 
       <h3>Simple slot with default content and props</h3>
       <p>This slot has default content, and it exposes a slot prop to widgets.</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseSimpleWithDefaultContent" aSlotProp="hello!">
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseSimpleWithDefaultContent" aSlotProp="hello!">
         <div>Look, I&apos;m default content!</div>
       </Slot>
 
@@ -27,40 +27,40 @@ export default function SlotShowcasePage() {
 
       <h3>Slot with custom layout</h3>
       <p>This slot uses a horizontal flexbox layout from a component.</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseCustom" layout={HorizontalSlotLayout} />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseCustom" layout={HorizontalSlotLayout} />
       <p>This slot uses a horizontal flexbox layout from a JSX element.</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseCustom" layout={<HorizontalSlotLayout />} />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseCustom" layout={<HorizontalSlotLayout />} />
 
       <h3>Slot with override custom layout</h3>
       <p>This slot uses a horizontal flexbox layout, but it was added by a layout replace operation.</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseCustomConfig" />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseCustomConfig" />
 
       <h3>Slot with layout options</h3>
       <p>These slots use a custom layout that takes options.  The first shows the default title, the second shows it set to &quot;Bar&quot;</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptionsDefault" layout={LayoutWithOptions} />
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptions" layout={LayoutWithOptions} />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptionsDefault" layout={LayoutWithOptions} />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptions" layout={LayoutWithOptions} />
 
       <h2>UI Widget Operations</h2>
 
       <h3>Slot with prepended element</h3>
       <p>This slot has a prepended element (and two appended elements).</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcasePrepending" />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcasePrepending" />
 
       <h3>Slot with inserted elements</h3>
       <p>This slot has elements inserted before and after the second element. Also note that the insert operations are declared <em>before</em> the related element is declared, but can still insert themselves relative to it.</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseInserting" />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseInserting" />
 
       <h3>Slot with replaced element</h3>
       <p>This slot has an element replacing element two.</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseReplacing" />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseReplacing" />
 
       <h3>Slot with removed element</h3>
       <p>This slot has removed element two (<code>WidgetOperationTypes.REMOVE</code>).</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseRemoving" />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseRemoving" />
 
       <h3>Slot with widget with options.</h3>
       <p>Both widgets accept options.  The first shows the default title, the second shows it set to &quot;Bar&quot;</p>
-      <Slot id="org.openedx.frontend.slot.devProject.slotShowcaseWidgetOptions" />
+      <Slot id="org.openedx.frontend.slot.devSite.slotShowcaseWidgetOptions" />
     </div>
   );
 }
