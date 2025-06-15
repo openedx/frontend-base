@@ -1,17 +1,17 @@
-import { EnvironmentTypes, ProjectSiteConfig } from '../types';
+import { EnvironmentTypes, SiteConfig } from '../types';
 import defaultShellConfig from './defaultShellConfig';
 import defaultFooterConfig from './footer/defaultFooterConfig';
 import defaultHeaderConfig from './header/defaultHeaderConfig';
 
-import footerConfig from './dev-project/footer/footerConfig';
-import headerConfig from './dev-project/header/headerConfig';
-import homeConfig from './dev-project/home';
-import slotShowcaseConfig from './dev-project/slot-showcase';
-import userConfig from './dev-project/user/userConfig';
+import footerConfig from './dev-site/footer/footerConfig';
+import headerConfig from './dev-site/header/headerConfig';
+import homeConfig from './dev-site/home';
+import slotShowcaseConfig from './dev-site/slot-showcase';
+import userConfig from './dev-site/user/userConfig';
 
 import './app.scss';
 
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   apps: [
     defaultShellConfig,
     defaultHeaderConfig,

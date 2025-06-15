@@ -8,20 +8,20 @@ export const defaultConfigPaths = {
     path.resolve(__dirname, './babel/babel.config.js'),
   ],
   [ConfigTypes.WEBPACK_BUILD]: [
-    path.resolve(process.cwd(), 'webpack.build.config.js'),
-    path.resolve(__dirname, './webpack/webpack.build.config.js'),
+    path.resolve(process.cwd(), 'webpack.config.build.js'),
+    path.resolve(__dirname, './webpack/webpack.config.build.js'),
   ],
   [ConfigTypes.WEBPACK_DEV]: [
-    path.resolve(process.cwd(), 'webpack.dev.config.js'),
-    path.resolve(__dirname, './webpack/webpack.dev.config.js'),
+    path.resolve(process.cwd(), 'webpack.config.dev.js'),
+    path.resolve(__dirname, './webpack/webpack.config.dev.js'),
   ],
-  [ConfigTypes.WEBPACK_DEV_LEGACY]: [
-    path.resolve(process.cwd(), 'webpack.dev.legacy.config.js'),
-    path.resolve(__dirname, './webpack/webpack.dev.legacy.config.js'),
+  [ConfigTypes.WEBPACK_DEV_STANDALONE]: [
+    path.resolve(process.cwd(), 'webpack.config.dev.standalone.js'),
+    path.resolve(__dirname, './webpack/webpack.config.dev.standalone.js'),
   ],
   [ConfigTypes.WEBPACK_DEV_SHELL]: [
-    path.resolve(process.cwd(), 'webpack.dev.shell.config.js'),
-    path.resolve(__dirname, './webpack/webpack.dev.shell.config.js'),
+    path.resolve(process.cwd(), 'webpack.config.dev.shell.js'),
+    path.resolve(__dirname, './webpack/webpack.config.dev.shell.js'),
   ],
   [ConfigTypes.LINT]: [
     path.resolve(process.cwd(), 'eslint.config.js'),

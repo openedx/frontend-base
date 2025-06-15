@@ -18,7 +18,7 @@ As a best practice, a project should have a top-level SCSS file as a peer to the
 
 ## Implementation
 
-The `project.scss` file should import the stylesheet from the shell:
+The `site.scss` file should import the stylesheet from the shell:
 
 ```diff
 + @import '@openedx/frontend-base/shell/app.scss';
@@ -29,7 +29,7 @@ The `project.scss` file should import the stylesheet from the shell:
 The site.config file should then import the top-level SCSS file:
 
 ```diff
-+ import './project.scss';
++ import './site.scss';
 
 const config = {
   // config document

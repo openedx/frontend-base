@@ -214,6 +214,8 @@ const appConfigs: Record<string, AppConfig> = {};
  */
 export function addAppConfigs() {
   const { apps } = getConfig();
+  if (!apps) return;
+
   for (const app of apps) {
     if (app.config !== undefined) {
       patchAppConfig(app.config);

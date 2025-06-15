@@ -17,11 +17,11 @@
     "dev:shell": "npm run build && node ./tools/dist/cli/openedx.js dev:shell",
     "docs": "jsdoc -c jsdoc.json",
     "docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
-    "lint": "eslint .; npm run lint:tools; npm --prefix ./test-project run lint",
+    "lint": "eslint .; npm run lint:tools; npm --prefix ./test-site run lint",
     "lint:tools": "cd ./tools && eslint . && cd ..",
     "test": "jest",
-    "test-project": "npm --prefix ./test-project i; npm --prefix ./test-project run build",
-    "test-project:refresh": "npm run build && npm pack && cd test-project && npm i --audit=false --fund=false ../openedx-frontend-base-1.0.0.tgz && cd ../"
+    "test-site:build": "npm --prefix ./test-site i; npm --prefix ./test-site run build",
+    "test-site:refresh": "npm run build && npm pack && cd test-site && npm i --audit=false --fund=false ../openedx-frontend-base-1.0.0.tgz && cd ../"
   },
   "repository": {
     "type": "git",

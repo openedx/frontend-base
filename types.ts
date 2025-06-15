@@ -48,8 +48,6 @@ export interface RequiredSiteConfig {
 
 export type LocalizedMessages = Record<string, Record<string, string>>;
 
-export type ProjectSiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
-
 export interface OptionalSiteConfig {
   apps: App[],
   externalRoutes: ExternalRoute[],
@@ -76,7 +74,7 @@ export interface OptionalSiteConfig {
   custom: AppConfig,
 }
 
-export type SiteConfig = RequiredSiteConfig & OptionalSiteConfig;
+export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
 
 export interface User {
   administrator: boolean,
