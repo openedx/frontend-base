@@ -28,7 +28,7 @@ import {
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
-const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.legacy.tsx');
+const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.standalone.tsx');
 
 const config: Configuration = {
   entry: {

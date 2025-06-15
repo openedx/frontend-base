@@ -43,7 +43,7 @@ function TakesPropsViaContext() {
 const config: App = {
   routes: [{
     path: '/slots',
-    id: 'dev-project.slots-showcase',
+    id: 'dev-site.slots-showcase',
     Component: SlotShowcasePage,
     handle: {
       role: 'slotShowcase',
@@ -52,31 +52,31 @@ const config: App = {
   slots: [
     // Simple
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseSimple',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseSimple',
       id: 'slot-showcase.simple.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseSimple',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseSimple',
       id: 'slot-showcase.simple.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseSimple',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseSimple',
       id: 'slot-showcase.simple.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseSimpleWithDefaultContent',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseSimpleWithDefaultContent',
       id: 'slot-showcase.simple.child4',
       op: WidgetOperationTypes.APPEND,
       component: TakesProps
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseSimpleWithDefaultContent',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseSimpleWithDefaultContent',
       id: 'slot-showcase.simple.child4',
       op: WidgetOperationTypes.APPEND,
       component: TakesPropsViaContext
@@ -84,19 +84,19 @@ const config: App = {
 
     // Custom Layout
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseCustom',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseCustom',
       id: 'slot-showcase.custom.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseCustom',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseCustom',
       id: 'slot-showcase.custom.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseCustom',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseCustom',
       id: 'slot-showcase.custom.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
@@ -104,69 +104,69 @@ const config: App = {
 
     // Override custom layout
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseCustomConfig',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseCustomConfig',
       id: 'slot-showcase.customConfig.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseCustomConfig',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseCustomConfig',
       id: 'slot-showcase.customConfig.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseCustomConfig',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseCustomConfig',
       id: 'slot-showcase.customConfig.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseCustomConfig',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseCustomConfig',
       op: LayoutOperationTypes.REPLACE,
       element: <HorizontalSlotLayout />,
     },
 
     // Layout Options
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptions',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptions',
       op: LayoutOperationTypes.OPTIONS,
       options: {
         title: (<Title title="Bar" op="LayoutOperationTypes.OPTIONS" />),
       }
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptions',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptions',
       id: 'slot-showcase.layoutWithOptions.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptions',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptions',
       id: 'slot-showcase.layoutWithOptions.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptions',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptions',
       id: 'slot-showcase.layoutWithOptions.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptionsDefault',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptionsDefault',
       id: 'slot-showcase.layoutWithOptionsDefault.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptionsDefault',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptionsDefault',
       id: 'slot-showcase.layoutWithOptionsDefault.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseLayoutWithOptionsDefault',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseLayoutWithOptionsDefault',
       id: 'slot-showcase.layoutWithOptionsDefault.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
@@ -176,19 +176,19 @@ const config: App = {
 
     // Prepending
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcasePrepending',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcasePrepending',
       id: 'slot-showcase.prepending.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" op="WidgetOperationTypes.APPEND" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcasePrepending',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcasePrepending',
       id: 'slot-showcase.prepending.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" op="WidgetOperationTypes.APPEND" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcasePrepending',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcasePrepending',
       id: 'slot-showcase.prepending.child3',
       op: WidgetOperationTypes.PREPEND,
       element: (<Child title="Child Three" op="WidgetOperationTypes.PREPEND" />)
@@ -196,33 +196,33 @@ const config: App = {
 
     // Inserting
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseInserting',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseInserting',
       id: 'slot-showcase.inserting.child4',
       op: WidgetOperationTypes.INSERT_AFTER,
       relatedId: 'slot-showcase.inserting.child2',
       element: (<Child title="Child Four" op="WidgetOperationTypes.INSERT_AFTER" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseInserting',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseInserting',
       id: 'slot-showcase.inserting.child5',
       op: WidgetOperationTypes.INSERT_BEFORE,
       relatedId: 'slot-showcase.inserting.child2',
       element: (<Child title="Child Five" op="WidgetOperationTypes.INSERT_BEFORE" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseInserting',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseInserting',
       id: 'slot-showcase.inserting.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseInserting',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseInserting',
       id: 'slot-showcase.inserting.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseInserting',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseInserting',
       id: 'slot-showcase.inserting.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
@@ -230,25 +230,25 @@ const config: App = {
 
     // Replacing
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseReplacing',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseReplacing',
       id: 'slot-showcase.replacing.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseReplacing',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseReplacing',
       id: 'slot-showcase.replacing.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseReplacing',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseReplacing',
       id: 'slot-showcase.replacing.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseReplacing',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseReplacing',
       id: 'slot-showcase.replacing.child4',
       op: WidgetOperationTypes.REPLACE,
       relatedId: 'slot-showcase.replacing.child2',
@@ -257,44 +257,44 @@ const config: App = {
 
     // Hiding
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseRemoving',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseRemoving',
       id: 'slot-showcase.removing.child1',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child One" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseRemoving',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseRemoving',
       id: 'slot-showcase.removing.child2',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Two" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseRemoving',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseRemoving',
       id: 'slot-showcase.removing.child3',
       op: WidgetOperationTypes.APPEND,
       element: (<Child title="Child Three" />)
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseRemoving',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseRemoving',
       op: WidgetOperationTypes.REMOVE,
       relatedId: 'slot-showcase.removing.child2',
     },
 
     // Widget Options
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseWidgetOptions',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseWidgetOptions',
       id: 'slot-showcase.widgetOptions.child1',
       op: WidgetOperationTypes.APPEND,
       component: WidgetWithOptions,
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseWidgetOptions',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseWidgetOptions',
       id: 'slot-showcase.widgetOptions.child2',
       op: WidgetOperationTypes.APPEND,
       component: WidgetWithOptions,
     },
     {
-      slotId: 'org.openedx.frontend.slot.devProject.slotShowcaseWidgetOptions',
+      slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseWidgetOptions',
       relatedId: 'slot-showcase.widgetOptions.child2',
       op: WidgetOperationTypes.OPTIONS,
       options: {

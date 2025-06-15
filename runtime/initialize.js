@@ -53,7 +53,7 @@ import {
 } from 'history';
 /*
 This 'site.config' package is a special 'magic' alias in our webpack configuration in the `config`
-folder. It points at an `site.config.tsx` file in the root of an project's repository.
+folder. It points at an `site.config.tsx` file in the root of a site's repository.
 */
 import siteConfig from 'site.config';
 import {
@@ -175,11 +175,12 @@ async function fileConfig() {
     config = siteConfig;
   }
 
-  // This means the SiteConfig is acting as an app, i.e., 'legacy mode' which allows an MFE to be
-  // built as its own site using the shell.  In that case, we need to move all the 'custom' config
+  // This means the SiteConfig is acting as an app, i.e., 'standalone mode' which allows an MFE to be
+  // built as its own site using the shell.  In that case, we need to move all the 'standalone' config
   // into our appConfigs object so it can be accessed by the code.
-  if (config.custom !== undefined) {
-    patchAppConfig(config.custom);
+  if (config.standalone !== undefined) {
+    patchAppConfig(config.standalone);
+    delete config.standalone;
   }
 
   mergeConfig(config);
@@ -192,14 +193,14 @@ async function fileConfig() {
  */
 async function runtimeConfig() {
   try {
-    const { mfeConfigApiUrl, appId } = getConfig();
+    const { mfeConfigApiUrl, siteId } = getConfig();
 
     if (mfeConfigApiUrl) {
       const apiConfig = { headers: { accept: 'application/json' } };
       const apiService = await configureCache();
 
       const params = new URLSearchParams();
-      params.append('mfe', appId);
+      params.append('mfe', siteId);
       const url = `${mfeConfigApiUrl}?${params.toString()}`;
 
       const { data } = await apiService.get(url, apiConfig);

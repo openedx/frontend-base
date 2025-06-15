@@ -33,5 +33,5 @@ jobs:
       run: npm run lint
     - name: Test
       run: npm run test
-    - name: Test Project
-      run: npm run test-project
+    - name: Build Test Site
+      run: npm run test-site:build

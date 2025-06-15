@@ -10,7 +10,7 @@ module.exports = tseslint.config(
   {
     ignores: [
       'tools/*',
-      'test-project/*',
+      'test-site/*',
       'config/*',
       'docs/*',
     ],

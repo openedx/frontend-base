@@ -1,8 +1,8 @@
-import { defaultFooterConfig, defaultHeaderConfig, defaultShellConfig, EnvironmentTypes, ProjectSiteConfig } from '@openedx/frontend-base';
+import { defaultFooterConfig, defaultHeaderConfig, defaultShellConfig, EnvironmentTypes, SiteConfig } from '@openedx/frontend-base';
 import { authenticatedPageConfig, examplePageConfig, iframeWidgetConfig } from './src';
-import './src/project.scss';
+import './src/site.scss';
 
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   apps: [
     defaultShellConfig,
     defaultHeaderConfig,
@@ -12,7 +12,7 @@ const config: ProjectSiteConfig = {
     iframeWidgetConfig,
   ],
 
-  appId: 'shell',
+  siteId: 'test',
   baseUrl: 'http://apps.local.openedx.io:8080',
   environment: EnvironmentTypes.DEVELOPMENT,
   siteName: 'My Open edX Site',

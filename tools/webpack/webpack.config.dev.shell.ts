@@ -29,7 +29,7 @@ import {
 const paragonThemeCss = getParagonThemeCss(process.cwd());
 const brandThemeCss = getParagonThemeCss(process.cwd(), { isBrandOverride: true });
 const aliases = getLocalAliases();
-const resolvedSiteConfigPath = getResolvedSiteConfigPath('shell/site.config.dev.shell.tsx');
+const resolvedSiteConfigPath = getResolvedSiteConfigPath('shell/site.config.dev.tsx');
 
 const config: Configuration = {
   entry: {

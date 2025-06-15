@@ -1,16 +1,16 @@
-import { EnvironmentTypes, ProjectSiteConfig } from '../types';
+import { EnvironmentTypes, SiteConfig } from '../types';
 
-const config: ProjectSiteConfig = {
+const config: SiteConfig = {
   apps: [],
 
-  appId: 'runtime',
+  siteId: 'test',
+  siteName: 'Open edX',
   baseUrl: 'http://localhost:8080',
   environment: EnvironmentTypes.TEST,
   lmsBaseUrl: 'http://localhost:18000',
   loginUrl: 'http://localhost:18000/login',
   logoutUrl: 'http://localhost:18000/logout',
   segmentKey: 'segment_whoa',
-  siteName: 'edX',
 };
 
 export default config;

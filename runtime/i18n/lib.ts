@@ -143,10 +143,14 @@ export function getLocale(locale?: string) {
   }
   // 2. User setting in cookie
 
-  const cookieLangPref = cookies.get(getConfig().languagePreferenceCookieName);
-  if (cookieLangPref) {
-    return findSupportedLocale(cookieLangPref.toLowerCase());
+  const { languagePreferenceCookieName } = getConfig();
+  if (languagePreferenceCookieName) {
+    const languagePreference = cookies.get(languagePreferenceCookieName);
+    if (languagePreference) {
+      return findSupportedLocale(languagePreference.toLowerCase());
+    }
   }
+
   // 3. Browser language (default)
   // Note that some browers prefer upper case for the region part of the locale, while others don't.
   // Thus the toLowerCase, for consistency.
@@ -240,9 +244,11 @@ export function mergeMessages(newMessages = {}) {
  */
 export function addAppMessages() {
   const { apps } = getConfig();
-  apps.forEach((app) => {
-    mergeMessages(app.messages);
-  });
+  if (apps) {
+    apps.forEach((app) => {
+      mergeMessages(app.messages);
+    });
+  }
 }
 
 interface ConfigureI18nOptions {

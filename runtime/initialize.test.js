@@ -278,7 +278,7 @@ describe('initialize', () => {
         config: () => {
           mergeConfig({
             mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
-            appId: 'auth',
+            siteId: 'auth',
           });
         }
       }
@@ -328,7 +328,7 @@ describe('initialize', () => {
           config: () => {
             mergeConfig({
               mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
-              appId: 'auth',
+              siteId: 'auth',
             });
           }
         }
