@@ -13,13 +13,13 @@
  *   configureAuth,
  *   fetchAuthenticatedUser,
  *   getAuthenticatedHttpClient,
- *   getConfig,
+ *   getSiteConfig,
  *   getLoggingService
  * } from '@openedx/frontend-base';
  *
  * configureAuth({
  *   loggingService: getLoggingService(),
- *   config: getConfig(),
+ *   config: getSiteConfig(),
  * });
  *
  * const authenticatedUser = await fetchAuthenticatedUser(); // validates and decodes JWT token

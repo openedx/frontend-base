@@ -19,17 +19,15 @@ export type RoleRouteObject = RouteObject & {
   },
 };
 
+export type AppConfig = Record<string, unknown>;
+
 export interface App {
+  appId: string,
   messages?: LocalizedMessages,
   routes?: RoleRouteObject[],
   slots?: SlotOperation[],
   config?: AppConfig,
 }
-
-export type AppConfig = {
-  // An AppConfig must contain an appId if it exists, which allows us to differentiate between app configs.
-  appId,
-} & Record<string, unknown>;
 
 // Site Config
 
@@ -49,9 +47,15 @@ export interface RequiredSiteConfig {
 export type LocalizedMessages = Record<string, Record<string, string>>;
 
 export interface OptionalSiteConfig {
+  // Site environment
+  environment: EnvironmentTypes,
+  publicPath: string,
+
+  // Apps, routes, and URLs
   apps: App[],
   externalRoutes: ExternalRoute[],
   externalLinkUrlOverrides: string[],
+  mfeConfigApiUrl: string | null,
 
   // Cookies
   accessTokenCookieName: string,
@@ -67,11 +71,6 @@ export interface OptionalSiteConfig {
 
   // Analytics
   segmentKey: string | null,
-  environment: EnvironmentTypes,
-  mfeConfigApiUrl: string | null,
-  publicPath: string,
-
-  standalone: AppConfig,
 }
 
 export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;

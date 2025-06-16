@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { sendPageEvent } from '../analytics';
 import { getAuthenticatedUser, getLoginRedirectUrl } from '../auth';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 import SiteContext from './SiteContext';
 import AuthenticatedPageRoute from './AuthenticatedPageRoute';
 
@@ -35,7 +35,7 @@ describe('AuthenticatedPageRoute', () => {
       <SiteContext.Provider
         value={{
           authenticatedUser: getAuthenticatedUser(),
-          config: getConfig(),
+          siteConfig: getSiteConfig(),
         }}
       >
         <MemoryRouter initialEntries={['/authenticated']}>
@@ -65,7 +65,7 @@ describe('AuthenticatedPageRoute', () => {
       <SiteContext.Provider
         value={{
           authenticatedUser: getAuthenticatedUser(),
-          config: getConfig(),
+          siteConfig: getSiteConfig(),
         }}
       >
         <MemoryRouter initialEntries={['/authenticated']}>
@@ -89,7 +89,7 @@ describe('AuthenticatedPageRoute', () => {
       <SiteContext.Provider
         value={{
           authenticatedUser: getAuthenticatedUser(),
-          config: getConfig(),
+          siteConfig: getSiteConfig(),
         }}
       >
         <MemoryRouter>
@@ -114,7 +114,7 @@ describe('AuthenticatedPageRoute', () => {
       <SiteContext.Provider
         value={{
           authenticatedUser: { userId: 12345, username: 'edx' },
-          config: getConfig(),
+          siteConfig: getSiteConfig(),
         }}
       >
         <MemoryRouter initialEntries={['/authenticated']}>

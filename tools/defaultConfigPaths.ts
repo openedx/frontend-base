@@ -15,10 +15,6 @@ export const defaultConfigPaths = {
     path.resolve(process.cwd(), 'webpack.config.dev.js'),
     path.resolve(__dirname, './webpack/webpack.config.dev.js'),
   ],
-  [ConfigTypes.WEBPACK_DEV_STANDALONE]: [
-    path.resolve(process.cwd(), 'webpack.config.dev.standalone.js'),
-    path.resolve(__dirname, './webpack/webpack.config.dev.standalone.js'),
-  ],
   [ConfigTypes.WEBPACK_DEV_SHELL]: [
     path.resolve(process.cwd(), 'webpack.config.dev.shell.js'),
     path.resolve(__dirname, './webpack/webpack.config.dev.shell.js'),

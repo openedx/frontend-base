@@ -41,6 +41,7 @@ function TakesPropsViaContext() {
 }
 
 const config: App = {
+  appId: 'org.openedx.frontend.app.devSite.slotShowcase',
   routes: [{
     path: '/slots',
     id: 'dev-site.slots-showcase',

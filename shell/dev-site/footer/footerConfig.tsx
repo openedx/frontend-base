@@ -4,6 +4,7 @@ import { App, } from '../../../types';
 import LinkMenuItem from '../../menus/LinkMenuItem';
 
 const config: App = {
+  appId: 'org.openedx.frontend.app.devSite.footer',
   slots: [
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopTop.v1',

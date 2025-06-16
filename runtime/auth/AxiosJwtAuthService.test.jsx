@@ -2,7 +2,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Cookies from 'universal-cookie';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 import AxiosJwtAuthService from './AxiosJwtAuthService';
 
 const mockLoggingService = {
@@ -12,7 +12,7 @@ const mockLoggingService = {
 };
 
 const authOptions = {
-  config: getConfig(),
+  config: getSiteConfig(),
   loggingService: mockLoggingService,
 };
 

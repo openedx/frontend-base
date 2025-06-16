@@ -9,7 +9,7 @@
  *
  * ```
  * import {
- *   getConfig,
+ *   getSiteConfig,
  *   getAuthenticatedHttpClient,
  *   getLoggingService,
  *   configureAnalytics,
@@ -17,7 +17,7 @@
  * } from '@openedx/frontend-base';
  *
  * configureAnalytics(SegmentAnalyticsService, {
- *   config: getConfig(),
+ *   config: getSiteConfig(),
  *   loggingService: getLoggingService(),
  *   httpClient: getAuthenticatedHttpClient(),
  * });

@@ -1,4 +1,4 @@
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 import { SlotOperation } from './types';
 import { getSlotOperations } from './utils';
 import { WidgetOperationTypes } from '.';
@@ -7,20 +7,20 @@ jest.mock('../config');
 
 describe('getSlotOperations', () => {
   it('should return an empty array if no apps are configured', () => {
-    (getConfig as jest.Mock).mockReturnValue({ apps: [] });
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: [] });
     const result = getSlotOperations('test-slot.ui');
     expect(result).toEqual([]);
   });
 
   it('should return an empty array if no slots are present in apps', () => {
-    (getConfig as jest.Mock).mockReturnValue({ apps: [{ slots: [] }] });
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: [{ slots: [] }] });
     const result = getSlotOperations('test-slot.ui');
     expect(result).toEqual([]);
   });
 
   it('should return an empty array if no matching slotId is found', () => {
     const mockSlots: SlotOperation[] = [{ slotId: 'other-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget1', element: '' }];
-    (getConfig as jest.Mock).mockReturnValue({ apps: [{ slots: mockSlots }] });
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: [{ slots: mockSlots }] });
     const result = getSlotOperations('test-slot.ui');
     expect(result).toEqual([]);
   });
@@ -31,7 +31,7 @@ describe('getSlotOperations', () => {
       { slotId: 'test-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget2', element: '' },
       { slotId: 'other-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget3', element: '' },
     ];
-    (getConfig as jest.Mock).mockReturnValue({ apps: [{ slots: mockSlots }] });
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: [{ slots: mockSlots }] });
     const result = getSlotOperations('test-slot.ui');
     expect(result).toEqual([
       { slotId: 'test-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget1', element: '' },
@@ -40,7 +40,7 @@ describe('getSlotOperations', () => {
   });
 
   it('should handle multiple apps with slots correctly', () => {
-    (getConfig as jest.Mock).mockReturnValue({
+    (getSiteConfig as jest.Mock).mockReturnValue({
       apps: [
         {
           slots: [

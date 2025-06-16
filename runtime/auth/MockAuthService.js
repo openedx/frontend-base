@@ -45,14 +45,14 @@ const optionsPropTypes = {
  * you could do the following to set up a MockAuthService for your test:
  *
  * ```
- * import { getConfig, mergeConfig, configureAuth, MockAuthService } from '@openedx/frontend-base';
+ * import { getSiteConfig, mergeSiteConfig, configureAuth, MockAuthService } from '@openedx/frontend-base';
  * import MockAdapter from 'axios-mock-adapter';
  *
  * const mockLoggingService = {
  *   logInfo: jest.fn(),
  *   logError: jest.fn(),
  * };
- * mergeConfig({
+ * mergeSiteConfig({
  *   authenticatedUser: {
  *     userId: 'abc123',
  *     username: 'Mock User',
@@ -60,7 +60,7 @@ const optionsPropTypes = {
  *     administrator: false,
  *   },
  * });
- * configureAuth(MockAuthService, { config: getConfig(), loggingService: mockLoggingService });
+ * configureAuth(MockAuthService, { config: getSiteConfig(), loggingService: mockLoggingService });
  * const mockAdapter = new MockAdapter(getAuthenticatedHttpClient());
  * // Mock calls for your tests.  This configuration can be done in any sort of test setup.
  * mockAdapter.onGet(...);

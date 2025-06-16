@@ -23,7 +23,7 @@ import {
   hydrateAuthenticatedUser,
 } from './auth';
 import configureCache from './auth/LocalForageCache';
-import { getConfig, mergeConfig } from './config';
+import { getSiteConfig, mergeSiteConfig } from './config';
 import { configureI18n } from './i18n';
 import {
   configureLogging,
@@ -67,7 +67,7 @@ const newConfig = {
 
 describe('initialize', () => {
   beforeEach(() => {
-    config = getConfig();
+    config = getSiteConfig();
     fetchAuthenticatedUser.mockReset();
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();
@@ -276,7 +276,7 @@ describe('initialize', () => {
       messages,
       handlers: {
         config: () => {
-          mergeConfig({
+          mergeSiteConfig({
             mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
             siteId: 'auth',
           });
@@ -304,9 +304,9 @@ describe('initialize', () => {
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
     expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
     expect(logError).not.toHaveBeenCalled();
-    expect(getConfig().siteName).toBe(newConfig.common.siteName);
-    expect(getConfig().INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
-    expect(Object.values(getConfig()).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
+    expect(getSiteConfig().siteName).toBe(newConfig.common.siteName);
+    expect(getSiteConfig().INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
+    expect(Object.values(getSiteConfig()).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
   });
 
   describe('with mocked console.error', () => {
@@ -326,7 +326,7 @@ describe('initialize', () => {
         messages,
         handlers: {
           config: () => {
-            mergeConfig({
+            mergeSiteConfig({
               mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
               siteId: 'auth',
             });

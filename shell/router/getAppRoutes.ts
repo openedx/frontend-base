@@ -1,10 +1,10 @@
 import { RouteObject } from 'react-router';
 
-import { getConfig } from '../../runtime';
+import { getSiteConfig } from '../../runtime';
 import { App } from '../../types';
 
 export default function getAppRoutes() {
-  const { apps } = getConfig();
+  const { apps } = getSiteConfig();
 
   let routes: RouteObject[] = [];
 

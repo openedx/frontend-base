@@ -32,12 +32,11 @@ export {
 } from './auth';
 
 export {
-  getConfig,
-  setConfig,
-  mergeConfig,
+  getSiteConfig,
+  setSiteConfig,
+  mergeSiteConfig,
   addAppConfigs,
   getAppConfig,
-  patchAppConfig,
   setActiveRouteRoles,
   getActiveRouteRoles,
   addActiveWidgetRole,
@@ -105,9 +104,9 @@ export {
   ErrorPage,
   LoginRedirect,
   PageWrap,
-  useAppEvent,
+  useSiteEvent,
   useAuthenticatedUser,
-  useConfig,
+  useSiteConfig,
   useAppConfig
 } from './react';
 

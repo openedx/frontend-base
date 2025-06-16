@@ -1,14 +1,14 @@
 import { RouteObject } from 'react-router';
-import { getConfig } from '../../runtime';
+import { getSiteConfig } from '../../runtime';
 import getAppRoutes from './getAppRoutes';
 
 jest.mock('../../runtime', () => ({
-  getConfig: jest.fn(),
+  getSiteConfig: jest.fn(),
 }));
 
 describe('getAppRoutes', () => {
   it('should return an empty array when no apps are configured', () => {
-    (getConfig as jest.Mock).mockReturnValue({ apps: [] });
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: [] });
 
     const routes = getAppRoutes();
 
@@ -30,7 +30,7 @@ describe('getAppRoutes', () => {
       },
     ];
 
-    (getConfig as jest.Mock).mockReturnValue({ apps: mockApps });
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: mockApps });
 
     const routes = getAppRoutes();
 
@@ -50,7 +50,7 @@ describe('getAppRoutes', () => {
       { slots: [] },
     ];
 
-    (getConfig as jest.Mock).mockReturnValue({ apps: mockApps });
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: mockApps });
 
     const routes = getAppRoutes();
 

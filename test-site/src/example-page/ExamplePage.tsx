@@ -1,9 +1,9 @@
 import {
   getAuthenticatedUser,
-  getConfig,
+  getSiteConfig,
   logInfo,
   useAuthenticatedUser,
-  useConfig,
+  useSiteConfig,
   useIntl
 } from '@openedx/frontend-base';
 import { Container } from '@openedx/paragon';
@@ -20,7 +20,7 @@ function printTestResult(value) {
 }
 
 export default function ExamplePage() {
-  const config = useConfig();
+  const config = useSiteConfig();
   const authenticatedUser = useAuthenticatedUser();
 
   const intl = useIntl();
@@ -38,7 +38,7 @@ export default function ExamplePage() {
       <p>Visit <Link to="/error">error page</Link>.</p>
 
       <h2>Context Config Test</h2>
-      <p>Is context.config equal to getConfig()? {printTestResult(config === getConfig())}</p>
+      <p>Is context.config equal to getSiteConfig()? {printTestResult(config === getSiteConfig())}</p>
       <p>Is context.authenticatedUser equal to getAuthenticatedUser()? {printTestResult(authenticatedUser === getAuthenticatedUser())}</p>
 
       <h2>SCSS parsing tests</h2>

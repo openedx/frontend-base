@@ -1,6 +1,6 @@
 import { Hyperlink } from '@openedx/paragon';
 
-import { useConfig } from '../../runtime';
+import { useSiteConfig } from '../../runtime';
 
 interface CopyrightNoticeProps {
   title?: string,
@@ -12,7 +12,7 @@ interface CopyrightNoticeProps {
 }
 
 export default function CopyrightNotice({ title, destination }: CopyrightNoticeProps) {
-  const config = useConfig();
+  const config = useSiteConfig();
 
   // Allow overrides via props and fallback to defaults.
   const finalTitle = title ?? config.siteName;

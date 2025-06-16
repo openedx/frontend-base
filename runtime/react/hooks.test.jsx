@@ -5,7 +5,7 @@ import { sendTrackEvent } from '../analytics';
 import { setAuthenticatedUser } from '../auth';
 import { initializeMockApp } from '../testing';
 import SiteProvider from './SiteProvider';
-import { useAuthenticatedUser, useConfig, useTrackColorSchemeChoice } from './hooks';
+import { useAuthenticatedUser, useSiteConfig, useTrackColorSchemeChoice } from './hooks';
 
 jest.mock('../analytics');
 
@@ -94,9 +94,9 @@ describe('useAuthenticatedUser', () => {
   });
 });
 
-describe('useConfig', () => {
+describe('useSiteConfig', () => {
   it('returns the site config', () => {
-    const { result } = renderHook(() => useConfig());
+    const { result } = renderHook(() => useSiteConfig());
     expect(result.current).toHaveProperty('apps', siteConfig.apps);
     expect(result.current).toHaveProperty('environment', EnvironmentTypes.TEST);
     expect(result.current).toHaveProperty('baseUrl', 'http://localhost:8080');

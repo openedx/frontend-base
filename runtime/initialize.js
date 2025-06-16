@@ -73,8 +73,7 @@ import {
 } from './auth';
 import configureCache from './auth/LocalForageCache';
 import {
-  getConfig, mergeConfig,
-  patchAppConfig
+  getSiteConfig, mergeSiteConfig,
 } from './config';
 import {
   SITE_ANALYTICS_INITIALIZED,
@@ -105,7 +104,7 @@ import { getPath } from './utils';
  * falls back to memory history.
  */
 export const getHistory = () => ((typeof window !== 'undefined')
-  ? createBrowserHistory({ basename: getPath(getConfig().publicPath) })
+  ? createBrowserHistory({ basename: getPath(getSiteConfig().publicPath) })
   : createMemoryHistory());
 
 /**
@@ -118,7 +117,7 @@ export const getHistory = () => ((typeof window !== 'undefined')
  * as an ENV variable in the Docker file, and we read it here from that configuration so that it
  * can be passed into a Router later.
  */
-export const getBasename = () => getPath(getConfig().publicPath);
+export const getBasename = () => getPath(getSiteConfig().publicPath);
 
 /**
  * The default handler for the initialization lifecycle's `initError` phase.  Logs the error to the
@@ -163,9 +162,9 @@ export async function auth(requireUser, hydrateUser) {
  * Set or overrides configuration via an site.config.tsx file in the consuming application.
  * This site.config.tsx is loaded at runtime and must export one of two things:
  *
- * - An object which will be merged into the application config via `mergeConfig`.
+ * - An object which will be merged into the application config via `mergeSiteConfig`.
  * - A function which returns an object which will be merged into the application config via
- * `mergeConfig`.  This function can return a promise.
+ * `mergeSiteConfig`.  This function can return a promise.
  */
 async function fileConfig() {
   let config = {};
@@ -175,15 +174,7 @@ async function fileConfig() {
     config = siteConfig;
   }
 
-  // This means the SiteConfig is acting as an app, i.e., 'standalone mode' which allows an MFE to be
-  // built as its own site using the shell.  In that case, we need to move all the 'standalone' config
-  // into our appConfigs object so it can be accessed by the code.
-  if (config.standalone !== undefined) {
-    patchAppConfig(config.standalone);
-    delete config.standalone;
-  }
-
-  mergeConfig(config);
+  mergeSiteConfig(config);
 }
 
 /*
@@ -193,7 +184,7 @@ async function fileConfig() {
  */
 async function runtimeConfig() {
   try {
-    const { mfeConfigApiUrl, siteId } = getConfig();
+    const { mfeConfigApiUrl, siteId } = getSiteConfig();
 
     if (mfeConfigApiUrl) {
       const apiConfig = { headers: { accept: 'application/json' } };
@@ -204,7 +195,7 @@ async function runtimeConfig() {
       const url = `${mfeConfigApiUrl}?${params.toString()}`;
 
       const { data } = await apiService.get(url, apiConfig);
-      mergeConfig(data);
+      mergeSiteConfig(data);
     }
   } catch (error) {
     console.error('Error with config API', error.message);
@@ -322,7 +313,7 @@ export async function initialize({
     publish(SITE_CONFIG_INITIALIZED);
 
     loadExternalScripts(externalScripts, {
-      config: getConfig(),
+      config: getSiteConfig(),
     });
 
     // This allows us to replace the implementations of the logging, analytics, and auth services
@@ -330,13 +321,13 @@ export async function initialize({
     // one capable of supplying an alternate implementation since it can import other modules.
     // If a service wasn't supplied we fall back to the default parameters on the initialize
     // function signature.
-    const loggingServiceImpl = getConfig().loggingService ?? loggingService;
-    const analyticsServiceImpl = getConfig().analyticsService ?? analyticsService;
-    const authServiceImpl = getConfig().authService ?? authService;
+    const loggingServiceImpl = getSiteConfig().loggingService ?? loggingService;
+    const analyticsServiceImpl = getSiteConfig().analyticsService ?? analyticsService;
+    const authServiceImpl = getSiteConfig().authService ?? authService;
 
     // Logging
     configureLogging(loggingServiceImpl, {
-      config: getConfig(),
+      config: getSiteConfig(),
     });
     await handlers.logging();
     publish(SITE_LOGGING_INITIALIZED);
@@ -351,7 +342,7 @@ export async function initialize({
     // Authentication
     configureAuth(authServiceImpl, {
       loggingService: getLoggingService(),
-      config: getConfig(),
+      config: getSiteConfig(),
       middleware: authMiddleware,
     });
 
@@ -360,7 +351,7 @@ export async function initialize({
 
     // Analytics
     configureAnalytics(analyticsServiceImpl, {
-      config: getConfig(),
+      config: getSiteConfig(),
       loggingService: getLoggingService(),
       httpClient: getAuthenticatedHttpClient(),
     });

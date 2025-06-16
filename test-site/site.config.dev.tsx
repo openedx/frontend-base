@@ -2,7 +2,7 @@ import { defaultFooterConfig, defaultHeaderConfig, defaultShellConfig, Environme
 import { authenticatedPageConfig, examplePageConfig, iframeWidgetConfig } from './src';
 import './src/site.scss';
 
-const config: SiteConfig = {
+const siteConfig: SiteConfig = {
   apps: [
     defaultShellConfig,
     defaultHeaderConfig,
@@ -26,4 +26,4 @@ const config: SiteConfig = {
   mfeConfigApiUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
 };
 
-export default config;
+export default siteConfig;

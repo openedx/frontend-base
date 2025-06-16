@@ -32,7 +32,7 @@ Or, if you choose to use ``configureAuth`` instead::
 
     configureAuth({
         loggingService: getLoggingService(),
-        config: getConfig(),
+        config: getSiteConfig(),
         options: {
                 middleware: [axiosCaseConverter, (client) => axiosRetry(client, { retries: 3 })]
         }

@@ -3,7 +3,7 @@ import {
   fetchAuthenticatedUser,
   hydrateAuthenticatedUser,
 } from './auth';
-import { getConfig } from './config';
+import { getSiteConfig } from './config';
 import { initialize } from './initialize';
 import {
   logError,
@@ -24,7 +24,7 @@ let config = null;
 describe('initialize with function js file config', () => {
   beforeEach(() => {
     jest.resetModules();
-    config = getConfig();
+    config = getSiteConfig();
     fetchAuthenticatedUser.mockReset();
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();

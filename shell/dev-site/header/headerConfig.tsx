@@ -5,6 +5,7 @@ import LinkMenuItem from '../../menus/LinkMenuItem';
 import CoursesLink from './CoursesLink';
 
 const config: App = {
+  appId: 'org.openedx.frontend.app.devSite.header',
   slots: [
     {
       slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import { EnvironmentTypes } from '../../types';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 import { getLoggingService } from '../logging';
 import { intlShape } from './lib';
 
@@ -20,7 +20,7 @@ const injectIntlWithShim = (WrappedComponent) => {
           value: (definition, ...args) => {
             if (definition === undefined || definition.id === undefined) {
               const error = new Error('i18n error: An undefined message was supplied to intl.formatMessage.');
-              if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
+              if (getSiteConfig().environment === EnvironmentTypes.DEVELOPMENT) {
                 console.error(error); // eslint-disable-line no-console
                 return '!!! Missing message supplied to intl.formatMessage !!!';
               }

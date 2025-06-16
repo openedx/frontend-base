@@ -6,6 +6,7 @@ import LabeledLinkColumn from './LabeledLinkColumn';
 import LanguageMenu from './LanguageMenu';
 
 const config: App = {
+  appId: 'org.openedx.frontend.app.footer',
   slots: [
     // Center links
     {

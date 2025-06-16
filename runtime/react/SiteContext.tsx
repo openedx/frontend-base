@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { SiteConfig, User } from '../../types';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 
 /**
  * `SiteContext` provides data from `App` in a way that React components can readily consume, even
@@ -8,12 +8,12 @@ import { getConfig } from '../config';
  *
  * ```
  * {
- *   authenticatedUser: <THE App.authenticatedUser OBJECT>,
- *   config: <THE App.config OBJECT>
- *   locale: <THE App.locale OBJECT>
+ *   authenticatedUser
+ *   siteConfig
+ *   locale
  * }
  * ```
- * If the `App.authenticatedUser` or `App.config` data changes, `SiteContext` will be updated
+ * If `authenticatedUser`, `siteConfig`, or `locale` data changes, `SiteContext` will be updated
  * accordingly and pass those changes onto React components using the context.
  *
  * `SiteContext` is used in a React application like any other `[React Context](https://reactjs.org/docs/context.html)
@@ -21,11 +21,11 @@ import { getConfig } from '../config';
  */
 const SiteContext = createContext<{
   authenticatedUser: User | null,
-  config: SiteConfig,
+  siteConfig: SiteConfig,
   locale: string,
 }>({
   authenticatedUser: null,
-  config: getConfig(),
+  siteConfig: getSiteConfig(),
   locale: 'en',
 });
 

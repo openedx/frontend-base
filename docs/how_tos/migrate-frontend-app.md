@@ -127,10 +127,8 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 
 ```
   "scripts": {
-    "build": "PORT=YOUR_PORT openedx build",
-    "build:standalone": "openedx build:standalone",
+    "build": "openedx build",
     "dev": "PORT=YOUR_PORT openedx dev",
-    "dev:standalone": "PORT=YOUR_PORT openedx dev:standalone",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
@@ -305,13 +303,13 @@ module.exports = config;
 Merge site.config into config in setupTest.js
 =============================================
 
-frontend-platform used environment variables to seed the configuration object, meaning it had default values at the time code is loaded based on `process.env` variables.  frontend-base has a hard-coded, minimal configuration object that _must_ be augmented by a valid site config file at initialization time.  This means that any tests that rely on configuration (e.g., via `getConfig()`) must first initialize the configuration object.  This can be done for tests by adding these lines to `setupTest.js`:
+frontend-platform used environment variables to seed the configuration object, meaning it had default values at the time code is loaded based on `process.env` variables.  frontend-base has a hard-coded, minimal configuration object that _must_ be augmented by a valid site config file at initialization time.  This means that any tests that rely on configuration (e.g., via `getSiteConfig()`) must first initialize the configuration object.  This can be done for tests by adding these lines to `setupTest.js`:
 
 ```
 import siteConfig from 'site.config';
-import { mergeConfig } from '@openedx/frontend-base';
+import { mergeSiteConfig } from '@openedx/frontend-base';
 
-mergeConfig(siteConfig);
+mergeSiteConfig(siteConfig);
 
 ```
 
@@ -413,7 +411,7 @@ Replace all imports from @edx/frontend-platform with @openedx/frontend-base
 - import { logInfo } from '@edx/frontend-platform/logging';
 - import { FormattedMessage } from '@edx/frontend-platform/i18n';
 + import {
-+   getConfig,
++   getSiteConfig,
 +   logInfo,
 +   FormattedMessage
 + } from '@openedx/frontend-base';
@@ -520,6 +518,7 @@ Note that the .env files and env.config.js files also include a number of URLs f
 ```
 // Creating a route role with for 'example' in an App
 const app: App = {
+  ...
   routes: [{
     path: '/example',
     id: 'example.page',
@@ -537,17 +536,16 @@ const examplePageUrl = getUrlForRouteRole('example');
 App-specific config values
 --------------------------
 
-App-specific configuration can be expressed by adding a `standalone` section to SiteConfig which allows arbitrary config variables.
+App-specific configuration can be expressed by adding an `config` section to the app, allowing arbitrary variables:
 
 ```
-const config: SiteConfig = {
-  // ... Other config
-
-  standalone: {
+const app: App = {
+  ...
+  config: {
     appId: 'myapp',
     myCustomVariableName: 'my custom variable value',
-  }
-}
+  },
+};
 ```
 
 These variables can be used in code with the `getAppConfig` function:
@@ -556,16 +554,16 @@ These variables can be used in code with the `getAppConfig` function:
 getAppConfig('myapp').myCustomVariableName
 ```
 
-If you have fully converted your app over to the new architecture, you can add custom variables to the `config` object in your `App` definition and they will be available via `getAppConfig`.
+Or via `useAppConfig()` (with no need to specify the appId), if `AppProvider` is wrapping your app.
 
 
 Replace the .env.test file with configuration in site.config.test.tsx file
 ==========================================================================
 
-We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect a `site.config.test.tsx` file.  If you're initializing an application in your tests, `frontend-base` will pick up this configuration and make it available to `getConfig()`, etc.  If you need to manually access the variables, you can import `site.config` in your test files:
+We're moving away from .env files because they're not expressive enough (only string types!) to configure an Open edX frontend.  Instead, the test suite has been configured to expect a `site.config.test.tsx` file.  If you're initializing an application in your tests, `frontend-base` will pick up this configuration and make it available to `getSiteConfig()`, etc.  If you need to manually access the variables, you can import `site.config` in your test files:
 
 ```diff
-+ import config from 'site.config';
++ import siteConfig from 'site.config';
 ```
 
 The Jest configuration has been set up to find `site.config` in a `site.config.test.tsx` file.
@@ -577,26 +575,37 @@ A sample `site.config.test.tsx` file:
 ```
 import { SiteConfig } from '@openedx/frontend-base';
 
-const config: SiteConfig = {
-  apps: [],
-  accessTokenCookieName: 'edx-jwt-cookie-header-payload',
+const siteConfig: SiteConfig = {
+  siteId: 'test',
+  siteName: 'localhost',
   baseUrl: 'http://localhost:8080',
-  csrfTokenApiPath: '/csrf/api/v1/token',
-  languagePreferenceCookieName: 'openedx-language-preference',
   lmsBaseUrl: 'http://localhost:18000',
   loginUrl: 'http://localhost:18000/login',
   logoutUrl: 'http://localhost:18000/logout',
+  environment: 'dev',
+  apps: [{
+    appId: 'test-app',
+    routes: [{
+      path: '/app1',
+      element: (
+        <div>Test App 1</div>
+      ),
+      handle: {
+        role: 'test-app-1'
+      }
+    }]
+  }],
+  accessTokenCookieName: 'edx-jwt-cookie-header-payload',
+  csrfTokenApiPath: '/csrf/api/v1/token',
+  languagePreferenceCookieName: 'openedx-language-preference',
   refreshAccessTokenApiPath: '/login_refresh',
   segmentKey: '',
-  siteId: 'test',
-  siteName: 'localhost',
   userInfoCookieName: 'edx-user-info',
-  environment: 'dev',
   ignoredErrorRegex: null,
   publicPath: '/',
 };
 
-export default config;
+export default siteConfig;
 ```
 
 
@@ -642,11 +651,11 @@ You must then import this new stylesheet into your `site.config` file:
 ```diff
 + import './site.scss';
 
-const config: SiteConfig = {
+const siteConfig: SiteConfig = {
   // config document
 }
 
-export default config;
+export default siteConfig;
 ```
 
 This file will be ignored via `.gitignore`, as it is part of your 'site', not the module library.

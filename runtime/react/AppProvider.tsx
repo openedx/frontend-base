@@ -4,7 +4,7 @@ import { getAppConfig } from '../config';
 import { CONFIG_CHANGED } from '../constants';
 
 import AppContext from './AppContext';
-import { useAppEvent } from './hooks';
+import { useSiteEvent } from './hooks';
 
 interface AppProviderProps {
   appId: string,
@@ -28,15 +28,15 @@ interface AppProviderProps {
  * @memberof module:React
  */
 export default function AppProvider({ appId, children }: AppProviderProps) {
-  const [config, setConfig] = useState(getAppConfig(appId));
+  const [appConfig, setAppConfig] = useState(getAppConfig(appId));
 
-  useAppEvent(CONFIG_CHANGED, () => {
-    setConfig(getAppConfig(appId));
+  useSiteEvent(CONFIG_CHANGED, () => {
+    setAppConfig(getAppConfig(appId));
   });
 
   const appContextValue = useMemo(() => ({
-    config,
-  }), [config]);
+    appConfig,
+  }), [appConfig]);
 
   return (
     <AppContext.Provider value={appContextValue}>

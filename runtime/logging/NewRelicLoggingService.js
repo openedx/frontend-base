@@ -1,5 +1,5 @@
 import { EnvironmentTypes } from '../../types';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 
 /**
  * NewRelic will not log an error if it is too long.
@@ -25,7 +25,7 @@ const pageActionNameInfo = 'INFO';
 const pageActionNameIgnoredError = 'IGNORED_ERROR';
 
 function sendPageAction(actionName, message, customAttributes) {
-  if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
+  if (getSiteConfig().environment === EnvironmentTypes.DEVELOPMENT) {
     console.log(actionName, message, customAttributes);
   }
   if (window && typeof window.newrelic !== 'undefined') {
@@ -35,7 +35,7 @@ function sendPageAction(actionName, message, customAttributes) {
 }
 
 function sendError(error, customAttributes) {
-  if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
+  if (getSiteConfig().environment === EnvironmentTypes.DEVELOPMENT) {
     console.error(error, customAttributes);
   }
   if (window && typeof window.newrelic !== 'undefined') {
@@ -45,7 +45,7 @@ function sendError(error, customAttributes) {
 }
 
 function setCustomAttribute(name, value) {
-  if (getConfig().environment === EnvironmentTypes.DEVELOPMENT) {
+  if (getSiteConfig().environment === EnvironmentTypes.DEVELOPMENT) {
     console.log(name, value);
   }
   if (window && typeof window.newrelic !== 'undefined') {

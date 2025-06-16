@@ -1,9 +1,9 @@
 import { getAuthenticatedUser } from '../auth';
-import { getActiveRoles, getConfig } from '../config';
+import { getActiveRoles, getSiteConfig } from '../config';
 import { SlotOperation } from './types';
 
 export function getSlotOperations(id: string, defaultOperation?: SlotOperation) {
-  const { apps } = getConfig();
+  const { apps } = getSiteConfig();
   const ops: SlotOperation[] = [];
 
   if (defaultOperation) {
