@@ -24,7 +24,7 @@ interface SiteProviderProps {
  * context providers.
  *
  * ```
- * subscribe(APP_READY, () => {
+ * subscribe(SITE_READY, () => {
  *   ReactDOM.render(
  *     <SiteProvider>
  *       <HelloWorld />

@@ -7,8 +7,8 @@
  * ```
  * import {
  *   initialize,
- *   APP_INIT_ERROR,
- *   APP_READY,
+ *   SITE_INIT_ERROR,
+ *   SITE_READY,
  *   subscribe,
  *   SiteProvider,
  *   ErrorPage,
@@ -18,7 +18,7 @@
  * import ReactDOM from 'react-dom';
  * import { Routes, Route } from 'react-router-dom';
  *
- * subscribe(APP_READY, () => {
+ * subscribe(SITE_READY, () => {
  *   ReactDOM.render(
  *     <SiteProvider>
  *       <Header />
@@ -33,7 +33,7 @@
  *   );
  * });
  *
- * subscribe(APP_INIT_ERROR, (error) => {
+ * subscribe(SITE_INIT_ERROR, (error) => {
  *   ReactDOM.render(<ErrorPage message={error.message} />, document.getElementById('root'));
  * });
  *
@@ -77,14 +77,14 @@ import {
   patchAppConfig
 } from './config';
 import {
-  APP_ANALYTICS_INITIALIZED,
-  APP_AUTH_INITIALIZED,
-  APP_CONFIG_INITIALIZED,
-  APP_I18N_INITIALIZED,
-  APP_INIT_ERROR,
-  APP_LOGGING_INITIALIZED,
-  APP_PUBSUB_INITIALIZED,
-  APP_READY,
+  SITE_ANALYTICS_INITIALIZED,
+  SITE_AUTH_INITIALIZED,
+  SITE_CONFIG_INITIALIZED,
+  SITE_I18N_INITIALIZED,
+  SITE_INIT_ERROR,
+  SITE_LOGGING_INITIALIZED,
+  SITE_PUBSUB_INITIALIZED,
+  SITE_READY,
 } from './constants';
 import { configureI18n } from './i18n';
 import {
@@ -313,13 +313,13 @@ export async function initialize({
   try {
     // Pub/Sub
     await handlers.pubSub();
-    publish(APP_PUBSUB_INITIALIZED);
+    publish(SITE_PUBSUB_INITIALIZED);
 
     // Configuration
     await fileConfig();
     await handlers.config();
     await runtimeConfig();
-    publish(APP_CONFIG_INITIALIZED);
+    publish(SITE_CONFIG_INITIALIZED);
 
     loadExternalScripts(externalScripts, {
       config: getConfig(),
@@ -339,14 +339,14 @@ export async function initialize({
       config: getConfig(),
     });
     await handlers.logging();
-    publish(APP_LOGGING_INITIALIZED);
+    publish(SITE_LOGGING_INITIALIZED);
 
     // Internationalization
     configureI18n({
       messages,
     });
     await handlers.i18n();
-    publish(APP_I18N_INITIALIZED);
+    publish(SITE_I18N_INITIALIZED);
 
     // Authentication
     configureAuth(authServiceImpl, {
@@ -356,7 +356,7 @@ export async function initialize({
     });
 
     await handlers.auth(requireUser, hydrateUser);
-    publish(APP_AUTH_INITIALIZED);
+    publish(SITE_AUTH_INITIALIZED);
 
     // Analytics
     configureAnalytics(analyticsServiceImpl, {
@@ -365,16 +365,16 @@ export async function initialize({
       httpClient: getAuthenticatedHttpClient(),
     });
     await handlers.analytics();
-    publish(APP_ANALYTICS_INITIALIZED);
+    publish(SITE_ANALYTICS_INITIALIZED);
 
     // Application Ready
     await handlers.ready();
-    publish(APP_READY);
+    publish(SITE_READY);
   } catch (error) {
     if (!error.isRedirecting) {
       // Initialization Error
       await handlers.initError(error);
-      publish(APP_INIT_ERROR, error);
+      publish(SITE_INIT_ERROR, error);
     }
   }
 }

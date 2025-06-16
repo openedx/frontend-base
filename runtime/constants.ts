@@ -1,7 +1,7 @@
 /** @constant */
-export const APP_TOPIC = 'APP';
+export const SITE_TOPIC = 'APP';
 
-export const APP_PUBSUB_INITIALIZED = `${APP_TOPIC}.PUBSUB_INITIALIZED`;
+export const SITE_PUBSUB_INITIALIZED = `${SITE_TOPIC}.PUBSUB_INITIALIZED`;
 
 /**
  * Event published when the application initialization sequence has finished loading any dynamic
@@ -9,7 +9,7 @@ export const APP_PUBSUB_INITIALIZED = `${APP_TOPIC}.PUBSUB_INITIALIZED`;
  *
  * @event
  */
-export const APP_CONFIG_INITIALIZED = `${APP_TOPIC}.CONFIG_INITIALIZED`;
+export const SITE_CONFIG_INITIALIZED = `${SITE_TOPIC}.CONFIG_INITIALIZED`;
 
 /**
  * Event published when the application initialization sequence has finished determining the user's
@@ -17,7 +17,7 @@ export const APP_CONFIG_INITIALIZED = `${APP_TOPIC}.CONFIG_INITIALIZED`;
  *
  * @event
  */
-export const APP_AUTH_INITIALIZED = `${APP_TOPIC}.AUTH_INITIALIZED`;
+export const SITE_AUTH_INITIALIZED = `${SITE_TOPIC}.AUTH_INITIALIZED`;
 
 /**
  * Event published when the application initialization sequence has finished initializing
@@ -25,7 +25,7 @@ export const APP_AUTH_INITIALIZED = `${APP_TOPIC}.AUTH_INITIALIZED`;
  *
  * @event
  */
-export const APP_I18N_INITIALIZED = `${APP_TOPIC}.I18N_INITIALIZED`;
+export const SITE_I18N_INITIALIZED = `${SITE_TOPIC}.I18N_INITIALIZED`;
 
 /**
  * Event published when the application initialization sequence has finished initializing the
@@ -33,7 +33,7 @@ export const APP_I18N_INITIALIZED = `${APP_TOPIC}.I18N_INITIALIZED`;
  *
  * @event
  */
-export const APP_LOGGING_INITIALIZED = `${APP_TOPIC}.LOGGING_INITIALIZED`;
+export const SITE_LOGGING_INITIALIZED = `${SITE_TOPIC}.LOGGING_INITIALIZED`;
 
 /**
  * Event published when the application initialization sequence has finished initializing the
@@ -41,7 +41,7 @@ export const APP_LOGGING_INITIALIZED = `${APP_TOPIC}.LOGGING_INITIALIZED`;
  *
  * @event
  */
-export const APP_ANALYTICS_INITIALIZED = `${APP_TOPIC}.ANALYTICS_INITIALIZED`;
+export const SITE_ANALYTICS_INITIALIZED = `${SITE_TOPIC}.ANALYTICS_INITIALIZED`;
 
 /**
  * Event published when the application initialization sequence has finished.  Applications should
@@ -49,7 +49,7 @@ export const APP_ANALYTICS_INITIALIZED = `${APP_TOPIC}.ANALYTICS_INITIALIZED`;
  *
  * @event
  */
-export const APP_READY = `${APP_TOPIC}.READY`;
+export const SITE_READY = `${SITE_TOPIC}.READY`;
 
 /**
  * Event published when the application initialization sequence has aborted.  This is frequently
@@ -58,15 +58,11 @@ export const APP_READY = `${APP_TOPIC}.READY`;
  * @see {@link module:React~ErrorPage}
  * @event
  */
-export const APP_INIT_ERROR = `${APP_TOPIC}.INIT_ERROR`;
+export const SITE_INIT_ERROR = `${SITE_TOPIC}.INIT_ERROR`;
 
 /** @constant */
 export const CONFIG_TOPIC = 'CONFIG';
 
 export const CONFIG_CHANGED = `${CONFIG_TOPIC}.CHANGED`;
-
-export const APPS_TOPIC = 'APPS';
-
-export const APPS_CHANGED = `${APPS_TOPIC}.CHANGED`;
 
 export const ACTIVE_ROLES_CHANGED = 'ACTIVE_ROLES_CHANGED';

@@ -1,14 +1,14 @@
 import { createBrowserHistory } from 'history';
 
 import {
-  APP_ANALYTICS_INITIALIZED,
-  APP_AUTH_INITIALIZED,
-  APP_CONFIG_INITIALIZED,
-  APP_I18N_INITIALIZED,
-  APP_INIT_ERROR,
-  APP_LOGGING_INITIALIZED,
-  APP_PUBSUB_INITIALIZED,
-  APP_READY,
+  SITE_ANALYTICS_INITIALIZED,
+  SITE_AUTH_INITIALIZED,
+  SITE_CONFIG_INITIALIZED,
+  SITE_I18N_INITIALIZED,
+  SITE_INIT_ERROR,
+  SITE_LOGGING_INITIALIZED,
+  SITE_PUBSUB_INITIALIZED,
+  SITE_READY,
 } from './constants';
 import { getHistory, initialize } from './initialize';
 
@@ -77,13 +77,13 @@ describe('initialize', () => {
 
   it('should call default handlers in the absence of overrides', async () => {
     const expectedEvents = [
-      APP_PUBSUB_INITIALIZED,
-      APP_CONFIG_INITIALIZED,
-      APP_LOGGING_INITIALIZED,
-      APP_AUTH_INITIALIZED,
-      APP_ANALYTICS_INITIALIZED,
-      APP_I18N_INITIALIZED,
-      APP_READY,
+      SITE_PUBSUB_INITIALIZED,
+      SITE_CONFIG_INITIALIZED,
+      SITE_LOGGING_INITIALIZED,
+      SITE_AUTH_INITIALIZED,
+      SITE_ANALYTICS_INITIALIZED,
+      SITE_I18N_INITIALIZED,
+      SITE_READY,
     ];
 
     function checkDispatchedDone(eventName) {
@@ -95,13 +95,13 @@ describe('initialize', () => {
       }
     }
 
-    subscribe(APP_PUBSUB_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_CONFIG_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_LOGGING_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_AUTH_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_ANALYTICS_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_I18N_INITIALIZED, checkDispatchedDone);
-    subscribe(APP_READY, checkDispatchedDone);
+    subscribe(SITE_PUBSUB_INITIALIZED, checkDispatchedDone);
+    subscribe(SITE_CONFIG_INITIALIZED, checkDispatchedDone);
+    subscribe(SITE_LOGGING_INITIALIZED, checkDispatchedDone);
+    subscribe(SITE_AUTH_INITIALIZED, checkDispatchedDone);
+    subscribe(SITE_ANALYTICS_INITIALIZED, checkDispatchedDone);
+    subscribe(SITE_I18N_INITIALIZED, checkDispatchedDone);
+    subscribe(SITE_READY, checkDispatchedDone);
 
     const messages = { i_am: 'a message' };
     await initialize({ messages });
@@ -205,11 +205,11 @@ describe('initialize', () => {
     };
 
     function errorHandler(eventName, data) {
-      expect(eventName).toEqual(APP_INIT_ERROR);
+      expect(eventName).toEqual(SITE_INIT_ERROR);
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    subscribe(APP_INIT_ERROR, errorHandler);
+    subscribe(SITE_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
@@ -241,11 +241,11 @@ describe('initialize', () => {
     };
 
     function errorHandler(eventName, data) {
-      expect(eventName).toEqual(APP_INIT_ERROR);
+      expect(eventName).toEqual(SITE_INIT_ERROR);
       expect(data).toEqual(new Error('uhoh!'));
     }
 
-    subscribe(APP_INIT_ERROR, errorHandler);
+    subscribe(SITE_INIT_ERROR, errorHandler);
 
     await initialize({
       messages: null,
