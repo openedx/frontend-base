@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { initialize } from '../initialize';
-import AppProvider from './AppProvider';
+import SiteProvider from './SiteProvider';
 
 jest.mock('../auth', () => ({
   configureAuth: () => { },
@@ -21,7 +21,7 @@ jest.mock('./hooks', () => ({
   useTrackColorSchemeChoice: jest.fn(),
 }));
 
-describe('AppProvider', () => {
+describe('SiteProvider', () => {
   beforeEach(async () => {
     await initialize({
       loggingService: jest.fn(() => ({
@@ -50,10 +50,10 @@ describe('AppProvider', () => {
 
   it('should render its children with a router', () => {
     const component = (
-      <AppProvider>
+      <SiteProvider>
         <div className="child">Child One</div>
         <div className="child">Child Two</div>
-      </AppProvider>
+      </SiteProvider>
     );
 
     const wrapper = render(component);

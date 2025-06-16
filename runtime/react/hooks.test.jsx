@@ -4,7 +4,7 @@ import { EnvironmentTypes } from '../../types';
 import { sendTrackEvent } from '../analytics';
 import { setAuthenticatedUser } from '../auth';
 import { initializeMockApp } from '../testing';
-import AppProvider from './AppProvider';
+import SiteProvider from './SiteProvider';
 import { useAuthenticatedUser, useConfig, useTrackColorSchemeChoice } from './hooks';
 
 jest.mock('../analytics');
@@ -88,7 +88,7 @@ describe('useAuthenticatedUser', () => {
     });
 
     it('returns a User when the user exists', () => {
-      const { result } = renderHook(() => useAuthenticatedUser(), { wrapper: AppProvider });
+      const { result } = renderHook(() => useAuthenticatedUser(), { wrapper: SiteProvider });
       expect(result.current).toBe(user);
     });
   });

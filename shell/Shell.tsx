@@ -1,5 +1,5 @@
 import {
-  AppProvider,
+  SiteProvider,
   Slot
 } from '../runtime';
 import { useActiveRouteRoleWatcher, useTrackColorSchemeChoice } from '../runtime/react/hooks';
@@ -11,8 +11,8 @@ export default function Shell() {
   useTrackColorSchemeChoice();
 
   return (
-    <AppProvider>
+    <SiteProvider>
       <Slot id="org.openedx.frontend.slot.layout.main.v1" layout={DefaultLayout} />
-    </AppProvider>
+    </SiteProvider>
   );
 }
