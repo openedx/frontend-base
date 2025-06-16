@@ -1,11 +1,12 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-
 import { useMatches } from 'react-router';
+
 import { sendTrackEvent } from '../analytics';
 import { getActiveRoles, setActiveRouteRoles } from '../config';
 import { ACTIVE_ROLES_CHANGED } from '../constants';
 import { isRoleRouteObject } from '../routing';
 import { subscribe, unsubscribe } from '../subscriptions';
+
 import SiteContext from './SiteContext';
 import AppContext from './AppContext';
 
@@ -19,7 +20,7 @@ import AppContext from './AppContext';
  * @param {string} type
  * @param {function} callback
  */
-export const useAppEvent = (type, callback) => {
+export const useSiteEvent = (type, callback) => {
   useEffect(() => {
     subscribe(type, callback);
 
@@ -60,14 +61,14 @@ export function useAuthenticatedUser() {
   return authenticatedUser;
 }
 
-export function useConfig() {
-  const { config } = useContext(SiteContext);
-  return config;
+export function useSiteConfig() {
+  const { siteConfig } = useContext(SiteContext);
+  return siteConfig;
 }
 
 export function useAppConfig() {
-  const { config } = useContext(AppContext);
-  return config;
+  const { appConfig } = useContext(AppContext);
+  return appConfig;
 }
 
 export function useActiveRouteRoleWatcher() {
@@ -97,7 +98,7 @@ export function useActiveRouteRoleWatcher() {
 
 export function useActiveRoles() {
   const [roles, setRoles] = useState<string[]>(getActiveRoles());
-  useAppEvent(ACTIVE_ROLES_CHANGED, () => {
+  useSiteEvent(ACTIVE_ROLES_CHANGED, () => {
     setRoles(getActiveRoles());
   });
 

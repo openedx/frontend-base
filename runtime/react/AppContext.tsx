@@ -17,11 +17,9 @@ import { AppConfig } from '../../types';
  * @memberof module:React
  */
 const AppContext = createContext<{
-  config: AppConfig,
+  appConfig: AppConfig,
 }>({
-  config: {
-    appId: ''
-  },
+  appConfig: {},
 });
 
 export default AppContext;

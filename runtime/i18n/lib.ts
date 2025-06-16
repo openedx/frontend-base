@@ -4,7 +4,7 @@ import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
 
 import { LocalizedMessages } from '../../types';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 import { publish } from '../subscriptions';
 
 const cookies = new Cookies();
@@ -143,7 +143,7 @@ export function getLocale(locale?: string) {
   }
   // 2. User setting in cookie
 
-  const { languagePreferenceCookieName } = getConfig();
+  const { languagePreferenceCookieName } = getSiteConfig();
   if (languagePreferenceCookieName) {
     const languagePreference = cookies.get(languagePreferenceCookieName);
     if (languagePreference) {
@@ -243,7 +243,7 @@ export function mergeMessages(newMessages = {}) {
  * @memberof module:Internationalization
  */
 export function addAppMessages() {
-  const { apps } = getConfig();
+  const { apps } = getSiteConfig();
   if (apps) {
     apps.forEach((app) => {
       mergeMessages(app.messages);

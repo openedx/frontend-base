@@ -31,9 +31,9 @@ The site.config file should then import the top-level SCSS file:
 ```diff
 + import './site.scss';
 
-const config = {
+const siteConfig = {
   // config document
 }
 
-export default config;
+export default siteConfig;
 ```

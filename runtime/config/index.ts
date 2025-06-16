@@ -32,16 +32,16 @@
  *
  * Exporting a config object:
  * ```
- * const config = {
+ * const siteConfig = {
  *   lmsBaseUrl: 'http://localhost:18000'
  * };
  *
- * export default config;
+ * export default siteConfig;
  * ```
  *
  * Exporting a function that returns an object:
  * ```
- * function getConfig() {
+ * function getSiteConfig() {
  *   return {
  *     lmsBaseUrl: 'http://localhost:18000'
  *   };
@@ -50,7 +50,7 @@
  *
  * Exporting a function that returns a promise that resolves to an object:
  * ```
- * function getAsyncConfig() {
+ * function getAsyncSiteConfig() {
  *   return new Promise((resolve, reject) => {
  *     resolve({
  *       lmsBaseUrl: 'http://localhost:18000'
@@ -58,7 +58,7 @@
  *   });
  * }
  *
- * export default getAsyncConfig;
+ * export default getAsyncSiteConfig;
  * ```
  *
  * ##### Initialization Config Handler
@@ -71,7 +71,7 @@
  * initialize({
  *   handlers: {
  *     config: () => {
- *       mergeConfig({
+ *       mergeSiteConfig({
  *         CUSTOM_VARIABLE: 'custom value',
  *         lmsBaseUrl: 'http://localhost:18001' // You can override variables, but this is uncommon.
   *       }, 'App config override handler');
@@ -109,37 +109,29 @@ import {
 import { ACTIVE_ROLES_CHANGED, CONFIG_CHANGED } from '../constants';
 import { publish } from '../subscriptions';
 
-let config: SiteConfig = {
+let siteConfig: SiteConfig = {
+  // Required
+  siteId: '',
+  baseUrl: '',
+  siteName: '',
+  loginUrl: '',
+  logoutUrl: '',
+  lmsBaseUrl: '',
+
+  // Optional
+  environment: EnvironmentTypes.PRODUCTION,
+  apps: [],
+  externalRoutes: [],
+  externalLinkUrlOverrides: [],
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
   csrfTokenApiPath: '/csrf/api/v1/token',
-  environment: EnvironmentTypes.PRODUCTION,
   ignoredErrorRegex: null,
   languagePreferenceCookieName: 'openedx-language-preference',
   publicPath: '/',
   refreshAccessTokenApiPath: '/login_refresh',
   userInfoCookieName: 'edx-user-info',
   mfeConfigApiUrl: null,
-
   segmentKey: null,
-
-  apps: [],
-  externalRoutes: [],
-  externalLinkUrlOverrides: [],
-
-  siteId: '',
-  baseUrl: '',
-  siteName: '',
-
-  // Frontends
-  loginUrl: '',
-  logoutUrl: '',
-
-  // Backends
-  lmsBaseUrl: '',
-
-  standalone: {
-    appId: '',
-  },
 };
 
 /**
@@ -149,17 +141,17 @@ let config: SiteConfig = {
  * Example:
  *
  * ```
- * import { getConfig } from '@openedx/frontend-base';
+ * import { getSiteConfig } from '@openedx/frontend-base';
  *
  * const {
  *   lmsBaseUrl,
- * } = getConfig();
+ * } = getSiteConfig();
  * ```
  *
  * @returns {SiteConfig}
   */
-export function getConfig() {
-  return config;
+export function getSiteConfig() {
+  return siteConfig;
 }
 
 /**
@@ -168,26 +160,26 @@ export function getConfig() {
  * Example:
  *
  * ```
- * import { setConfig } from '@openedx/frontend-base';
+ * import { setSiteConfig } from '@openedx/frontend-base';
  *
- * setConfig({
+ * setSiteConfig({
  *   lmsBaseUrl, // This is overriding the ENTIRE document - this is not merged in!
  * });
  * ```
  *
  * @param newConfig A replacement SiteConfig which will completely override the current SiteConfig.
  */
-export function setConfig(newConfig: SiteConfig) {
-  config = newConfig;
+export function setSiteConfig(newSiteConfig: SiteConfig) {
+  siteConfig = newSiteConfig;
   publish(CONFIG_CHANGED);
 }
 
 /**
- * Merges additional configuration values into the site config returned by `getConfig`.  Will
+ * Merges additional configuration values into the site config returned by `getSiteConfig`.  Will
  * override any values that exist with the same keys.
  *
  * ```
- * mergeConfig({
+ * mergeSiteConfig({
  *   NEW_KEY: 'new value',
  *   OTHER_NEW_KEY: 'other new value',
  * });
@@ -196,10 +188,10 @@ export function setConfig(newConfig: SiteConfig) {
  * which means they will be merged recursively.  See https://lodash.com/docs/latest#merge for
  * documentation on the exact behavior.
  *
- * @param {Object} newConfig
+ * @param {Object} newSiteConfig
  */
-export function mergeConfig(newConfig: Partial<SiteConfig>) {
-  config = merge(config, newConfig);
+export function mergeSiteConfig(newSiteConfig: Partial<SiteConfig>) {
+  siteConfig = merge(siteConfig, newSiteConfig);
   publish(CONFIG_CHANGED);
 }
 
@@ -211,23 +203,21 @@ const appConfigs: Record<string, AppConfig> = {};
  * used at initialization time to process any AppConfigs bundled with the site.
  */
 export function addAppConfigs() {
-  const { apps } = getConfig();
+  const { apps } = getSiteConfig();
   if (!apps) return;
 
   for (const app of apps) {
-    if (app.config !== undefined) {
-      patchAppConfig(app.config);
+    const { appId, config } = app;
+    if (config !== undefined) {
+      appConfigs[appId] = config;
     }
   }
+
   publish(CONFIG_CHANGED);
 }
 
 export function getAppConfig(id: string) {
   return appConfigs[id];
-}
-
-export function patchAppConfig(appConfig: AppConfig) {
-  appConfigs[appConfig.appId] = appConfig;
 }
 
 let activeRouteRoles: string[] = [];
@@ -296,6 +286,6 @@ export function getExternalLinkUrl(url: string): string {
     return '#';
   }
 
-  const overriddenLinkUrls = getConfig().externalLinkUrlOverrides ?? {};
+  const overriddenLinkUrls = getSiteConfig().externalLinkUrlOverrides ?? {};
   return overriddenLinkUrls[url] ?? url;
 }

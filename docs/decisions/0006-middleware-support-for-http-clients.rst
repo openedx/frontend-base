@@ -35,7 +35,7 @@ If a consumer chooses not to use ``initialize`` and instead the ``configureAuth`
 
    configureAuth({
        loggingService: getLoggingService(),
-       config: getConfig(),
+       config: getSiteConfig(),
        options: {
             middleware: [axiosCaseConverter, (client) => axiosRetry(client, { retries: 3 })]
        }

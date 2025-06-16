@@ -6,6 +6,7 @@ import LinkMenuItem from '../../menus/LinkMenuItem';
 import messages from '../../Shell.messages';
 
 const config: App = {
+  appId: 'org.openedx.frontend.app.devSite.user',
   slots: [
     {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',

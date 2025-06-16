@@ -11,6 +11,7 @@ import MobileLayout from './mobile/MobileLayout';
 import MobileNavLinks from './mobile/MobileNavLinks';
 
 const config: App = {
+  appId: 'org.openedx.frontend.app.header',
   slots: [
 
     // Layouts

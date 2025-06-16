@@ -1,7 +1,7 @@
 import {
   getAuthenticatedHttpClient,
   getAuthenticatedUser,
-  getConfig,
+  getSiteConfig,
   updateLocale
 } from '../../../runtime';
 
@@ -19,7 +19,7 @@ export async function updateSiteLanguage(locale: string) {
 
 async function patchUserPreferences(username: string, locale: string) {
   await getAuthenticatedHttpClient().patch(
-    `${getConfig().lmsBaseUrl}/api/user/v1/preferences/${username}`,
+    `${getSiteConfig().lmsBaseUrl}/api/user/v1/preferences/${username}`,
     {
       'pref-lang': locale
     },
@@ -36,7 +36,7 @@ async function postSetlang(locale: string) {
   formData.append('language', locale);
 
   await getAuthenticatedHttpClient().post(
-    `${getConfig().lmsBaseUrl}/i18n/setlang/`,
+    `${getSiteConfig().lmsBaseUrl}/i18n/setlang/`,
     formData,
     {
       headers: {

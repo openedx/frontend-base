@@ -1,10 +1,10 @@
 import { Button } from '@openedx/paragon';
 
-import { useConfig, useIntl } from '../../../runtime';
+import { useSiteConfig, useIntl } from '../../../runtime';
 import messages from '../../Shell.messages';
 
 export default function RegisterButton({ ...props }) {
-  const config = useConfig();
+  const config = useSiteConfig();
   const intl = useIntl();
 
   return (

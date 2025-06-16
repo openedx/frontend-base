@@ -1,6 +1,7 @@
 import { App } from '@openedx/frontend-base';
 
 const config: App = {
+  appId: 'iframe-test-app',
   routes: [{
     path: '/iframe-plugin',
     lazy: async () => {

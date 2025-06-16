@@ -8,10 +8,10 @@
  * you're not using the `initialize` function, logging (via New Relic) can be configured via:
  *
  * ```
- * import { getConfig, configureLogging, NewRelicLoggingService, logInfo, logError } from '@openedx/frontend-base';
+ * import { getSiteConfig, configureLogging, NewRelicLoggingService, logInfo, logError } from '@openedx/frontend-base';
  *
  * configureLogging(NewRelicLoggingService, {
- *   config: getConfig(),
+ *   config: getSiteConfig(),
  * });
  *
  * logInfo('Just so you know...');

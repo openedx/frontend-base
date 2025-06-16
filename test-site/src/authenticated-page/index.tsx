@@ -2,6 +2,7 @@ import { App, LinkMenuItem, WidgetOperationTypes } from '@openedx/frontend-base'
 import messages from './i18n';
 
 const config: App = {
+  appId: 'test-authenticated-page-app',
   routes: [{
     path: '/authenticated',
     lazy: async () => {

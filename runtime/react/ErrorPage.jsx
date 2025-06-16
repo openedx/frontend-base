@@ -4,7 +4,7 @@ import {
   Button, Container, Row, Col,
 } from '@openedx/paragon';
 
-import { useAppEvent } from './hooks';
+import { useSiteEvent } from './hooks';
 import {
   FormattedMessage,
   IntlProvider,
@@ -25,7 +25,7 @@ function ErrorPage({
 }) {
   const [locale, setLocale] = useState(getLocale());
 
-  useAppEvent(LOCALE_CHANGED, () => {
+  useSiteEvent(LOCALE_CHANGED, () => {
     setLocale(getLocale());
   });
 

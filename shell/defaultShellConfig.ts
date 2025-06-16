@@ -4,6 +4,7 @@ import Footer from './footer/Footer';
 import { Header } from './header';
 
 const config: App = {
+  appId: 'org.openedx.frontend.app.shell',
   slots: [
     {
       slotId: 'org.openedx.frontend.slot.header.main.v1',

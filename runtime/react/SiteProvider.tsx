@@ -1,7 +1,7 @@
 import { ReactNode, useMemo, useState } from 'react';
 
 import { AUTHENTICATED_USER_CHANGED, getAuthenticatedUser } from '../auth';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 import { CONFIG_CHANGED } from '../constants';
 import {
   getLocale,
@@ -12,7 +12,7 @@ import {
 
 import SiteContext from './SiteContext';
 import ErrorBoundary from './ErrorBoundary';
-import { useAppEvent } from './hooks';
+import { useSiteEvent } from './hooks';
 import LearningProvider from './learning/LearningProvider';
 
 interface SiteProviderProps {
@@ -42,32 +42,32 @@ interface SiteProviderProps {
  * @memberof module:React
  */
 export default function SiteProvider({ children }: SiteProviderProps) {
-  const [config, setConfig] = useState(getConfig());
+  const [siteConfig, setSiteConfig] = useState(getSiteConfig());
   const [authenticatedUser, setAuthenticatedUser] = useState(getAuthenticatedUser());
   const [locale, setLocale] = useState(getLocale());
 
-  useAppEvent(AUTHENTICATED_USER_CHANGED, () => {
+  useSiteEvent(AUTHENTICATED_USER_CHANGED, () => {
     setAuthenticatedUser(getAuthenticatedUser());
   });
 
-  useAppEvent(CONFIG_CHANGED, () => {
-    setConfig(getConfig());
+  useSiteEvent(CONFIG_CHANGED, () => {
+    setSiteConfig(getSiteConfig());
   });
 
-  useAppEvent(LOCALE_CHANGED, () => {
+  useSiteEvent(LOCALE_CHANGED, () => {
     setLocale(getLocale());
   });
 
-  const appContextValue = useMemo(() => ({
+  const siteContextValue = useMemo(() => ({
     authenticatedUser,
-    config,
+    siteConfig,
     locale
-  }), [authenticatedUser, config, locale]);
+  }), [authenticatedUser, siteConfig, locale]);
 
   return (
     <IntlProvider locale={locale} messages={getMessages()}>
       <ErrorBoundary>
-        <SiteContext.Provider value={appContextValue}>
+        <SiteContext.Provider value={siteContextValue}>
           <LearningProvider>
             {children}
           </LearningProvider>

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
 import siteConfig from 'site.config';
-import { mergeConfig } from './config';
+import { mergeSiteConfig } from './config';
 
 jest.mock('universal-cookie', () => {
   const mCookie = {
@@ -11,7 +11,7 @@ jest.mock('universal-cookie', () => {
   return jest.fn(() => mCookie);
 });
 
-mergeConfig(siteConfig);
+mergeSiteConfig(siteConfig);
 
 global.PARAGON_THEME = {
   paragon: {

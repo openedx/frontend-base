@@ -1,10 +1,10 @@
 import { RouteObject } from 'react-router';
 
 import { RoleRouteObject } from '../../types';
-import { getConfig } from '../config';
+import { getSiteConfig } from '../config';
 
 export function getUrlByRouteRole(role: string) {
-  const { apps, externalRoutes } = getConfig();
+  const { apps, externalRoutes } = getSiteConfig();
 
   if (apps) {
     for (const app of apps) {

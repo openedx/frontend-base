@@ -101,7 +101,7 @@ Load up your translation files
 
       configureI18n({
         messages,
-        config: getConfig(), // environment and languagePreferenceCookieName are required
+        config: getSiteConfig(), // environment and languagePreferenceCookieName are required
         loggingService: getLoggingService(), // An object with logError and logInfo methods
       });
 

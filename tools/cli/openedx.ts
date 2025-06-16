@@ -51,16 +51,12 @@ switch (commandName) {
     ensureConfigFilenameOption(ConfigTypes.WEBPACK_BUILD, ['-c', '--config']);
     require('webpack/bin/webpack');
     break;
-  case CommandTypes.DEV_STANDALONE:
-    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV_STANDALONE, ['-c', '--config']);
+  case CommandTypes.DEV:
+    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV, ['-c', '--config']);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
   case CommandTypes.DEV_SHELL:
     ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV_SHELL, ['-c', '--config']);
-    require('webpack-dev-server/bin/webpack-dev-server');
-    break;
-  case CommandTypes.DEV:
-    ensureConfigFilenameOption(ConfigTypes.WEBPACK_DEV, ['-c', '--config']);
     require('webpack-dev-server/bin/webpack-dev-server');
     break;
   case CommandTypes.FORMAT_JS: {

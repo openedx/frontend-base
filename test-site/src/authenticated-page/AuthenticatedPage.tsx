@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import { useAuthenticatedUser, useConfig } from '@openedx/frontend-base';
+import { useAuthenticatedUser, useSiteConfig } from '@openedx/frontend-base';
 import { FormattedMessage } from 'react-intl';
 
 export default function AuthenticatedPage() {
   const authenticatedUser = useAuthenticatedUser();
-  const config = useConfig();
+  const config = useSiteConfig();
 
   return (
     <main className="p-3">
