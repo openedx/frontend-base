@@ -6,6 +6,7 @@ import { getActiveRoles, setActiveRouteRoles } from '../config';
 import { ACTIVE_ROLES_CHANGED } from '../constants';
 import { isRoleRouteObject } from '../routing';
 import { subscribe, unsubscribe } from '../subscriptions';
+import SiteContext from './SiteContext';
 import AppContext from './AppContext';
 
 /**
@@ -55,11 +56,16 @@ export const useTrackColorSchemeChoice = () => {
 };
 
 export function useAuthenticatedUser() {
-  const { authenticatedUser } = useContext(AppContext);
+  const { authenticatedUser } = useContext(SiteContext);
   return authenticatedUser;
 }
 
 export function useConfig() {
+  const { config } = useContext(SiteContext);
+  return config;
+}
+
+export function useAppConfig() {
   const { config } = useContext(AppContext);
   return config;
 }

@@ -2,7 +2,7 @@ import { Dropdown } from '@openedx/paragon';
 import { useContext } from 'react';
 
 import {
-  AppContext,
+  SiteContext,
   getLocalizedLanguageName,
   getSupportedLanguageList
 } from '../../runtime';
@@ -10,7 +10,7 @@ import {
 import LanguageMenuItem from './LanguageMenuItem';
 
 export default function LanguageMenu() {
-  const { locale } = useContext(AppContext);
+  const { locale } = useContext(SiteContext);
 
   const languages = getSupportedLanguageList();
   const currentLanguageName = getLocalizedLanguageName(locale);

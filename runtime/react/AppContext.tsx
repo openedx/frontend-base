@@ -1,6 +1,5 @@
 import { createContext } from 'react';
-import { SiteConfig, User } from '../../types';
-import { getConfig } from '../config';
+import { AppConfig } from '../../types';
 
 /**
  * `AppContext` provides data from `App` in a way that React components can readily consume, even
@@ -8,24 +7,21 @@ import { getConfig } from '../config';
  *
  * ```
  * {
- *   authenticatedUser: <THE App.authenticatedUser OBJECT>,
  *   config: <THE App.config OBJECT>
  * }
  * ```
- * If the `App.authenticatedUser` or `App.config` data changes, `AppContext` will be updated
+ * If the `App.config` data changes, `AppContext` will be updated
  * accordingly and pass those changes onto React components using the context.
  *
  * `AppContext` is used in a React application like any other `[React Context](https://reactjs.org/docs/context.html)
  * @memberof module:React
  */
 const AppContext = createContext<{
-  authenticatedUser: User | null,
-  config: SiteConfig,
-  locale: string,
+  config: AppConfig,
 }>({
-  authenticatedUser: null,
-  config: getConfig(),
-  locale: 'en',
+  config: {
+    appId: ''
+  },
 });
 
 export default AppContext;

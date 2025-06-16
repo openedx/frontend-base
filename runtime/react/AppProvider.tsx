@@ -1,21 +1,13 @@
 import { ReactNode, useMemo, useState } from 'react';
 
-import { AUTHENTICATED_USER_CHANGED, getAuthenticatedUser } from '../auth';
-import { getConfig } from '../config';
+import { getAppConfig } from '../config';
 import { CONFIG_CHANGED } from '../constants';
-import {
-  getLocale,
-  getMessages,
-  IntlProvider,
-  LOCALE_CHANGED,
-} from '../i18n';
 
 import AppContext from './AppContext';
-import ErrorBoundary from './ErrorBoundary';
 import { useAppEvent } from './hooks';
-import LearningProvider from './learning/LearningProvider';
 
 interface AppProviderProps {
+  appId: string,
   children: ReactNode,
 }
 
@@ -24,56 +16,31 @@ interface AppProviderProps {
  * context providers.
  *
  * ```
- * subscribe(APP_READY, () => {
- *   ReactDOM.render(
- *     <AppProvider>
- *       <HelloWorld />
- *     </AppProvider>
- *   )
- * });
+ * <AppProvider appId="my.app">
+ *   <HelloWorld />
+ * </AppProvider>
  * ```
  *
  * This will provide the following to HelloWorld:
- * - An error boundary as described above.
  * - An `AppContext` provider for React context data.
- * - IntlProvider for @edx/frontend-i18n internationalization
- * - A `Router` for react-router.
  *
  * @param {Object} props
  * @memberof module:React
  */
-export default function AppProvider({ children }: AppProviderProps) {
-  const [config, setConfig] = useState(getConfig());
-  const [authenticatedUser, setAuthenticatedUser] = useState(getAuthenticatedUser());
-  const [locale, setLocale] = useState(getLocale());
-
-  useAppEvent(AUTHENTICATED_USER_CHANGED, () => {
-    setAuthenticatedUser(getAuthenticatedUser());
-  });
+export default function AppProvider({ appId, children }: AppProviderProps) {
+  const [config, setConfig] = useState(getAppConfig(appId));
 
   useAppEvent(CONFIG_CHANGED, () => {
-    setConfig(getConfig());
-  });
-
-  useAppEvent(LOCALE_CHANGED, () => {
-    setLocale(getLocale());
+    setConfig(getAppConfig(appId));
   });
 
   const appContextValue = useMemo(() => ({
-    authenticatedUser,
     config,
-    locale
-  }), [authenticatedUser, config, locale]);
+  }), [config]);
 
   return (
-    <IntlProvider locale={locale} messages={getMessages()}>
-      <ErrorBoundary>
-        <AppContext.Provider value={appContextValue}>
-          <LearningProvider>
-            {children}
-          </LearningProvider>
-        </AppContext.Provider>
-      </ErrorBoundary>
-    </IntlProvider>
+    <AppContext.Provider value={appContextValue}>
+      {children}
+    </AppContext.Provider>
   );
 }

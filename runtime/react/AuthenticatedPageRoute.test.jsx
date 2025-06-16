@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { sendPageEvent } from '../analytics';
 import { getAuthenticatedUser, getLoginRedirectUrl } from '../auth';
 import { getConfig } from '../config';
-import AppContext from './AppContext';
+import SiteContext from './SiteContext';
 import AuthenticatedPageRoute from './AuthenticatedPageRoute';
 
 jest.mock('../subscriptions');
@@ -32,7 +32,7 @@ describe('AuthenticatedPageRoute', () => {
     getAuthenticatedUser.mockReturnValue(null);
     getLoginRedirectUrl.mockReturnValue('http://localhost/login?next=http%3A%2F%2Flocalhost%2Fauthenticated');
     const component = (
-      <AppContext.Provider
+      <SiteContext.Provider
         value={{
           authenticatedUser: getAuthenticatedUser(),
           config: getConfig(),
@@ -44,7 +44,7 @@ describe('AuthenticatedPageRoute', () => {
             <Route path="/authenticated" element={<AuthenticatedPageRoute><p>Authenticated</p></AuthenticatedPageRoute>} />
           </Routes>
         </MemoryRouter>
-      </AppContext.Provider>
+      </SiteContext.Provider>
     );
     global.location.href = 'http://localhost/authenticated';
     render(component);
@@ -62,7 +62,7 @@ describe('AuthenticatedPageRoute', () => {
       </AuthenticatedPageRoute>
     );
     const component = (
-      <AppContext.Provider
+      <SiteContext.Provider
         value={{
           authenticatedUser: getAuthenticatedUser(),
           config: getConfig(),
@@ -74,7 +74,7 @@ describe('AuthenticatedPageRoute', () => {
             <Route path="/authenticated" element={authenticatedElement} />
           </Routes>
         </MemoryRouter>
-      </AppContext.Provider>
+      </SiteContext.Provider>
     );
     render(component);
     expect(getLoginRedirectUrl).not.toHaveBeenCalled();
@@ -86,7 +86,7 @@ describe('AuthenticatedPageRoute', () => {
     getAuthenticatedUser.mockReturnValue(null);
     getLoginRedirectUrl.mockReturnValue('http://localhost/login?next=http%3A%2F%2Flocalhost%2Fauthenticated');
     const component = (
-      <AppContext.Provider
+      <SiteContext.Provider
         value={{
           authenticatedUser: getAuthenticatedUser(),
           config: getConfig(),
@@ -98,7 +98,7 @@ describe('AuthenticatedPageRoute', () => {
             <Route path="/authenticated" element={<AuthenticatedPageRoute><p>Authenticated</p></AuthenticatedPageRoute>} />
           </Routes>
         </MemoryRouter>
-      </AppContext.Provider>
+      </SiteContext.Provider>
     );
     const wrapper = render(component);
 
@@ -111,7 +111,7 @@ describe('AuthenticatedPageRoute', () => {
 
   it('should render authenticated route if authenticated', () => {
     const component = (
-      <AppContext.Provider
+      <SiteContext.Provider
         value={{
           authenticatedUser: { userId: 12345, username: 'edx' },
           config: getConfig(),
@@ -123,7 +123,7 @@ describe('AuthenticatedPageRoute', () => {
             <Route path="/authenticated" element={<AuthenticatedPageRoute><p>Authenticated</p></AuthenticatedPageRoute>} />
           </Routes>
         </MemoryRouter>
-      </AppContext.Provider>
+      </SiteContext.Provider>
     );
     const wrapper = render(component);
     expect(getLoginRedirectUrl).not.toHaveBeenCalled();

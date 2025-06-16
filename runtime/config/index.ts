@@ -104,8 +104,6 @@ import merge from 'lodash.merge';
 import {
   AppConfig,
   EnvironmentTypes,
-  OptionalSiteConfig,
-  RequiredSiteConfig,
   SiteConfig
 } from '../../types';
 import { ACTIVE_ROLES_CHANGED, CONFIG_CHANGED } from '../constants';
@@ -209,8 +207,8 @@ const appConfigs: Record<string, AppConfig> = {};
 
 /**
  * addAppConfigs finds any AppConfig objects in the apps in SiteConfig and makes their config
- * available to be used by Apps via the getAppConfig() function.  This is used at initialization
- * time to process any AppConfigs bundled with the site.
+ * available to be used by Apps via getAppConfig(appId) or useAppConfig() functions.  This is
+ * used at initialization time to process any AppConfigs bundled with the site.
  */
 export function addAppConfigs() {
   const { apps } = getConfig();

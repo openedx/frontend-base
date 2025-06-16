@@ -10,7 +10,7 @@
  *   APP_INIT_ERROR,
  *   APP_READY,
  *   subscribe,
- *   AppProvider,
+ *   SiteProvider,
  *   ErrorPage,
  *   PageWrap
  * } from '@openedx/frontend-base';
@@ -20,7 +20,7 @@
  *
  * subscribe(APP_READY, () => {
  *   ReactDOM.render(
- *     <AppProvider>
+ *     <SiteProvider>
  *       <Header />
  *       <main>
  *         <Routes>
@@ -28,7 +28,7 @@
  *         </Routes>
  *       </main>
  *       <Footer />
- *     </AppProvider>,
+ *     </SiteProvider>,
  *     document.getElementById('root'),
  *   );
  * });
