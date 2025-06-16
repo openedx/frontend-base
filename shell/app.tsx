@@ -2,8 +2,8 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 
 import {
-  APP_INIT_ERROR,
-  APP_READY,
+  SITE_INIT_ERROR,
+  SITE_READY,
   initialize,
   subscribe
 } from '../runtime';
@@ -12,7 +12,7 @@ import { addAppMessages } from '../runtime/i18n';
 import messages from './i18n';
 import createRouter from './router/createRouter';
 
-subscribe(APP_READY, async () => {
+subscribe(SITE_READY, async () => {
   const router = createRouter();
 
   addAppConfigs();
@@ -24,7 +24,7 @@ subscribe(APP_READY, async () => {
   );
 });
 
-subscribe(APP_INIT_ERROR, (error) => {
+subscribe(SITE_INIT_ERROR, (error) => {
   const root = createRoot(document.getElementById('root') as HTMLElement);
   root.render(<div>{error.message}</div>);
 });

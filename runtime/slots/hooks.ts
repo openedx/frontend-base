@@ -1,8 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { APPS_CHANGED } from '../constants';
-import { useAppEvent } from '../react';
-
 import { WidgetOperation, WidgetOperationTypes } from './widget';
 import { SlotOperation } from './types';
 import { getSlotOperations } from './utils';
@@ -26,15 +23,11 @@ export function useSlotOperations(id: string) {
   }
 
   const [operations, setOperations] = useState<SlotOperation[]>(getSlotOperations(id, defaultOperation));
-  useAppEvent(APPS_CHANGED, () => {
-    const ops = getSlotOperations(id, defaultOperation);
-    setOperations(ops);
-  });
-
   useEffect(() => {
     const ops = getSlotOperations(id, defaultOperation);
     setOperations(ops);
   }, [id, defaultOperation]);
+
   return operations;
 }
 
