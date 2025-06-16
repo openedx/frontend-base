@@ -11,7 +11,7 @@ import userConfig from './dev-site/user/userConfig';
 
 import './app.scss';
 
-const config: SiteConfig = {
+const siteConfig: SiteConfig = {
   apps: [
     defaultShellConfig,
     defaultHeaderConfig,
@@ -44,4 +44,4 @@ const config: SiteConfig = {
   mfeConfigApiUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
 };
 
-export default config;
+export default siteConfig;
