@@ -330,9 +330,9 @@ export async function initialize({
     // one capable of supplying an alternate implementation since it can import other modules.
     // If a service wasn't supplied we fall back to the default parameters on the initialize
     // function signature.
-    const loggingServiceImpl = getConfig().loggingService || loggingService;
-    const analyticsServiceImpl = getConfig().analyticsService || analyticsService;
-    const authServiceImpl = getConfig().authService || authService;
+    const loggingServiceImpl = getConfig().loggingService ?? loggingService;
+    const analyticsServiceImpl = getConfig().analyticsService ?? analyticsService;
+    const authServiceImpl = getConfig().authService ?? authService;
 
     // Logging
     configureLogging(loggingServiceImpl, {
