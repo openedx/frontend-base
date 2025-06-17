@@ -219,6 +219,11 @@ export function getAppConfig(id: string) {
   return appConfigs[id];
 }
 
+export function mergeAppConfig(id: string, newAppConfig: AppConfig) {
+  appConfigs[id] = merge(appConfigs[id], newAppConfig);
+  publish(CONFIG_CHANGED);
+}
+
 let activeRouteRoles: string[] = [];
 
 export function setActiveRouteRoles(roles: string[]) {
