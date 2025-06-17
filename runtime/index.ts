@@ -37,6 +37,7 @@ export {
   mergeSiteConfig,
   addAppConfigs,
   getAppConfig,
+  mergeAppConfig,
   setActiveRouteRoles,
   getActiveRouteRoles,
   addActiveWidgetRole,
