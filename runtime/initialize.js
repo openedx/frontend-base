@@ -47,10 +47,6 @@
  * @module Initialization
  */
 
-import {
-  createBrowserHistory,
-  createMemoryHistory
-} from 'history';
 /*
 This 'site.config' package is a special 'magic' alias in our webpack configuration in the `config`
 folder. It points at an `site.config.tsx` file in the root of a site's repository.
@@ -94,30 +90,15 @@ import {
 } from './logging';
 import { GoogleAnalyticsLoader } from './scripts';
 import { publish } from './subscriptions';
-import { getPath } from './utils';
 
 /**
- * A browser history or memory history object created by the [history](https://github.com/ReactTraining/history)
- * package.  Applications are encouraged to use this history object, rather than creating their own,
- * as behavior may be undefined when managing history via multiple mechanisms/instances. Note that
- * in environments where browser history may be inaccessible due to `window` being undefined, this
- * falls back to memory history.
- */
-export const getHistory = () => ((typeof window !== 'undefined')
-  ? createBrowserHistory({ basename: getPath(getSiteConfig().publicPath) })
-  : createMemoryHistory());
-
-/**
- * The string basename that is the root directory of this MFE.
+ * If set in configuration, a basename will be prepended to all relative routes under BrowserRouter.
  *
- * In devstack, this should always just return "/", because each MFE is in its own server/domain.
- *
- * In Tutor, all MFEs are deployed to a common server, each under a different top-level directory.
- * The basename is the root path for a given MFE, e.g. "/library-authoring". It is set by tutor-mfe
- * as an ENV variable in the Docker file, and we read it here from that configuration so that it
- * can be passed into a Router later.
+ * Unlike webpack's publicPath, the basename cannot be auto-discovered, so when publicPath is set
+ * (or when it's set to 'auto' and the site is being served from a path other than '/') this
+ * needs to be configured.
  */
-export const getBasename = () => getPath(getSiteConfig().publicPath);
+export const getBasename = () => getSiteConfig().basename;
 
 /**
  * The default handler for the initialization lifecycle's `initError` phase.  Logs the error to the

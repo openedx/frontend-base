@@ -123,14 +123,13 @@ let siteConfig: SiteConfig = {
   apps: [],
   externalRoutes: [],
   externalLinkUrlOverrides: [],
+  mfeConfigApiUrl: null,
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
   csrfTokenApiPath: '/csrf/api/v1/token',
   ignoredErrorRegex: null,
   languagePreferenceCookieName: 'openedx-language-preference',
-  publicPath: '/',
   refreshAccessTokenApiPath: '/login_refresh',
   userInfoCookieName: 'edx-user-info',
-  mfeConfigApiUrl: null,
   segmentKey: null,
 };
 

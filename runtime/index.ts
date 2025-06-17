@@ -78,7 +78,6 @@ export {
 export {
   auth,
   getBasename,
-  getHistory,
   initError,
   initialize
 } from './initialize';
@@ -125,11 +124,9 @@ export {
 export {
   camelCaseObject,
   convertKeyNames,
-  getPath,
   getQueryParameters,
   isValidVariableName,
   modifyObjectKeys,
-  parseURL,
   snakeCaseObject
 } from './utils';
 

@@ -7,6 +7,7 @@ const siteConfig: SiteConfig = {
   lmsBaseUrl: 'http://localhost:18000',
   loginUrl: 'http://localhost:18000/login',
   logoutUrl: 'http://localhost:18000/logout',
+
   environment: EnvironmentTypes.TEST,
   apps: [{
     appId: 'test-app',
@@ -24,10 +25,9 @@ const siteConfig: SiteConfig = {
   csrfTokenApiPath: '/csrf/api/v1/token',
   languagePreferenceCookieName: 'openedx-language-preference',
   refreshAccessTokenApiPath: '/login_refresh',
-  segmentKey: 'segment_whoa',
   userInfoCookieName: 'edx-user-info',
   ignoredErrorRegex: null,
-  publicPath: '/'
+  segmentKey: 'segment_whoa',
 };
 
 export default siteConfig;

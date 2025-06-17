@@ -39,7 +39,7 @@ const config: Configuration = {
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
-    publicPath: getPublicPath('auto'),
+    publicPath: getPublicPath(),
   },
   resolve: {
     alias: {
