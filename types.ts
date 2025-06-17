@@ -49,10 +49,10 @@ export type LocalizedMessages = Record<string, Record<string, string>>;
 export interface OptionalSiteConfig {
   // Site environment
   environment: EnvironmentTypes,
-  publicPath: string,
 
   // Apps, routes, and URLs
   apps: App[],
+  basename: string,
   externalRoutes: ExternalRoute[],
   externalLinkUrlOverrides: string[],
   mfeConfigApiUrl: string | null,

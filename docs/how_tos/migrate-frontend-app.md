@@ -499,6 +499,9 @@ Optional config
 
 Other configuration is now optional, and many values have been given sensible defaults.  But these configuration variables are also available (as of this writing):
 
+- environment: EnvironmentTypes
+- basename: string
+- mfeConfigApiUrl: string | null
 - accessTokenCookieName: string
 - languagePreferenceCookieName: string
 - userInfoCookieName: string
@@ -506,9 +509,6 @@ Other configuration is now optional, and many values have been given sensible de
 - refreshAccessTokenApiPath: string
 - ignoredErrorRegex: RegExp | null
 - segmentKey: string | null
-- environment: EnvironmentTypes
-- mfeConfigApiUrl: string | null
-- publicPath: string
 
 URL Config changes
 ------------------
@@ -573,7 +573,7 @@ Once you've verified your test suite still works, you should delete the `.env.te
 A sample `site.config.test.tsx` file:
 
 ```
-import { SiteConfig } from '@openedx/frontend-base';
+import { EnvironmentTypes, SiteConfig } from '@openedx/frontend-base';
 
 const siteConfig: SiteConfig = {
   siteId: 'test',
@@ -582,7 +582,7 @@ const siteConfig: SiteConfig = {
   lmsBaseUrl: 'http://localhost:18000',
   loginUrl: 'http://localhost:18000/login',
   logoutUrl: 'http://localhost:18000/logout',
-  environment: 'dev',
+  environment: EnvironmentTypes.TEST,
   apps: [{
     appId: 'test-app',
     routes: [{
@@ -599,10 +599,9 @@ const siteConfig: SiteConfig = {
   csrfTokenApiPath: '/csrf/api/v1/token',
   languagePreferenceCookieName: 'openedx-language-preference',
   refreshAccessTokenApiPath: '/login_refresh',
-  segmentKey: '',
   userInfoCookieName: 'edx-user-info',
   ignoredErrorRegex: null,
-  publicPath: '/',
+  segmentKey: '',
 };
 
 export default siteConfig;

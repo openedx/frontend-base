@@ -6,14 +6,13 @@ import getPublicPath from '../../utils/getPublicPath';
 export default function getDevServer(): Configuration {
   return {
     allowedHosts: 'all',
-    devMiddleware: {
-      publicPath: getPublicPath(),
-    },
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    // For obvious reasons, 'auto' won't work for publicPath here, so we
+    // force '/' unless PUBLIC_PATH is set.
     historyApiFallback: {
-      index: path.join(getPublicPath(), 'index.html'),
+      index: path.join(getPublicPath('/'), 'index.html'),
       disableDotRule: true,
     },
     host: 'apps.local.openedx.io',

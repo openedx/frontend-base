@@ -1,5 +1,3 @@
-import { createBrowserHistory } from 'history';
-
 import {
   SITE_ANALYTICS_INITIALIZED,
   SITE_AUTH_INITIALIZED,
@@ -10,7 +8,7 @@ import {
   SITE_PUBSUB_INITIALIZED,
   SITE_READY,
 } from './constants';
-import { getHistory, initialize } from './initialize';
+import { initialize } from './initialize';
 
 import { configureAnalytics, SegmentAnalyticsService } from './analytics';
 import {
@@ -38,7 +36,6 @@ jest.mock('./auth');
 jest.mock('./analytics');
 jest.mock('./i18n');
 jest.mock('./auth/LocalForageCache');
-jest.mock('history');
 
 let config = null;
 const newConfig = {
@@ -354,16 +351,6 @@ describe('initialize', () => {
       expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
       expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
       expect(logError).not.toHaveBeenCalled();
-    });
-  });
-});
-
-describe('history', () => {
-  it('browser history called by default path', async () => {
-    getHistory();
-    // import history from initialize;
-    expect(createBrowserHistory).toHaveBeenCalledWith({
-      basename: '/',
     });
   });
 });

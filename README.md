@@ -75,9 +75,9 @@ Then move the files out of the way (move src to some other sub-dir, mostly) to m
   - csrfTokenApiPath: '/csrf/api/v1/token',
   - languagePreferenceCookieName: 'openedx-language-preference',
   - userInfoCookieName: 'edx-user-info',
-  - publicPath: '/',
   - environment: 'production',
-- the `basename` and `history` exports have been replaced by function getters: `getBasename` and `getHistory`.  This is because it may not be possible to determine the values of the original constants at code initialization time, since our config may arrive asynchronously.  This ensures that anyone trying to get these values gets a current value.
+- the `basename` and export has been replaced by: `getBasename`.  This is because it may not be possible to determine the values of the original constants at code initialization time, since our config may arrive asynchronously.  This ensures that anyone trying to get these values gets a current value.
+- the `history` export no longer exists.  Consumers should be using react-router 6's `useNavigate()` API instead.
 - When using MockAuthService, set the authenticated user by calling setAuthenticatedUser after instantiating the service.  It's not okay for us to add arbitrary config values to the site config.
 - `REFRESH_ACCESS_TOKEN_ENDPOINT` has been replaced with `refreshAccessTokenApiPath`.  It is now a path that defaults to '/login_refresh'.  The Auth service assumes it is an endpoint on the LMS, and joins the path with `lmsBaseUrl`.  This change creates more parity with other paths such as `csrfTokenApiPath`.
 

@@ -40,7 +40,7 @@ const config: Configuration = {
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath: getPublicPath('auto'),
+    publicPath: getPublicPath(),
     clean: true, // Clean the output directory before emit.
   },
   resolve: {
