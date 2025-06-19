@@ -57,6 +57,20 @@ export function isWidgetIdentityRoleOperation(operation: SlotOperation): operati
   return isWidgetIdentityOperation(operation) && hasWidgetIdentityRoleProps(operation);
 }
 
+export function createWidgetAppendOperation(id: string, slotId: string, element: ReactNode) {
+  let operation: WidgetOperation | undefined = undefined;
+  if (element) {
+    operation = {
+      slotId,
+      id,
+      op: WidgetOperationTypes.APPEND,
+      element
+    };
+  }
+
+  return operation;
+}
+
 // Widget Operation props helpers
 
 function hasWidgetComponentProps(operation: WidgetOperation): operation is (WidgetOperation & WidgetComponentProps) {

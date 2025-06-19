@@ -78,7 +78,7 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.devSite.slotShowcaseSimpleWithDefaultContent',
-      id: 'slot-showcase.simple.child4',
+      id: 'slot-showcase.simple.child5',
       op: WidgetOperationTypes.APPEND,
       component: TakesPropsViaContext
     },

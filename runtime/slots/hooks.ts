@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
-import { WidgetOperation, WidgetOperationTypes } from './widget';
 import { SlotOperation } from './types';
 import { getSlotOperations } from './utils';
 import SlotContext from './SlotContext';
+import { createWidgetAppendOperation } from './widget';
 
 /**
  * The useSlotOperations hook will trigger re-renders when the slot configuration changes.
@@ -12,15 +12,13 @@ import SlotContext from './SlotContext';
  */
 export function useSlotOperations(id: string) {
   const { children } = useSlotContext();
-  let defaultOperation: WidgetOperation | undefined = undefined;
-  if (children) {
-    defaultOperation = {
-      slotId: id,
-      id: `defaultContent`,
-      op: WidgetOperationTypes.APPEND,
-      element: children
-    };
-  }
+
+  // We have to memo on [children] so that re-renders only happen when their
+  // props change.  This avoids an endless render loop.  (After all, the whole
+  // point of a slot is to modify its children via slot operations.)
+  const defaultOperation = useMemo(() => {
+    return createWidgetAppendOperation('defaultContent', id, children);
+  }, [id, children]);
 
   const [operations, setOperations] = useState<SlotOperation[]>(getSlotOperations(id, defaultOperation));
   useEffect(() => {
