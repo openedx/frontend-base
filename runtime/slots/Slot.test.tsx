@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { useContext } from 'react';
 import { useLayoutForSlotId } from './layout/hooks';
 import Slot from './Slot';
@@ -9,7 +10,7 @@ jest.mock('./layout/hooks');
 describe('Slot component', () => {
   it('renders with default layout', () => {
     (useLayoutForSlotId as jest.Mock).mockReturnValue(null);
-    const { container } = render(<Slot id="test-slot.ui" />);
+    const { container } = render(<MemoryRouter><Slot id="test-slot.ui" /></MemoryRouter>);
     expect(container).toBeEmptyDOMElement();
   });
 
