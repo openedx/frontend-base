@@ -1,3 +1,5 @@
+import { NavDropdownMenuSlot } from '../..';
+import LinkMenuItem from '../../menus/LinkMenuItem';
 import { LayoutOperationTypes, WidgetOperationTypes, useSlotContext } from '../../../runtime';
 import { App } from '../../../types';
 import HorizontalSlotLayout from './HorizontalSlotLayout';
@@ -300,6 +302,69 @@ const config: App = {
       op: WidgetOperationTypes.OPTIONS,
       options: {
         title: (<Title title="Bar" op="WidgetOperationTypes.OPTIONS" />),
+      }
+    },
+
+    // Header
+    {
+      slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',
+      relatedId: 'header.learnerDashboard.link',
+      op: WidgetOperationTypes.OPTIONS,
+      options: {
+        title: 'Courses (modified)',
+      },
+      condition: {
+        active: ['slotShowcase'],
+      }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',
+      id: 'header.learnerDashboard.linkAfter3',
+      op: WidgetOperationTypes.INSERT_AFTER,
+      relatedId: 'header.learnerDashboard.link3',
+      element: (<LinkMenuItem label="Link After 3" url="#" variant="navLink" />),
+      condition: {
+        active: ['slotShowcase'],
+      }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',
+      id: 'header.coursesModified.primaryLinks.dropdown',
+      op: WidgetOperationTypes.PREPEND,
+      element: (
+        <NavDropdownMenuSlot id="org.openedx.frontend.slot.header.primaryLinksDropdown.v1" label="Resources" />
+      ),
+      condition: {
+        active: ['slotShowcase']
+      }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.primaryLinksDropdown.v1',
+      id: 'header.coursesModified.primaryLinks.dropdown.1',
+      op: WidgetOperationTypes.APPEND,
+      element: (
+        <LinkMenuItem label="Resource 1" url="#" variant="dropdownItem" />
+      ),
+      condition: {
+        active: ['slotShowcase'],
+      }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',
+      id: 'header.learnerDashboard.link3',
+      op: WidgetOperationTypes.APPEND,
+      element: (<LinkMenuItem label="Link 3" url="#" variant="navLink" />),
+      condition: {
+        active: ['slotShowcase'],
+      }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',
+      id: 'header.learnerDashboard.link4',
+      op: WidgetOperationTypes.APPEND,
+      element: (<LinkMenuItem label="Link 4" url="#" variant="navLink" />),
+      condition: {
+        active: ['slotShowcase'],
       }
     },
   ]
