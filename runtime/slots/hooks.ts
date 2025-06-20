@@ -1,4 +1,5 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { SlotOperation } from './types';
 import { getSlotOperations } from './utils';
@@ -12,19 +13,19 @@ import { createWidgetAppendOperation } from './widget';
  */
 export function useSlotOperations(id: string) {
   const { children } = useSlotContext();
+  const location = useLocation();
+  const [operations, setOperations] = useState<SlotOperation[]>([]);
 
-  // We have to memo on [children] so that re-renders only happen when their
-  // props change.  This avoids an endless render loop.  (After all, the whole
-  // point of a slot is to modify its children via slot operations.)
-  const defaultOperation = useMemo(() => {
-    return createWidgetAppendOperation('defaultContent', id, children);
-  }, [id, children]);
-
-  const [operations, setOperations] = useState<SlotOperation[]>(getSlotOperations(id, defaultOperation));
   useEffect(() => {
-    const ops = getSlotOperations(id, defaultOperation);
-    setOperations(ops);
-  }, [id, defaultOperation]);
+    // Setting default content has to happen inside `useEffect()` so that re-renders only happen
+    // when [children] props change.  This avoids an endless render loop.  After all, the whole
+    // point of a slot is to modify its children via slot operations.
+    const defaultOperation = createWidgetAppendOperation('defaultContent', id, children);
+    setOperations(getSlotOperations(id, defaultOperation));
+
+    // We depend on [location] to force re-renders on navigation.  This guarantees changes in active
+    // roles (and thus, changes in what conditional widgets are shown) properly.
+  }, [id, children, location]);
 
   return operations;
 }
