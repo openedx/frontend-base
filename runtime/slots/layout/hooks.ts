@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode, useCallback, useEffect, useState } from 'react';
+import { ComponentType, ReactNode, useEffect, useState } from 'react';
 import { useSlotContext, useSlotOperations } from '../hooks';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { LayoutComponentProps, LayoutElementProps, LayoutOperation } from './types';
@@ -43,25 +43,23 @@ export function useLayoutOptions() {
 
 export function useLayoutOptionsForId(id: string) {
   const operations = useSlotOperations(id);
-
-  const findOptions = useCallback(() => {
-    let nextOptions: Record<string, unknown> = {};
-    for (const operation of operations) {
-      if (isSlotOperationConditionSatisfied(operation)) {
-        if (isLayoutOptionsOperation(operation)) {
-          nextOptions = { ...nextOptions, ...operation.options };
-        }
-      }
-    }
-    return nextOptions;
-  }, [operations]);
-
-  const [options, setOptions] = useState<Record<string, unknown>>(findOptions());
+  const [options, setOptions] = useState<Record<string, unknown>>({});
 
   useEffect(() => {
-    const nextOptions = findOptions();
-    setOptions(nextOptions);
-  }, [operations, findOptions, id]);
+    const findOptions = () => {
+      let nextOptions: Record<string, unknown> = {};
+      for (const operation of operations) {
+        if (isSlotOperationConditionSatisfied(operation)) {
+          if (isLayoutOptionsOperation(operation)) {
+            nextOptions = { ...nextOptions, ...operation.options };
+          }
+        }
+      }
+      return nextOptions;
+    };
+
+    setOptions(findOptions());
+  }, [operations]);
 
   return options;
 }

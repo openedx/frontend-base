@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useSlotContext, useSlotOperations } from '../hooks';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { WidgetOperation } from './types';
@@ -18,32 +18,30 @@ export function useWidgetsForId(id: string, componentProps?: Record<string, unkn
 
 export function useWidgetOperations(id: string) {
   const operations = useSlotOperations(id);
+  const [widgetOperations, setWidgetOperations] = useState<WidgetOperation[]>([]);
 
-  const filterOperations = useCallback(() => {
-    return operations.filter((operation): operation is WidgetOperation => {
+  useEffect(() => {
+    const filteredOperations = operations.filter((operation): operation is WidgetOperation => {
       return isWidgetOperation(operation) && isSlotOperationConditionSatisfied(operation);
     });
-  }, [operations]);
 
-  const [widgetOperations, setWidgetOperations] = useState<WidgetOperation[]>(filterOperations());
-  useEffect(() => {
-    const nextWidgetOperations = filterOperations();
-    setWidgetOperations(nextWidgetOperations);
-  }, [operations, filterOperations]);
+    setWidgetOperations(filteredOperations);
+  }, [operations]);
 
   return widgetOperations;
 }
 
 export function useSortedWidgetOperations(id: string) {
   const operations = useWidgetOperations(id);
+  const [sortedOperations, setSortedOperations] = useState<WidgetOperation[]>([]);
 
-  // This function sorts widget operations in an order that guarantees that any 'related' widgets
-  // needed by relatively positioned operations (INSERT_AFTER, INSERT_BEFORE) should already exist
-  // by the time the relative operations are evaluated.  It means the declaration order of
-  // operations in SiteConfig does not prevent an operation from interacting with a widget that was
-  // declared 'later'.
-  const sortWidgetOperations = useCallback(() => {
-    return operations.sort((a: WidgetOperation, b: WidgetOperation) => {
+  useEffect(() => {
+    // This sorts widget operations in an order that guarantees that any 'related' widgets
+    // needed by relatively positioned operations (INSERT_AFTER, INSERT_BEFORE) should already exist
+    // by the time the relative operations are evaluated.  It means the declaration order of
+    // operations in SiteConfig does not prevent an operation from interacting with a widget that was
+    // declared 'later'.
+    const sortedOperations = operations.sort((a: WidgetOperation, b: WidgetOperation) => {
       // If both operations are widget operations, there are special sorting rules.
       const aAbsolute = isWidgetAbsoluteOperation(a);
       const bAbsolute = isWidgetAbsoluteOperation(b);
@@ -63,14 +61,9 @@ export function useSortedWidgetOperations(id: string) {
 
       return 0;
     });
+
+    setSortedOperations(sortedOperations);
   }, [operations]);
-
-  const [sortedOperations, setSortedOperations] = useState<WidgetOperation[]>(sortWidgetOperations());
-
-  useEffect(() => {
-    const sortedActiveOperations = sortWidgetOperations();
-    setSortedOperations(sortedActiveOperations);
-  }, [operations, sortWidgetOperations]);
 
   return sortedOperations;
 }
@@ -89,26 +82,24 @@ export function useWidgetOptions() {
 export function useWidgetOptionsForId(slotId: string, widgetId: string) {
   const operations = useWidgetOperations(slotId);
 
-  const findOptions = useCallback(() => {
-    let nextOptions: Record<string, unknown> = {};
-    for (const operation of operations) {
-      if (isSlotOperationConditionSatisfied(operation)) {
-        if (isWidgetOptionsOperation(operation)) {
-          if (operation.relatedId === widgetId) {
-            nextOptions = { ...nextOptions, ...operation.options };
+  const [options, setOptions] = useState<Record<string, unknown>>({});
+  useEffect(() => {
+    const findOptions = () => {
+      let nextOptions: Record<string, unknown> = {};
+      for (const operation of operations) {
+        if (isSlotOperationConditionSatisfied(operation)) {
+          if (isWidgetOptionsOperation(operation)) {
+            if (operation.relatedId === widgetId) {
+              nextOptions = { ...nextOptions, ...operation.options };
+            }
           }
         }
       }
-    }
-    return nextOptions;
-  }, [operations, widgetId]);
+      return nextOptions;
+    };
 
-  const [options, setOptions] = useState<Record<string, unknown>>(findOptions());
-
-  useEffect(() => {
-    const nextOptions = findOptions();
-    setOptions(nextOptions);
-  }, [operations, findOptions]);
+    setOptions(findOptions());
+  }, [widgetId, operations]);
 
   return options;
 }
