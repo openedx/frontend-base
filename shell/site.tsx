@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 
@@ -20,7 +21,9 @@ subscribe(SITE_READY, async () => {
 
   const root = createRoot(document.getElementById('root') as HTMLElement);
   root.render(
-    <RouterProvider router={router} />,
+    <StrictMode>
+      <RouterProvider router={router} />,
+    </StrictMode>
   );
 });
 
