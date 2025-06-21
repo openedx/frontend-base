@@ -1,27 +1,21 @@
 import { EnvironmentTypes, SiteConfig } from '../types';
-import defaultShellConfig from './defaultShellConfig';
-import defaultFooterConfig from './footer/defaultFooterConfig';
-import defaultHeaderConfig from './header/defaultHeaderConfig';
-
-import footerConfig from './dev-site/footer/footerConfig';
-import headerConfig from './dev-site/header/headerConfig';
-import homeConfig from './dev-site/home';
-import slotShowcaseConfig from './dev-site/slot-showcase';
-import userConfig from './dev-site/user/userConfig';
+import { devFooterApp, devHeaderApp, devHomeApp, devUserApp, slotShowcaseApp } from './dev';
+import { footerApp, headerApp, shellApp } from '.';
 
 import './app.scss';
 
 const siteConfig: SiteConfig = {
   apps: [
-    defaultShellConfig,
-    defaultHeaderConfig,
-    defaultFooterConfig,
-    userConfig,
-    homeConfig,
-    headerConfig,
-    footerConfig,
-    slotShowcaseConfig,
+    shellApp,
+    headerApp,
+    footerApp,
+    devUserApp,
+    devHomeApp,
+    devHeaderApp,
+    devFooterApp,
+    slotShowcaseApp,
   ],
+
   externalRoutes: [
     {
       role: 'logout',

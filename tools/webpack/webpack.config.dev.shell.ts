@@ -33,7 +33,7 @@ const resolvedSiteConfigPath = getResolvedSiteConfigPath('shell/site.config.dev.
 
 const config: Configuration = {
   entry: {
-    app: path.resolve(process.cwd(), 'shell/app'),
+    app: path.resolve(process.cwd(), 'shell/site'),
     ...getParagonEntryPoints(paragonThemeCss),
     ...getParagonEntryPoints(brandThemeCss),
   },

@@ -3,12 +3,12 @@ import { App } from '../../../types';
 import LinkMenuItem from '../../menus/LinkMenuItem';
 import CoursesLink from './CoursesLink';
 
-const config: App = {
-  appId: 'org.openedx.frontend.app.devSite.header',
+const app: App = {
+  appId: 'org.openedx.frontend.app.dev.header',
   slots: [
     {
       slotId: 'org.openedx.frontend.slot.header.primaryLinks.v1',
-      id: 'header.learnerDashboard.link',
+      id: 'org.openedx.frontend.widget.slotShowcase.headerLink',
       op: WidgetOperationTypes.APPEND,
       element: (
         <LinkMenuItem
@@ -21,4 +21,4 @@ const config: App = {
   ]
 };
 
-export default config;
+export default app;
