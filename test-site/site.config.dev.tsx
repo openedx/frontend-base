@@ -1,4 +1,4 @@
-import { defaultFooterConfig, defaultHeaderConfig, defaultShellConfig, EnvironmentTypes, SiteConfig } from '@openedx/frontend-base';
+import { footerApp, headerApp, shellApp, EnvironmentTypes, SiteConfig } from '@openedx/frontend-base';
 
 import { authenticatedPageConfig, examplePageConfig, iframeWidgetConfig } from './src';
 
@@ -15,9 +15,9 @@ const siteConfig: SiteConfig = {
   environment: EnvironmentTypes.DEVELOPMENT,
   mfeConfigApiUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
   apps: [
-    defaultShellConfig,
-    defaultHeaderConfig,
-    defaultFooterConfig,
+    shellApp,
+    headerApp,
+    footerApp,
     examplePageConfig,
     authenticatedPageConfig,
     iframeWidgetConfig,

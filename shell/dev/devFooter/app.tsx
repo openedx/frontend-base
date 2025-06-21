@@ -3,8 +3,8 @@ import { LayoutOperationTypes, WidgetOperationTypes } from '../../../runtime';
 import { App, } from '../../../types';
 import LinkMenuItem from '../../menus/LinkMenuItem';
 
-const config: App = {
-  appId: 'org.openedx.frontend.app.devSite.footer',
+const app: App = {
+  appId: 'org.openedx.frontend.app.dev.footer',
   slots: [
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopTop.v1',
@@ -40,4 +40,4 @@ const config: App = {
   ]
 };
 
-export default config;
+export default app;

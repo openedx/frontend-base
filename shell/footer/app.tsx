@@ -5,13 +5,13 @@ import CopyrightNotice from './CopyrightNotice';
 import LabeledLinkColumn from './LabeledLinkColumn';
 import LanguageMenu from './LanguageMenu';
 
-const config: App = {
+const app: App = {
   appId: 'org.openedx.frontend.app.footer',
   slots: [
     // Center links
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopCenterLinks.v1',
-      id: 'org.openedx.frontend.widget.defaultFooter.desktopCenterLink1.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopCenterLink1.v1',
       op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="org.openedx.frontend.slot.footer.desktopCenterLink1.v1" layout={LabeledLinkColumn} />
@@ -19,7 +19,7 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopCenterLinks.v1',
-      id: 'org.openedx.frontend.widget.defaultFooter.desktopCenterLink2.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopCenterLink2.v1',
       op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="org.openedx.frontend.slot.footer.desktopCenterLink2.v1" layout={LabeledLinkColumn} />
@@ -27,7 +27,7 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopCenterLinks.v1',
-      id: 'org.openedx.frontend.widget.defaultFooter.desktopCenterLink3.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopCenterLink3.v1',
       op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="org.openedx.frontend.slot.footer.desktopCenterLink3.v1" layout={LabeledLinkColumn} />
@@ -35,7 +35,7 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopCenterLinks.v1',
-      id: 'org.openedx.frontend.widget.defaultFooter.desktopCenterLink4.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopCenterLink4.v1',
       op: WidgetOperationTypes.APPEND,
       element: (
         <Slot id="org.openedx.frontend.slot.footer.desktopCenterLink4.v1" layout={LabeledLinkColumn} />
@@ -45,7 +45,7 @@ const config: App = {
     // Left Links
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopLeftLinks.v1',
-      id: 'org.openedx.frontend.widget.defaultFooter.desktopLeftLinksLogo.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopLeftLinksLogo.v1',
       op: WidgetOperationTypes.APPEND,
       element: <Logo />,
     },
@@ -53,7 +53,7 @@ const config: App = {
     // Right Links
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopRightLinks.v1',
-      id: 'org.openedx.frontend.widget.defaultFooter.desktopRightLinksLanguageMenu.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopRightLinksLanguageMenu.v1',
       op: WidgetOperationTypes.APPEND,
       component: LanguageMenu,
     },
@@ -61,7 +61,7 @@ const config: App = {
     // Copyright Notice
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopLegalNotices.v1',
-      id: 'org.openedx.frontend.widget.defaultFooter.desktopCopyrightNotice.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopCopyrightNotice.v1',
       op: WidgetOperationTypes.APPEND,
       element: (
         <CopyrightNotice />
@@ -70,4 +70,4 @@ const config: App = {
   ]
 };
 
-export default config;
+export default app;

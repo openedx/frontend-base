@@ -5,8 +5,8 @@ import RegisterButton from '../../header/anonymous-menu/RegisterButton';
 import LinkMenuItem from '../../menus/LinkMenuItem';
 import messages from '../../Shell.messages';
 
-const config: App = {
-  appId: 'org.openedx.frontend.app.devSite.user',
+const app: App = {
+  appId: 'org.openedx.frontend.app.dev.user',
   slots: [
     {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
@@ -35,4 +35,4 @@ const config: App = {
   ]
 };
 
-export default config;
+export default app;

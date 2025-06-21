@@ -32,7 +32,7 @@ const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
 
 const config: Configuration = {
   entry: {
-    app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/app'),
+    app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/site'),
     ...getParagonEntryPoints(paragonThemeCss),
     ...getParagonEntryPoints(brandThemeCss),
   },

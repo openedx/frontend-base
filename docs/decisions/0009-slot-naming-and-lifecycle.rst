@@ -106,7 +106,7 @@ Where:
 
 For example:
 
-* org.openedx.frontend.slot.devSite.foobar (unsupported slot, as version is empty)
+* org.openedx.frontend.slot.dev.foobar (unsupported slot, as version is empty)
 * org.openedx.frontend.slot.footer.main.unstable (unstable slot)
 * org.openedx.frontend.slot.learning.navigationSidebar.v2 (this slot is on version 2)
 
