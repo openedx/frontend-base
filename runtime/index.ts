@@ -94,8 +94,8 @@ export {
 } from './logging';
 
 export {
-  AppContext,
-  AppProvider,
+  CurrentAppContext,
+  CurrentAppProvider,
   SiteContext,
   SiteProvider,
   AuthenticatedPageRoute,

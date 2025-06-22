@@ -6,8 +6,8 @@
  * @module React
  */
 
-export { default as AppContext } from './AppContext';
-export { default as AppProvider } from './AppProvider';
+export { default as CurrentAppContext } from './CurrentAppContext';
+export { default as CurrentAppProvider } from './CurrentAppProvider';
 export { default as SiteContext } from './SiteContext';
 export { default as SiteProvider } from './SiteProvider';
 export { default as AuthenticatedPageRoute } from './AuthenticatedPageRoute';

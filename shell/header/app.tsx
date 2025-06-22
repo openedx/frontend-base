@@ -3,7 +3,6 @@ import { App } from '../../types';
 import Logo from '../Logo';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
 import AuthenticatedMenu from './AuthenticatedMenu';
-import CourseInfo from './desktop/CourseInfo';
 import DesktopLayout from './desktop/DesktopLayout';
 import PrimaryNavLinks from './desktop/PrimaryNavLinks';
 import SecondaryNavLinks from './desktop/SecondaryNavLinks';
@@ -34,12 +33,6 @@ const config: App = {
       id: 'org.openedx.frontend.widget.header.desktopLogo.v1',
       op: WidgetOperationTypes.APPEND,
       element: <Logo />,
-    },
-    {
-      slotId: 'org.openedx.frontend.slot.header.desktopLeft.v1',
-      id: 'org.openedx.frontend.widget.header.desktopCourseInfo.v1',
-      op: WidgetOperationTypes.APPEND,
-      component: CourseInfo
     },
     {
       slotId: 'org.openedx.frontend.slot.header.desktopLeft.v1',
