@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { FC, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { RouteObject } from 'react-router';
 import { SlotOperation } from './runtime/slots/types';
@@ -21,10 +21,13 @@ export type RoleRouteObject = RouteObject & {
 
 export type AppConfig = Record<string, unknown>;
 
+export type AppProvider = FC<{ children?: ReactNode }>;
+
 export interface App {
   appId: string,
   messages?: LocalizedMessages,
   routes?: RoleRouteObject[],
+  providers?: AppProvider[],
   slots?: SlotOperation[],
   config?: AppConfig,
 }
@@ -94,13 +97,3 @@ export enum EnvironmentTypes {
 // Menu Items
 
 export type MenuItemName = string | MessageDescriptor | ReactElement;
-
-// Learning
-
-// TODO: Make this interface match the shape of course info coming back from the server.
-// Check what additional data frontend-app-learning or frontend-app-authoring has and model it here.
-export interface CourseInfo {
-  title: string,
-  number: string,
-  org: string,
-}

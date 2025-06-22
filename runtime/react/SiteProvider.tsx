@@ -10,10 +10,10 @@ import {
   LOCALE_CHANGED,
 } from '../i18n';
 
-import SiteContext from './SiteContext';
+import CombinedAppProvider from './CombinedAppProvider';
 import ErrorBoundary from './ErrorBoundary';
+import SiteContext from './SiteContext';
 import { useSiteEvent } from './hooks';
-import LearningProvider from './learning/LearningProvider';
 
 interface SiteProviderProps {
   children: ReactNode,
@@ -68,9 +68,9 @@ export default function SiteProvider({ children }: SiteProviderProps) {
     <IntlProvider locale={locale} messages={getMessages()}>
       <ErrorBoundary>
         <SiteContext.Provider value={siteContextValue}>
-          <LearningProvider>
+          <CombinedAppProvider>
             {children}
-          </LearningProvider>
+          </CombinedAppProvider>
         </SiteContext.Provider>
       </ErrorBoundary>
     </IntlProvider>

@@ -3,10 +3,10 @@ import { ReactNode, useMemo, useState } from 'react';
 import { getAppConfig } from '../config';
 import { CONFIG_CHANGED } from '../constants';
 
-import AppContext from './AppContext';
+import CurrentAppContext from './CurrentAppContext';
 import { useSiteEvent } from './hooks';
 
-interface AppProviderProps {
+interface CurrentAppProviderProps {
   appId: string,
   children: ReactNode,
 }
@@ -16,18 +16,18 @@ interface AppProviderProps {
  * context providers.
  *
  * ```
- * <AppProvider appId="my.app">
+ * <CurrentAppProvider appId="my.app">
  *   <HelloWorld />
- * </AppProvider>
+ * </CurrentAppProvider>
  * ```
  *
  * This will provide the following to HelloWorld:
- * - An `AppContext` provider for React context data.
+ * - A `CurrentAppContext` provider for React context data.
  *
  * @param {Object} props
  * @memberof module:React
  */
-export default function AppProvider({ appId, children }: AppProviderProps) {
+export default function CurrentAppProvider({ appId, children }: CurrentAppProviderProps) {
   const [appConfig, setAppConfig] = useState(getAppConfig(appId));
 
   useSiteEvent(CONFIG_CHANGED, () => {
@@ -39,8 +39,8 @@ export default function AppProvider({ appId, children }: AppProviderProps) {
   }), [appConfig]);
 
   return (
-    <AppContext.Provider value={appContextValue}>
+    <CurrentAppContext.Provider value={appContextValue}>
       {children}
-    </AppContext.Provider>
+    </CurrentAppContext.Provider>
   );
 }

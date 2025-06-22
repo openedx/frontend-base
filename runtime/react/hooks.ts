@@ -8,7 +8,7 @@ import { isRoleRouteObject } from '../routing';
 import { subscribe, unsubscribe } from '../subscriptions';
 
 import SiteContext from './SiteContext';
-import AppContext from './AppContext';
+import CurrentAppContext from './CurrentAppContext';
 
 /**
  * A React hook that allows functional components to subscribe to application events.  This should
@@ -67,7 +67,7 @@ export function useSiteConfig() {
 }
 
 export function useAppConfig() {
-  const { appConfig } = useContext(AppContext);
+  const { appConfig } = useContext(CurrentAppContext);
   return appConfig;
 }
 
