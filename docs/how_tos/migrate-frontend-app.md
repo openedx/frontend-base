@@ -716,6 +716,12 @@ frontend-app-account should use the supported language list from frontend-base, 
 This would help it match the behavior of the footer's language dropdown.
 
 
+Upgrade react-query
+===================
+
+If the MFE uses react-query version 4 or below, upgrade it to 5 as per [this guide](https://tanstack.com/query/latest/docs/framework/react/guides/migrating-to-v5).
+
+
 Removal of pubsub-js
 ====================
 
