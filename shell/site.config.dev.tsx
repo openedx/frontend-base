@@ -18,9 +18,17 @@ const siteConfig: SiteConfig = {
 
   externalRoutes: [
     {
+      role: 'profile',
+      url: 'http://apps.local.openedx.io:1995/profile/'
+    },
+    {
+      role: 'account',
+      url: 'http://apps.local.openedx.io:1997/account/'
+    },
+    {
       role: 'logout',
       url: 'http://local.openedx.io:8000/logout'
-    }
+    },
   ],
 
   // General
