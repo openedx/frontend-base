@@ -10,6 +10,7 @@ import { WidgetOperation } from './widget/types';
 export interface SlotOperationCondition {
   active?: string[],
   authenticated?: boolean,
+  callback?: () => boolean,
 }
 
 export interface BaseSlotOperation {
