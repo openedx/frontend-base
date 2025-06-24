@@ -1,6 +1,8 @@
 import { WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
+import LinkMenuItem from '../menus/LinkMenuItem';
+import ProfileLinkMenuItem from '../menus/ProfileLinkMenuItem';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
 import AuthenticatedMenu from './AuthenticatedMenu';
 import DesktopLayout from './desktop/DesktopLayout';
@@ -8,6 +10,8 @@ import PrimaryNavLinks from './desktop/PrimaryNavLinks';
 import SecondaryNavLinks from './desktop/SecondaryNavLinks';
 import MobileLayout from './mobile/MobileLayout';
 import MobileNavLinks from './mobile/MobileNavLinks';
+
+import messages from '../Shell.messages';
 
 const config: App = {
   appId: 'org.openedx.frontend.app.header',
@@ -54,6 +58,42 @@ const config: App = {
       condition: {
         authenticated: true,
       }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.authenticatedMenu.v1',
+      id: 'org.openedx.frontend.widget.header.desktopAuthenticatedMenuProfile.v1',
+      op: WidgetOperationTypes.APPEND,
+      element: (
+        <ProfileLinkMenuItem
+          label={messages['header.user.menu.profile']}
+          role="profile"
+          variant="dropdownItem"
+        />
+      )
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.authenticatedMenu.v1',
+      id: 'org.openedx.frontend.widget.header.desktopAuthenticatedMenuAccount.v1',
+      op: WidgetOperationTypes.APPEND,
+      element: (
+        <LinkMenuItem
+          label={messages['header.user.menu.account']}
+          role="account"
+          variant="dropdownItem"
+        />
+      )
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.authenticatedMenu.v1',
+      id: 'org.openedx.frontend.widget.header.desktopAuthenticatedMenuLogout.v1',
+      op: WidgetOperationTypes.APPEND,
+      element: (
+        <LinkMenuItem
+          label={messages['header.user.menu.logout']}
+          role="logout"
+          variant="dropdownItem"
+        />
+      )
     },
     {
       slotId: 'org.openedx.frontend.slot.header.desktopRight.v1',
