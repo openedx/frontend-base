@@ -50,6 +50,10 @@ export function isSlotOperationConditionSatisfied(operation: SlotOperation) {
     }
   }
 
+  if (condition?.callback !== undefined && condition.callback() === false) {
+    return false;
+  }
+
   // If there was no condition, we return true.
   return true;
 }
