@@ -2,7 +2,7 @@
 Migrating an MFE to frontend-base
 =================================
 
-To use `frontend-base`, you'll need to use `npm pack` and install it into your MFE from the resulting `.tgz` file.
+To use the latest version of `frontend-base` from a git repository, you'll need to use `npm pack` and install it into your MFE from the resulting `.tgz` file.
 
 Following these steps turns your MFE into a library that can be built using frontend-base and its shell application.  It involves deleting a lot of unneeded dependencies and code.
 
@@ -58,21 +58,19 @@ Dependencies shared with the shell should be moved to peerDependencies.  These i
 ```diff
 "dependencies" {
 -  "@openedx/paragon": "^22.8.1",
+-  "@tanstack/react-query": "^5.81.2",
 -  "react": "^17.0.2",
 -  "react-dom": "^17.0.2",
--  "react-redux": "^8.1.3",
 -  "react-router": "^6.26.1",
 -  "react-router-dom": "^6.26.1",
--  "redux": "^4.2.1"
 },
 "peerDependencies": {
 +  "@openedx/paragon": "^22.8.1",
++  "@tanstack/react-query": "^5.81.2",
 +  "react": "^17.0.2",
 +  "react-dom": "^17.0.2",
-+  "react-redux": "^8.1.3",
 +  "react-router": "^6.26.1",
 +  "react-router-dom": "^6.26.1",
-+  "redux": "^4.2.1"
 }
 ```
 
@@ -127,14 +125,10 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 
 ```
   "scripts": {
-    "build": "openedx build",
     "dev": "PORT=YOUR_PORT openedx dev",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
-    "pack": "openedx pack",
-    "release": "openedx release",
-    "serve": "PORT=YOUR_PORT openedx serve",
     "snapshot": "openedx test --updateSnapshot",
     "test": "openedx test --coverage --passWithNoTests"
   },
@@ -167,8 +161,6 @@ This means that the code from the library can be safely tree-shaken by webpack.
   "*.scss"
 ],
 ```
-
-// TODO: Maybe put scss and css files in side effects.  They have side effects and need to be excluded so they get bundled.
 
 
 Add a Type Declaration file (app.d.ts)
@@ -294,9 +286,11 @@ Add a babel.config.js file for Jest
 Jest needs a babel.config.js file to be present in the repository.  It should look like:
 
 ```
-const config = require('@openedx/frontend-base/config/babel/babel.base.config');
+const { createConfig } = require('@openedx/frontend-base/config');
 
-module.exports = config;
+module.exports = createConfig('test', {
+...
+});
 ```
 
 
@@ -542,7 +536,6 @@ App-specific configuration can be expressed by adding an `config` section to the
 const app: App = {
   ...
   config: {
-    appId: 'myapp',
     myCustomVariableName: 'my custom variable value',
   },
 };
@@ -554,7 +547,7 @@ These variables can be used in code with the `getAppConfig` function:
 getAppConfig('myapp').myCustomVariableName
 ```
 
-Or via `useAppConfig()` (with no need to specify the appId), if `AppProvider` is wrapping your app.
+Or via `useAppConfig()` (with no need to specify the appId), if `CurrentAppProvider` is wrapping your app.
 
 
 Replace the .env.test file with configuration in site.config.test.tsx file
@@ -625,8 +618,7 @@ Export the modules of your app in your index.ts file.
 
 This may require a little interpretation.  In spirit, the modules of your app are the 'pages' of an Open edX Frontend site that it provides.  This likely corresponds to the top-level react-router routes in your app.  In frontend-app-profile, for instance, this is the `ProfilePage` component, amongst a few others.  Some MFEs have put their router and pages directly into the `index.jsx` file inside the initialization callback - this code will need to be moved to a single component that can be exported.
 
-These modules should be unopinionated about the path prefix where they are mounted.  The exact way we handle routing is still being figured out.  In the short term, the react-router data APIs are not suppored until we can figure out how to implement lazy route discovery (a.k.a., "Fog of War")  Using `<Routes>` with `<Route>` components inside it works today.  **This functionality is still a work in progress, and is one of the big things we need to figure out.**
-
+These modules should be unopinionated about the path prefix where they are mounted.
 
 Remove core-js and regenerator-runtime
 ======================================
@@ -639,7 +631,7 @@ Create a site.scss file
 
 This is required if you intend to run builds from the app itself.
 
-Create a new `site.scss` file at the top of your application.  It's responsible for:
+Create a new `app.scss` file at the top of your application.  It's responsible for:
 
 1. Importing the shell's stylesheet, which includes Paragon's core stylesheet.
 2. Importing your brand stylesheet.
@@ -648,7 +640,7 @@ Create a new `site.scss` file at the top of your application.  It's responsible 
 You must then import this new stylesheet into your `site.config` file:
 
 ```diff
-+ import './site.scss';
++ import './app.scss';
 
 const siteConfig: SiteConfig = {
   // config document
@@ -721,6 +713,8 @@ Upgrade react-query
 
 If the MFE uses react-query version 4 or below, upgrade it to 5 as per [this guide](https://tanstack.com/query/latest/docs/framework/react/guides/migrating-to-v5).
 
+If the MFE uses Redux, consider porting the app over to react-query, as it will make it much easier to handle header (and footer) customization.
+
 
 Removal of pubsub-js
 ====================
@@ -742,16 +736,4 @@ Refactor plugin-slots
 
 First, rename `src/plugin-slots`, if it exists, to `src/slots`.  Modify imports and documentation across the codebase accordingly.
 
-Next, the frontend-base equivalent to `<PluginSlot />` is `<Slot />`, and has a different API.   This includes a change in the slot ID, according to the [new slot naming ADR](../decisions/0009-slot-naming-and-lifecycle.rst) in this repository.  Rename them accordingly. You can refer to the `src/shell/dev-site` in this repository for examples.
-
-
-Find your module boundaries
-===========================
-
-From this step on, things get a bit more subjective.  At this point you need to ensure that the modules in your library are decoupled and well-bounded.  If you use Redux, this may mean creating individual redux stores for each module, including adding a context so that they're separate from any "upstream" redux stores that may exist.
-
-https://react-redux.js.org/using-react-redux/accessing-store#multiple-stores
-
-
-react-router: move to data router
-=================================
+Next, the frontend-base equivalent to `<PluginSlot />` is `<Slot />`, and has a different API.   This includes a change in the slot ID, according to the [new slot naming ADR](../decisions/0009-slot-naming-and-lifecycle.rst) in this repository.  Rename them accordingly. You can refer to the `src/shell/dev` in this repository for examples.

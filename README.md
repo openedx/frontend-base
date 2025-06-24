@@ -1,6 +1,6 @@
 # Open edX frontend framework
 
-| :rotating_light: Pre-alpha                                                                |
+| :rotating_light: Alpha                                                                |
 |:------------------------------------------------------------------------------------------|
 | frontend-base is under **active development** and may change significantly without warning. |
 
@@ -34,39 +34,50 @@ Feel free to reach out in [#wg-frontend on Slack](https://openedx.slack.com/arch
 
 ## Development
 
-This library is under development and has not yet been published to npm.
+This library is under development and for now is released manually to npm.
 
-## Migrating an MFE to `frontend-base` (Work in progress)
+### Developing with Tutor
+
+In order to use develop frontend-base with Tutor, you need to create a Tutor plugin which patches some of the LMS's development settings.
+
+```
+from tutormfe.hooks import MFE_APPS, MFE_ATTRS_TYPE
+
+from tutor import hooks
+
+hooks.Filters.ENV_PATCHES.add_item(
+  (
+    "openedx-lms-development-settings",
+    """
+CORS_ORIGIN_WHITELIST.append("http://{{ MFE_HOST }}:8080")
+LOGIN_REDIRECT_WHITELIST.append("http://{{ MFE_HOST }}:8080")
+CSRF_TRUSTED_ORIGINS.append("http://{{ MFE_HOST }}:8080")
+"""
+    )
+)
+```
+
+Once you enable this plugin, you can start the development site with:
+
+```
+nvm use
+npm ci
+npm run dev
+```
+
+The development site will be available at `http://apps.local.openedx.io:8080`.
+
+## Migrating an MFE to `frontend-base`
 
 See the [Frontend App Migration How To](./docs/how_tos/migrate-frontend-app.md).
 
-## Merging repositories
+# Notable changes
 
-Followed this process: https://stackoverflow.com/questions/13040958/merge-two-git-repositories-without-breaking-file-history
-
-After adding a remote of the repo to merge in, run this command:
-
-```
-git merge other-repo-remote/master --allow-unrelated-histories
-```
-
-Then work through the conflicts and use a merge commit to add the history into the frontend-base.
-
-Then move the files out of the way (move src to some other sub-dir, mostly) to make room for the next repo.
-
-### Latest repository merges
-
-- frontend-build            - Up to date as of 9/12/2024
-- frontend-platform         - Up to date as of 9/13/2024
-- frontend-plugin-framework - Up to date as of 9/13/2024
-- frontend-component-header - Up to date as of 9/12/2024
-- frontend-component-footer - Up to date as of 9/12/2024
-
-# Other notable changes
+This is a list of notable changes from the previous paradigm:
 
 - Cease using `AUTHN_MINIMAL_HEADER`, replace it with an actual minimal header.
 - No more using `process.env` in runtime code.
-- Removed dotenv.  Use site.config.tsx.
+- Removed dotenv.  Use `site.config.*.tsx`.
 - Removed Purge CSS.  We do not believe that Purge CSS works properly with Paragon in general.
 - Removed `ensureConfig` function.  This sort of type safety should happen with TypeScript types in the site config file.
 - Removed `ensureDefinedConfig` function.  Similar to ensureConfig, this sort of type safety should be handled by TypeScript.
@@ -99,39 +110,3 @@ The following config variables have been removed, in favor of defining roles for
 - DISCOVERY_API_BASE_URL
 - CREDENTIALS_BASE_URL
 - PUBLISHER_BASE_URL
-
-# Working with Tutor
-
-In order to use tutor with frontend-base, you need to create a tutor plugin which patches some of the LMS's development settings.
-
-```
-from tutormfe.hooks import MFE_APPS, MFE_ATTRS_TYPE
-
-from tutor import hooks
-
-hooks.Filters.ENV_PATCHES.add_item(
-  (
-    "openedx-lms-development-settings",
-    """
-CORS_ORIGIN_WHITELIST.append("http://{{ MFE_HOST }}:8080")
-LOGIN_REDIRECT_WHITELIST.append("http://{{ MFE_HOST }}:8080")
-CSRF_TRUSTED_ORIGINS.append("http://{{ MFE_HOST }}:8080")
-MFE_CONFIG = {
-  # override MFE CONFIG values appropriate to the shell, if necessary
-}
-"""
-    )
-)
-```
-
-Customizing the MFE config API:
-
-https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#customising-mfes
-
-Creating a Tutor plugin:
-
-https://docs.tutor.edly.io/tutorials/plugin.html
-
-Adding new MFEs:
-
-https://github.com/overhangio/tutor-mfe?tab=readme-ov-file#adding-new-mfes
