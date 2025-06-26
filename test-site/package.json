@@ -14,11 +14,11 @@
   "license": "AGPL-3.0",
   "peerDependencies": {
     "@openedx/frontend-base": "file:../openedx-frontend-base.tgz",
-    "@openedx/paragon": "^22.20.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router": "^6.26.1",
-    "react-router-dom": "^6.26.1"
+    "@openedx/paragon": "^22",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-router": "^6",
+    "react-router-dom": "^6"
   },
   "devDependencies": {
     "@edx/browserslist-config": "^1.5.0"

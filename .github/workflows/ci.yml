@@ -25,7 +25,7 @@ jobs:
         npm ci
         npm run build
         npm pack
-        mv openedx-frontend-base* openedx-frontend-base.tgz
+        mv openedx-frontend-base-*.tgz openedx-frontend-base.tgz
         cd test-site
         npm i ../openedx-frontend-base.tgz
         npm ci
