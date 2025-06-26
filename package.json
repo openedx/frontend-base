@@ -6,6 +6,13 @@
     "access": "public"
   },
   "main": "index.ts",
+  "files": [
+    "/config",
+    "/runtime",
+    "/tools/dist",
+    "/shell",
+    "/types.ts"
+  ],
   "bin": {
     "intl-imports.js": "tools/dist/cli/scripts/intl-imports.js",
     "openedx": "tools/dist/cli/openedx.js",
