@@ -9,6 +9,7 @@ import { WidgetOperation } from './widget/types';
 
 export interface SlotOperationCondition {
   active?: string[],
+  inactive?: string[],
   authenticated?: boolean,
   callback?: () => boolean,
 }

@@ -6,10 +6,10 @@ const app: App = {
   appId: 'org.openedx.frontend.app.dev.home',
   routes: [{
     path: '/',
-    id: 'dev.home',
+    id: 'org.openedx.frontend.route.dev.home',
     Component: HomePage,
     handle: {
-      role: 'home'
+      role: 'org.openedx.frontend.role.dev.home'
     }
   }],
   messages,

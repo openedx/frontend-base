@@ -66,7 +66,7 @@ const config: App = {
       element: (
         <ProfileLinkMenuItem
           label={messages['header.user.menu.profile']}
-          role="profile"
+          role="org.openedx.frontend.role.profile.main.v1"
           variant="dropdownItem"
         />
       )
@@ -78,7 +78,7 @@ const config: App = {
       element: (
         <LinkMenuItem
           label={messages['header.user.menu.account']}
-          role="account"
+          role="org.openedx.frontend.role.account.main.v1"
           variant="dropdownItem"
         />
       )
@@ -90,7 +90,7 @@ const config: App = {
       element: (
         <LinkMenuItem
           label={messages['header.user.menu.logout']}
-          role="logout"
+          role="org.openedx.frontend.role.logout.main.v1"
           variant="dropdownItem"
         />
       )
