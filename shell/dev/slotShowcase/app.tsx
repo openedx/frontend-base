@@ -43,13 +43,13 @@ function TakesPropsViaContext() {
 }
 
 const app: App = {
-  appId: 'org.openedx.frontend.app.dev.slotShowcase',
+  appId: 'org.openedx.frontend.app.slotShowcase',
   routes: [{
-    id: 'org.openedx.frontend.route.dev.slotShowcase',
+    id: 'org.openedx.frontend.route.slotShowcase',
     path: '/slots',
     Component: SlotShowcasePage,
     handle: {
-      role: 'slotShowcase',
+      role: 'org.openedx.frontend.role.slotShowcase',
     }
   }],
   slots: [
@@ -314,7 +314,7 @@ const app: App = {
         title: 'Courses (modified)',
       },
       condition: {
-        active: ['slotShowcase'],
+        active: ['org.openedx.frontend.role.slotShowcase'],
       }
     },
     {
@@ -324,7 +324,7 @@ const app: App = {
       relatedId: 'org.openedx.frontend.widget.slotShowcase.headerLink3',
       element: (<LinkMenuItem label="Link After 3" url="#" variant="navLink" />),
       condition: {
-        active: ['slotShowcase'],
+        active: ['org.openedx.frontend.role.slotShowcase'],
       }
     },
     {
@@ -335,7 +335,7 @@ const app: App = {
         <NavDropdownMenuSlot id="org.openedx.frontend.slot.header.primaryLinksDropdown.v1" label="Resources" />
       ),
       condition: {
-        active: ['slotShowcase']
+        active: ['org.openedx.frontend.role.slotShowcase']
       }
     },
     {
@@ -346,7 +346,7 @@ const app: App = {
         <LinkMenuItem label="Resource 1" url="#" variant="dropdownItem" />
       ),
       condition: {
-        active: ['slotShowcase'],
+        active: ['org.openedx.frontend.role.slotShowcase'],
       }
     },
     {
@@ -355,7 +355,7 @@ const app: App = {
       op: WidgetOperationTypes.APPEND,
       element: (<LinkMenuItem label="Link 3" url="#" variant="navLink" />),
       condition: {
-        active: ['slotShowcase'],
+        active: ['org.openedx.frontend.role.slotShowcase'],
       }
     },
     {
@@ -364,7 +364,7 @@ const app: App = {
       op: WidgetOperationTypes.APPEND,
       element: (<LinkMenuItem label="Link 4" url="#" variant="navLink" />),
       condition: {
-        active: ['slotShowcase'],
+        active: ['org.openedx.frontend.role.slotShowcase'],
       }
     },
   ]

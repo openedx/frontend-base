@@ -35,18 +35,37 @@ export function isSlotOperationConditionSatisfied(operation: SlotOperation) {
     }
   }
 
-  if (condition?.active !== undefined) {
-    let activeConditionRoleFound = false;
+  if (condition?.active !== undefined || condition?.inactive !== undefined) {
     const activeRoles: string[] = getActiveRoles();
-    for (const conditionRole of condition.active) {
-      if (activeRoles.includes(conditionRole)) {
-        activeConditionRoleFound = true;
-        break;
+
+    if (condition?.active !== undefined) {
+      let activeConditionRoleFound = false;
+      for (const conditionRole of condition.active) {
+        if (activeRoles.includes(conditionRole)) {
+          activeConditionRoleFound = true;
+          break;
+        }
+      }
+
+      // If we couldn't find an active role in our list, then we've failed this condition.
+      if (!activeConditionRoleFound) {
+        return false;
       }
     }
-    // If we couldn't find an active role in our list, then we've failed this condition.
-    if (!activeConditionRoleFound) {
-      return false;
+
+    if (condition?.inactive !== undefined) {
+      let inactiveConditionRoleFound = false;
+      for (const conditionRole of condition.inactive) {
+        if (activeRoles.includes(conditionRole)) {
+          inactiveConditionRoleFound = true;
+          break;
+        }
+      }
+
+      // If we find an active role from our inactive list, then we've failed this condition.
+      if (inactiveConditionRoleFound) {
+        return false;
+      }
     }
   }
 

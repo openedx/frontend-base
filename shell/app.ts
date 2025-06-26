@@ -11,12 +11,18 @@ const app: App = {
       id: 'org.openedx.frontend.widget.header.main.v1',
       op: WidgetOperationTypes.APPEND,
       component: Header,
+      condition: {
+        inactive: ['org.openedx.frontend.role.authn.main.v1'],
+      }
     },
     {
       slotId: 'org.openedx.frontend.slot.footer.main.v1',
       id: 'org.openedx.frontend.widget.footer.main.v1',
       op: WidgetOperationTypes.APPEND,
       component: Footer,
+      condition: {
+        inactive: ['org.openedx.frontend.role.authn.main.v1'],
+      }
     },
   ]
 };

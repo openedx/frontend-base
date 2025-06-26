@@ -13,7 +13,7 @@ export interface ExternalRoute {
 export type RoleRouteObject = RouteObject & {
   handle?: {
     /**
-     * A route role is used to identify a route that fulfills a particular role in the site, such as "login", "learnerHome", or "profile".
+     * A route role is used to identify a route that fulfills a particular role in the site.
      */
     role?: string,
   },
