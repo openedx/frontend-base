@@ -22,7 +22,18 @@ You'll need to install dependencies and then build this repo at least once.
 Remove undesired features
 =========================
 
-At this point, or at any time below, it is a good time to remove any undesired or previously deprecated features from the MFE codebase, such as organization-specific code.  (Just remember to follow the DEPR process for previously undeprecated code.)  This will make the refactoring process proportionately easier.
+Here or at any point below, consider removing any undesired or previously deprecated features from the codebase, such as organization-specific code.  (Just remember to follow the DEPR process for previously undeprecated code.)  This will make the refactoring process proportionately easier.
+
+
+Modernize the README
+====================
+
+You can start by modernizing the main README, such as:
+
+- Removing references to the devstack, leaving only Tutor instructions
+- Change "MFE" to "frontend app"
+
+As you refactor the app, come back to the README and update it accordingly.
 
 
 Change dependencies in package.json in MFE
@@ -42,10 +53,19 @@ npm uninstall @edx/frontend-platform @openedx/frontend-build
 npm uninstall @edx/frontend-component-header @edx/frontend-component-footer @openedx/frontend-plugin-framework
 ```
 
+Remove obsolete dependencies
+--------------------------------------
+
+We don't need these anymore, remove them from the package.json dependencies and remove any imports of them in the code:
+
+- `@edx/reactifex`
+- `husky`
+- `glob`
+
 Delete package-lock.json and node_modules
 -----------------------------------------
 
-```
+```sh
 rm package-lock.json
 rm -rf node_modules
 ```
@@ -65,12 +85,12 @@ Dependencies shared with the shell should be moved to peerDependencies.  These i
 -  "react-router-dom": "^6.26.1",
 },
 "peerDependencies": {
-+  "@openedx/paragon": "^22.8.1",
-+  "@tanstack/react-query": "^5.81.2",
-+  "react": "^17.0.2",
-+  "react-dom": "^17.0.2",
-+  "react-router": "^6.26.1",
-+  "react-router-dom": "^6.26.1",
++  "@openedx/paragon": "^22",
++  "@tanstack/react-query": "^5",
++  "react": "^18",
++  "react-dom": "^18",
++  "react-router": "^6",
++  "react-router-dom": "^6",
 }
 ```
 
@@ -79,51 +99,35 @@ Note that it's possible that when doing this, you encounter peer conflict errors
 Run a fresh npm install
 -----------------------
 
-```
+```sh
 npm install
 ```
 
-This gives us a clean baseline.  Historically changes to the dependencies in `frontend-build` have caused subtle and confusing problems without a clean re-installation like the above.
+This gives us a clean baseline.  Historically, changes to dependencies have caused subtle and confusing problems without a clean re-installation like the above.
 
 Add frontend-base to dependencies
 ---------------------------------
 
-In your checkout of `frontend-base`, build the library:
+Run:
 
-```
-npm run build
-```
-
-And then pack it into a .tgz file and install it into your frontend-app repository:
-
-```
-npm pack
-```
-
-This will create a file in `frontend-base` called `openedx-frontend-base-1.0.0.tgz`.
-
-```
-cd ../frontend-app-YOUR-APP
-npm i --save-peer ../frontend-base/openedx-frontend-base-1.0.0.tgz
+```sh
+npm i --save-peer @openedx/frontend-base@alpha
 ```
 
 Your package.json should now have a line like this:
 
 ```diff
 "peerDependencies": {
-+ "@openedx/frontend-base": "file:../frontend-base/openedx-frontend-base-1.0.0.tgz",
++ "@openedx/frontend-base": "^1.0.0-alpha.0",
 },
 ```
 
-If `frontend-base` changes, you'll need to repeat these steps.
-
-
 Edit package.json scripts
-=========================
+-------------------------
 
 With the exception of any custom scripts, replace the `scripts` section of your MFE's package.json file with the following:
 
-```
+```json
   "scripts": {
     "dev": "PORT=YOUR_PORT openedx dev",
     "i18n_extract": "openedx formatjs extract",
@@ -141,17 +145,31 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 > **Why change `fedx-scripts` to `openedx`?**
 > A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
-
 Other package.json edits
-========================
+------------------------
 
-- `main`
+- Change the author to "Open edX"
 
-```diff
-+ "main": "src/index.ts",
+main
+----
+
+```json
+"main": "src/index.ts",
 ```
 
-- `sideEffects`
+files
+-----
+
+This is a buildless library, so we package files in `src`:
+
+```json
+"files": [
+  "/src"
+],
+```
+
+sideEffects
+-----------
 
 This means that the code from the library can be safely tree-shaken by webpack.
 
@@ -160,6 +178,56 @@ This means that the code from the library can be safely tree-shaken by webpack.
   "*.css",
   "*.scss"
 ],
+```
+
+Namespace, author, etc
+----------------------
+
+Finally, make sure the following fields are set properly:
+
+
+```
+"name": "@openedx/frontend-app-[YOUR_APP]",
+"version": "1.0.0",
+"author": "Open edX",
+"license": "AGPL-3.0",
+```
+
+Clean up .npmignore
+===================
+
+This is what should be in the repo's `.npmignore`.  No more, no less:
+
+```
+__mocks__
+node_modules
+*.test.js
+*.test.jsx
+*.test.ts
+*.test.tsx
+```
+
+Clean up .gitignore
+===================
+
+This is the current standard `.gitignore`:
+
+```
+node_modules
+npm-debug.log
+coverage
+module.config.js
+dist/
+/*.tgz
+
+### i18n ###
+src/i18n/transifex_input.json
+
+### Editors ###
+.DS_Store
+*~
+/temp
+/.vscode
 ```
 
 
@@ -182,8 +250,8 @@ declare module '*.svg' {
 ```
 
 
-Add a tsconfig JSON files
-=========================
+Add a tsconfig JSON file
+========================
 
 Create a `tsconfig.json` file and add the following contents to it:
 
@@ -220,7 +288,7 @@ Replace the import from 'frontend-build' with 'frontend-base'.
 
 Use 'test' instead of 'jest' as the config type for createConfig()
 
-```
+```js
 module.exports = createConfig('test', {
   // ... custom config
 })
@@ -228,7 +296,7 @@ module.exports = createConfig('test', {
 
 Jest test suites that test React components that import SVG and files must add mocks for those filetypes.  This can be accomplished by adding the following module name mappers to jest.config.js:
 
-```
+```js
 moduleNameMapper: {
   '\\.svg$': '<rootDir>/src/__mocks__/svg.js',
   '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/__mocks__/file.js',
@@ -239,26 +307,26 @@ Then, create a `src/__mocks__` folder and add the necessary mocks.
 
 **svg.js:**
 
-```
+```js
 module.exports = 'SvgURL';
 ```
 
 **file.js:**
 
-```
+```js
 module.exports = 'FileMock';
 ```
 
 You can change the values of "SvgURL", and "FileMock" if you want to reduce changes necessary to your snapshot tests; the old values from frontend-build assume svg is only being used for icons, so the values referenced an "icon" which felt unnecessarily narrow.
 
-This is necessary because we cannot write a tsconfig.json in MFEs that includes transpilation of the "tools/jest" folder in frontend-base, it can't meaningfully find those files and transpile them, and we wouldn't want all MFEs to have to include such idiosyncratic configuration anyway.  The SVG mock, however, requires ESModules syntax to export its default and ReactComponent exports at the same time.  This means without moving the mocks into the MFE code, the SVG one breaks transpilation and doesn't understand the `export` syntax used.  By moving them into the MFE, they can be easily transpiled along with all the other code when jest tries to run.
+This is necessary because we cannot write a tsconfig.json in frontend apps that includes transpilation of the "tools/jest" folder in frontend-base, it can't meaningfully find those files and transpile them, and we wouldn't want all apps to have to include such idiosyncratic configuration anyway.  The SVG mock, however, requires ESModules syntax to export its default and ReactComponent exports at the same time.  This means without moving the mocks into the app code, the SVG one breaks transpilation and doesn't understand the `export` syntax used.  By moving them into the app, they can be easily transpiled along with all the other code when jest tries to run.
 
 Resulting jest.config.js file
 -----------------------------
 
 An uncustomized jest.config.js looks like:
 
-```
+```js
 const { createConfig } = require('@openedx/frontend-base/config');
 
 module.exports = createConfig('test', {
@@ -285,12 +353,10 @@ Add a babel.config.js file for Jest
 
 Jest needs a babel.config.js file to be present in the repository.  It should look like:
 
-```
+```js
 const { createConfig } = require('@openedx/frontend-base/config');
 
-module.exports = createConfig('test', {
-...
-});
+module.exports = createConfig('test');
 ```
 
 
@@ -299,7 +365,7 @@ Merge site.config into config in setupTest.js
 
 frontend-platform used environment variables to seed the configuration object, meaning it had default values at the time code is loaded based on `process.env` variables.  frontend-base has a hard-coded, minimal configuration object that _must_ be augmented by a valid site config file at initialization time.  This means that any tests that rely on configuration (e.g., via `getSiteConfig()`) must first initialize the configuration object.  This can be done for tests by adding these lines to `setupTest.js`:
 
-```
+```js
 import siteConfig from 'site.config';
 import { mergeSiteConfig } from '@openedx/frontend-base';
 
@@ -312,7 +378,7 @@ Replace .eslintrc.js with eslint.config.js
 
 ESLint has been upgraded to v9, which has a new 'flat' file format.  Replace the repository's `.eslintrc.js` file with a new `eslint.config.js` file with the following contents:
 
-```
+```js
 // @ts-check
 
 const { createLintConfig } = require('@openedx/frontend-base/config');
@@ -333,7 +399,7 @@ Replace .eslintignore, if it exists, with entries in eslint.config.js
 
 The base eslint config provided by frontend-base ignores a number of common folders by default:
 
-```
+```js
   {
     ignores: [
       'coverage/*',
@@ -370,11 +436,57 @@ Search for any other usages of frontend-build
 Find any other imports/usages of `frontend-build` in your repository and replace them with `frontend-base` so they don't break.
 
 
-i18n Descriptions
-=================
+i18n
+====
 
 Description fields are now required on all i18n messages in the repository.  This is because of a change to the ESLint config.
 
+Also, replace the contents of `src/i18n/index.js` with:
+
+```
+// Placeholder be overridden by `make pull_translations`
+export default {
+  ar: {},
+  'zh-hk': {},
+  'zh-cn': {},
+  uk: {},
+  'tr-tr': {},
+  th: {},
+  te: {},
+  ru: {},
+  'pt-pt': {},
+  'pt-br': {},
+  'it-it': {},
+  id: {},
+  hi: {},
+  he: {},
+  'fr-ca': {},
+  fa: {},
+  'es-es': {},
+  'es-419': {},
+  el: {},
+  'de-de': {},
+  da: {},
+  bo: {},
+};
+```
+
+Finally, edit the `Makefile` so that no strings are being pulled from `frontend-component-(header|footer)`, and rename `frontend-platform` to `frontend-base`.  Such as:
+
+```Makefile
+# Pulls translations using atlas.
+pull_translations:
+	mkdir src/i18n/messages
+	cd src/i18n/messages \
+	   && atlas pull $(ATLAS_OPTIONS) \
+	            translations/frontend-base/src/i18n/messages:frontend-base \
+	            translations/paragon/src/i18n/messages:paragon \
+	            translations/frontend-app-[YOUR_APP]/src/i18n/messages:frontend-app-[YOUR_APP]
+
+	$(intl_imports) frontend-base paragon frontend-app-[YOUR_APP]
+```
+```
+```
 
 SVGR "ReactComponent" imports have been removed
 ===============================================
@@ -425,13 +537,17 @@ Remember to make the following substitution for these functions:
 + import { configureLogging } from '@openedx/frontend-base';
 ```
 
+Finally:
+
+- Replace all instances of `AppProvider` with `SiteProvider`
+
 
 Dealing with jest.mock of @edx/frontend-platform
 ================================================
 
 You may find that your test suite explicitly mocks parts of frontend-platform; this is usually done by sub-folder, and sometimes replaces the import with mocked versions of some functions:
 
-```
+```js
 jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedUser: jest.fn(),
   fetchAuthenticatedUser: jest.fn(),
@@ -443,7 +559,7 @@ jest.mock('@edx/frontend-platform/logging', () => ({
 
 This is problematic now that all imports from frontend-base are from the root package folder, as it means you'll be mocking much more than you intended:
 
-```
+```js
 jest.mock('@openedx/frontend-base', () => ({
   getAuthenticatedUser: jest.fn(),
   fetchAuthenticatedUser: jest.fn(),
@@ -470,9 +586,7 @@ In this case, the default implementations of most frontend-base exports are incl
 Delete the .env and .env.development files and create site.config files.
 ========================================================================
 
-Frontend-base uses `site.config.*.tsx` files for configuration, rather than .env files.  The development file is site.config.dev.tsx, and the production file is site.config.prod.tsx.
-
-If you want to run a webpack build from your library, you will need to add a `site.config` file, such as `site.config.dev.tsx`.  These files are ignored via `.gitignore` and will not be checked in.  There will be resources available to help writing these files.
+Frontend-base uses `site.config.*.tsx` files for configuration, rather than .env files.  The development file is `site.config.dev.tsx`, and the test file is `site.config.test.tsx`; these are the only ones that needs to be included in the app.
 
 Site config is a new schema for configuration.  Notably, config variables are camelCased like normal JavaScript variables, rather than SCREAMING_SNAKE_CASE.
 
@@ -509,7 +623,7 @@ URL Config changes
 
 Note that the .env files and env.config.js files also include a number of URLs for various micro-frontends and services.  These URLs should now be expressed as part of the `apps` config as route roles, and used in code via `getUrlForRouteRole()`.  Or as externalRoutes.
 
-```
+```js
 // Creating a route role with for 'example' in an App
 const app: App = {
   ...
@@ -532,7 +646,7 @@ App-specific config values
 
 App-specific configuration can be expressed by adding an `config` section to the app, allowing arbitrary variables:
 
-```
+```js
 const app: App = {
   ...
   config: {
@@ -543,11 +657,53 @@ const app: App = {
 
 These variables can be used in code with the `getAppConfig` function:
 
-```
+```js
 getAppConfig('myapp').myCustomVariableName
 ```
 
 Or via `useAppConfig()` (with no need to specify the appId), if `CurrentAppProvider` is wrapping your app.
+
+Complete examples
+-----------------
+
+Refer to the frontend-base branch in frontend-template-application for complete examples of `site.config.dev.tsx` and `site.config.test.tsx`.
+
+
+src file structure
+==================
+
+Observe the following file and directory structure.  Not counting any extra files the MFE needs, this is what the `src` directory should look like for all frontend apps in the Open edX org:
+
+```
+src
+(...)
+├── slots
+├── widgets
+├── Main.jsx
+├── app.scss
+├── app.ts
+├── constants.ts
+├── index.ts
+├── messages.js
+├── providers.ts
+├── routes.tsx
+├── setupTest.tsx
+└── slots.tsx
+```
+
+A brief explanation of the new ones:
+
+- `slots`: renamed from `plugin-slots`
+- `widgets`: where any built-in widgets should be created
+- `Main.jsx`: the spiritual successor to `index.jsx`: where the root component is defined, including an `<Outlet />` if the main route has children
+- `constants.ts`: should contain an export of the app's `appId`
+- `index.ts`: the MFE is now a library, and this is where all the interesting bits are exported; this file should only contain exports, no react components
+- `app.ts`: the app configuration that will be imported by `site.config` files
+- `providers.ts`: where global context providers are defined
+- `routes.tsx`: where the app's routes are declared
+- `slots.tsx`: what slots the app _uses_; this is distinct from the slots the app _offers_, which are defined in the `slots` directory
+
+Create, rename, and/or move file contents around to match.  Refer to a previously converted MFE (such as [Learner Dashboard](https://github.com/openedx/frontend-app-learner-dashboard/tree/frontend-base/src)) for examples.
 
 
 Replace the .env.test file with configuration in site.config.test.tsx file
@@ -565,7 +721,7 @@ Once you've verified your test suite still works, you should delete the `.env.te
 
 A sample `site.config.test.tsx` file:
 
-```
+```js
 import { EnvironmentTypes, SiteConfig } from '@openedx/frontend-base';
 
 const siteConfig: SiteConfig = {
@@ -594,7 +750,6 @@ const siteConfig: SiteConfig = {
   refreshAccessTokenApiPath: '/login_refresh',
   userInfoCookieName: 'edx-user-info',
   ignoredErrorRegex: null,
-  segmentKey: '',
 };
 
 export default siteConfig;
@@ -620,13 +775,8 @@ This may require a little interpretation.  In spirit, the modules of your app ar
 
 These modules should be unopinionated about the path prefix where they are mounted.
 
-Remove core-js and regenerator-runtime
-======================================
 
-We don't need these libraries anymore, remove them from the package.json dependencies and remove any imports of them in the code.
-
-
-Create a site.scss file 
+Create an app.scss file 
 =======================
 
 This is required if you intend to run builds from the app itself.
@@ -649,8 +799,6 @@ const siteConfig: SiteConfig = {
 export default siteConfig;
 ```
 
-This file will be ignored via `.gitignore`, as it is part of your 'site', not the module library.
-
 
 Document module-specific configuration needs
 ============================================
@@ -671,7 +819,7 @@ Convert @import to @use in SCSS files
 
 When you do this, you will find that variables and mixins from Paragon, in particular, are likely to result in errors when building the app in webpack.  To fix this, you must `@use` the paragon core SCSS file in the file where you want to use the variable or mixin:
 
-```
+```js
 @use "@openedx/paragon/scss/core/core" as paragon;
 ```
 
@@ -708,10 +856,10 @@ frontend-app-account should use the supported language list from frontend-base, 
 This would help it match the behavior of the footer's language dropdown.
 
 
-Upgrade react-query
-===================
+react-query
+===========
 
-If the MFE uses react-query version 4 or below, upgrade it to 5 as per [this guide](https://tanstack.com/query/latest/docs/framework/react/guides/migrating-to-v5).
+If the MFE uses react-query version 4 or below, upgrade it to 5 as per [this guide](https://tanstack.com/query/latest/docs/framework/react/guides/migrating-to-v5).  Also remove any instances of `<QueryClientProvider />`, as the shell already provides a global one.
 
 If the MFE uses Redux, consider porting the app over to react-query, as it will make it much easier to handle header (and footer) customization.
 
@@ -731,9 +879,25 @@ The unsubscribe function as a different API than pubsub-js's unsubscribe functio
 Consumers who were using the `PubSub` global variable should instead import the above functions directly from `@openedx/frontend-base`.
 
 
-Refactor plugin-slots
-=====================
+Refactor slots
+==============
 
 First, rename `src/plugin-slots`, if it exists, to `src/slots`.  Modify imports and documentation across the codebase accordingly.
 
 Next, the frontend-base equivalent to `<PluginSlot />` is `<Slot />`, and has a different API.   This includes a change in the slot ID, according to the [new slot naming ADR](../decisions/0009-slot-naming-and-lifecycle.rst) in this repository.  Rename them accordingly. You can refer to the `src/shell/dev` in this repository for examples.
+
+
+Remove build step from CI
+=========================
+
+In `.github/workflow/ci.yml`, remove the build step.
+
+```diff
+    - name: Test
+      run: npm run test
+-    - name: Build
+-      run: npm run build
+    - name: i18n_extract
+      run: npm run i18n_extract
+```
+```
