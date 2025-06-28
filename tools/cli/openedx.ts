@@ -79,7 +79,7 @@ switch (commandName) {
       srcFoldersString = `{${srcFoldersString}}`;
     }
     process.argv = process.argv.concat([
-      '--format', 'node_modules/@openedx/frontend-base/dist/tools/cli/utils/formatter.js',
+      '--format', 'node_modules/@openedx/frontend-base/tools/dist/cli/utils/formatter.js',
       '--ignore', `${srcFoldersString}/**/*.json`,
       '--ignore', `${srcFoldersString}/**/*.d.ts`,
       '--out-file', './temp/formatjs/Default.messages.json',
