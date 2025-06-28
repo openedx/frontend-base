@@ -9,7 +9,7 @@ const app: App = {
     id: 'org.openedx.frontend.route.dev.home',
     Component: HomePage,
     handle: {
-      role: 'org.openedx.frontend.role.dev.home'
+      role: 'org.openedx.frontend.role.devHome'
     }
   }],
   messages,
