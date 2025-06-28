@@ -9,17 +9,6 @@ export default function printUsage() {
 
   console.log('Commands:\n');
 
-  console.group();
-  console.log(`${chalk.bold('release')}\n`);
-  console.group();
-  console.log(`Compile source code for release as a library.  Compiled code is put into the dist folder.\n`);
-  console.groupEnd();
-
-  console.log(`${chalk.bold('pack')} <peer folder>\n`);
-  console.group();
-  console.log(`Package the dist folder as an NPM-compatible .tgz file suitable for use with npm install, then install it in the specified peer folder.  The folder is assumed to be a peer of this repository, do not include a path.\n`);
-  console.groupEnd();
-
   console.log(`${chalk.bold('lint')} <eslint options>\n`);
   console.group();
   console.log(`Runs ESLint on the source code. Requires an ${chalk.bold('eslint.config.js')} file.\n`);

@@ -8,8 +8,6 @@ export enum ConfigTypes {
 }
 
 export enum CommandTypes {
-  RELEASE = 'release',
-  PACK = 'pack',
   LINT = 'lint',
   TEST = 'test',
   BUILD = 'build',

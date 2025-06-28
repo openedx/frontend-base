@@ -4,8 +4,6 @@ import chalk from 'chalk';
 import { existsSync } from 'fs';
 import path from 'path';
 import { CommandTypes, ConfigTypes } from '../types';
-import pack from './commands/pack';
-import release from './commands/release';
 import { ensureConfigFilenameOption } from './utils/ensureConfigFilenameOption';
 import prettyPrintTitle from './utils/prettyPrintTitle';
 import printUsage from './utils/printUsage';
@@ -27,18 +25,6 @@ if (existsSync(path.resolve(__dirname, '../../package.json'))) {
 prettyPrintTitle(`Open edX CLI v${version}`);
 
 switch (commandName) {
-  case CommandTypes.RELEASE:
-    release();
-    break;
-  case CommandTypes.PACK:
-    if (process.argv[2] === undefined) {
-      console.log(chalk.red(`${chalk.bold.red(commandName)} command usage: specify a peer folder where the command should install the package:
-
-      npm run pack my-project`));
-      process.exit(1);
-    }
-    pack();
-    break;
   case CommandTypes.LINT:
     ensureConfigFilenameOption(ConfigTypes.LINT, ['-c', '--config']);
     require('.bin/eslint');
