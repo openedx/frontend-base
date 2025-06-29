@@ -111,6 +111,11 @@ export {
 } from './react';
 
 export {
+  getUrlByRouteRole,
+  isRoleRouteObject
+} from './routing';
+
+export {
   clearAllSubscriptions,
   publish,
   subscribe,
