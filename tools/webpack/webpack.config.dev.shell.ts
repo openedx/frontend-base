@@ -117,6 +117,11 @@ const config: Configuration = {
   // reloading.
 
   devServer: getDevServer(),
+
+  // Limit the number of watched files to avoid `inotify` resource starvation.
+  watchOptions: {
+    ignored: /node_modules/
+  }
 };
 
 export default config;
