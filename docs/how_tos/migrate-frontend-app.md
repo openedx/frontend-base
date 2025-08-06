@@ -129,7 +129,7 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 
 ```json
   "scripts": {
-    "dev": "PORT=YOUR_PORT openedx dev",
+    "dev": "PORT=YOUR_PORT PUBLIC_PATH=/YOUR_APP_NAME openedx dev",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
@@ -139,6 +139,7 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 ```
 
 - Replace `YOUR_PORT` with the desired port, of course.
+- Replace  `YOUR_APP_NAME` with the basename used on your site.config, not doing this will result in only the root route working.
 - Note that `fedx-scripts` no longer exists, and has been replaced with `openedx`.
 
 > [!TIP]
