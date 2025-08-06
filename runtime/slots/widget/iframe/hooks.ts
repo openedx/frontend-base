@@ -127,7 +127,7 @@ export function dispatchUnmountedEvent() {
  */
 export function useElementSize() {
   // Holds a reference to the ResizeObserver
-  const observerRef = useRef<ResizeObserver>(null);
+  const observerRef = useRef<ResizeObserver | null>(null);
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
