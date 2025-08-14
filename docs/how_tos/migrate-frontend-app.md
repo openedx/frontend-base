@@ -357,7 +357,7 @@ Jest needs a babel.config.js file to be present in the repository.  It should lo
 ```js
 const { createConfig } = require('@openedx/frontend-base/config');
 
-module.exports = createConfig('test');
+module.exports = createConfig('babel');
 ```
 
 
