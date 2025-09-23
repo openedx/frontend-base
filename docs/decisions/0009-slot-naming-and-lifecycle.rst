@@ -133,17 +133,20 @@ consistent names.
 
 For the purposes of versioning, a given slot's API contract is comprised of:
 
-* Its location, visual or otherwise, in the Module
-* The type (but not implementation!) of the content it is expected to wrap
-* The specific set of properties, options, and operations it supports
+* Its React props, with the notable exclusion of ``props.children`` (also known
+  as "default content");
+
+* The location where it's rendered on the page;
+
+* The general type of content it's expected to wrap, though as mentioned above
+  this does not include the number or implementation of child elements: a given
+  slot's default content, including its presence or absence, is explicitly
+  *not* part of the slot's contract, and may change at any time.
 
 If one of the above changes for a particular slot in such a way that existing
-widgets break or present undefined behavior, *and* if it still make sense to
-use the same Identifier, the version string appended to its name will be
-incremented by `1`.
-
-Note: a given slot's default content is explicitly *not* part of its contract.
-Changes to it do not result in a version bump.
+widgets can be reasonably expected to break or present otherwise undesireable
+behavior, *and* if it still make sense to use the same Identifier, the version
+string appended to its name will be incremented by `1`.
 
 3. Deprecation process
 ----------------------
@@ -159,7 +162,7 @@ developer will take care to:
   least one Open edX release where it co-exists with the new version
 
 * Implement the new version of the slot in such a way that coexists with the
-  previous one with no detriment to either's functionality
+  previous one with no detriment to either one's functionality
 
 
 Consequences
