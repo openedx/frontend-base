@@ -1,0 +1,15 @@
+.course-tabs-navigation {
+  position: relative;
+  border-bottom: 2px solid rgb(232.5, 229.5, 228); // var(--pgn-color-nav-tabs-base-border-base)
+
+  .search-toggle {
+    flex-grow: 0;
+    text-align: right;
+    white-space: nowrap;
+    margin-bottom: 10px;
+  }
+
+  .nav-tabs {
+    border-bottom: none;
+  }
+}
