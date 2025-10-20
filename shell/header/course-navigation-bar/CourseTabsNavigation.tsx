@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useIntl } from '../../../runtime';
+import { Slot, useIntl } from '../../../runtime';
 import classNames from 'classnames';
 import { getCourseHomeCourseMetadata } from './data/service';
 import { Tab, Tabs } from '@openedx/paragon';
@@ -71,12 +71,7 @@ const CourseTabsNavigation = () => {
               ))}
             </Tabs>
           </div>
-          {/* <div className="search-toggle">
-            <CoursewareSearchToggle />
-          </div>
-        </div>
-      </div>
-      {show && <CoursewareSearch />} */}
+          <Slot id="org.openedx.frontend.slot.header.courseNavigationBar.extraContent.v1" />
         </div>
       </div>
     </div>
