@@ -87,6 +87,7 @@ module.exports = tseslint.config(
         caughtErrors: 'none',
       }],
       '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
       '@stylistic/semi': ['error', 'always', { omitLastInOneLineBlock: true, omitLastInOneLineClassBody: true }],
       '@stylistic/quotes': ['error', 'single', {
         avoidEscape: true,
