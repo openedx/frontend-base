@@ -6,6 +6,9 @@
     "noEmit": false,
     "allowJs": true,
     "resolveJsonModule": true,
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
   },
   "include": [
     "babel/**/*",
