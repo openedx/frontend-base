@@ -779,14 +779,21 @@ These modules should be unopinionated about the path prefix where they are mount
 Create an app.scss file 
 =======================
 
-This is required if you intend to run builds from the app itself.
+This is required for running the app in dev mode.
 
 Create a new `app.scss` file at the top of your application.  It's responsible for:
 
-1. Importing the shell's stylesheet, which includes Paragon's core stylesheet.
-2. Importing the stylesheets from your application.
+1. Using the shell's stylesheet, which includes Paragon's core stylesheet.
+2. Using the stylesheets from your application, if any.
 
-You must then import this new stylesheet into your `site.config` file:
+For example:
+
+```
+@use "@openedx/frontend-base/shell/app.scss";
+@use "sass/style";
+```
+
+You must then import this file from your `site.config.dev.tsx` file:
 
 ```diff
 + import './app.scss';
@@ -816,7 +823,7 @@ Convert @import to @use in SCSS files
 
 @import is deprecated in the most recent versions of SASS.  It must be converted to @use.
 
-If still importing Paragon SCSS variables, you will find that they, in particular, are likely to result in errors when building the app in webpack.  The app should be migrated to use CSS variables from Paragon 23, as per [the corresponding howto](https://openedx.atlassian.net/wiki/spaces/BPL/pages/3770744958/Migrating+MFEs+to+Paragon+design+tokens+and+CSS+variables).  These do not need to be @used by the app, as they should be loaded into the site HTML by default.
+If still importing Paragon SCSS variables, you will find that they, in particular, are likely to result in errors when building the app in webpack.  The app should be migrated to use CSS variables from Paragon 23, as per [the corresponding howto](https://openedx.atlassian.net/wiki/spaces/BPL/pages/3770744958/Migrating+MFEs+to+Paragon+design+tokens+and+CSS+variables).
 
 Changes to i18n
 ===============
