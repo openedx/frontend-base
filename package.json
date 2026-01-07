@@ -14,9 +14,9 @@
     "/types.ts"
   ],
   "bin": {
-    "intl-imports.js": "tools/dist/cli/scripts/intl-imports.js",
+    "intl-imports.js": "tools/dist/cli/intl-imports.js",
     "openedx": "tools/dist/cli/openedx.js",
-    "transifex-utils.js": "tools/dist/cli/scripts/transifex-utils.js"
+    "transifex-utils.js": "tools/dist/cli/transifex-utils.js"
   },
   "scripts": {
     "build": "make build",
