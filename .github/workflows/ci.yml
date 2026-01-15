@@ -24,10 +24,9 @@ jobs:
       run: |
         npm ci
         npm run build
-        npm pack
-        mv openedx-frontend-base-*.tgz openedx-frontend-base.tgz
+        npm run pack:local
         cd test-site
-        npm i ../openedx-frontend-base.tgz
+        npm i ../pack/openedx-frontend-base.tgz
         npm ci
     - name: Lint
       run: npm run lint

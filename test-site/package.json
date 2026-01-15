@@ -7,13 +7,14 @@
     "build": "openedx build",
     "lint": "openedx lint .",
     "dev": "openedx dev",
-    "serve": "openedx serve"
+    "serve": "openedx serve",
+    "dev:autoinstall": "node ./tools/autoinstall/dev-with-autoinstall.mjs"
   },
   "keywords": [],
   "author": "Open edX Community",
   "license": "AGPL-3.0",
   "peerDependencies": {
-    "@openedx/frontend-base": "file:../openedx-frontend-base.tgz",
+    "@openedx/frontend-base": "file:../pack/openedx-frontend-base.tgz",
     "@openedx/paragon": "^23",
     "react": "^18",
     "react-dom": "^18",
@@ -21,7 +22,8 @@
     "react-router-dom": "^6"
   },
   "devDependencies": {
-    "@edx/browserslist-config": "^1.5.0"
+    "@edx/browserslist-config": "^1.5.0",
+    "chokidar": "^5.0.0"
   },
   "dependencies": {
     "@edx/brand": "npm:@openedx/brand-openedx@^1.2.3"

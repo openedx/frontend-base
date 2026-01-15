@@ -67,6 +67,33 @@ npm run dev
 
 The development site will be available at `http://apps.local.openedx.io:8080`.
 
+### Developing an app and `frontend-base` concurrently
+
+Concurrent development with `frontend-base` uses a tarball-based workflow rather than traditional local linking approaches. See [test-site/tools/autoinstall/README.md](./test-site/tools/autoinstall/README.md) for details.
+
+#### In `frontend-base`
+
+This watches for changes in `frontend-base` and rebuilds the packaged tarball on each change.
+
+```sh
+nvm use
+npm ci
+npm run dev:pack
+```
+
+#### In the consuming application
+
+> [!NOTE]
+> This assumes the consuming application has the same tooling as [test-site/tools/autoinstall/](./test-site/tools/autoinstall/)
+
+This watches for changes to the generated .tgz, installs the updated package, and restarts the dev server.
+
+```sh
+nvm use
+npm ci
+npm run dev:autoinstall
+```
+
 ## Migrating an MFE to `frontend-base`
 
 See the [Frontend App Migration How To](./docs/how_tos/migrate-frontend-app.md).
