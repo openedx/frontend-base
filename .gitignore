@@ -3,7 +3,6 @@ npm-debug.log
 coverage
 module.config.js
 dist/
-/*.tgz
 /config
 scss
 docs/api
@@ -16,3 +15,7 @@ src/i18n/transifex_input.json
 *~
 /temp
 /.vscode
+
+### pack ###
+/*.tgz
+pack
