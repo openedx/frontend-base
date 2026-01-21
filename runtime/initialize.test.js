@@ -274,7 +274,7 @@ describe('initialize', () => {
       handlers: {
         config: () => {
           mergeSiteConfig({
-            mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
+            runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config',
             siteId: 'auth',
           });
         }
@@ -324,7 +324,7 @@ describe('initialize', () => {
         handlers: {
           config: () => {
             mergeSiteConfig({
-              mfeConfigApiUrl: 'http://localhost:18000/api/mfe/v1/config',
+              runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config',
               siteId: 'auth',
             });
           }

@@ -13,7 +13,7 @@ const siteConfig: SiteConfig = {
   logoutUrl: 'http://local.openedx.io:8000/logout',
 
   environment: EnvironmentTypes.DEVELOPMENT,
-  mfeConfigApiUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
+  runtimeConfigJsonUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
   apps: [
     shellApp,
     headerApp,
