@@ -58,7 +58,7 @@ export interface OptionalSiteConfig {
   basename: string,
   externalRoutes: ExternalRoute[],
   externalLinkUrlOverrides: string[],
-  mfeConfigApiUrl: string | null,
+  runtimeConfigJsonUrl: string | null,
 
   // Theme
   theme: Theme,
