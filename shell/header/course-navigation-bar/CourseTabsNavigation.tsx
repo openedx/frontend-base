@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { Slot, useIntl } from '../../../runtime';
-import classNames from 'classnames';
-import { getCourseHomeCourseMetadata } from './data/service';
-import { Tab, Tabs } from '@openedx/paragon';
-import messages from './messages';
 import { useNavigate, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+import { useQuery } from '@tanstack/react-query';
+import { Tab, Tabs } from '@openedx/paragon';
+import { Slot, useIntl } from '../../../runtime';
+import { getCourseHomeCourseMetadata } from './data/service';
+import messages from './messages';
 import './course-tabs-navigation.scss';
 
 interface CourseMetaData {
@@ -16,16 +16,16 @@ interface CourseMetaData {
   isMasquerading: boolean,
 }
 
+const extractCourseId = (pathname: string): string => {
+  const courseRegex = /\/courses?\/([^/]+)/;
+  const courseMatch = courseRegex.exec(pathname);
+  return courseMatch ? courseMatch[1] : '';
+};
+
 const CourseTabsNavigation = () => {
   const location = useLocation();
   const intl = useIntl();
   const navigate = useNavigate();
-
-  const extractCourseId = (pathname: string): string => {
-    const courseRegex = /\/courses?\/([^/]+)/;
-    const courseMatch = courseRegex.exec(pathname);
-    return courseMatch ? courseMatch[1] : '';
-  };
 
   const courseId = extractCourseId(location.pathname);
 
@@ -33,6 +33,7 @@ const CourseTabsNavigation = () => {
     queryKey: ['org.openedx.frontend.app.header.course-meta', courseId],
     queryFn: () => getCourseHomeCourseMetadata(courseId),
     retry: 2,
+    enabled: !!courseId,
   });
 
   if (!courseId) {
@@ -41,7 +42,7 @@ const CourseTabsNavigation = () => {
 
   const { tabs = [] }: CourseMetaData = data ?? {};
 
-  const handleSelectedTab = (eventKey) => {
+  const handleSelectedTab = (eventKey: string | null) => {
     const selectedUrl = tabs.find(tab => tab.slug === eventKey)?.url ?? '/';
 
     try {

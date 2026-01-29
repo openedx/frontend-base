@@ -6,7 +6,7 @@ function normalizeCourseHomeCourseMetadata(metadata) {
   const data = camelCaseObject(metadata);
   return {
     ...data,
-    tabs: data.tabs.map(tab => ({
+    tabs: (data.tabs || []).map(tab => ({
       slug: tab.tabId === 'courseware' ? 'outline' : tab.tabId,
       title: tab.title,
       url: tab.url,
