@@ -609,7 +609,7 @@ Other configuration is now optional, and many values have been given sensible de
 
 - environment: EnvironmentTypes
 - basename: string
-- mfeConfigApiUrl: string | null
+- runtimeConfigJsonUrl: string | null
 - accessTokenCookieName: string
 - languagePreferenceCookieName: string
 - userInfoCookieName: string

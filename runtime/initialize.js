@@ -90,6 +90,7 @@ import {
 } from './logging';
 import { GoogleAnalyticsLoader } from './scripts';
 import { publish } from './subscriptions';
+import { EnvironmentTypes } from '../types';
 
 /**
  * If set in configuration, a basename will be prepended to all relative routes under BrowserRouter.
@@ -165,17 +166,21 @@ async function fileConfig() {
  */
 async function runtimeConfig() {
   try {
-    const { mfeConfigApiUrl, siteId } = getSiteConfig();
+    const { runtimeConfigJsonUrl, environment } = getSiteConfig();
 
-    if (mfeConfigApiUrl) {
+    if (runtimeConfigJsonUrl) {
       const apiConfig = { headers: { accept: 'application/json' } };
       const apiService = await configureCache();
 
-      const params = new URLSearchParams();
-      params.append('mfe', siteId);
-      const url = `${mfeConfigApiUrl}?${params.toString()}`;
+      const runtimeConfigUrl = new URL(runtimeConfigJsonUrl);
 
-      const { data } = await apiService.get(url, apiConfig);
+      // In development mode, add a timestamp as a cache buster
+      // to support live-editing runtime config JSON
+      if (environment === EnvironmentTypes.DEVELOPMENT) {
+        runtimeConfigUrl.searchParams.set('timestamp', Date.now());
+      }
+
+      const { data } = await apiService.get(runtimeConfigUrl.toString(), apiConfig);
       mergeSiteConfig(data);
     }
   } catch (error) {

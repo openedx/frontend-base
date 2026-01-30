@@ -43,7 +43,7 @@ const siteConfig: SiteConfig = {
 
   // API URLs
   lmsBaseUrl: 'http://local.openedx.io:8000',
-  mfeConfigApiUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
+  runtimeConfigJsonUrl: 'http://apps.local.openedx.io:8080/api/mfe_config/v1',
 };
 
 export default siteConfig;

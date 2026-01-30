@@ -88,7 +88,7 @@
  *
  * https://github.com/openedx/edx-platform/blob/master/lms/djangoapps/mfe_config_api/docs/decisions/0001-mfe-config-api.rst
  *
- * The runtime configuration method can be enabled by supplying a mfeConfigApiUrl via one of the other
+ * The runtime configuration method can be enabled by supplying a runtimeConfigJsonUrl via one of the other
  * two configuration methods above.
  *
  * Runtime configuration is particularly useful if you need to supply different configurations to
@@ -123,7 +123,7 @@ let siteConfig: SiteConfig = {
   apps: [],
   externalRoutes: [],
   externalLinkUrlOverrides: [],
-  mfeConfigApiUrl: null,
+  runtimeConfigJsonUrl: null,
   theme: {},
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
   csrfTokenApiPath: '/csrf/api/v1/token',
