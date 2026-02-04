@@ -34,7 +34,6 @@ const config: Configuration = {
     alias: {
       ...aliases,
       'site.config': resolvedSiteConfigPath,
-      '@src': path.resolve(process.cwd(), 'src'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },

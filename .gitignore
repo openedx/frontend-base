@@ -2,8 +2,8 @@ node_modules
 npm-debug.log
 coverage
 module.config.js
+/.tsbuildinfo.*
 dist/
-/config
 scss
 docs/api
 

@@ -128,6 +128,7 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 
 ```json
   "scripts": {
+    "build": "make build",
     "dev": "PORT=YOUR_PORT PUBLIC_PATH=/YOUR_APP_NAME openedx dev",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
@@ -136,6 +137,28 @@ With the exception of any custom scripts, replace the `scripts` section of your 
     "test": "openedx test --coverage --passWithNoTests"
   },
 ```
+
+The `build` script invokes a Makefile target. You'll need to install `tsc-alias` as a dev dependency:
+
+```sh
+npm install --save-dev tsc-alias
+```
+
+Then add a `build:` target to your `Makefile`:
+
+```makefile
+build:
+	tsc --project tsconfig.build.json
+	tsc-alias -p tsconfig.build.json
+	find src -type f -name '*.scss' -exec sh -c '\
+	  for f in "$$@"; do \
+	    d="dist/$${f#src/}"; \
+	    mkdir -p "$$(dirname "$$d")"; \
+	    cp "$$f" "$$d"; \
+	  done' sh {} +
+```
+
+This target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure.
 
 - Replace `YOUR_PORT` with the desired port, of course.
 - Replace  `YOUR_APP_NAME` with the basename used on your site.config, not doing this will result in only the root route working.
@@ -150,28 +173,36 @@ Other package.json edits
 
 - Change the author to "Open edX"
 
-main
-----
+exports
+-------
+
+Define the public API for your package:
 
 ```json
-"main": "src/index.ts",
+"exports": {
+  ".": "./dist/index.js",
+  "./app.scss": "./dist/app.scss"
+},
 ```
+
+The `exports` map decouples your public API from the internal `dist/` directory structure. Consumers import from clean paths (e.g., `@openedx/frontend-app-yourapp/app.scss`) and the map resolves them to the actual files in `dist/`. If your app has SCSS files that downstream site projects need to `@use`, add them as exports as shown above.
 
 files
 -----
 
-This is a buildless library, so we package files in `src`:
+Package the compiled output in `dist`:
 
 ```json
 "files": [
-  "/src"
+  "/dist"
 ],
 ```
 
 sideEffects
 -----------
 
-This means that the code from the library can be safely tree-shaken by webpack.
+This tells webpack that the code from the library can be safely tree-shaken, except
+for CSS/SCSS files which are imported purely for their side effects.
 
 ```json
 "sideEffects": [
@@ -196,15 +227,10 @@ Finally, make sure the following fields are set properly:
 Clean up .npmignore
 ===================
 
-This is what should be in the repo's `.npmignore`.  No more, no less:
+Since we use the `files` field in `package.json` to whitelist only `/dist`, the `.npmignore` file is largely unnecessary. You can keep a minimal version:
 
 ```
-__mocks__
 node_modules
-*.test.js
-*.test.jsx
-*.test.ts
-*.test.tsx
 ```
 
 Clean up .gitignore
@@ -257,10 +283,13 @@ Create a `tsconfig.json` file and add the following contents to it:
 
 ```json
 {
-  "extends": "@openedx/frontend-base/config/tsconfig.json",
+  "extends": "@openedx/frontend-base/tools/tsconfig.json",
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist",
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
   },
   "include": [
     "src/**/*",
@@ -275,6 +304,53 @@ Create a `tsconfig.json` file and add the following contents to it:
 
 This assumes you have a `src` folder and your build goes in `dist`, which is the best practice.
 
+The `@src` path alias
+---------------------
+
+The `paths` configuration above sets up the `@src` alias, which allows you to import from your app's `src` directory using `@src/...` instead of relative paths. For example:
+
+```typescript
+// Instead of:
+import { MyComponent } from '../../../components/MyComponent';
+
+// You can use:
+import { MyComponent } from '@src/components/MyComponent';
+```
+
+For this to work, the app must define its own `@src` path mapping in `tsconfig.json`. **tsc-alias** will then rewrite `@src` imports to relative paths during the build step, so the compiled JavaScript has proper paths.
+
+Add a tsconfig.build.json file
+------------------------------
+
+Create a `tsconfig.build.json` file for compiling your app before publishing:
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": false
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/__mocks__/**/*",
+    "src/setupTest.js"
+  ]
+}
+```
+
+This config:
+- Extends your main `tsconfig.json`
+- Outputs compiled JavaScript and type declarations to `dist/`
+- Excludes test files and mocks from the published package
+
 
 Edit jest.config.js
 ===================
@@ -283,7 +359,7 @@ Replace the import from 'frontend-build' with 'frontend-base'.
 
 ```diff
 - const { createConfig } = require('@openedx/frontend-build');
-+ const { createConfig } = require('@openedx/frontend-base/config');
++ const { createConfig } = require('@openedx/frontend-base/tools');
 ```
 
 Use 'test' instead of 'jest' as the config type for createConfig()
@@ -327,7 +403,7 @@ Resulting jest.config.js file
 An uncustomized jest.config.js looks like:
 
 ```js
-const { createConfig } = require('@openedx/frontend-base/config');
+const { createConfig } = require('@openedx/frontend-base/tools');
 
 module.exports = createConfig('test', {
   // setupFilesAfterEnv is used after the jest environment has been loaded.  In general this is what you want.
@@ -354,7 +430,7 @@ Add a babel.config.js file for Jest
 Jest needs a babel.config.js file to be present in the repository.  It should look like:
 
 ```js
-const { createConfig } = require('@openedx/frontend-base/config');
+const { createConfig } = require('@openedx/frontend-base/tools');
 
 module.exports = createConfig('babel');
 ```
@@ -381,7 +457,7 @@ ESLint has been upgraded to v9, which has a new 'flat' file format.  Replace the
 ```js
 // @ts-check
 
-const { createLintConfig } = require('@openedx/frontend-base/config');
+const { createLintConfig } = require('@openedx/frontend-base/tools');
 
 module.exports = createLintConfig(
   {
@@ -494,14 +570,14 @@ SVGR "ReactComponent" imports have been removed
 We have removed the `@svgr/webpack` loader because it was incompatible with more modern tooling (it requires Babel).  As a result, the ability to import SVG files into JS as the `ReactComponent` export no longer works.  We know of a total of 5 places where this is happening today in Open edX MFEs - frontend-app-learning and frontend-app-profile use it.  Please replace that export with the default URL export and set the URL as the source of an `<img>` tag, rather than using `ReactComponent`.  You can see an example of normal SVG imports in `test-site/src/ExamplePage.tsx`.
 
 
-Import createConfig and getBaseConfig from @openedx/frontend-base/config
+Import createConfig and getBaseConfig from @openedx/frontend-base/tools
 ========================================================================
 
 In frontend-build, `createConfig` and `getBaseConfig` could be imported from the root package (`@openedx/frontend-build`).  They have been moved to a sub-directory to make room for runtime exports from the root package (`@openedx/frontend-base`).
 
 ```diff
 - const { createConfig, getBaseConfig } = require('@openedx/frontend-build');
-+ const { createConfig, getBaseConfig } = require('@openedx/frontend-base/config');
++ const { createConfig, getBaseConfig } = require('@openedx/frontend-base/tools');
 ```
 
 You may have handled this in steps 4 and 5 above (jest.config.js and .eslintrc.js)
@@ -874,19 +950,3 @@ Refactor slots
 First, rename `src/plugin-slots`, if it exists, to `src/slots`.  Modify imports and documentation across the codebase accordingly.
 
 Next, the frontend-base equivalent to `<PluginSlot />` is `<Slot />`, and has a different API.   This includes a change in the slot ID, according to the [new slot naming ADR](../decisions/0009-slot-naming-and-lifecycle.rst) in this repository.  Rename them accordingly. You can refer to the `src/shell/dev` in this repository for examples.
-
-
-Remove build step from CI
-=========================
-
-In `.github/workflow/ci.yml`, remove the build step.
-
-```diff
-    - name: Test
-      run: npm run test
--    - name: Build
--      run: npm run build
-    - name: i18n_extract
-      run: npm run i18n_extract
-```
-```

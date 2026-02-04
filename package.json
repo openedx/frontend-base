@@ -5,23 +5,25 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "index.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./tools": "./dist/tools/index.js",
+    "./tools/tsconfig.json": "./dist/tools/typescript/tsconfig.json",
+    "./shell/app.scss": "./dist/shell/app.scss",
+    "./shell/site": "./dist/shell/site.js"
+  },
   "files": [
-    "/config",
-    "/runtime",
-    "/tools/dist",
-    "/shell",
-    "/types.ts"
+    "/dist"
   ],
   "bin": {
-    "intl-imports.js": "tools/dist/cli/intl-imports.js",
-    "openedx": "tools/dist/cli/openedx.js",
-    "transifex-utils.js": "tools/dist/cli/transifex-utils.js"
+    "intl-imports.js": "./dist/tools/cli/intl-imports.js",
+    "openedx": "./dist/tools/cli/openedx.js",
+    "transifex-utils.js": "./dist/tools/cli/transifex-utils.js"
   },
   "scripts": {
     "build": "make build",
-    "clean": "rm -rf dist",
-    "dev": "npm run build && node ./tools/dist/cli/openedx.js dev:shell",
+    "clean": "make clean",
+    "dev": "npm run build && node ./dist/tools/cli/openedx.js dev:shell",
     "docs": "jsdoc -c jsdoc.json",
     "docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
     "lint": "eslint .; npm run lint:tools; npm --prefix ./test-site run lint",
@@ -118,6 +120,7 @@
     "source-map-loader": "4.0.2",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
+    "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.11.0",
     "universal-cookie": "^8.0.1",

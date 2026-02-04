@@ -2,25 +2,22 @@
   "extends": "./tools/typescript/tsconfig.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist",
-    "paths": {
-      "@src/*": ["./src/*"]
-    }
+    "outDir": "dist"
   },
   "include": [
     "runtime/**/*",
     "shell/**/*",
     "index.ts",
+    "types.ts",
+    "frontend-base.d.ts",
     "jest.config.js",
     "babel.config.js",
-    "eslint.config.js",
-    "frontend-base.d.ts",
+    "eslint.config.js"
   ],
   "exclude": [
     "test-site/**/*",
     "dist/**/*",
     "coverage/**/*",
-    "tools/**/*",
-    "config/**/*",
-  ],
+    "tools/**/*"
+  ]
 }

@@ -1,6 +1,7 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
@@ -24,7 +25,7 @@ const config: Configuration = {
   mode: 'production',
   devtool: 'source-map',
   entry: {
-    app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/site'),
+    app: '@openedx/frontend-base/shell/site',
   },
   output: {
     filename: '[name].[chunkhash].js',
@@ -36,8 +37,13 @@ const config: Configuration = {
     alias: {
       ...aliases,
       'site.config': resolvedSiteConfigPath,
-      '@src': path.resolve(process.cwd(), 'src'),
     },
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(process.cwd(), 'tsconfig.json'),
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      }),
+    ],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   module: {

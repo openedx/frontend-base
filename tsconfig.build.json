@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": true,
+    "tsBuildInfoFile": "./.tsbuildinfo.build"
+  },
+  "include": [
+    "runtime/**/*",
+    "shell/**/*",
+    "index.ts",
+    "types.ts",
+    "frontend-base.d.ts"
+  ],
+  "exclude": [
+    "test-site/**/*",
+    "dist/**/*",
+    "coverage/**/*",
+    "tools/**/*",
+    "**/*.test.js",
+    "**/*.test.jsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/__mocks__/**/*"
+  ],
+  "references": [
+    { "path": "./tools/tsconfig.build.json" }
+  ]
+}
