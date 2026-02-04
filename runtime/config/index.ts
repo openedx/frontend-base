@@ -100,6 +100,7 @@
  * @module Config
  */
 
+import keyBy from 'lodash.keyby';
 import merge from 'lodash.merge';
 import {
   AppConfig,
@@ -174,6 +175,10 @@ export function setSiteConfig(newSiteConfig: SiteConfig) {
   publish(CONFIG_CHANGED);
 }
 
+interface MergeSiteConfigOptions {
+  appConfigOnly?: boolean,
+}
+
 /**
  * Merges additional configuration values into the site config returned by `getSiteConfig`.  Will
  * override any values that exist with the same keys.
@@ -188,10 +193,56 @@ export function setSiteConfig(newSiteConfig: SiteConfig) {
  * which means they will be merged recursively.  See https://lodash.com/docs/latest#merge for
  * documentation on the exact behavior.
  *
+ * Apps are merged by appId rather than array index. By default, new apps can be added.
+ * When `appConfigOnly` is true, only the `config` property of existing apps is merged,
+ * and new apps are ignored.
+ *
  * @param {Object} newSiteConfig
+ * @param {Object} options
+ * @param {boolean} options.appConfigOnly - Only merge app config for existing apps
  */
-export function mergeSiteConfig(newSiteConfig: Partial<SiteConfig>) {
-  siteConfig = merge(siteConfig, newSiteConfig);
+export function mergeSiteConfig(
+  newSiteConfig: Partial<SiteConfig>,
+  options: MergeSiteConfigOptions = {}
+) {
+  const { appConfigOnly = false } = options;
+  const { apps: newApps, ...restOfNewConfig } = newSiteConfig;
+
+  // lodash merge the top-level (non-app) part
+  siteConfig = merge(siteConfig, restOfNewConfig);
+
+  // if we don't have new apps, we're done
+  if (!newApps?.length) {
+    publish(CONFIG_CHANGED);
+    return;
+  }
+
+  // if we're doing a full merge, merge the objects
+  if (!appConfigOnly) {
+    siteConfig.apps = Object.values(merge(
+      keyBy(siteConfig.apps || [], 'appId'),
+      keyBy(newApps, 'appId')
+    ));
+    publish(CONFIG_CHANGED);
+    return;
+  }
+
+  // we're doing a config-only merge, if we don't
+  // have apps already, we can't update their configs
+  if (!siteConfig.apps?.length) {
+    publish(CONFIG_CHANGED);
+    return;
+  }
+
+  // handle config-only merging
+  const newAppsById = keyBy(newApps, 'appId');
+  for (const app of siteConfig.apps) {
+    const newApp = newAppsById[app.appId];
+    if (newApp?.config) {
+      app.config = merge(app.config, newApp.config);
+    }
+  }
+
   publish(CONFIG_CHANGED);
 }
 

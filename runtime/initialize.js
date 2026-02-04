@@ -181,7 +181,7 @@ async function runtimeConfig() {
       }
 
       const { data } = await apiService.get(runtimeConfigUrl.toString(), apiConfig);
-      mergeSiteConfig(data);
+      mergeSiteConfig(data, { appConfigOnly: true });
     }
   } catch (error) {
     console.error('Error with config API', error.message);
