@@ -176,7 +176,7 @@ export function setSiteConfig(newSiteConfig: SiteConfig) {
 }
 
 interface MergeSiteConfigOptions {
-  appConfigOnly?: boolean,
+  limitAppMergeToConfig?: boolean,
 }
 
 /**
@@ -193,19 +193,23 @@ interface MergeSiteConfigOptions {
  * which means they will be merged recursively.  See https://lodash.com/docs/latest#merge for
  * documentation on the exact behavior.
  *
- * Apps are merged by appId rather than array index. By default, new apps can be added.
- * When `appConfigOnly` is true, only the `config` property of existing apps is merged,
- * and new apps are ignored.
+ * Apps are merged by appId rather than array index. By default, apps in the incoming config
+ * that don't exist in the current config will be added.
+ *
+ * When `limitAppMergeToConfig` is true:
+ * - All non-app parts of the config are still merged normally
+ * - Only the `config` property of each existing app is merged
+ * - Apps in the incoming config that don't exist in the current config are ignored
  *
  * @param {Object} newSiteConfig
  * @param {Object} options
- * @param {boolean} options.appConfigOnly - Only merge app config for existing apps
+ * @param {boolean} options.limitAppMergeToConfig - Limit app merging to only the config property of existing apps
  */
 export function mergeSiteConfig(
   newSiteConfig: Partial<SiteConfig>,
   options: MergeSiteConfigOptions = {}
 ) {
-  const { appConfigOnly = false } = options;
+  const { limitAppMergeToConfig = false } = options;
   const { apps: newApps, ...restOfNewConfig } = newSiteConfig;
 
   // lodash merge the top-level (non-app) part
@@ -218,7 +222,7 @@ export function mergeSiteConfig(
   }
 
   // if we're doing a full merge, merge the objects
-  if (!appConfigOnly) {
+  if (!limitAppMergeToConfig) {
     siteConfig.apps = Object.values(merge(
       keyBy(siteConfig.apps || [], 'appId'),
       keyBy(newApps, 'appId')
