@@ -154,11 +154,11 @@ describe('mergeSiteConfig', () => {
     });
   });
 
-  describe('app merging (appConfigOnly: true)', () => {
+  describe('app merging (limitAppMergeToConfig: true)', () => {
     it('should do nothing when no existing apps', () => {
       mergeSiteConfig(
         { apps: [{ appId: 'new-app', config: { VALUE: 'test' } }] },
-        { appConfigOnly: true }
+        { limitAppMergeToConfig: true }
       );
 
       expect(publishSpy).toHaveBeenCalledWith(CONFIG_CHANGED);
@@ -174,7 +174,7 @@ describe('mergeSiteConfig', () => {
 
       mergeSiteConfig(
         { apps: [{ appId: 'new-app', config: { VALUE: 'new' } }] },
-        { appConfigOnly: true }
+        { limitAppMergeToConfig: true }
       );
 
       expect(publishSpy).toHaveBeenCalledWith(CONFIG_CHANGED);
@@ -199,7 +199,7 @@ describe('mergeSiteConfig', () => {
             config: { OVERRIDE: 'new', ADDED: 'extra' },
           }],
         },
-        { appConfigOnly: true }
+        { limitAppMergeToConfig: true }
       );
 
       expect(publishSpy).toHaveBeenCalledWith(CONFIG_CHANGED);
@@ -225,7 +225,7 @@ describe('mergeSiteConfig', () => {
         {
           apps: [{ appId: 'app-two', config: { EXTRA: 'added' } }],
         },
-        { appConfigOnly: true }
+        { limitAppMergeToConfig: true }
       );
 
       expect(publishSpy).toHaveBeenCalledWith(CONFIG_CHANGED);
@@ -286,7 +286,7 @@ describe('mergeSiteConfig', () => {
 
       mergeSiteConfig(
         { apps: [{ appId: 'test-app' }] },
-        { appConfigOnly: true }
+        { limitAppMergeToConfig: true }
       );
 
       expect(publishSpy).toHaveBeenCalledWith(CONFIG_CHANGED);
