@@ -21,7 +21,7 @@ import {
   hydrateAuthenticatedUser,
 } from './auth';
 import configureCache from './auth/LocalForageCache';
-import { getSiteConfig, mergeSiteConfig } from './config';
+import { addAppConfigs, getAppConfig, getSiteConfig, mergeSiteConfig } from './config';
 import { configureI18n } from './i18n';
 import {
   configureLogging,
@@ -311,6 +311,54 @@ describe('initialize', () => {
     expect(getSiteConfig().lmsBaseUrl).toBe('http://localhost:18000');
     // Runtime values not in build-time config should be added
     expect(getSiteConfig().supportEmail).toBe('runtime-support@example.com');
+  });
+
+  it('should merge app-level runtime configuration with build-time configuration', async () => {
+    const runtimeConfig = {
+      apps: [{
+        appId: 'test-app',
+        config: {
+          FEATURE_FLAG: true,
+          INFO_EMAIL: 'runtime@example.com',
+        },
+      }],
+    };
+
+    configureCache.mockReturnValueOnce(Promise.resolve({
+      get: () => ({ data: runtimeConfig }),
+    }));
+
+    const messages = { i_am: 'a message' };
+    await initialize({
+      messages,
+      handlers: {
+        config: () => {
+          mergeSiteConfig({
+            runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config.json',
+            apps: [{
+              appId: 'test-app',
+              config: {
+                INFO_EMAIL: 'buildtime@example.com',
+                LOGO_URL: 'http://localhost/logo.png',
+              },
+            }],
+          });
+        }
+      }
+    });
+
+    expect(configureCache).toHaveBeenCalled();
+
+    // Simulate shell behavior - extract app configs from merged site config
+    addAppConfigs();
+
+    const appConfig = getAppConfig('test-app');
+    // Runtime config should override build-time app config
+    expect(appConfig.INFO_EMAIL).toBe('runtime@example.com');
+    // Build-time app config not in runtime should be preserved
+    expect(appConfig.LOGO_URL).toBe('http://localhost/logo.png');
+    // Runtime app config not in build-time should be added
+    expect(appConfig.FEATURE_FLAG).toBe(true);
   });
 
   describe('with mocked console.error', () => {
