@@ -259,13 +259,15 @@ describe('initialize', () => {
     expect(overrideHandlers.initError).toHaveBeenCalledWith(new Error('uhoh!'));
   });
 
-  it('should initialize the app with runtime configuration', async () => {
+  // TODO: newConfig at top of file is now unused - consider removing
+  it('should merge runtime configuration with build-time configuration', async () => {
+    const runtimeConfig = {
+      siteName: 'Runtime Site Name',
+      supportEmail: 'runtime-support@example.com',
+    };
+
     configureCache.mockReturnValueOnce(Promise.resolve({
-      get: (url) => {
-        const params = new URL(url).search;
-        const mfe = new URLSearchParams(params).get('mfe');
-        return ({ data: { ...newConfig.common, ...newConfig[mfe] } });
-      },
+      get: () => ({ data: runtimeConfig }),
     }));
 
     const messages = { i_am: 'a message' };
@@ -274,8 +276,9 @@ describe('initialize', () => {
       handlers: {
         config: () => {
           mergeSiteConfig({
-            runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config',
-            siteId: 'auth',
+            runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config.json',
+            siteName: 'Build Time Site Name',
+            lmsBaseUrl: 'http://localhost:18000',
           });
         }
       }
@@ -301,9 +304,13 @@ describe('initialize', () => {
     expect(ensureAuthenticatedUser).not.toHaveBeenCalled();
     expect(hydrateAuthenticatedUser).not.toHaveBeenCalled();
     expect(logError).not.toHaveBeenCalled();
-    expect(getSiteConfig().siteName).toBe(newConfig.common.siteName);
-    expect(getSiteConfig().INFO_EMAIL).toBe(newConfig.auth.INFO_EMAIL);
-    expect(Object.values(getSiteConfig()).includes(newConfig.learning.DISCUSSIONS_MFE_BASE_URL)).toBeFalsy();
+
+    // Runtime config should override build-time config for matching keys
+    expect(getSiteConfig().siteName).toBe('Runtime Site Name');
+    // Build-time values not in runtime config should be preserved
+    expect(getSiteConfig().lmsBaseUrl).toBe('http://localhost:18000');
+    // Runtime values not in build-time config should be added
+    expect(getSiteConfig().supportEmail).toBe('runtime-support@example.com');
   });
 
   describe('with mocked console.error', () => {
@@ -324,8 +331,7 @@ describe('initialize', () => {
         handlers: {
           config: () => {
             mergeSiteConfig({
-              runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config',
-              siteId: 'auth',
+              runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config.json',
             });
           }
         }
