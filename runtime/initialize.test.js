@@ -38,29 +38,6 @@ jest.mock('./i18n');
 jest.mock('./auth/LocalForageCache');
 
 let config = null;
-const newConfig = {
-  common: {
-    siteName: 'Test Case',
-    accessTokenCookieName: 'edx-jwt-cookie-header-payload',
-    csrfTokenApiPath: '/csrf/api/v1/token',
-    languagePreferenceCookieName: 'openedx-language-preference',
-    lmsBaseUrl: 'http://test.example.com:18000',
-    loginUrl: 'http://test.example.com:18000/login',
-    logoutUrl: 'http://test.example.com:18000/logout',
-    refreshAccessTokenApiPath: '/login_refresh',
-    segmentKey: '',
-    userInfoCookieName: 'edx-user-info',
-    ignoredErrorRegex: '',
-  },
-  auth: {
-    INFO_EMAIL: 'openedx@example.com',
-    ACTIVATION_EMAIL_SUPPORT_LINK: 'http//support.test.com',
-  },
-  learning: {
-    LEGACY_THEME_NAME: 'example',
-    DISCUSSIONS_MFE_BASE_URL: 'http://test.example.com:2002',
-  },
-};
 
 describe('initialize', () => {
   beforeEach(() => {
@@ -259,7 +236,6 @@ describe('initialize', () => {
     expect(overrideHandlers.initError).toHaveBeenCalledWith(new Error('uhoh!'));
   });
 
-  // TODO: newConfig at top of file is now unused - consider removing
   it('should merge runtime configuration with build-time configuration', async () => {
     const runtimeConfig = {
       siteName: 'Runtime Site Name',
