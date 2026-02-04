@@ -239,7 +239,16 @@ describe('initialize', () => {
   it('should merge runtime configuration with build-time configuration', async () => {
     const runtimeConfig = {
       siteName: 'Runtime Site Name',
-      supportEmail: 'runtime-support@example.com',
+      theme: {
+        defaults: {
+          light: 'light',
+        },
+        variants: {
+          light: {
+            url: 'http://fake.cdn.url/light.css',
+          },
+        },
+      },
     };
 
     configureCache.mockReturnValueOnce(Promise.resolve({
@@ -252,9 +261,9 @@ describe('initialize', () => {
       handlers: {
         config: () => {
           mergeSiteConfig({
-            runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config.json',
+            runtimeConfigJsonUrl: 'http://fake.config.url/config.json',
             siteName: 'Build Time Site Name',
-            lmsBaseUrl: 'http://localhost:18000',
+            lmsBaseUrl: 'http://fake.lms.url',
           });
         }
       }
@@ -283,10 +292,13 @@ describe('initialize', () => {
 
     // Runtime config should override build-time config for matching keys
     expect(getSiteConfig().siteName).toBe('Runtime Site Name');
+
     // Build-time values not in runtime config should be preserved
-    expect(getSiteConfig().lmsBaseUrl).toBe('http://localhost:18000');
+    expect(getSiteConfig().lmsBaseUrl).toBe('http://fake.lms.url');
+
     // Runtime values not in build-time config should be added
-    expect(getSiteConfig().supportEmail).toBe('runtime-support@example.com');
+    expect(getSiteConfig().theme.defaults.light).toBe('light');
+    expect(getSiteConfig().theme.variants.light.url).toBe('http://fake.cdn.url/light.css');
   });
 
   it('should merge app-level runtime configuration with build-time configuration', async () => {
@@ -295,7 +307,7 @@ describe('initialize', () => {
         appId: 'test-app',
         config: {
           FEATURE_FLAG: true,
-          INFO_EMAIL: 'runtime@example.com',
+          INFO_EMAIL: 'runtime@fake.email',
         },
       }],
     };
@@ -310,12 +322,12 @@ describe('initialize', () => {
       handlers: {
         config: () => {
           mergeSiteConfig({
-            runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config.json',
+            runtimeConfigJsonUrl: 'http://fake.config.url/config.json',
             apps: [{
               appId: 'test-app',
               config: {
-                INFO_EMAIL: 'buildtime@example.com',
-                LOGO_URL: 'http://localhost/logo.png',
+                INFO_EMAIL: 'buildtime@fake.email',
+                LOGO_URL: 'http://fake.cdn.url/logo.png',
               },
             }],
           });
@@ -329,10 +341,13 @@ describe('initialize', () => {
     addAppConfigs();
 
     const appConfig = getAppConfig('test-app');
+
     // Runtime config should override build-time app config
-    expect(appConfig.INFO_EMAIL).toBe('runtime@example.com');
+    expect(appConfig.INFO_EMAIL).toBe('runtime@fake.email');
+
     // Build-time app config not in runtime should be preserved
-    expect(appConfig.LOGO_URL).toBe('http://localhost/logo.png');
+    expect(appConfig.LOGO_URL).toBe('http://fake.cdn.url/logo.png');
+
     // Runtime app config not in build-time should be added
     expect(appConfig.FEATURE_FLAG).toBe(true);
   });
@@ -355,7 +370,7 @@ describe('initialize', () => {
         handlers: {
           config: () => {
             mergeSiteConfig({
-              runtimeConfigJsonUrl: 'http://localhost:18000/api/mfe/v1/config.json',
+              runtimeConfigJsonUrl: 'http://fake.config.url/config.json',
             });
           }
         }
