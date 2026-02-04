@@ -1,7 +1,7 @@
 {
   "watch": ["runtime", "shell", "tools", "index.ts", "types.ts"],
   "ext": "ts,tsx,js,jsx,json,scss,css",
-  "ignore": ["node_modules/**", ".git/**", "pack/**", "config/**", "tools/dist/**"],
+  "ignore": ["node_modules/**", ".git/**", "pack/**"],
   "delay": "250ms",
   "exec": "npm run build:pack"
 }

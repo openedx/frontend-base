@@ -2,6 +2,7 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from 'webpack';
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
@@ -23,7 +24,7 @@ const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
 
 const config: Configuration = {
   entry: {
-    app: path.resolve(process.cwd(), 'node_modules/@openedx/frontend-base/shell/site'),
+    app: '@openedx/frontend-base/shell/site',
   },
   output: {
     path: path.resolve(process.cwd(), './dist'),
@@ -33,8 +34,13 @@ const config: Configuration = {
     alias: {
       ...aliases,
       'site.config': resolvedSiteConfigPath,
-      '@src': path.resolve(process.cwd(), 'src'),
     },
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(process.cwd(), 'tsconfig.json'),
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      }),
+    ],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   mode: 'development',

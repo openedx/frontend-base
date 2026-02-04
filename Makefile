@@ -10,20 +10,12 @@ transifex_temp = ./temp/babel-plugin-formatjs
 doc_command = ./node_modules/.bin/documentation build src -g -c ./docs/documentation.config.yml -f md -o ./docs/_API-body.md --sort-order alpha
 cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 
-build:
-	rm -rf ./config ./tools/dist
-	tsc --project ./tsconfig.json
-	mkdir -p ./config
-	cp tools/typescript/tsconfig.json config/tsconfig.json
-	tsc --project ./tools/tsconfig.json
-	cp -prf ./tools/dist/config-helpers ./config/config-helpers
-	cp -prf ./tools/dist/defaultConfigPaths.js ./config/defaultConfigPaths.js
-	cp -prf ./tools/dist/types.js ./config/types.js
-	cp -prf ./tools/dist/eslint ./config/eslint
-	cp -prf ./tools/dist/jest ./config/jest
-	cp -prf ./tools/dist/webpack ./config/webpack
-	cp -prf ./tools/dist/babel ./config/babel
-	cp -prf ./tools/dist/index.js ./config/index.js
+clean:
+	rm -rf dist .tsbuildinfo.*
+
+build: clean
+	tsc --build ./tsconfig.build.json
+	cp ./shell/app.scss ./dist/shell/app.scss
 
 docs-build:
 	${doc_command}

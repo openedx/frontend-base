@@ -6,9 +6,9 @@ The package.json of `frontend-base` includes the following sections:
 
 ```
   "bin": {
-    "intl-imports.js": "tools/dist/cli/intl-imports.js",
-    "openedx": "tools/dist/cli/openedx.js",
-    "transifex-utils.js": "tools/dist/cli/transifex-utils.js"
+    "intl-imports.js": "dist/tools/cli/intl-imports.js",
+    "openedx": "dist/tools/cli/openedx.js",
+    "transifex-utils.js": "dist/tools/cli/transifex-utils.js"
   },
 ```
 
