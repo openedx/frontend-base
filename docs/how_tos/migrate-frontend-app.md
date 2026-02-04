@@ -259,8 +259,12 @@ Create a `tsconfig.json` file and add the following contents to it:
 {
   "extends": "@openedx/frontend-base/config/tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "rootDir": ".",
     "outDir": "dist",
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
   },
   "include": [
     "src/**/*",
@@ -274,6 +278,26 @@ Create a `tsconfig.json` file and add the following contents to it:
 ```
 
 This assumes you have a `src` folder and your build goes in `dist`, which is the best practice.
+
+The `@src` path alias
+---------------------
+
+The `paths` configuration above sets up the `@src` alias, which allows you to import from your app's `src` directory using `@src/...` instead of relative paths. For example:
+
+```typescript
+// Instead of:
+import { MyComponent } from '../../../components/MyComponent';
+
+// You can use:
+import { MyComponent } from '@src/components/MyComponent';
+```
+
+Each consuming app must define its own `@src` path mapping in its `tsconfig.json`. This is because:
+
+1. **TypeScript** uses the static path mapping in your `tsconfig.json` for IDE support (autocomplete, go-to-definition, type checking)
+2. **Webpack** uses a resolver plugin that dynamically finds the closest `src` directory relative to the importing file at build time
+
+This approach ensures that `@src` always resolves to your app's own `src` directory, even in complex project structures.
 
 
 Edit jest.config.js

@@ -13,6 +13,7 @@ import {
   getStylesheetRule
 } from './common-config';
 
+import ClosestSrcResolverPlugin from './plugins/ClosestSrcResolverPlugin';
 import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
@@ -36,9 +37,9 @@ const config: Configuration = {
     alias: {
       ...aliases,
       'site.config': resolvedSiteConfigPath,
-      '@src': path.resolve(process.cwd(), 'src'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    plugins: [new ClosestSrcResolverPlugin()],
   },
   module: {
     rules: [

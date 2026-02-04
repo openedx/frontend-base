@@ -2,10 +2,7 @@
   "extends": "./tools/typescript/tsconfig.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist",
-    "paths": {
-      "@src/*": ["./src/*"]
-    }
+    "outDir": "dist"
   },
   "include": [
     "runtime/**/*",

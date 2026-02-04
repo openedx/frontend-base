@@ -15,6 +15,7 @@ import {
 } from './common-config';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ClosestSrcResolverPlugin from './plugins/ClosestSrcResolverPlugin';
 import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
@@ -34,9 +35,9 @@ const config: Configuration = {
     alias: {
       ...aliases,
       'site.config': resolvedSiteConfigPath,
-      '@src': path.resolve(process.cwd(), 'src'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    plugins: [new ClosestSrcResolverPlugin()],
   },
   mode: 'development',
   devtool: 'eval-source-map',
