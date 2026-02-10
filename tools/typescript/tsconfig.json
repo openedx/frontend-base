@@ -24,6 +24,7 @@
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "inlineSources": true,
     "sourceMap": true,
     "strict": true,
     "strictFunctionTypes": false,

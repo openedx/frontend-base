@@ -13,7 +13,8 @@
   "keywords": [],
   "author": "Open edX Community",
   "license": "AGPL-3.0",
-  "peerDependencies": {
+  "dependencies": {
+    "@edx/brand": "npm:@openedx/brand-openedx@^1.2.3",
     "@openedx/frontend-base": "file:../pack/openedx-frontend-base.tgz",
     "@openedx/paragon": "^23",
     "react": "^18",
@@ -24,8 +25,5 @@
   "devDependencies": {
     "@edx/browserslist-config": "^1.5.0",
     "chokidar": "^5.0.0"
-  },
-  "dependencies": {
-    "@edx/brand": "npm:@openedx/brand-openedx@^1.2.3"
   }
 }

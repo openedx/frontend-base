@@ -15,11 +15,9 @@ import {
   getStylesheetRule
 } from './common-config';
 
-import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 
-const aliases = getLocalAliases();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
 
 const config: Configuration = {
@@ -32,7 +30,6 @@ const config: Configuration = {
   },
   resolve: {
     alias: {
-      ...aliases,
       'site.config': resolvedSiteConfigPath,
     },
     plugins: [
