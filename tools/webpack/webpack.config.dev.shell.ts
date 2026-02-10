@@ -15,11 +15,9 @@ import {
 } from './common-config';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import getLocalAliases from './utils/getLocalAliases';
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
 
-const aliases = getLocalAliases();
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('shell/site.config.dev.tsx');
 
 const config: Configuration = {
@@ -32,7 +30,6 @@ const config: Configuration = {
   },
   resolve: {
     alias: {
-      ...aliases,
       'site.config': resolvedSiteConfigPath,
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],

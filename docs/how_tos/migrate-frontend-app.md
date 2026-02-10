@@ -144,7 +144,17 @@ The `build` script invokes a Makefile target. You'll need to install `tsc-alias`
 npm install --save-dev tsc-alias
 ```
 
-Then add a `build:` target to your `Makefile`:
+Also:
+
+- Replace `YOUR_PORT` with the desired port, of course.
+- Replace  `YOUR_APP_NAME` with the basename used on your site.config, not doing this will result in only the root route working.
+- Note that `fedx-scripts` no longer exists, and has been replaced with `openedx`.
+
+> [!TIP]
+> **Why change `fedx-scripts` to `openedx`?**
+> A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
+
+Last but not least, add a `build:` target to your `Makefile`.  This target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure:
 
 ```makefile
 build:
@@ -157,16 +167,6 @@ build:
 	    cp "$$f" "$$d"; \
 	  done' sh {} +
 ```
-
-This target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure.
-
-- Replace `YOUR_PORT` with the desired port, of course.
-- Replace  `YOUR_APP_NAME` with the basename used on your site.config, not doing this will result in only the root route working.
-- Note that `fedx-scripts` no longer exists, and has been replaced with `openedx`.
-
-> [!TIP]
-> **Why change `fedx-scripts` to `openedx`?**
-> A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
 Other package.json edits
 ------------------------
@@ -242,7 +242,6 @@ This is the current standard `.gitignore`:
 node_modules
 npm-debug.log
 coverage
-module.config.js
 dist/
 /*.tgz
 
@@ -322,7 +321,11 @@ For this to work, the app must define its own `@src` path mapping in `tsconfig.j
 Add a tsconfig.build.json file
 ------------------------------
 
-Create a `tsconfig.build.json` file for compiling your app before publishing:
+Create a `tsconfig.build.json` file for compiling your app before publishing.  It will:
+
+- Extend your main `tsconfig.json`
+- Output compiled JavaScript and type declarations to `dist/`
+- Exclude test files and mocks from the published package
 
 ```json
 {
@@ -345,12 +348,6 @@ Create a `tsconfig.build.json` file for compiling your app before publishing:
   ]
 }
 ```
-
-This config:
-- Extends your main `tsconfig.json`
-- Outputs compiled JavaScript and type declarations to `dist/`
-- Excludes test files and mocks from the published package
-
 
 Edit jest.config.js
 ===================
