@@ -1,0 +1,96 @@
+name: Package PR
+
+on:
+  workflow_run:
+    workflows: ["Default CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  package:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get PR number
+      id: pr
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        PR_NUMBER=$(gh api \
+          "repos/${{ github.repository }}/commits/${{ github.event.workflow_run.head_sha }}/pulls" \
+          --jq '.[0].number // empty')
+        if [ -z "$PR_NUMBER" ]; then
+          echo "Not a PR, skipping"
+        fi
+        echo "number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+
+    - name: Check for package label
+      id: label
+      if: steps.pr.outputs.number
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        HAS_LABEL=$(gh api \
+          "repos/${{ github.repository }}/pulls/${{ steps.pr.outputs.number }}" \
+          --jq '[.labels[].name] | any(. == "package-pr")')
+        echo "has_label=${HAS_LABEL}" >> "$GITHUB_OUTPUT"
+
+    - name: Download artifact
+      if: steps.label.outputs.has_label == 'true'
+      uses: actions/download-artifact@v4
+      with:
+        name: npm-package
+        run-id: ${{ github.event.workflow_run.id }}
+        github-token: ${{ github.token }}
+
+    - name: Upload package to a temporary release
+      if: steps.label.outputs.has_label == 'true'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        TAG="pr-${{ steps.pr.outputs.number }}"
+        gh release delete "$TAG" --repo "${{ github.repository }}" --yes --cleanup-tag || true
+        gh release create "$TAG" *.tgz \
+          --repo "${{ github.repository }}" \
+          --target "${{ github.event.workflow_run.head_sha }}" \
+          --prerelease \
+          --title "PR #${{ steps.pr.outputs.number }}" \
+          --notes "Test package for PR #${{ steps.pr.outputs.number }}"
+
+    - name: Update PR description with package link
+      if: steps.label.outputs.has_label == 'true'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        TAG="pr-${{ steps.pr.outputs.number }}"
+        ASSET_URL=$(gh release view "$TAG" --repo "${{ github.repository }}" --json assets --jq '.assets[0].url')
+
+        BODY=$(gh pr view "${{ steps.pr.outputs.number }}" --repo "${{ github.repository }}" --json body --jq '.body // ""')
+
+        MARKER_START="<!-- package-link-start -->"
+        MARKER_END="<!-- package-link-end -->"
+        PACKAGE_BLOCK="${MARKER_START}
+        ### Latest PR package
+
+        ${ASSET_URL}
+        ${MARKER_END}"
+
+        if echo "$BODY" | grep -q "$MARKER_START"; then
+          BODY=$(echo "$BODY" | awk -v start="$MARKER_START" -v block="$PACKAGE_BLOCK" '
+            $0 ~ start { print block; skip=1; next }
+            skip && /<!-- package-link-end -->/ { skip=0; next }
+            !skip { print }
+          ')
+        else
+          BODY="${BODY}
+
+        ${PACKAGE_BLOCK}"
+        fi
+
+        echo "$BODY" > /tmp/pr_body.txt
+        gh pr edit "${{ steps.pr.outputs.number }}" --repo "${{ github.repository }}" --body-file /tmp/pr_body.txt

@@ -33,3 +33,9 @@ jobs:
       run: npm run test
     - name: Build Test Site
       run: cd test-site; npm run build
+    - name: Upload package artifact
+      if: contains(github.event.pull_request.labels.*.name, 'package-pr')
+      uses: actions/upload-artifact@v4
+      with:
+        name: npm-package
+        path: 'pack/*.tgz'
