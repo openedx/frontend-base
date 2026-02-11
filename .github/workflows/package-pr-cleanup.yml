@@ -1,0 +1,21 @@
+name: Package PR Cleanup
+
+on:
+  pull_request_target:
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: contains(github.event.pull_request.labels.*.name, 'package-pr')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Delete PR release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        TAG="pr-${{ github.event.pull_request.number }}"
+        gh release delete "$TAG" --repo "${{ github.repository }}" --yes --cleanup-tag || true
