@@ -28,10 +28,10 @@
     "docs:watch": "nodemon -w runtime -w docs/template -w README.md -e js,jsx,ts,tsx --exec npm run docs",
     "lint": "eslint .; npm run lint:tools; npm --prefix ./test-site run lint",
     "lint:tools": "cd ./tools && eslint . && cd ..",
-    "test": "jest",
-    "pack:local": "mkdir -p pack && npm pack --silent --pack-destination pack >/dev/null && mv \"$(ls -t pack/*.tgz | head -n 1)\" pack/openedx-frontend-base.tgz",
-    "build:pack": "make build && npm run pack:local",
-    "dev:pack": "nodemon --config nodemon.pack.json"
+    "pack": "mkdir -p pack && npm pack --silent --pack-destination pack >/dev/null && mv \"$(ls -t pack/*.tgz | head -n 1)\" pack/openedx-frontend-base.tgz",
+    "pack:watch": "nodemon --config nodemon.pack.json",
+    "prepack": "npm run build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
