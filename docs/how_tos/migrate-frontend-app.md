@@ -129,10 +129,12 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 ```json
   "scripts": {
     "build": "make build",
+    "clean": "make clean",
     "dev": "PORT=YOUR_PORT PUBLIC_PATH=/YOUR_APP_NAME openedx dev",
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
+    "prepack": "npm run build",
     "snapshot": "openedx test --updateSnapshot",
     "test": "openedx test --coverage --passWithNoTests"
   },
@@ -154,10 +156,13 @@ Also:
 > **Why change `fedx-scripts` to `openedx`?**
 > A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
-Last but not least, add a `build:` target to your `Makefile`.  This target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure:
+Last but not least, add `clean:` and `build:` targets to your `Makefile`.  The build target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure:
 
 ```makefile
-build:
+clean:
+	rm -rf dist
+
+build: clean
 	tsc --project tsconfig.build.json
 	tsc-alias -p tsconfig.build.json
 	find src -type f -name '*.scss' -exec sh -c '\

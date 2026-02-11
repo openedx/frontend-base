@@ -5,10 +5,10 @@
   "main": "src/index.jsx",
   "scripts": {
     "build": "openedx build",
-    "lint": "openedx lint .",
     "dev": "openedx dev",
-    "serve": "openedx serve",
-    "dev:autoinstall": "node ./tools/autoinstall/dev-with-autoinstall.mjs"
+    "dev:autoinstall": "node ./tools/autoinstall/dev-with-autoinstall.mjs",
+    "lint": "openedx lint .",
+    "serve": "openedx serve"
   },
   "keywords": [],
   "author": "Open edX Community",

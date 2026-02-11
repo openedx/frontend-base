@@ -23,8 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm ci
-        npm run build
-        npm run pack:local
+        npm run pack
         cd test-site
         npm i ../pack/openedx-frontend-base.tgz
         npm ci
