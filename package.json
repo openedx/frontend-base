@@ -1,7 +1,7 @@
 {
   "name": "@openedx/frontend-base",
   "version": "1.0.0-alpha.13",
-  "description": "Build tools, setup and config for frontend apps",
+  "description": "Build tools, setup and config for frontend apps.  This is a test.",
   "publishConfig": {
     "access": "public"
   },
