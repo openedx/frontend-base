@@ -1,5 +1,4 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import classNames from 'classnames';
 import { useQuery } from '@tanstack/react-query';
 import { Tab, Tabs } from '@openedx/paragon';
 import { Slot, useIntl } from '../../../runtime';
@@ -45,24 +44,24 @@ const CourseTabsNavigation = () => {
   const handleSelectedTab = (eventKey: string | null) => {
     const selectedUrl = tabs.find(tab => tab.slug === eventKey)?.url ?? '/';
 
-    try {
-      if (selectedUrl.startsWith('http://') || selectedUrl.startsWith('https://')) {
-        const url = new URL(selectedUrl);
-        if (url.origin === window.location.origin) {
-          navigate(url.pathname + url.search + url.hash);
-        } else {
-          window.location.href = selectedUrl;
-        }
+    if (selectedUrl.startsWith('http://') || selectedUrl.startsWith('https://')) {
+      const url = new URL(selectedUrl);
+      if (url.origin === window.location.origin) {
+        navigate(url.pathname + url.search + url.hash);
       } else {
-        navigate(selectedUrl);
+        window.location.href = selectedUrl;
       }
-    } catch (error) {
+    } else {
       navigate(selectedUrl);
     }
   };
 
+  if (!tabs || tabs.length === 0) {
+    return null;
+  }
+
   return (
-    <div id="courseTabsNavigation" className={classNames('course-tabs-navigation')}>
+    <div id="courseTabsNavigation" className="course-tabs-navigation">
       <div className="container-xl">
         <div className="nav-bar">
           <div className="nav-menu">
