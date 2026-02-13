@@ -118,7 +118,7 @@
     "resolve-url-loader": "^5.0.0",
     "sass-embedded": "^1.87.0",
     "sass-loader": "^16.0.2",
-    "sharp": "^0.33.5",
+    "sharp": "^0.34.0",
     "source-map-loader": "4.0.2",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
