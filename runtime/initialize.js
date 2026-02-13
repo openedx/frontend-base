@@ -181,10 +181,13 @@ async function runtimeConfig() {
       }
 
       const { data } = await apiService.get(runtimeConfigUrl.toString(), apiConfig);
+      if (!data || typeof data !== 'object' || Array.isArray(data)) {
+        throw new TypeError('Runtime config must be a valid JSON object.');
+      }
       mergeSiteConfig(data, { limitAppMergeToConfig: true });
     }
   } catch (error) {
-    console.error('Error with config API', error.message);
+    console.error('Error with config API:', error.message);
   }
 }
 

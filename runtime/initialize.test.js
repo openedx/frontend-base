@@ -377,7 +377,7 @@ describe('initialize', () => {
       });
 
       expect(configureCache).toHaveBeenCalled();
-      expect(console.error).toHaveBeenCalledWith('Error with config API', 'Api fails');
+      expect(console.error).toHaveBeenCalledWith('Error with config API:', 'Api fails');
       expect(configureLogging).toHaveBeenCalledWith(NewRelicLoggingService, { config });
       expect(configureAuth).toHaveBeenCalledWith(AxiosJwtAuthService, {
         loggingService: getLoggingService(),
