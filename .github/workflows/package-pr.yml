@@ -1,0 +1,74 @@
+name: Package PR
+
+on:
+  workflow_run:
+    workflows: ["Default CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  package:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      !startsWith(github.event.workflow_run.head_branch, 'renovate/')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: npm-package
+        run-id: ${{ github.event.workflow_run.id }}
+        github-token: ${{ github.token }}
+
+    - name: Read PR number
+      id: pr
+      run: echo "number=$(cat pr-number.txt)" >> "$GITHUB_OUTPUT"
+
+    - name: Upload package to a temporary release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        TAG="pr-${{ steps.pr.outputs.number }}"
+        gh release delete "$TAG" --repo "${{ github.repository }}" --yes --cleanup-tag || true
+        gh release create "$TAG" *.tgz \
+          --repo "${{ github.repository }}" \
+          --target "${{ github.event.workflow_run.head_sha }}" \
+          --prerelease \
+          --title "PR #${{ steps.pr.outputs.number }}" \
+          --notes "Test package for PR #${{ steps.pr.outputs.number }}"
+
+    - name: Update PR description with package link
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        TAG="pr-${{ steps.pr.outputs.number }}"
+        ASSET_URL=$(gh release view "$TAG" --repo "${{ github.repository }}" --json assets --jq '.assets[0].url')
+        BODY=$(gh pr view "${{ steps.pr.outputs.number }}" --repo "${{ github.repository }}" --json body --jq '.body // ""')
+        MARKER_START="<!-- package-link-start -->"
+        MARKER_END="<!-- package-link-end -->"
+        PACKAGE_BLOCK="${MARKER_START}
+        ### Latest PR package
+
+        ${ASSET_URL}
+        ${MARKER_END}"
+
+        if echo "$BODY" | grep -q "$MARKER_START"; then
+          BODY=$(echo "$BODY" | awk -v start="$MARKER_START" -v block="$PACKAGE_BLOCK" '
+            $0 ~ start { print block; skip=1; next }
+            skip && /<!-- package-link-end -->/ { skip=0; next }
+            !skip { print }
+          ')
+        else
+          BODY="${BODY}
+
+        ${PACKAGE_BLOCK}"
+        fi
+
+        echo "$BODY" > /tmp/pr_body.txt
+        gh pr edit "${{ steps.pr.outputs.number }}" --repo "${{ github.repository }}" --body-file /tmp/pr_body.txt
