@@ -12,6 +12,7 @@ clean:
 build:
 	tsc --build ./tsconfig.build.json
 	cp ./shell/app.scss ./dist/shell/app.scss
+	cp ./shell/header/course-navigation-bar/course-tabs-navigation.scss ./dist/shell/header/course-navigation-bar/course-tabs-navigation.scss
 	# When the package is installed from the registry, NPM sets the executable
 	# bit on `bin` files automatically. It doesn't do the same in workspaces,
 	# though, so we handle it explicitly here.

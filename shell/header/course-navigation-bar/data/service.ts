@@ -1,6 +1,6 @@
 import { getSiteConfig, getAuthenticatedHttpClient, camelCaseObject } from '../../../../runtime';
 
-export const getCourseMetadataApiUrl = (courseId) => `${getSiteConfig().lmsBaseUrl}/api/course_home/course_metadata/${courseId}`;
+export const getCourseMetadataApiUrl = (courseId: string) => `${getSiteConfig().lmsBaseUrl}/api/course_home/course_metadata/${courseId}`;
 
 function normalizeCourseHomeCourseMetadata(metadata) {
   const data = camelCaseObject(metadata);
@@ -15,7 +15,7 @@ function normalizeCourseHomeCourseMetadata(metadata) {
   };
 }
 
-export async function getCourseHomeCourseMetadata(courseId) {
+export async function getCourseHomeCourseMetadata(courseId: string) {
   const url = getCourseMetadataApiUrl(courseId);
   const { data } = await getAuthenticatedHttpClient().get(url);
 
