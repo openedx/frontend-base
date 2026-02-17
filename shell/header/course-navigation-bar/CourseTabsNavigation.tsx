@@ -1,19 +1,10 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Tab, Tabs } from '@openedx/paragon';
-import { Slot, useIntl } from '../../../runtime';
+import { Slot } from '../../../runtime';
 import { getCourseHomeCourseMetadata } from './data/service';
-import messages from './messages';
 import './course-tabs-navigation.scss';
-
-interface CourseMetaData {
-  tabs: {
-    title: string,
-    slug: string,
-    url: string,
-  }[],
-  isMasquerading: boolean,
-}
+import { Nav, Navbar, Skeleton } from '@openedx/paragon';
 
 const extractCourseId = (pathname: string): string => {
   const courseRegex = /\/courses?\/([^/]+)/;
@@ -23,58 +14,49 @@ const extractCourseId = (pathname: string): string => {
 
 const CourseTabsNavigation = () => {
   const location = useLocation();
-  const intl = useIntl();
-  const navigate = useNavigate();
+  const [currentTab, setCurrentTab] = useState<string | null>(null);
 
   const courseId = extractCourseId(location.pathname);
 
-  const { data } = useQuery({
+  const { data = { tabs: [], isMasquerading: false }, isLoading } = useQuery({
     queryKey: ['org.openedx.frontend.app.header.course-meta', courseId],
     queryFn: () => getCourseHomeCourseMetadata(courseId),
     retry: 2,
     enabled: !!courseId,
   });
 
-  if (!courseId) {
-    return null;
+  const { tabs } = data;
+
+  if (isLoading) {
+    return <Skeleton className="lead" />;
   }
 
-  const { tabs = [] }: CourseMetaData = data ?? {};
-
-  const handleSelectedTab = (eventKey: string | null) => {
-    const selectedUrl = tabs.find(tab => tab.slug === eventKey)?.url ?? '/';
-
-    if (selectedUrl.startsWith('http://') || selectedUrl.startsWith('https://')) {
-      const url = new URL(selectedUrl);
-      if (url.origin === window.location.origin) {
-        navigate(url.pathname + url.search + url.hash);
-      } else {
-        window.location.href = selectedUrl;
-      }
-    } else {
-      navigate(selectedUrl);
-    }
-  };
-
-  if (!tabs || tabs.length === 0) {
+  if (!courseId || !tabs || tabs.length === 0) {
     return null;
   }
 
   return (
-    <div id="courseTabsNavigation" className="course-tabs-navigation">
-      <div className="container-xl">
-        <div className="nav-bar">
-          <div className="nav-menu">
-            <Tabs className="nav-underline-tabs" aria-label={intl.formatMessage(messages.courseMaterial)} onSelect={handleSelectedTab}>
-              {tabs.map(({ title, slug }) => (
-                <Tab eventKey={slug} title={title} key={slug} />
-              ))}
-            </Tabs>
-          </div>
-          <Slot id="org.openedx.frontend.slot.header.courseNavigationBar.extraContent.v1" />
-        </div>
-      </div>
-    </div>
+    <Navbar className="course-tabs-navigation pb-0">
+      <Nav
+        variant="tabs"
+        activeKey={currentTab}
+      >
+        {
+          tabs.map((tab: { tabId: string, url: string, title: string }) => (
+            <Nav.Item key={tab.tabId}>
+              <Nav.Link
+                href={tab.url}
+                active={tab.tabId === currentTab}
+                onClick={() => setCurrentTab(tab.tabId)}
+              >
+                {tab.title}
+              </Nav.Link>
+            </Nav.Item>
+          ))
+        }
+        <Slot id="org.openedx.frontend.slot.header.courseNavigationBar.extraContent.v1" />
+      </Nav>
+    </Navbar>
   );
 };
 
