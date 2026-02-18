@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Slot } from '../../../runtime';
+import { Slot, useIntl } from '../../../runtime';
 import { getCourseHomeCourseMetadata } from './data/service';
 import './course-tabs-navigation.scss';
 import { Nav, Navbar, Skeleton } from '@openedx/paragon';
+import messages from './messages';
 
 const extractCourseId = (pathname: string): string => {
   const courseRegex = /\/courses?\/([^/]+)/;
@@ -15,6 +16,7 @@ const extractCourseId = (pathname: string): string => {
 const CourseTabsNavigation = () => {
   const location = useLocation();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
+  const intl = useIntl();
 
   const courseId = extractCourseId(location.pathname);
 
@@ -36,7 +38,7 @@ const CourseTabsNavigation = () => {
   }
 
   return (
-    <Navbar className="course-tabs-navigation pb-0">
+    <Navbar className="course-tabs-navigation pb-0" ariaLabel={intl.formatMessage(messages.courseMaterial)}>
       <Nav
         variant="tabs"
         activeKey={currentTab}
