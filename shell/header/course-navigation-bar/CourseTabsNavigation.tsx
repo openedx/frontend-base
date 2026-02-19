@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Slot, useIntl } from '../../../runtime';
-import { getCourseHomeCourseMetadata } from './data/service';
+import { CourseTab, getCourseHomeCourseMetadata } from './data/service';
 import './course-tabs-navigation.scss';
 import { Nav, Navbar, Skeleton } from '@openedx/paragon';
 import messages from './messages';
@@ -44,7 +44,7 @@ const CourseTabsNavigation = () => {
         activeKey={currentTab}
       >
         {
-          tabs.map((tab: { tabId: string, url: string, title: string }) => (
+          tabs.map((tab: CourseTab) => (
             <Nav.Item key={tab.tabId}>
               <Nav.Link
                 href={tab.url}
