@@ -61,4 +61,18 @@ describe('getSlotOperations', () => {
       { slotId: 'test-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget2', element: '' },
     ]);
   });
+
+  it('should return operations matching both the primary id and an alias id', () => {
+    const mockSlots: SlotOperation[] = [
+      { slotId: 'test-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget1', element: '' },
+      { slotId: 'test-slot-alias.ui', op: WidgetOperationTypes.APPEND, id: 'widget2', element: '' },
+      { slotId: 'other-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget3', element: '' },
+    ];
+    (getSiteConfig as jest.Mock).mockReturnValue({ apps: [{ slots: mockSlots }] });
+    const result = getSlotOperations(['test-slot.ui', 'test-slot-alias.ui']);
+    expect(result).toEqual([
+      { slotId: 'test-slot.ui', op: WidgetOperationTypes.APPEND, id: 'widget1', element: '' },
+      { slotId: 'test-slot-alias.ui', op: WidgetOperationTypes.APPEND, id: 'widget2', element: '' },
+    ]);
+  });
 });
