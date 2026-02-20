@@ -1,6 +1,6 @@
 import { createContext, ReactNode } from 'react';
 
-const SlotContext = createContext<{ id: string, children?: ReactNode, [key: string]: unknown }>({
+const SlotContext = createContext<{ id: string, idAliases?: string[], children?: ReactNode, [key: string]: unknown }>({
   id: '',
   children: null,
 });
