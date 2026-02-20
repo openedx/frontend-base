@@ -1,5 +1,6 @@
 import { IntlProvider } from 'react-intl';
 import { Hyperlink, Image } from '@openedx/paragon';
+import { getSiteConfig } from '../runtime/config';
 
 interface LogoProps {
   imageUrl?: string,
@@ -7,7 +8,7 @@ interface LogoProps {
 }
 
 export default function Logo({
-  imageUrl = 'https://edx-cdn.org/v3/default/logo.svg',
+  imageUrl = getSiteConfig().headerLogoImageUrl ?? 'https://edx-cdn.org/v3/default/logo.svg',
   destinationUrl
 }: LogoProps) {
   const image = (
