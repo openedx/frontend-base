@@ -6,7 +6,7 @@
   "scripts": {
     "build": "openedx build",
     "dev": "openedx dev",
-    "dev:autoinstall": "node ./tools/autoinstall/dev-with-autoinstall.mjs",
+    "dev:autoinstall": "PORT=8080 FRONTEND_BASE_DIR=.. devutils-dev-with-autoinstall",
     "lint": "openedx lint .",
     "serve": "openedx serve"
   },
@@ -24,6 +24,6 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "^1.5.0",
-    "chokidar": "^5.0.0"
+    "@openedx/frontend-dev-utils": "^1.0.0"
   }
 }

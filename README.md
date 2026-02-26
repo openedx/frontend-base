@@ -69,7 +69,7 @@ The development site will be available at `http://apps.local.openedx.io:8080`.
 
 ### Developing an app and `frontend-base` concurrently
 
-Concurrent development with `frontend-base` uses a tarball-based workflow rather than traditional local linking approaches. See [test-site/tools/autoinstall/README.md](./test-site/tools/autoinstall/README.md) for details.
+Concurrent development with `frontend-base` uses a tarball-based workflow rather than traditional local linking approaches. See the [`@openedx/frontend-dev-utils` autoinstall README](https://github.com/openedx/frontend-dev-utils/blob/main/tools/autoinstall/README.md) for details.
 
 #### In `frontend-base`
 
@@ -84,7 +84,7 @@ npm run pack:watch
 #### In the consuming application
 
 > [!NOTE]
-> This assumes the consuming application has the same tooling as [test-site/tools/autoinstall/](./test-site/tools/autoinstall/)
+> This assumes the consuming application is using `devutils-dev-with-autoinstall` from `@openedx/frontend-dev-utils`.
 
 This watches for changes to the generated .tgz, installs the updated package, and restarts the dev server.
 
