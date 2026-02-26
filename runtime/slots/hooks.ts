@@ -12,7 +12,7 @@ import { createWidgetAppendOperation } from './widget';
  * config as it changes.
  */
 export function useSlotOperations(id: string) {
-  const { children } = useSlotContext();
+  const { children, idAliases } = useSlotContext();
   const location = useLocation();
   const [operations, setOperations] = useState<SlotOperation[]>([]);
 
@@ -21,11 +21,11 @@ export function useSlotOperations(id: string) {
     // when [children] props change.  This avoids an endless render loop.  After all, the whole
     // point of a slot is to modify its children via slot operations.
     const defaultOperation = createWidgetAppendOperation('defaultContent', id, children);
-    setOperations(getSlotOperations(id, defaultOperation));
+    setOperations(getSlotOperations([id, ...(idAliases ?? [])], defaultOperation));
 
     // We depend on [location] to force re-renders on navigation.  This guarantees changes in active
     // roles (and thus, changes in what conditional widgets are shown) properly.
-  }, [id, children, location]);
+  }, [id, children, idAliases, location]);
 
   return operations;
 }

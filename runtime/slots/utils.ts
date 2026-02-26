@@ -2,7 +2,7 @@ import { getAuthenticatedUser } from '../auth';
 import { getActiveRoles, getSiteConfig } from '../config';
 import { SlotOperation } from './types';
 
-export function getSlotOperations(id: string, defaultOperation?: SlotOperation) {
+export function getSlotOperations(ids: string[], defaultOperation?: SlotOperation) {
   const { apps } = getSiteConfig();
   const ops: SlotOperation[] = [];
 
@@ -14,7 +14,7 @@ export function getSlotOperations(id: string, defaultOperation?: SlotOperation) 
     apps.forEach((app) => {
       if (Array.isArray(app.slots)) {
         app.slots.forEach((operation) => {
-          if (operation.slotId === id) {
+          if (ids.includes(operation.slotId)) {
             ops.push(operation);
           }
         });
