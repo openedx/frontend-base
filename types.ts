@@ -59,6 +59,7 @@ export interface OptionalSiteConfig {
   externalRoutes: ExternalRoute[],
   externalLinkUrlOverrides: string[],
   runtimeConfigJsonUrl: string | null,
+  commonAppConfig: AppConfig,
   headerLogoImageUrl: string,
 
   // Theme

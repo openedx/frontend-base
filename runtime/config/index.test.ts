@@ -1,6 +1,8 @@
 import { CONFIG_CHANGED } from '../constants';
 import * as subscriptions from '../subscriptions';
 import {
+  addAppConfigs,
+  getAppConfig,
   getSiteConfig,
   mergeSiteConfig,
   setSiteConfig,
@@ -293,6 +295,59 @@ describe('mergeSiteConfig', () => {
 
       // Config should be unchanged
       expect(getSiteConfig().apps![0].config!.ORIGINAL).toBe('value');
+    });
+  });
+
+  describe('getAppConfig with commonAppConfig', () => {
+    it('should return commonAppConfig values for an app with no config', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        commonAppConfig: { COMMON_KEY: 'common-value' },
+        apps: [{ appId: 'test-app' }],
+      });
+      addAppConfigs();
+
+      const config = getAppConfig('test-app');
+      expect(config).toEqual({ COMMON_KEY: 'common-value' });
+    });
+
+    it('should let app-specific config override commonAppConfig', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        commonAppConfig: { SHARED: 'common', COMMON_ONLY: 'yes' },
+        apps: [{ appId: 'test-app', config: { SHARED: 'app-specific', APP_ONLY: 'yes' } }],
+      });
+      addAppConfigs();
+
+      const config = getAppConfig('test-app');
+      expect(config).toEqual({
+        SHARED: 'app-specific',
+        COMMON_ONLY: 'yes',
+        APP_ONLY: 'yes',
+      });
+    });
+
+    it('should return app config as-is when commonAppConfig is not set', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [{ appId: 'test-app', config: { VALUE: 'test' } }],
+      });
+      addAppConfigs();
+
+      const config = getAppConfig('test-app');
+      expect(config).toEqual({ VALUE: 'test' });
+    });
+
+    it('should deep merge commonAppConfig with app config', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        commonAppConfig: { NESTED: { a: 1, b: 2 } },
+        apps: [{ appId: 'test-app', config: { NESTED: { b: 3, c: 4 } } }],
+      });
+      addAppConfigs();
+
+      const config = getAppConfig('test-app');
+      expect(config).toEqual({ NESTED: { a: 1, b: 3, c: 4 } });
     });
   });
 });
