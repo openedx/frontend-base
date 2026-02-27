@@ -272,7 +272,11 @@ export function addAppConfigs() {
 }
 
 export function getAppConfig(id: string) {
-  return appConfigs[id];
+  const { commonAppConfig } = getSiteConfig();
+  if (commonAppConfig === undefined) {
+    return appConfigs[id];
+  }
+  return merge({}, commonAppConfig, appConfigs[id]);
 }
 
 export function mergeAppConfig(id: string, newAppConfig: AppConfig) {
