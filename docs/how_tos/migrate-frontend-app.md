@@ -372,12 +372,13 @@ module.exports = createConfig('test', {
 })
 ```
 
-Jest test suites that test React components that import SVG and files must add mocks for those filetypes.  This can be accomplished by adding the following module name mappers to jest.config.js:
+Jest test suites that test React components that import SVG and other assets (such as PNGs) must add mocks for those filetypes.  This can be accomplished by adding module name mappers to jest.config.js.  Just make sure they come before the `@src` alias, which must also be added here if you're using it:
 
 ```js
 moduleNameMapper: {
   '\\.svg$': '<rootDir>/src/__mocks__/svg.js',
-  '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/__mocks__/file.js',
+  '\\.png$': '<rootDir>/src/__mocks__/file.js',
+  '^@src/(.*)$': '<rootDir>/src/$1',
 },
 ```
 
@@ -420,7 +421,8 @@ module.exports = createConfig('test', {
   ],
   moduleNameMapper: {
     '\\.svg$': '<rootDir>/src/__mocks__/svg.js',
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/__mocks__/file.js',
+    '\\.png$': '<rootDir>/src/__mocks__/file.js',
+    '^@src/(.*)$': '<rootDir>/src/$1',
   },
 });
 ```
@@ -800,7 +802,7 @@ Once you've verified your test suite still works, you should delete the `.env.te
 A sample `site.config.test.tsx` file:
 
 ```js
-import { EnvironmentTypes, SiteConfig } from '@openedx/frontend-base';
+import type { SiteConfig } from '@openedx/frontend-base';
 
 const siteConfig: SiteConfig = {
   siteId: 'test',
@@ -809,7 +811,9 @@ const siteConfig: SiteConfig = {
   lmsBaseUrl: 'http://localhost:18000',
   loginUrl: 'http://localhost:18000/login',
   logoutUrl: 'http://localhost:18000/logout',
-  environment: EnvironmentTypes.TEST,
+  // Use 'test' instead of EnvironmentTypes.TEST to break a circular dependency
+  // when mocking `@openedx/frontend-base` itself.
+  environment: 'test' as SiteConfig['environment'],
   apps: [{
     appId: 'test-app',
     routes: [{
