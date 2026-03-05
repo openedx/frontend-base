@@ -156,7 +156,7 @@ Also:
 > **Why change `fedx-scripts` to `openedx`?**
 > A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
-Last but not least, add `clean:` and `build:` targets to your `Makefile`.  The build target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure:
+Last but not least, add `clean:` and `build:` targets to your `Makefile`.  The build target compiles TypeScript to JavaScript, copies all SCSS and asset files from `src/` into `dist/` preserving directory structure, and finally uses `tsc-alias` to rewrite `@src` path aliases to relative paths:
 
 ```makefile
 clean:
@@ -164,14 +164,16 @@ clean:
 
 build: clean
 	tsc --project tsconfig.build.json
-	tsc-alias -p tsconfig.build.json
-	find src -type f -name '*.scss' -exec sh -c '\
+	find src -type f \( -name '*.scss' -o -path '*/assets/*' \) -exec sh -c '\
 	  for f in "$$@"; do \
 	    d="dist/$${f#src/}"; \
 	    mkdir -p "$$(dirname "$$d")"; \
 	    cp "$$f" "$$d"; \
 	  done' sh {} +
+	tsc-alias -p tsconfig.build.json
 ```
+
+Note that the `find` command copies all files under `assets/` directories regardless of type, so you don't need to enumerate asset extensions.  Also note that `tsc-alias` runs after the copy step so that it can resolve `@src` aliases pointing to asset files.  If it ran before, it wouldn't find them and would omit them from the relative path conversion.
 
 Other package.json edits
 ------------------------
@@ -372,12 +374,13 @@ module.exports = createConfig('test', {
 })
 ```
 
-Jest test suites that test React components that import SVG and files must add mocks for those filetypes.  This can be accomplished by adding the following module name mappers to jest.config.js:
+Jest test suites that test React components that import SVG and other assets (such as PNGs) must add mocks for those filetypes.  This can be accomplished by adding module name mappers to jest.config.js.  Just make sure they come before the `@src` alias, which must also be added here if you're using it:
 
 ```js
 moduleNameMapper: {
   '\\.svg$': '<rootDir>/src/__mocks__/svg.js',
-  '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/__mocks__/file.js',
+  '\\.png$': '<rootDir>/src/__mocks__/file.js',
+  '^@src/(.*)$': '<rootDir>/src/$1',
 },
 ```
 
@@ -420,7 +423,8 @@ module.exports = createConfig('test', {
   ],
   moduleNameMapper: {
     '\\.svg$': '<rootDir>/src/__mocks__/svg.js',
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/__mocks__/file.js',
+    '\\.png$': '<rootDir>/src/__mocks__/file.js',
+    '^@src/(.*)$': '<rootDir>/src/$1',
   },
 });
 ```
@@ -800,7 +804,7 @@ Once you've verified your test suite still works, you should delete the `.env.te
 A sample `site.config.test.tsx` file:
 
 ```js
-import { EnvironmentTypes, SiteConfig } from '@openedx/frontend-base';
+import type { SiteConfig } from '@openedx/frontend-base';
 
 const siteConfig: SiteConfig = {
   siteId: 'test',
@@ -809,7 +813,9 @@ const siteConfig: SiteConfig = {
   lmsBaseUrl: 'http://localhost:18000',
   loginUrl: 'http://localhost:18000/login',
   logoutUrl: 'http://localhost:18000/logout',
-  environment: EnvironmentTypes.TEST,
+  // Use 'test' instead of EnvironmentTypes.TEST to break a circular dependency
+  // when mocking `@openedx/frontend-base` itself.
+  environment: 'test' as SiteConfig['environment'],
   apps: [{
     appId: 'test-app',
     routes: [{
