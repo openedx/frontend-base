@@ -111,7 +111,7 @@
     "react-dev-utils": "12.0.1",
     "react-focus-on": "<3.10.0",
     "react-intl": "^6.6.6",
-    "react-refresh": "0.16.0",
+    "react-refresh": "0.18.0",
     "react-refresh-typescript": "^2.0.9",
     "react-responsive": "^10.0.0",
     "react-transition-group": "^4.4.5",
