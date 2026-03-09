@@ -24,7 +24,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({
         return;
       }
 
-      // user already authenticated
+      //check to validate if the user is already authenticated
       const user = getAuthenticatedUser();
       if (user) {
         setIsChecking(false);
