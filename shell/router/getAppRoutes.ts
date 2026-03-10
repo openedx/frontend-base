@@ -1,32 +1,34 @@
 import React from 'react';
 
-import { getSiteConfig } from '../../runtime';
+import { getSiteConfig, AuthenticatedPageRoute } from '../../runtime';
 import { App, RoleRouteObject } from '../../types';
-import AuthGuard from './AuthGuard';
 
-function createAuthenticatedComponent(OriginalComponent: React.ComponentType<any>) {
-  const AuthenticatedComponent: React.FC = (props) => {
-    return React.createElement(
-      AuthGuard,
-      {
-        requireAuthenticatedUser: true,
-      } as React.ComponentProps<typeof AuthGuard>,
-      React.createElement(OriginalComponent, props)
-    );
-  };
-
-  return AuthenticatedComponent;
+interface AuthComponentProps {
+  redirectUrl?: string | null,
+  requireAuthenticatedUser?: boolean,
+  children?: React.ReactNode,
 }
 
 function wrapRouteWithAuth(route: RoleRouteObject): RoleRouteObject {
-  // Check if route has requireAuthenticatedUser property using type assertion
-  const routeWithAuth = route as RoleRouteObject & { requireAuthenticatedUser?: boolean };
+  const routeWithAuth = route as RoleRouteObject & {
+    requireAuthenticatedUser?: boolean,
+    redirectUrl?: string,
+  };
   if (routeWithAuth.requireAuthenticatedUser && route.Component) {
+    const OriginalComponent = route.Component;
     return {
       ...route,
-      Component: createAuthenticatedComponent(route.Component as React.ComponentType<any>),
+      Component: (props) =>
+        React.createElement(
+          AuthenticatedPageRoute as React.ComponentType<AuthComponentProps>,
+          {
+            redirectUrl: routeWithAuth.redirectUrl ?? null,
+          },
+          React.createElement(OriginalComponent, props)
+        ),
     };
   }
+
   return route;
 }
 
