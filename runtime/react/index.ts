@@ -10,6 +10,7 @@ export { default as CurrentAppContext } from './CurrentAppContext';
 export { default as CurrentAppProvider } from './CurrentAppProvider';
 export { default as SiteContext } from './SiteContext';
 export { default as SiteProvider } from './SiteProvider';
+export { default as AuthenticatedLayout } from './AuthenticatedLayout';
 export { default as AuthenticatedPageRoute } from './AuthenticatedPageRoute';
 export { default as Divider } from './Divider';
 export { default as ErrorBoundary } from './ErrorBoundary';

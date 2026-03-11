@@ -5,6 +5,10 @@ import PageWrap from './PageWrap';
 import { useAuthenticatedUser } from './hooks';
 
 /**
+ * @deprecated Use AuthenticatedLayout instead.
+ */
+
+/**
  * A react-router route that redirects to the login page when the route becomes active and the user
  * is not authenticated.  If the application has been initialized with `requireAuthenticatedUser`
  * false, an authenticatedPageRoute can be used to protect a subset of the application's routes,

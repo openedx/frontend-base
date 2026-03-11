@@ -98,6 +98,7 @@ export {
   CurrentAppProvider,
   SiteContext,
   SiteProvider,
+  AuthenticatedLayout,
   AuthenticatedPageRoute,
   Divider,
   ErrorBoundary,
