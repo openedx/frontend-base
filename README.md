@@ -78,7 +78,7 @@ This watches for changes in `frontend-base` and rebuilds the packaged tarball on
 ```sh
 nvm use
 npm ci
-npm run pack:watch
+npm run watch:pack
 ```
 
 #### In the consuming application
