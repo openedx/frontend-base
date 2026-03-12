@@ -13,9 +13,13 @@ cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 clean:
 	rm -rf dist .tsbuildinfo.*
 
-build: clean
+build:
 	tsc --build ./tsconfig.build.json
 	cp ./shell/app.scss ./dist/shell/app.scss
+	# When the package is installed from the registry, NPM sets the executable
+	# bit on `bin` files automatically. It doesn't do the same in workspaces,
+	# though, so we handle it explicitly here.
+	chmod a+x $$(node -p "Object.values(require('./package.json').bin).join(' ')")
 
 docs-build:
 	${doc_command}

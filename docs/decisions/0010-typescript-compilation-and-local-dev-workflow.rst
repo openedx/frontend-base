@@ -122,7 +122,7 @@ To develop a local dependency (e.g., ``@openedx/frontend-base``) against a
 consuming project:
 
 1. In the dependency: ``npm run pack`` (or use a watcher like ``nodemon`` with
-   ``npm run pack:watch``)
+   ``npm run watch:pack``)
 2. In the consumer: install from the tarball and run the dev server (or use the
    `autoinstall tool`_ from the ``frontend-dev-utils`` package)
 
