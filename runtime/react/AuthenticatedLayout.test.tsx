@@ -23,15 +23,31 @@ const mockGetUrlByRouteRole = getUrlByRouteRole as jest.MockedFunction<typeof ge
 const mockGetLoginRedirectUrl = getLoginRedirectUrl as jest.MockedFunction<typeof getLoginRedirectUrl>;
 
 const mockLocationAssign = jest.fn();
-Object.defineProperty(global, 'location', {
-  value: {
-    href: 'https://example.com/current-page',
-    assign: mockLocationAssign,
-  },
-  writable: true,
-});
 
 describe('AuthenticatedLayout', () => {
+  let originalLocation: Location;
+
+  beforeAll(() => {
+    // Save the original location
+    originalLocation = global.location;
+    // Override global.location for tests
+    Object.defineProperty(global, 'location', {
+      value: {
+        href: 'https://example.com/current-page',
+        assign: mockLocationAssign,
+      },
+      writable: true,
+    });
+  });
+
+  afterAll(() => {
+    // Restore the original location
+    Object.defineProperty(global, 'location', {
+      value: originalLocation,
+      writable: true,
+    });
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
