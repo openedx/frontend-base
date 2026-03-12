@@ -134,7 +134,7 @@ With the exception of any custom scripts, replace the `scripts` section of your 
     "i18n_extract": "openedx formatjs extract",
     "lint": "openedx lint .",
     "lint:fix": "openedx lint --fix .",
-    "prepack": "npm run build",
+    "prepack": "npm run clean && npm run build",
     "snapshot": "openedx test --updateSnapshot",
     "test": "openedx test --coverage --passWithNoTests"
   },
@@ -156,13 +156,15 @@ Also:
 > **Why change `fedx-scripts` to `openedx`?**
 > A few reasons.  One, the Open edX project shouldn't be using the name of an internal community of practice at edX for its frontend tooling.  Two, some dependencies of your MFE invariably still use frontend-build for their own build needs.  This means that they already installed `fedx-scripts` into your `node_modules/.bin` folder.  Only one version can be in there, so we need a new name.  Seemed like a great time for a naming refresh. |
 
-Last but not least, add `clean:` and `build:` targets to your `Makefile`.  The build target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure:
+Last but not least, add `clean:` and `build:` targets to your `Makefile`.  The build target compiles TypeScript to JavaScript, uses `tsc-alias` to rewrite `@src` path aliases to relative paths, and copies all SCSS files from `src/` into `dist/` preserving directory structure.
+
+Note that `build` intentionally does *not* depend on `clean`.  This allows incremental rebuilds during development (especially in workspace mode, where a watcher triggers `build` on every change).  The `prepack` script in `package.json` runs `clean && build` explicitly, so published packages always start fresh.
 
 ```makefile
 clean:
 	rm -rf dist
 
-build: clean
+build:
 	tsc --project tsconfig.build.json
 	tsc-alias -p tsconfig.build.json
 	find src -type f -name '*.scss' -exec sh -c '\
@@ -248,6 +250,9 @@ node_modules
 npm-debug.log
 coverage
 dist/
+packages/
+/.turbo
+/turbo.json
 /*.tgz
 
 ### i18n ###
@@ -952,3 +957,137 @@ Refactor slots
 First, rename `src/plugin-slots`, if it exists, to `src/slots`.  Modify imports and documentation across the codebase accordingly.
 
 Next, the frontend-base equivalent to `<PluginSlot />` is `<Slot />`, and has a different API.   This includes a change in the slot ID, according to the [new slot naming ADR](../decisions/0009-slot-naming-and-lifecycle.rst) in this repository.  Rename them accordingly. You can refer to the `src/shell/dev` in this repository for examples.
+
+
+Set up npm workspaces for local development
+===========================================
+
+Frontend apps support `npm workspaces <https://docs.npmjs.com/cli/using-npm/workspaces>`_ so that developers can work on the app and its dependencies (such as ``frontend-base``) simultaneously, with changes reflected automatically.
+
+Add the workspaces field to package.json
+-----------------------------------------
+
+```diff
++ "workspaces": [
++   "packages/*"
++ ],
+```
+
+This tells npm to look in ``packages/`` for local overrides of published packages.  The ``packages/`` directory is gitignored (see the `.gitignore` step above), since it contains development-only bind-mounted checkouts.
+
+Add a turbo.site.json file
+--------------------------
+
+Create a ``turbo.site.json`` at the repository root.  This configures `Turborepo <https://turbo.build/>`_ to build workspace packages in dependency order and run persistent tasks (watch and dev server) concurrently:
+
+```json
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "watch:build": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
+    },
+    "//#dev:site": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
+    }
+  }
+}
+```
+
+The file is named ``turbo.site.json`` rather than ``turbo.json`` to avoid conflicts with turbo v2's workspace validation.  When a site repository includes your app as an npm workspace, turbo scans for ``turbo.json`` in each package directory and rejects root task syntax (``//#``) and configs without ``"extends"``.  By using a different filename, the config is invisible to turbo during workspace runs, and only activated via the Makefile when running standalone (see below).
+
+Add a nodemon.json file
+------------------------
+
+Create a ``nodemon.json`` at the repository root.  This configures the ``watch:build`` script to rebuild automatically when source files change:
+
+```json
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "js,jsx,ts,tsx,scss"
+}
+```
+
+Add workspace-aware scripts
+----------------------------
+
+Install ``turbo`` and ``nodemon`` as dev dependencies:
+
+```sh
+npm install --save-dev turbo nodemon
+```
+
+Then add the following scripts to ``package.json``:
+
+```json
+"build:packages": "make build-packages",
+"clean:packages": "make clean-packages",
+"dev:site": "npm run dev",
+"dev:packages": "make dev-packages",
+"watch:build": "nodemon --exec 'npm run build'",
+```
+
+And add the corresponding Makefile targets:
+
+```makefile
+TURBO = TURBO_TELEMETRY_DISABLED=1 turbo --dangerously-disable-package-manager-check
+
+# turbo.site.json is the standalone turbo config for this package.  It is
+# renamed to avoid conflicts with turbo v2's workspace validation, which
+# rejects root task syntax (//#) and requires "extends" in package-level
+# turbo.json files, such as when running in a site repository. The targets
+# below copy it into place before running turbo and clean up after.
+turbo.json: turbo.site.json
+	cp $< $@
+
+build-packages: turbo.json
+	$(TURBO) run build; rm -f turbo.json
+
+clean-packages: turbo.json
+	$(TURBO) run clean; rm -f turbo.json
+
+dev-packages: turbo.json
+	$(TURBO) run watch:build dev:site; rm -f turbo.json
+```
+
+- ``watch:build`` uses ``nodemon`` to watch for source changes (as configured in ``nodemon.json``) and re-runs ``npm run build`` on each change.  Turbo runs this in each workspace package that defines it.
+- ``build:packages`` builds all workspace packages in dependency order (e.g., ``frontend-base`` before the app).
+- ``clean:packages`` runs the ``clean`` script in each workspace package.
+- ``dev:site`` is an alias for ``npm run dev`` that turbo uses as a root-only task (``//#dev:site``).
+- ``dev:packages`` builds dependencies, then concurrently watches workspace packages for changes and starts the dev server.
+
+The Makefile targets copy ``turbo.site.json`` to ``turbo.json`` before invoking turbo, then remove the copy afterward.  This ensures turbo finds its expected config when running standalone, without leaving a ``turbo.json`` that would conflict in a workspace context.  The ``--dangerously-disable-package-manager-check`` flag and ``TURBO_TELEMETRY_DISABLED=1`` are also set here, keeping turbo invocation details in one place.
+
+Using workspaces
+-----------------
+
+To develop against a local ``frontend-base``:
+
+```sh
+mkdir -p packages/frontend-base
+sudo mount --bind /path/to/frontend-base packages/frontend-base
+npm install
+npm run dev:packages
+```
+
+Bind mounts are used instead of symlinks because Node.js resolves symlinks to real paths, which breaks hoisted dependency resolution.  Docker volume mounts work equally well (and are what ``tutor dev`` uses).
+
+When done, unmount with:
+
+```sh
+sudo umount packages/frontend-base
+```
