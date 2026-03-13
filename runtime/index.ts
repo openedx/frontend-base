@@ -111,6 +111,7 @@ export {
 } from './react';
 
 export {
+  authenticatedLoader,
   getUrlByRouteRole,
   isRoleRouteObject
 } from './routing';
