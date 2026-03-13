@@ -149,7 +149,7 @@
     "@types/node": "^18.19.43",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
-    "axios-mock-adapter": "^1.22.0",
+    "axios-mock-adapter": "^2.0.0",
     "jest-chain": "^1.1.6",
     "jsdoc": "^4.0.3",
     "nodemon": "^3.1.4"
