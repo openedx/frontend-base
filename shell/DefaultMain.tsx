@@ -1,7 +1,10 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router';
 
 export default function DefaultMain() {
   return (
-    <Outlet />
+    <Suspense fallback={null}>
+      <Outlet />
+    </Suspense>
   );
 }

@@ -98,7 +98,6 @@ export {
   CurrentAppProvider,
   SiteContext,
   SiteProvider,
-  AuthenticatedLayout,
   AuthenticatedPageRoute,
   Divider,
   ErrorBoundary,
@@ -112,6 +111,7 @@ export {
 } from './react';
 
 export {
+  authenticatedLoader,
   getUrlByRouteRole,
   isRoleRouteObject
 } from './routing';
