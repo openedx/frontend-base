@@ -3,7 +3,7 @@ import { RouteObject } from 'react-router';
 import { RoleRouteObject } from '../../types';
 import { getSiteConfig } from '../config';
 
-function findRoleInRoutes(routes: RouteObject[], role: string, prefix: string = ''): string | null {
+function findRoleInRoutes(routes: RouteObject[], role: string, prefix = ''): string | null {
   for (const route of routes) {
     const segment = route.path ?? '';
     const fullPath = segment.startsWith('/') ? segment : `${prefix}/${segment}`.replace(/\/+/g, '/');
