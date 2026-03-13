@@ -3,6 +3,7 @@ npm-debug.log
 coverage
 /.tsbuildinfo.*
 dist/
+/.turbo
 scss
 docs/api
 

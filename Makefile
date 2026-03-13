@@ -13,7 +13,7 @@ cat_docs_command = cat ./docs/_API-header.md ./docs/_API-body.md > ./docs/API.md
 clean:
 	rm -rf dist .tsbuildinfo.*
 
-build: clean
+build:
 	tsc --build ./tsconfig.build.json
 	cp ./shell/app.scss ./dist/shell/app.scss
 
