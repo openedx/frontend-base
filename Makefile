@@ -16,6 +16,7 @@ clean:
 build: clean
 	tsc --build ./tsconfig.build.json
 	cp ./shell/app.scss ./dist/shell/app.scss
+	cp ./shell/header/course-navigation-bar/course-tabs-navigation.scss ./dist/shell/header/course-navigation-bar/course-tabs-navigation.scss
 
 docs-build:
 	${doc_command}
