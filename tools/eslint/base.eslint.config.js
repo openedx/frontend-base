@@ -88,6 +88,7 @@ module.exports = tseslint.config(
       }],
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      '@typescript-eslint/prefer-optional-chain': 'off',
       '@stylistic/semi': ['error', 'always', { omitLastInOneLineBlock: true, omitLastInOneLineClassBody: true }],
       '@stylistic/quotes': ['error', 'single', {
         avoidEscape: true,
@@ -113,9 +114,9 @@ module.exports = tseslint.config(
   },
   {
     files: [
-      'babel.config.js',
-      'jest.config.js',
-      'eslint.config.js'
+      '**/babel.config.js',
+      '**/jest.config.js',
+      '**/eslint.config.js'
     ],
     rules: {
       '@typescript-eslint/no-require-imports': 'off'
