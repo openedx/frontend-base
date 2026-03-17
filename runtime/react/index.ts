@@ -14,6 +14,7 @@ export { default as AuthenticatedPageRoute } from './AuthenticatedPageRoute';
 export { default as Divider } from './Divider';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as ErrorPage } from './ErrorPage';
+export { default as NotFoundPage } from './NotFoundPage';
 export { useSiteEvent, useAuthenticatedUser, useSiteConfig, useAppConfig } from './hooks';
 export { default as LoginRedirect } from './LoginRedirect';
 export { default as PageWrap } from './PageWrap';

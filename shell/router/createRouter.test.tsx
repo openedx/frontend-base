@@ -36,6 +36,7 @@ describe('createRouter', () => {
       [
         {
           Component: Shell,
+          errorElement: expect.anything(),
           children: mockRoutes,
         },
       ],
