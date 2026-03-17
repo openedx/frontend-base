@@ -17,6 +17,13 @@ const mockRedirect = redirect as jest.MockedFunction<typeof redirect>;
 
 const mockLocationAssign = jest.fn();
 
+function makeLoaderArgs(url: string) {
+  return {
+    request: { url } as any,
+    params: {},
+  };
+}
+
 describe('authenticatedLoader', () => {
   const originalLocation = global.location;
 
@@ -54,44 +61,44 @@ describe('authenticatedLoader', () => {
       avatar: 'https://example.com/avatar.jpg',
     });
 
-    const result = authenticatedLoader();
+    const result = authenticatedLoader(makeLoaderArgs('https://example.com/dashboard'));
 
     expect(result).toBeNull();
     expect(mockLocationAssign).not.toHaveBeenCalled();
     expect(mockGetUrlByRouteRole).not.toHaveBeenCalled();
   });
 
-  it('returns SPA redirect with relative ?next for internal login route', () => {
+  it('returns SPA redirect with ?next derived from request URL, not global.location', () => {
     mockGetAuthenticatedUser.mockReturnValue(null);
     mockGetUrlByRouteRole.mockReturnValue('/login');
 
-    authenticatedLoader();
+    authenticatedLoader(makeLoaderArgs('https://example.com/dashboard'));
 
-    expect(mockRedirect).toHaveBeenCalledWith('/login?next=%2Fcurrent-page');
+    expect(mockRedirect).toHaveBeenCalledWith('/login?next=%2Fdashboard');
     expect(mockLocationAssign).not.toHaveBeenCalled();
   });
 
   it('calls location.assign for a cross-origin login route', () => {
     mockGetAuthenticatedUser.mockReturnValue(null);
     mockGetUrlByRouteRole.mockReturnValue('https://auth.example.com/login');
-    mockGetLoginRedirectUrl.mockReturnValue('https://auth.example.com/login?next=%2Fcurrent-page');
+    mockGetLoginRedirectUrl.mockReturnValue('https://auth.example.com/login?next=%2Fdashboard');
 
-    const result = authenticatedLoader();
+    const result = authenticatedLoader(makeLoaderArgs('https://example.com/dashboard'));
 
-    expect(mockGetLoginRedirectUrl).toHaveBeenCalledWith('https://example.com/current-page');
-    expect(mockLocationAssign).toHaveBeenCalledWith('https://auth.example.com/login?next=%2Fcurrent-page');
+    expect(mockGetLoginRedirectUrl).toHaveBeenCalledWith('https://example.com/dashboard');
+    expect(mockLocationAssign).toHaveBeenCalledWith('https://auth.example.com/login?next=%2Fdashboard');
     expect(result).toBeInstanceOf(Promise);
   });
 
   it('falls back to location.assign when no login role is found', () => {
     mockGetAuthenticatedUser.mockReturnValue(null);
     mockGetUrlByRouteRole.mockReturnValue(null);
-    mockGetLoginRedirectUrl.mockReturnValue('https://auth.example.com/login?next=%2Fcurrent-page');
+    mockGetLoginRedirectUrl.mockReturnValue('https://auth.example.com/login?next=%2Fdashboard');
 
-    const result = authenticatedLoader();
+    const result = authenticatedLoader(makeLoaderArgs('https://example.com/dashboard'));
 
-    expect(mockGetLoginRedirectUrl).toHaveBeenCalledWith('https://example.com/current-page');
-    expect(mockLocationAssign).toHaveBeenCalledWith('https://auth.example.com/login?next=%2Fcurrent-page');
+    expect(mockGetLoginRedirectUrl).toHaveBeenCalledWith('https://example.com/dashboard');
+    expect(mockLocationAssign).toHaveBeenCalledWith('https://auth.example.com/login?next=%2Fdashboard');
     expect(result).toBeInstanceOf(Promise);
   });
 });
