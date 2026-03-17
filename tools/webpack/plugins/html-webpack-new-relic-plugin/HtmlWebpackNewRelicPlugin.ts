@@ -14,9 +14,7 @@ enum OptionTypes {
   TRUST_KEY = 'trustKey',
 }
 
-type HtmlWebpackNewRelicPluginOptions = {
-  [key in OptionTypes]: string | undefined;
-};
+type HtmlWebpackNewRelicPluginOptions = Record<OptionTypes, string | undefined>;
 
 export default class HtmlWebpackNewRelicPlugin {
   options: HtmlWebpackNewRelicPluginOptions;
