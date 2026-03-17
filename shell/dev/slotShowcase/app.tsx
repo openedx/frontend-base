@@ -42,6 +42,40 @@ function TakesPropsViaContext() {
   );
 }
 
+// Wrapper function for demonstrating wrap operation
+function SimpleWrapper({ component, idx }: { component: any, idx: number }) {
+  return (
+    <div
+      style={{
+        border: '2px dashed #007bff',
+        padding: '8px',
+        margin: '4px',
+        borderRadius: '4px',
+        backgroundColor: '#f8f9fa'
+      }}
+    >
+      <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6c757d' }}>
+        Wrapper {idx + 1} - This widget has been wrapped!
+      </p>
+      {component}
+    </div>
+  );
+}
+
+// Toggle wrapper that could hide/show widgets
+function ToggleWrapper({ component, idx }: { component: any, idx: number }) {
+  return (
+    <details open>
+      <summary style={{ cursor: 'pointer', padding: '4px', backgroundColor: '#e9ecef' }}>
+        Toggle Widget {idx + 1} (Click to show/hide)
+      </summary>
+      <div style={{ padding: '8px', border: '1px solid #dee2e6' }}>
+        {component}
+      </div>
+    </details>
+  );
+}
+
 const app: App = {
   appId: 'org.openedx.frontend.app.slotShowcase',
   routes: [{
@@ -303,6 +337,52 @@ const app: App = {
       options: {
         title: (<Title title="Bar" op="WidgetOperationTypes.OPTIONS" />),
       }
+    },
+
+    // Widget Wrapping
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseWrapping',
+      id: 'org.openedx.frontend.widget.slotShowcase.wrappingChild1',
+      op: WidgetOperationTypes.APPEND,
+      element: (<Child title="Child One" />)
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseWrapping',
+      id: 'org.openedx.frontend.widget.slotShowcase.wrappingChild2',
+      op: WidgetOperationTypes.APPEND,
+      element: (<Child title="Child Two" />)
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseWrapping',
+      op: WidgetOperationTypes.WRAP,
+      relatedId: 'org.openedx.frontend.widget.slotShowcase.wrappingChild1',
+      wrapper: SimpleWrapper,
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseWrapping',
+      op: WidgetOperationTypes.WRAP,
+      relatedId: 'org.openedx.frontend.widget.slotShowcase.wrappingChild2',
+      wrapper: ToggleWrapper,
+    },
+
+    // Multiple Wraps (Nested)
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseMultipleWraps',
+      id: 'org.openedx.frontend.widget.slotShowcase.multiWrapChild',
+      op: WidgetOperationTypes.APPEND,
+      element: (<Child title="Multiply Wrapped Child" />)
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseMultipleWraps',
+      op: WidgetOperationTypes.WRAP,
+      relatedId: 'org.openedx.frontend.widget.slotShowcase.multiWrapChild',
+      wrapper: SimpleWrapper,
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseMultipleWraps',
+      op: WidgetOperationTypes.WRAP,
+      relatedId: 'org.openedx.frontend.widget.slotShowcase.multiWrapChild',
+      wrapper: ToggleWrapper,
     },
 
     // Header

@@ -46,11 +46,16 @@ export enum WidgetOperationTypes {
    * Provides options to the specified widget ID.  Multiple "options" operations on the same widget ID will merge with and override any duplicate properties in the options object - last one in wins.
    */
   OPTIONS = 'widgetOptions',
+
+  /**
+   * Wraps the specified widget ID with a React component.  Multiple "wrap" operations on the same widget ID occur in the order they were declared, creating nested wrappers.
+   */
+  WRAP = 'widgetWrap',
 }
 
 export type AbsoluteWidgetOperationTypes = WidgetOperationTypes.APPEND | WidgetOperationTypes.PREPEND;
 
-export type RelativeWidgetOperationTypes = WidgetOperationTypes.INSERT_AFTER | WidgetOperationTypes.INSERT_BEFORE | WidgetOperationTypes.REPLACE | WidgetOperationTypes.OPTIONS;
+export type RelativeWidgetOperationTypes = WidgetOperationTypes.INSERT_AFTER | WidgetOperationTypes.INSERT_BEFORE | WidgetOperationTypes.REPLACE | WidgetOperationTypes.OPTIONS | WidgetOperationTypes.WRAP;
 
 export interface BaseWidgetOperation extends BaseSlotOperation {
   op: WidgetOperationTypes,
@@ -84,6 +89,10 @@ export interface WidgetRelationshipProps {
   relatedId: string,
 }
 
+export interface WidgetWrapperProps {
+  wrapper: (props: { component: ReactNode, idx: number, pluginProps?: Record<string, unknown> }) => ReactNode,
+}
+
 // Concrete UI Widget Operations
 
 export type WidgetAppendOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & {
@@ -113,15 +122,25 @@ export type WidgetOptionsOperation = BaseWidgetOperation & WidgetRelationshipPro
 
 export type WidgetReplaceOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & WidgetRelationshipProps & { op: WidgetOperationTypes.REPLACE };
 
+export type WidgetWrapOperation = BaseWidgetOperation & WidgetRelationshipProps & WidgetWrapperProps & {
+  op: WidgetOperationTypes.WRAP,
+};
+
 export type WidgetAbsoluteOperation = WidgetAppendOperation | WidgetPrependOperation;
 
 export type WidgetRelativeRendererOperation = WidgetInsertAfterOperation | WidgetInsertBeforeOperation | WidgetReplaceOperation;
 
-export type WidgetRelativeOperation = WidgetRelativeRendererOperation | WidgetRemoveOperation | WidgetOptionsOperation;
+export type WidgetRelativeOperation = WidgetRelativeRendererOperation | WidgetRemoveOperation | WidgetOptionsOperation | WidgetWrapOperation;
 
 export type WidgetRendererOperation = WidgetAbsoluteOperation | WidgetRelativeRendererOperation;
 
 export type WidgetOperation = WidgetAbsoluteOperation | WidgetRelativeOperation;
+
+export interface IdentifiedWidget {
+  id: string,
+  node: ReactNode,
+  wrappers?: ((props: { component: ReactNode, idx: number, pluginProps?: Record<string, unknown> }) => ReactNode)[],
+}
 
 /**
  * An identified widget is a simple data structure to associate an ID with a ReactNode so we can

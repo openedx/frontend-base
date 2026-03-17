@@ -61,6 +61,14 @@ export default function SlotShowcasePage() {
       <h3>Slot with widget with options.</h3>
       <p>Both widgets accept options.  The first shows the default title, the second shows it set to &quot;Bar&quot;</p>
       <Slot id="org.openedx.frontend.slot.dev.slotShowcaseWidgetOptions" />
+
+      <h3>Slot with wrapped widgets</h3>
+      <p>This slot demonstrates the wrap operation. Each widget is wrapped with different wrapper components.</p>
+      <Slot id="org.openedx.frontend.slot.dev.slotShowcaseWrapping" />
+
+      <h3>Slot with multiply wrapped widget</h3>
+      <p>This slot shows a widget with multiple wrappers applied (<code>WidgetOperationTypes.WRAP</code>). Wrappers are nested in the order they were declared.</p>
+      <Slot id="org.openedx.frontend.slot.dev.slotShowcaseMultipleWraps" />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { SlotOperation } from '../types';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { IFrameWidget } from './iframe';
-import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
+import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation, WidgetWrapOperation } from './types';
 import WidgetProvider from './WidgetProvider';
 
 export function isWidgetOperation(operation: SlotOperation): operation is WidgetOperation {
@@ -43,6 +43,10 @@ export function isWidgetReplaceOperation(operation: SlotOperation): operation is
 
 export function isWidgetOptionsOperation(operation: SlotOperation): operation is WidgetOptionsOperation {
   return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.OPTIONS;
+}
+
+export function isWidgetWrapOperation(operation: SlotOperation): operation is WidgetWrapOperation {
+  return isWidgetOperation(operation) && operation.op === WidgetOperationTypes.WRAP;
 }
 
 export function isWidgetRendererOperation(operation: SlotOperation): operation is WidgetRendererOperation {
@@ -122,6 +126,7 @@ function createIdentifiedWidget(operation: WidgetRendererOperation, componentPro
         {widget}
       </WidgetProvider>
     ),
+    wrappers: [],
   };
 }
 
@@ -175,6 +180,15 @@ function removeWidget(operation: WidgetRemoveOperation, widgets: IdentifiedWidge
   }
 }
 
+function wrapWidget(operation: WidgetWrapOperation, widgets: IdentifiedWidget[]) {
+  const relatedIndex = findRelatedWidgetIndex(operation.relatedId, widgets);
+  if (relatedIndex !== null) {
+    const widget = widgets[relatedIndex];
+    widget.wrappers ??= [];
+    widget.wrappers.push(operation.wrapper);
+  }
+}
+
 export function createWidgets(operations: WidgetOperation[], componentProps?: Record<string, unknown>) {
   const identifiedWidgets: IdentifiedWidget[] = [];
 
@@ -192,10 +206,27 @@ export function createWidgets(operations: WidgetOperation[], componentProps?: Re
         replaceWidget(operation, identifiedWidgets, componentProps);
       } else if (isWidgetRemoveOperation(operation)) {
         removeWidget(operation, identifiedWidgets);
+      } else if (isWidgetWrapOperation(operation)) {
+        wrapWidget(operation, identifiedWidgets);
       }
     }
   }
 
-  // Remove the 'id' metadata and return just the nodes.
-  return identifiedWidgets.map(widget => widget.node);
+  // Apply wrappers and return just the nodes.
+  return identifiedWidgets.map((widget) => {
+    let finalNode = widget.node;
+
+    // Apply wrappers if any exist
+    if (widget.wrappers && widget.wrappers.length > 0) {
+      widget.wrappers.forEach((wrapper, wrapperIndex) => {
+        finalNode = wrapper({
+          component: finalNode,
+          idx: wrapperIndex,
+          pluginProps: componentProps,
+        });
+      });
+    }
+
+    return finalNode;
+  });
 }
