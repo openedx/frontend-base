@@ -130,5 +130,13 @@ export type WidgetOperation = WidgetAbsoluteOperation | WidgetRelativeOperation;
  */
 export interface IdentifiedWidget {
   id: string,
+  role?: string,
   node: ReactNode,
+}
+
+export interface WidgetList extends Array<ReactNode> {
+  byId(id: string): ReactNode[],
+  withoutId(id: string): ReactNode[],
+  byRole(role: string): ReactNode[],
+  withoutRole(role: string): ReactNode[],
 }

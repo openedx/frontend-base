@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { SlotOperation } from '../types';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { IFrameWidget } from './iframe';
-import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
+import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetList, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
 import WidgetProvider from './WidgetProvider';
 
 export function isWidgetOperation(operation: SlotOperation): operation is WidgetOperation {
@@ -117,6 +117,7 @@ function createIdentifiedWidget(operation: WidgetRendererOperation, componentPro
 
   return {
     id,
+    role: operation.role,
     node: (
       <WidgetProvider key={id} slotId={operation.slotId} widgetId={operation.id} role={operation.role}>
         {widget}
@@ -175,7 +176,30 @@ function removeWidget(operation: WidgetRemoveOperation, widgets: IdentifiedWidge
   }
 }
 
-export function createWidgets(operations: WidgetOperation[], componentProps?: Record<string, unknown>) {
+function createWidgetList(identifiedWidgets: IdentifiedWidget[]): WidgetList {
+  const nodes = identifiedWidgets.map(widget => widget.node);
+  const widgetList = nodes as WidgetList;
+
+  widgetList.byId = (id: string): ReactNode[] => {
+    return identifiedWidgets.filter(w => w.id === id).map(w => w.node);
+  };
+
+  widgetList.withoutId = (id: string): ReactNode[] => {
+    return identifiedWidgets.filter(w => w.id !== id).map(w => w.node);
+  };
+
+  widgetList.byRole = (role: string): ReactNode[] => {
+    return identifiedWidgets.filter(w => w.role === role).map(w => w.node);
+  };
+
+  widgetList.withoutRole = (role: string): ReactNode[] => {
+    return identifiedWidgets.filter(w => w.role !== role).map(w => w.node);
+  };
+
+  return widgetList;
+}
+
+export function createWidgets(operations: WidgetOperation[], componentProps?: Record<string, unknown>): WidgetList {
   const identifiedWidgets: IdentifiedWidget[] = [];
 
   for (const operation of operations) {
@@ -196,6 +220,5 @@ export function createWidgets(operations: WidgetOperation[], componentProps?: Re
     }
   }
 
-  // Remove the 'id' metadata and return just the nodes.
-  return identifiedWidgets.map(widget => widget.node);
+  return createWidgetList(identifiedWidgets);
 }

@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
 import { useSlotContext, useSlotOperations } from '../hooks';
 import { isSlotOperationConditionSatisfied } from '../utils';
-import { WidgetOperation } from './types';
+import { WidgetList, WidgetOperation } from './types';
 import { createWidgets, isWidgetAbsoluteOperation, isWidgetOperation, isWidgetOptionsOperation, isWidgetRelativeOperation } from './utils';
 import WidgetContext from './WidgetContext';
 
-export function useWidgets() {
+export function useWidgets(): WidgetList {
   const { id, ...props } = useSlotContext();
   delete props.children;
   return useWidgetsForId(id, props);
 }
 
-export function useWidgetsForId(id: string, componentProps?: Record<string, unknown>) {
+export function useWidgetsForId(id: string, componentProps?: Record<string, unknown>): WidgetList {
   const operations = useSortedWidgetOperations(id);
   return createWidgets(operations, componentProps);
 }
