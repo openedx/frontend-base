@@ -1,17 +1,14 @@
 import { Slot } from '../../../runtime';
 import HorizontalSlotLayout from './HorizontalSlotLayout';
 import LayoutWithOptions from './LayoutWithOptions';
+import ToggleByRoleLayout from './ToggleByRoleLayout';
 
 export default function SlotShowcasePage() {
   return (
     <div className="p-3">
       <h1>Slot Showcase</h1>
 
-      <p>As a best practice, widgets should pass additional props (<code>...props</code>) to their rendered HTMLElement. This accomplishes two things:</p>
-      <ul>
-        <li>It allows custom layouts to add <code>className</code> and <code>style</code> props as necessary for the layout.</li>
-        <li>It allows widgets to be effectively &quot;wrapped&quot; by a parent component to alter their behavior.</li>
-      </ul>
+      <p>As a best practice, widgets should pass additional props (<code>...props</code>) to their rendered HTMLElement.  This allows custom layouts to add <code>className</code> and <code>style</code> props as necessary for the layout.</p>
 
       <h3>Simple slot with default layout</h3>
       <p>This slot has no opinionated layout, it just renders its children.</p>
@@ -61,6 +58,10 @@ export default function SlotShowcasePage() {
       <h3>Slot with widget with options.</h3>
       <p>Both widgets accept options.  The first shows the default title, the second shows it set to &quot;Bar&quot;</p>
       <Slot id="org.openedx.frontend.slot.dev.slotShowcaseWidgetOptions" />
+
+      <h3>Slot with widget filtering by role</h3>
+      <p>This slot has four widgets, two of which have a &quot;highlighted&quot; role.  The layout uses <code>widgets.byRole()</code> to toggle between showing all widgets and only the highlighted ones.</p>
+      <Slot id="org.openedx.frontend.slot.dev.slotShowcaseFilterByRole" layout={ToggleByRoleLayout} />
     </div>
   );
 }

@@ -135,7 +135,7 @@ const app: App = {
       slotId: 'org.openedx.frontend.slot.dev.slotShowcaseLayoutWithOptions',
       op: LayoutOperationTypes.OPTIONS,
       options: {
-        title: (<Title title="Bar" op="LayoutOperationTypes.OPTIONS" />),
+        title: 'Bar',
       }
     },
     {
@@ -301,8 +301,36 @@ const app: App = {
       relatedId: 'org.openedx.frontend.widget.slotShowcase.widgetOptionsChild2',
       op: WidgetOperationTypes.OPTIONS,
       options: {
-        title: (<Title title="Bar" op="WidgetOperationTypes.OPTIONS" />),
+        title: 'Bar',
       }
+    },
+
+    // Widget filtering by role
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseFilterByRole',
+      id: 'org.openedx.frontend.widget.slotShowcase.filterChild1',
+      op: WidgetOperationTypes.APPEND,
+      element: (<Child title="Child One" />)
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseFilterByRole',
+      id: 'org.openedx.frontend.widget.slotShowcase.filterChild2',
+      role: 'org.openedx.frontend.role.slotShowcase.highlighted',
+      op: WidgetOperationTypes.APPEND,
+      element: (<Child title="Child Two (highlighted)" />)
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseFilterByRole',
+      id: 'org.openedx.frontend.widget.slotShowcase.filterChild3',
+      op: WidgetOperationTypes.APPEND,
+      element: (<Child title="Child Three" />)
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.dev.slotShowcaseFilterByRole',
+      id: 'org.openedx.frontend.widget.slotShowcase.filterChild4',
+      role: 'org.openedx.frontend.role.slotShowcase.highlighted',
+      op: WidgetOperationTypes.APPEND,
+      element: (<Child title="Child Four (highlighted)" />)
     },
 
     // Header
