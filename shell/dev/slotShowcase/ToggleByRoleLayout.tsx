@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '@openedx/paragon';
 import { useWidgets } from '../../../runtime';
 
 const highlitedRole = 'org.openedx.frontend.role.slotShowcase.highlighted';
@@ -9,9 +10,9 @@ export default function ToggleByRoleLayout() {
 
   return (
     <div>
-      <button type="button" className="btn btn-sm btn-outline-primary mb-2" onClick={() => setShowHighlighted(!showHighlighted)}>
+      <Button size="sm" variant="outline-primary" className="mb-2" onClick={() => setShowHighlighted(!showHighlighted)}>
         {showHighlighted ? 'Show all widgets' : 'Show only highlighted widgets'}
-      </button>
+      </Button>
       <div>
         {showHighlighted ? widgets.byRole(highlitedRole) : widgets}
       </div>

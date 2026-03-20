@@ -1,0 +1,50 @@
+// Inline code
+.showcase-page code {
+  color: var(--pgn-color-dark-400);
+}
+
+// Page grid
+.showcase-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.showcase-full-width {
+  grid-column: 1 / -1;
+}
+
+.showcase-divider {
+  grid-column: 1 / -1;
+  border-bottom: 2px solid var(--pgn-color-primary-500);
+  padding-bottom: 0.25rem;
+}
+
+// Slot container (dashed boundary via Card)
+.showcase-slot {
+  border: 2px dashed var(--pgn-color-primary-300);
+  background-color: var(--pgn-color-primary-100);
+}
+
+// Widget card
+.showcase-widget {
+  background-color: var(--pgn-color-light-300);
+  border-left: 3px solid var(--pgn-color-primary-500);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+
+// Highlighted widget variant
+.showcase-widget-highlighted {
+  background-color: var(--pgn-color-warning-100);
+  border-left: 3px solid var(--pgn-color-warning-300);
+}
+
+// Layout title
+.showcase-layout-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--pgn-color-primary-500);
+  margin-bottom: 0.5rem;
+}

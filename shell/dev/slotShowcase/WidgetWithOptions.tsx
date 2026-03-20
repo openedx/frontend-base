@@ -6,6 +6,6 @@ export default function WidgetWithOptions() {
   const title = typeof options.title === 'string' ? options.title : 'Foo';
 
   return (
-    <div>{title}</div>
+    <div className="showcase-widget">{title}</div>
   );
 }
