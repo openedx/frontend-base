@@ -92,6 +92,27 @@ describe('createWidgets', () => {
     });
   });
 
+  describe('identified', () => {
+    it('exposes the underlying IdentifiedWidget array', () => {
+      const widgets = createWidgets([
+        makeAppendOp('w1', 'One', 'sidebar'),
+        makeAppendOp('w2', 'Two', 'main'),
+        makeAppendOp('w3', 'Three'),
+      ]);
+
+      expect(widgets.identified).toHaveLength(3);
+      expect(widgets.identified[0]).toEqual(
+        expect.objectContaining({ id: 'w1', role: 'sidebar' })
+      );
+      expect(widgets.identified[1]).toEqual(
+        expect.objectContaining({ id: 'w2', role: 'main' })
+      );
+      expect(widgets.identified[2]).toEqual(
+        expect.objectContaining({ id: 'w3', role: undefined })
+      );
+    });
+  });
+
   describe('withoutRole', () => {
     it('returns all widgets except those with the given role', () => {
       const widgets = createWidgets([

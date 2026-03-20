@@ -180,6 +180,8 @@ function createWidgetList(identifiedWidgets: IdentifiedWidget[]): WidgetList {
   const nodes = identifiedWidgets.map(widget => widget.node);
   const widgetList = nodes as WidgetList;
 
+  widgetList.identified = identifiedWidgets;
+
   widgetList.byId = (id: string): ReactNode[] => {
     return identifiedWidgets.filter(w => w.id === id).map(w => w.node);
   };

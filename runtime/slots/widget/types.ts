@@ -135,6 +135,7 @@ export interface IdentifiedWidget {
 }
 
 export interface WidgetList extends Array<ReactNode> {
+  identified: IdentifiedWidget[],
   byId(id: string): ReactNode[],
   withoutId(id: string): ReactNode[],
   byRole(role: string): ReactNode[],
