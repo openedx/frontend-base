@@ -8,7 +8,7 @@ export default function LayoutWithOptions() {
 
   return (
     <>
-      <div>Layout Title: <strong>{title}</strong></div>
+      <div className="showcase-layout-title">Layout Title: {title}</div>
       <div>
         {widgets}
       </div>

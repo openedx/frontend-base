@@ -4,9 +4,9 @@ import { getUrlByRouteRole } from '../../../runtime/routing';
 import messages from './messages';
 
 export default function HomePage() {
-  const coursewareUrl = getUrlByRouteRole('courseware');
-  const dashboardUrl = getUrlByRouteRole('learnerDashboard');
-  const slotShowcaseUrl = getUrlByRouteRole('slotShowcase');
+  const coursewareUrl = getUrlByRouteRole('org.openedx.frontend.role.courseware');
+  const dashboardUrl = getUrlByRouteRole('org.openedx.frontend.role.dashboard');
+  const slotShowcaseUrl = getUrlByRouteRole('org.openedx.frontend.role.slotShowcase');
   const intl = useIntl();
 
   return (

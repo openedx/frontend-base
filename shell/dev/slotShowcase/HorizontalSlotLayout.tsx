@@ -1,11 +1,12 @@
+import { Stack } from '@openedx/paragon';
 import { useWidgets } from '../../../runtime';
 
 export default function HorizontalSlotLayout() {
   const widgets = useWidgets();
 
   return (
-    <div className="d-flex gap-3">
+    <Stack direction="horizontal" gap={3}>
       {widgets}
-    </div>
+    </Stack>
   );
 }
