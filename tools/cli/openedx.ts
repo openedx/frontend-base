@@ -68,7 +68,7 @@ switch (commandName) {
       '--format', path.resolve(__dirname, './utils/formatter.js'),
       '--ignore', `${srcFoldersString}/**/*.json`,
       '--ignore', `${srcFoldersString}/**/*.d.ts`,
-      '--out-file', './temp/formatjs/Default.messages.json',
+      '--out-file', './src/i18n/transifex_input.json',
       '--', `${srcFoldersString}/**/*.{j,t}s*`,
     ]);
     require('@formatjs/cli/bin/formatjs');
