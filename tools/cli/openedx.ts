@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
 
+import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import path from 'path';
 import { CommandTypes, ConfigTypes } from '../types';
@@ -14,13 +15,39 @@ const commandName = process.argv[2];
 // remove 'openedx' from process.argv to allow subcommands to read options properly
 process.argv.splice(1, 1);
 
-let version;
+function getVersion(): string {
+  // Try to read the version from package.json (works for published packages
+  // where semantic-release has set the real version).
+  const candidates = [
+    path.resolve(__dirname, '../../package.json'),
+    path.resolve(__dirname, '../../../package.json'),
+  ];
+  for (const candidate of candidates) {
+    if (existsSync(candidate)) {
+      const { version: pkgVersion } = require(candidate);
+      if (!pkgVersion) {
+        break;
+      }
 
-if (existsSync(path.resolve(__dirname, '../../package.json'))) {
-  version = require('../../package.json').version;
-} else if (existsSync(path.resolve(__dirname, '../../../package.json'))) {
-  version = require('../../../package.json').version;
+      if (!/^0\.0\.0-.+$/.test(pkgVersion)) {
+        return pkgVersion;
+      }
+
+      // Placeholder version found — likely a local git checkout.  Append the
+      // git hash so the exact checkout is identifiable.
+      try {
+        const hash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
+        return `${pkgVersion} (${hash})`;
+      } catch {
+        return pkgVersion;
+      }
+    }
+  }
+
+  return '(unknown)';
 }
+
+const version = getVersion();
 
 prettyPrintTitle(`Open edX CLI v${version}`);
 
