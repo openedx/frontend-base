@@ -27,6 +27,6 @@ jobs:
         run: npm ci
 
       - name: Release to npm/Github
-        run: npx semantic-release@25 --dry-run
+        run: npx semantic-release@25
         env:
           GITHUB_TOKEN: ${{ secrets.OPENEDX_SEMANTIC_RELEASE_GITHUB_TOKEN }}
