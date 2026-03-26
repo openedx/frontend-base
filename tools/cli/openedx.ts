@@ -16,35 +16,30 @@ const commandName = process.argv[2];
 process.argv.splice(1, 1);
 
 function getVersion(): string {
-  // Try to read the version from package.json (works for published packages
-  // where semantic-release has set the real version).
-  const candidates = [
-    path.resolve(__dirname, '../../package.json'),
-    path.resolve(__dirname, '../../../package.json'),
-  ];
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) {
-      const { version: pkgVersion } = require(candidate);
-      if (!pkgVersion) {
-        break;
-      }
-
-      if (!/^0\.0\.0-.+$/.test(pkgVersion)) {
-        return pkgVersion;
-      }
-
-      // Placeholder version found — likely a local git checkout.  Append the
-      // git hash so the exact checkout is identifiable.
-      try {
-        const hash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
-        return `${pkgVersion} (${hash})`;
-      } catch {
-        return pkgVersion;
-      }
-    }
+  // Read the version from package.json.  The compiled CLI lives at
+  // dist/tools/cli/openedx.js, so the package root is always three levels up.
+  const pkgJsonPath = path.resolve(__dirname, '../../../package.json');
+  if (!existsSync(pkgJsonPath)) {
+    return '(unknown)';
   }
 
-  return '(unknown)';
+  const { version: pkgVersion } = require(pkgJsonPath);
+  if (!pkgVersion) {
+    return '(unknown)';
+  }
+
+  if (!/^0\.0\.0-.+$/.test(pkgVersion)) {
+    return pkgVersion;
+  }
+
+  // Placeholder version found — likely a local git checkout.  Append the
+  // git hash so the exact checkout is identifiable.
+  try {
+    const hash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
+    return `${pkgVersion} (${hash})`;
+  } catch {
+    return pkgVersion;
+  }
 }
 
 const version = getVersion();
