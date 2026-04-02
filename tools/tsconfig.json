@@ -3,7 +3,8 @@
   "compilerOptions": {
     "allowJs": true,
     "resolveJsonModule": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": ["jest"]
   },
   "include": [
     "babel/**/*",

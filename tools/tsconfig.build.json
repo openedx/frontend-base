@@ -5,5 +5,9 @@
     "noEmit": false,
     "composite": true,
     "tsBuildInfoFile": "../.tsbuildinfo.tools"
-  }
+  },
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.js"
+  ]
 }
