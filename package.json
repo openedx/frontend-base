@@ -32,7 +32,8 @@
     "test": "jest",
     "watch:build": "nodemon --exec 'npm run build'",
     "watch:docs": "nodemon --watch docs/template --watch README.md --exec npm run docs",
-    "watch:pack": "nodemon --exec 'npm run pack'"
+    "watch:pack": "nodemon --exec 'npm run pack'",
+    "i18n_extract": "npm run build && node ./dist/tools/cli/openedx.js formatjs extract --include=shell"
   },
   "repository": {
     "type": "git",
