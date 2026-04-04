@@ -13,12 +13,12 @@ export default function getDevServer(): Configuration {
       index: path.join(getPublicPath(), 'index.html'),
       disableDotRule: true,
     },
-    host: 'apps.local.openedx.io',
+    host: '0.0.0.0',
     hot: true,
     port: process.env.PORT ?? 8080,
     proxy: [
       {
-        context: ['/api/mfe_config/v1'],
+        context: ['/api/frontend_site_config/v1'],
         target: 'http://local.openedx.io:8000',
         changeOrigin: true,
       }
