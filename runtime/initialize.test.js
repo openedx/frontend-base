@@ -301,6 +301,33 @@ describe('initialize', () => {
     expect(getSiteConfig().theme.variants.light.url).toBe('http://fake.cdn.url/light.css');
   });
 
+  it('should resolve a relative runtimeConfigJsonUrl against window.location.origin', async () => {
+    const runtimeConfig = {
+      siteName: 'Runtime Site Name',
+    };
+
+    const mockGet = jest.fn(() => ({ data: runtimeConfig }));
+    configureCache.mockReturnValueOnce(Promise.resolve({
+      get: mockGet,
+    }));
+
+    await initialize({
+      messages: { i_am: 'a message' },
+      handlers: {
+        config: () => {
+          mergeSiteConfig({
+            runtimeConfigJsonUrl: '/api/config.json',
+          });
+        }
+      }
+    });
+
+    expect(mockGet).toHaveBeenCalledWith(
+      expect.stringMatching(/^http:\/\/localhost\/api\/config\.json/),
+      expect.any(Object),
+    );
+  });
+
   it('should merge app-level runtime configuration with build-time configuration', async () => {
     const runtimeConfig = {
       apps: [{

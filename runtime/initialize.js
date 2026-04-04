@@ -172,7 +172,7 @@ async function runtimeConfig() {
       const apiConfig = { headers: { accept: 'application/json' } };
       const apiService = await configureCache();
 
-      const runtimeConfigUrl = new URL(runtimeConfigJsonUrl);
+      const runtimeConfigUrl = new URL(runtimeConfigJsonUrl, window.location.origin);
 
       // In development mode, add a timestamp as a cache buster
       // to support live-editing runtime config JSON
