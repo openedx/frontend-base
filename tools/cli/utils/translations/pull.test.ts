@@ -86,7 +86,7 @@ describe('pull', () => {
     pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
 
     expect(mockExecSync).toHaveBeenCalledWith(
-      expect.stringContaining('translations/frontend-app-authn/src/i18n:@openedx/frontend-app-authn'),
+      expect.stringContaining('translations/frontend-app-authn/src/i18n:src/i18n/messages/@openedx/frontend-app-authn'),
     );
   });
 
@@ -123,9 +123,9 @@ describe('pull', () => {
 
     pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
 
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/authn/src/i18n:@openedx/authn'));
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/frontend-base/src/i18n:@openedx/frontend-base'));
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/paragon/src/i18n:@openedx/paragon'));
+    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/authn/src/i18n:src/i18n/messages/@openedx/authn'));
+    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/frontend-base/src/i18n:src/i18n/messages/@openedx/frontend-base'));
+    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon'));
   });
 
   it('deduplicates shared dependencies so each appears only once', () => {
@@ -145,7 +145,7 @@ describe('pull', () => {
 
     const atlasArgs = mockExecSync.mock.calls[0][0] as string;
     // split yields N+1 parts when the target appears N times
-    const occurrences = atlasArgs.split('translations/paragon/src/i18n:@openedx/paragon').length - 1;
+    const occurrences = atlasArgs.split('translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon').length - 1;
     expect(occurrences).toBe(1);
   });
 
@@ -177,8 +177,8 @@ describe('pull', () => {
 
     pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
 
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining(':@openedx/frontend-app-authn'));
-    expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining(':frontend-app-authn'));
+    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining(':src/i18n/messages/@openedx/frontend-app-authn'));
+    expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining(':src/i18n/messages/frontend-app-authn'));
   });
 
   it('does not touch the site-messages directory', () => {
@@ -290,7 +290,7 @@ describe('pull', () => {
     pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
 
     expect(warnSpy).not.toHaveBeenCalled();
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/paragon/src/i18n:@openedx/paragon'));
+    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon'));
     expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining('@openedx/meta-package'));
   });
 });

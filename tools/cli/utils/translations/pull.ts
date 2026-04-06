@@ -151,7 +151,7 @@ export function pull({
   }
 
   clearMessages(messagesDir);
-  const atlasMappings = mappings.map(m => `${m.from}:${m.to}`).join(' ');
+  const atlasMappings = mappings.map(m => `${m.from}:src/i18n/messages/${m.to}`).join(' ');
   execSync(`atlas pull ${atlasOptions} ${atlasMappings}`);
   if (shouldPrepare) prepare({ siteRoot });
 }
