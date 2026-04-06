@@ -20,6 +20,12 @@
     "openedx": "./dist/tools/cli/openedx.js",
     "transifex-utils.js": "./dist/tools/cli/transifex-utils.js"
   },
+  "atlasTranslations": {
+    "path": "translations/frontend-base/src/i18n/messages",
+    "dependencies": [
+      "@openedx/paragon"
+    ]
+  },
   "scripts": {
     "build": "make build",
     "clean": "make clean",
