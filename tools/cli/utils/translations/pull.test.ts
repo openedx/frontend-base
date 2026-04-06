@@ -211,6 +211,26 @@ describe('pull', () => {
     expect(fs.existsSync(staleFile)).toBe(false);
   });
 
+  it('replaces stale translation file with newly pulled content', () => {
+    using tmp = fs.mkdtempDisposableSync(tmpPrefix);
+    createSite(tmp.path, { dependencies: ['@openedx/authn'] });
+    createPackage(tmp.path, '@openedx/authn', { path: 'translations/authn/src/i18n' });
+
+    const translationFile = path.join(tmp.path, 'src', 'i18n', 'messages', '@openedx', 'authn', 'ar.json');
+    fs.mkdirSync(path.dirname(translationFile), { recursive: true });
+    fs.writeFileSync(translationFile, '{"key":"stale"}', { encoding: 'utf8' });
+
+    mockExecSync.mockImplementation(() => {
+      // wx flag fails if the file already exists, so this throws unless clearing happened first
+      fs.mkdirSync(path.dirname(translationFile), { recursive: true });
+      fs.writeFileSync(translationFile, '{"key":"new"}', { encoding: 'utf8', flag: 'wx' });
+    });
+
+    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+
+    expect(fs.readFileSync(translationFile, { encoding: 'utf8' })).toBe('{"key":"new"}');
+  });
+
   it('runs prepare by default after pulling', () => {
     using tmp = fs.mkdtempDisposableSync(tmpPrefix);
     createSite(tmp.path, { dependencies: ['@openedx/authn'] });
