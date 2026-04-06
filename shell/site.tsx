@@ -10,8 +10,7 @@ import {
   subscribe
 } from '../runtime';
 import { addAppConfigs } from '../runtime/config';
-import { addAppMessages } from '../runtime/i18n';
-import messages from './i18n';
+import messages from 'site.i18n';
 import createRouter from './router/createRouter';
 
 subscribe(SITE_READY, async () => {
@@ -19,7 +18,6 @@ subscribe(SITE_READY, async () => {
   const router = createRouter();
 
   addAppConfigs();
-  addAppMessages();
 
   const root = createRoot(document.getElementById('root') as HTMLElement);
   root.render(

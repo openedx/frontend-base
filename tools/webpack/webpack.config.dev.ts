@@ -17,8 +17,10 @@ import {
 
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
+import getResolvedSiteI18nPath from './utils/getResolvedSiteI18nPath';
 
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.dev.tsx');
+const resolvedSiteI18nPath = getResolvedSiteI18nPath('src/i18n');
 
 const config: Configuration = {
   entry: {
@@ -31,6 +33,7 @@ const config: Configuration = {
   resolve: {
     alias: {
       'site.config': resolvedSiteConfigPath,
+      'site.i18n': resolvedSiteI18nPath,
     },
     plugins: [
       new TsconfigPathsPlugin({
