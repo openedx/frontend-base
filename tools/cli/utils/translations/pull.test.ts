@@ -163,7 +163,7 @@ describe('pull', () => {
 
     pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
 
-    expect(warnSpy).toHaveBeenCalledWith('translations:pull: Circular dependency detected: @openedx/authn → @openedx/paragon → @openedx/authn, skipping.');
+    expect(warnSpy).toHaveBeenCalledWith('translations:pull: Circular dependency detected: test-site → @openedx/authn → @openedx/paragon → @openedx/authn, skipping.');
     expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('@openedx/authn'));
     expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('@openedx/paragon'));
   });
@@ -276,13 +276,37 @@ describe('pull', () => {
     expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining('@openedx/no-translations'));
   });
 
+  it('pulls translations for the top-level package when atlasTranslations.path is set', () => {
+    using tmp = fs.mkdtempDisposableSync(tmpPrefix);
+    createSite(tmp.path, { path: 'translations/test-site/src/i18n' });
+
+    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+
+    expect(mockExecSync).toHaveBeenCalledWith(
+      expect.stringContaining('translations/test-site/src/i18n:src/i18n/messages/test-site'),
+    );
+  });
+
+  it('throws when atlasTranslations.path is set but package.json has no name field', () => {
+    using tmp = fs.mkdtempDisposableSync(tmpPrefix);
+    fs.writeFileSync(
+      path.join(tmp.path, 'package.json'),
+      JSON.stringify({ atlasTranslations: { path: 'translations/test-site/src/i18n' } }),
+      { encoding: 'utf8' },
+    );
+
+    expect(() => {
+      pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    }).toThrow('atlasTranslations.path is set');
+  });
+
   it('throws an informative error when the site has no atlasTranslations field', () => {
     using tmp = fs.mkdtempDisposableSync(tmpPrefix);
     createSite(tmp.path);
 
     expect(() => {
       pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
-    }).toThrow('No atlasTranslations field in package.json');
+    }).toThrow('No atlasTranslations field in');
   });
 
   it('surfaces atlas command failures', () => {
