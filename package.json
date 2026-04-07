@@ -16,9 +16,7 @@
     "/dist"
   ],
   "bin": {
-    "intl-imports.js": "./dist/tools/cli/intl-imports.js",
-    "openedx": "./dist/tools/cli/openedx.js",
-    "transifex-utils.js": "./dist/tools/cli/transifex-utils.js"
+    "openedx": "./dist/tools/cli/openedx.js"
   },
   "atlasTranslations": {
     "path": "translations/frontend-base/src/i18n/messages",
