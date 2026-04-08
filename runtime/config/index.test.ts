@@ -3,6 +3,7 @@ import * as subscriptions from '../subscriptions';
 import {
   addAppConfigs,
   getAppConfig,
+  getProvidedData,
   getSiteConfig,
   mergeSiteConfig,
   setSiteConfig,
@@ -348,6 +349,90 @@ describe('mergeSiteConfig', () => {
 
       const config = getAppConfig('test-app');
       expect(config).toEqual({ NESTED: { a: 1, b: 3, c: 4 } });
+    });
+  });
+
+  describe('getProvidedData', () => {
+    it('should return empty array when no apps exist', () => {
+      setSiteConfig({ ...defaultSiteConfig, apps: [] });
+      expect(getProvidedData('org.openedx.frontend.provides.testKey.v1')).toEqual([]);
+    });
+
+    it('should return empty array when no apps provide data for the consumer', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [
+          { appId: 'app-one', config: { VALUE: 'test' } },
+          { appId: 'app-two' },
+        ],
+      });
+      expect(getProvidedData('org.openedx.frontend.provides.testKey.v1')).toEqual([]);
+    });
+
+    it('should collect provided data from apps that declare it', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [
+          {
+            appId: 'app-one',
+            provides: {
+              'org.openedx.frontend.provides.testKey.v1': { urlPattern: '/one/' },
+            },
+          },
+          {
+            appId: 'app-two',
+            provides: {
+              'org.openedx.frontend.provides.testKey.v1': { urlPattern: '/two/' },
+            },
+          },
+        ],
+      });
+
+      const result = getProvidedData('org.openedx.frontend.provides.testKey.v1');
+      expect(result).toEqual([
+        { urlPattern: '/one/' },
+        { urlPattern: '/two/' },
+      ]);
+    });
+
+    it('should only return data for the requested consumer', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [
+          {
+            appId: 'app-one',
+            provides: {
+              'org.openedx.frontend.provides.testKey.v1': { urlPattern: '/one/' },
+              'org.openedx.frontend.provides.otherKey.v1': { showBranding: true },
+            },
+          },
+        ],
+      });
+
+      const headerData = getProvidedData('org.openedx.frontend.provides.testKey.v1');
+      expect(headerData).toEqual([{ urlPattern: '/one/' }]);
+
+      const footerData = getProvidedData('org.openedx.frontend.provides.otherKey.v1');
+      expect(footerData).toEqual([{ showBranding: true }]);
+    });
+
+    it('should skip apps without provides', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [
+          { appId: 'app-one' },
+          {
+            appId: 'app-two',
+            provides: {
+              'org.openedx.frontend.provides.testKey.v1': { urlPattern: '/two/' },
+            },
+          },
+          { appId: 'app-three', config: { VALUE: 'test' } },
+        ],
+      });
+
+      const result = getProvidedData('org.openedx.frontend.provides.testKey.v1');
+      expect(result).toEqual([{ urlPattern: '/two/' }]);
     });
   });
 });

@@ -28,6 +28,7 @@ export interface App {
   messages?: LocalizedMessages,
   routes?: RoleRouteObject[],
   providers?: AppProvider[],
+  provides?: Record<string, unknown>,
   slots?: SlotOperation[],
   config?: AppConfig,
 }

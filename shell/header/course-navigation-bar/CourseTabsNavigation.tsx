@@ -1,50 +1,42 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Slot, useIntl } from '../../../runtime';
 import { CourseTab, getCourseHomeCourseMetadata } from './data/service';
 import { Nav, Navbar, Skeleton } from '@openedx/paragon';
 import messages from './messages';
+import { isClientRoute } from './utils';
 import './course-tabs-navigation.scss';
 
-const stripOrigin = (url: string): string => {
-  // If URL is absolute, extract the pathname; otherwise, return the original string
-  try {
-    if (/^https?:\/\//.test(url)) {
-      return new URL(url).pathname;
-    }
-    return url;
-  } catch {
-    return url;
-  }
-};
+interface ResolvedTab extends CourseTab {
+  pathname: string,
+  clientPath: string | null,
+}
 
-const getActiveTabId = (pathname: string, tabs: CourseTab[]): string | null => {
-  let activeTab: CourseTab | null = null;
-  let maxLength = -1;
+// Returns the tabId of the tab whose pathname is the longest prefix match
+// against the current path. Uses react-router's matchPath for segment-aware
+// matching. For example, given tabs with paths /course/ (tabId: "outline")
+// and /course/dates/ (tabId: "dates"):
+//   /course/dates/foo  -> "dates"   (longest prefix match)
+//   /course/outline    -> "outline"
+//   /courseware         -> null      (not a segment boundary)
+const getActiveTabId = (currentPath: string, tabs: ResolvedTab[]): string | null => {
+  let best: ResolvedTab | null = null;
   for (const tab of tabs) {
-    const tabPath = stripOrigin(tab.url);
-    if (
-      pathname === tabPath
-      || (pathname.startsWith(tabPath.endsWith('/') ? tabPath : tabPath + '/') && tabPath.length > 1)
-      || (pathname.startsWith(tabPath) && tabPath !== '/' && tabPath.length > maxLength)
-    ) {
-      if (tabPath.length > maxLength) {
-        activeTab = tab;
-        maxLength = tabPath.length;
-      }
+    const match = matchPath({ path: `${tab.pathname}/*`, end: false }, currentPath);
+    if (match && (!best || tab.pathname.length > best.pathname.length)) {
+      best = tab;
     }
   }
-  return activeTab ? activeTab.tabId : null;
+  return best?.tabId ?? null;
 };
 
 const CourseTabsNavigation = () => {
   const location = useLocation();
   const { courseId = '' } = useParams();
-  const [currentTab, setCurrentTab] = useState<string | null>(null);
   const intl = useIntl();
 
-  const { data = { tabs: [], isMasquerading: false }, isLoading } = useQuery({
+  const { data = { tabs: [] }, isLoading } = useQuery({
     queryKey: ['org.openedx.frontend.app.header.course-meta', courseId],
     queryFn: () => getCourseHomeCourseMetadata(courseId),
     retry: 2,
@@ -53,22 +45,30 @@ const CourseTabsNavigation = () => {
 
   const { tabs } = data;
 
-  useEffect(() => {
-    if (tabs && tabs.length > 0) {
-      setCurrentTab(getActiveTabId(location.pathname, tabs));
-    }
-  }, [location.pathname, tabs]);
+  const resolvedTabs: ResolvedTab[] = useMemo(
+    () => tabs.map(tab => {
+      // Tab URLs from the course_home API are always absolute.
+      const pathname = new URL(tab.url).pathname;
+      return { ...tab, pathname, clientPath: isClientRoute(pathname) ? pathname : null };
+    }),
+    [tabs]
+  );
+
+  const currentTab = useMemo(
+    () => resolvedTabs.length > 0 ? getActiveTabId(location.pathname, resolvedTabs) : null,
+    [location.pathname, resolvedTabs]
+  );
 
   if (isLoading) {
     return <Skeleton className="lead mt-3" />;
   }
 
-  if (!courseId || !tabs || tabs.length === 0) {
+  if (!courseId || resolvedTabs.length === 0) {
     return null;
   }
 
   return (
-    <Navbar expand="sm" className="course-tabs-navigation pb-0" ariaLabel={intl.formatMessage(messages.courseMaterial)}>
+    <Navbar expand="sm" className="course-tabs-navigation pb-0" aria-label={intl.formatMessage(messages.courseMaterial)}>
       <Nav
         variant="tabs"
         activeKey={currentTab}
@@ -76,11 +76,13 @@ const CourseTabsNavigation = () => {
         <Navbar.Toggle aria-controls="course-nav" />
         <Navbar.Collapse id="course-nav">
           {
-            tabs.map((tab: CourseTab) => (
+            resolvedTabs.map(tab => (
               <Nav.Item key={tab.tabId}>
                 <Nav.Link
-                  to={tab.url}
-                  as={Link}
+                  {...(tab.clientPath
+                    ? { to: tab.clientPath, as: Link }
+                    : { href: tab.url }
+                  )}
                   active={tab.tabId === currentTab}
                 >
                   {tab.title}
