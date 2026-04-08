@@ -269,6 +269,8 @@ packages/
 
 ### i18n ###
 src/i18n/transifex_input.json
+src/i18n/messages.ts
+src/i18n/messages/
 
 ### Editors ###
 .DS_Store
@@ -563,6 +565,21 @@ pull_translations: | requirements
 ```
 
 Running `npm run translations:pull` will pull translations from `openedx-translations` and generate `src/i18n/messages.ts`.
+
+Add a `src/i18n/index.ts` file that re-exports the generated messages:
+
+```ts
+export { default } from './messages';
+```
+
+Also add a `src/i18n/messages.d.ts` type declaration file so TypeScript knows the shape of the generated module even before `translations:pull` has been run:
+
+```ts
+import type { SiteMessages } from '@openedx/frontend-base';
+
+declare const messages: SiteMessages;
+export default messages;
+```
 
 SVGR "ReactComponent" imports have been removed
 ===============================================

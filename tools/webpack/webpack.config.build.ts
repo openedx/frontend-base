@@ -10,6 +10,7 @@ import {
   getCodeRules,
   getFileLoaderRules,
   getHtmlWebpackPlugin,
+  getI18nMessagesFallbackPlugin,
   getImageMinimizer,
   getStylesheetRule
 } from './common-config';
@@ -73,6 +74,7 @@ const config: Configuration = {
       filename: '[name].[chunkhash].css',
     }),
     getHtmlWebpackPlugin(),
+    getI18nMessagesFallbackPlugin(),
     new ForkTsCheckerWebpackPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',

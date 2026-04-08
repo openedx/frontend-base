@@ -11,6 +11,7 @@ import {
   getDevServer,
   getFileLoaderRules,
   getHtmlWebpackPlugin,
+  getI18nMessagesFallbackPlugin,
   getImageMinimizer,
   getStylesheetRule
 } from './common-config';
@@ -69,6 +70,7 @@ const config: Configuration = {
       filename: '[name].css',
     }),
     getHtmlWebpackPlugin(),
+    getI18nMessagesFallbackPlugin(),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin(),
   ],

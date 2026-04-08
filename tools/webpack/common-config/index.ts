@@ -4,3 +4,4 @@ export { default as getImageMinimizer } from './all/getImageMinimizer';
 export { default as getStylesheetRule } from './all/getStylesheetRule';
 export { default as getDevServer } from './dev/getDevServer';
 export { default as getHtmlWebpackPlugin } from './site/getHtmlWebpackPlugin';
+export { default as getI18nMessagesFallbackPlugin } from './site/getI18nMessagesFallbackPlugin';
