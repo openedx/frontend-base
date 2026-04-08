@@ -325,6 +325,26 @@ export function getActiveRoles() {
 }
 
 /**
+ * Collects all `provides` entries from registered apps that match the given key.
+ * This enables inter-app data sharing without frontend-base needing to understand the data shape.
+ *
+ * @param key - The namespaced identifier for the provided data.
+ * @returns An array of provided data objects from all apps that declared data for this key.
+ */
+export function getProvidedData(key: string): unknown[] {
+  const { apps } = getSiteConfig();
+  if (!apps) return [];
+
+  const results: unknown[] = [];
+  for (const app of apps) {
+    if (app.provides && app.provides[key] !== undefined) {
+      results.push(app.provides[key]);
+    }
+  }
+  return results;
+}
+
+/**
  * Get an external link URL based on the URL provided. If the passed in URL is overridden in the
  * `externalLinkUrlOverrides` object, it will return the overridden URL. Otherwise, it will return
  * the provided URL.

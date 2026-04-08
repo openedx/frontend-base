@@ -12,11 +12,13 @@ import MobileLayout from './mobile/MobileLayout';
 import MobileNavLinks from './mobile/MobileNavLinks';
 
 import messages from '../Shell.messages';
+import CourseTabsNavigation from './course-navigation-bar/CourseTabsNavigation';
+import { isCourseNavigationRoute } from './course-navigation-bar/utils';
+import { appId, courseNavigationBarSlotId, courseTabsNavigationWidgetId } from './constants';
 
 const config: App = {
-  appId: 'org.openedx.frontend.app.header',
+  appId,
   slots: [
-
     // Layouts
     {
       slotId: 'org.openedx.frontend.slot.header.desktop.v1',
@@ -136,6 +138,15 @@ const config: App = {
         authenticated: false,
       }
     },
+    {
+      slotId: courseNavigationBarSlotId,
+      id: courseTabsNavigationWidgetId,
+      op: WidgetOperationTypes.APPEND,
+      component: CourseTabsNavigation,
+      condition: {
+        callback: () => isCourseNavigationRoute(),
+      }
+    }
   ]
 };
 
