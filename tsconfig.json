@@ -1,7 +1,6 @@
 {
   "extends": "./tools/typescript/tsconfig.json",
   "compilerOptions": {
-    "rootDir": ".",
     "outDir": "dist"
   },
   "include": [

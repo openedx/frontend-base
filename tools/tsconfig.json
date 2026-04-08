@@ -1,7 +1,6 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
-    "rootDir": ".",
     "allowJs": true,
     "resolveJsonModule": true,
     "noEmit": true
