@@ -3,11 +3,11 @@ import path from 'path';
 import { prepare } from './prepare';
 
 interface PackageTranslationsConfig {
-  name?: string;
+  name?: string,
   atlasTranslations?: {
-    path?: string;
-    dependencies?: string[];
-  };
+    path?: string,
+    dependencies?: string[],
+  },
 }
 
 interface ResolvedMapping {
@@ -92,7 +92,7 @@ function resolveTranslationMappings(pkgJsonPath: string, nodeModulesBase: string
     const mapping: ResolvedMapping | null = config.atlasTranslations?.path
       ? { from: config.atlasTranslations.path, to: packageName }
       : null;
-    
+
     if (mapping) {
       results.push(mapping);
     }
