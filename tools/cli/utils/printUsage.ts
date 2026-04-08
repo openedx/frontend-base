@@ -38,5 +38,15 @@ export default function printUsage() {
   console.group();
   console.log(`Serves the dist folder with an express server.  Used to locally test production assets.\n`);
   console.groupEnd();
+
+  console.log(`${chalk.bold('translations:pull')}\n`);
+  console.group();
+  console.log(`Pulls translations for all installed apps using atlas, then runs translations:prepare. Reads atlasTranslations config from package.json. Pass ${chalk.bold('--no-prepare')} to skip the prepare step.\n`);
+  console.groupEnd();
+
+  console.log(`${chalk.bold('translations:prepare')}\n`);
+  console.group();
+  console.log(`Generates TypeScript modules from pulled translation JSON files in src/i18n/messages/ and src/i18n/site-messages/.\n`);
+  console.groupEnd();
   console.groupEnd();
 }

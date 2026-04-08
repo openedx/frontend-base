@@ -16,9 +16,13 @@
     "/dist"
   ],
   "bin": {
-    "intl-imports.js": "./dist/tools/cli/intl-imports.js",
-    "openedx": "./dist/tools/cli/openedx.js",
-    "transifex-utils.js": "./dist/tools/cli/transifex-utils.js"
+    "openedx": "./dist/tools/cli/openedx.js"
+  },
+  "atlasTranslations": {
+    "path": "translations/frontend-base/src/i18n/messages",
+    "dependencies": [
+      "@openedx/paragon"
+    ]
   },
   "scripts": {
     "build": "make build",
@@ -26,7 +30,9 @@
     "dev": "npm run build && node ./dist/tools/cli/openedx.js dev:shell",
     "docs": "jsdoc -c jsdoc.json",
     "lint": "eslint .; npm run lint:tools; npm --prefix ./test-site run lint",
+    "lint:fix": "eslint . --fix; npm run lint:fix:tools",
     "lint:tools": "cd ./tools && eslint . && cd ..",
+    "lint:fix:tools": "cd ./tools && eslint . --fix && cd ..",
     "pack": "mkdir -p pack && npm pack --silent --pack-destination pack >/dev/null && mv \"$(ls -t pack/*.tgz | head -n 1)\" pack/openedx-frontend-base.tgz",
     "prepack": "npm run build",
     "test": "jest",
@@ -143,12 +149,12 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@tsconfig/node20": "^20.1.5",
+    "@tsconfig/node24": "^24.0.4",
     "@types/compression": "^1.7.5",
     "@types/jest": "^29.5.14",
     "@types/lodash.camelcase": "^4.3.9",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^18.19.43",
+    "@types/node": "^24.12.0",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
     "axios-mock-adapter": "^1.22.0",
@@ -157,7 +163,7 @@
     "nodemon": "^3.1.4"
   },
   "peerDependencies": {
-    "@openedx/paragon": "^23.4.5",
+    "@openedx/paragon": "^23.20.0",
     "@tanstack/react-query": "^5.81.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

@@ -25,7 +25,6 @@ export type AppProvider = FC<{ children?: ReactNode }>;
 
 export interface App {
   appId: string,
-  messages?: LocalizedMessages,
   routes?: RoleRouteObject[],
   providers?: AppProvider[],
   slots?: SlotOperation[],
@@ -48,6 +47,7 @@ export interface RequiredSiteConfig {
 }
 
 export type LocalizedMessages = Record<string, Record<string, string>>;
+export type SiteMessages = LocalizedMessages[];
 
 export interface OptionalSiteConfig {
   // Site environment

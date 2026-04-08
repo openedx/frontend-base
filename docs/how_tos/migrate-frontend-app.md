@@ -269,6 +269,8 @@ packages/
 
 ### i18n ###
 src/i18n/transifex_input.json
+src/i18n/messages.ts
+src/i18n/messages/
 
 ### Editors ###
 .DS_Store
@@ -538,51 +540,45 @@ i18n
 
 Description fields are now required on all i18n messages in the repository.  This is because of a change to the ESLint config.
 
-Also, replace the contents of `src/i18n/index.js` with:
+Translations are now pulled and prepared using the `openedx translations:pull` CLI command. Add an `atlasTranslations` field to your `package.json` so the command knows where to find your app's translations and which dependencies to resolve transitively:
 
-```
-// Placeholder be overridden by `make pull_translations`
-export default {
-  ar: {},
-  'zh-hk': {},
-  'zh-cn': {},
-  uk: {},
-  'tr-tr': {},
-  th: {},
-  te: {},
-  ru: {},
-  'pt-pt': {},
-  'pt-br': {},
-  'it-it': {},
-  id: {},
-  hi: {},
-  he: {},
-  'fr-ca': {},
-  fa: {},
-  'es-es': {},
-  'es-419': {},
-  el: {},
-  'de-de': {},
-  da: {},
-  bo: {},
-};
+```json
+"atlasTranslations": {
+  "path": "translations/frontend-app-[YOUR_APP]/src/i18n/messages",
+  "dependencies": ["@openedx/frontend-base"]
+}
 ```
 
-Finally, edit the `Makefile` so that no strings are being pulled from `frontend-component-(header|footer)`, and rename `frontend-platform` to `frontend-base`.  Such as:
+Also add a `translations:pull` script to your `package.json`:
+
+```json
+"scripts": {
+  "translations:pull": "openedx translations:pull"
+}
+```
+
+And update your `pull_translations` Makefile target to use it:
 
 ```Makefile
-# Pulls translations using atlas.
-pull_translations:
-	mkdir src/i18n/messages
-	cd src/i18n/messages \
-	   && atlas pull $(ATLAS_OPTIONS) \
-	            translations/frontend-base/src/i18n/messages:frontend-base \
-	            translations/paragon/src/i18n/messages:paragon \
-	            translations/frontend-app-[YOUR_APP]/src/i18n/messages:frontend-app-[YOUR_APP]
+pull_translations: | requirements
+	npm run translations:pull
+```
 
-	$(intl_imports) frontend-base paragon frontend-app-[YOUR_APP]
+Running `npm run translations:pull` will pull translations from `openedx-translations` and generate `src/i18n/messages.ts`.
+
+Add a `src/i18n/index.ts` file that re-exports the generated messages:
+
+```ts
+export { default } from './messages';
 ```
-```
+
+Also add a `src/i18n/messages.d.ts` type declaration file so TypeScript knows the shape of the generated module even before `translations:pull` has been run:
+
+```ts
+import type { SiteMessages } from '@openedx/frontend-base';
+
+declare const messages: SiteMessages;
+export default messages;
 ```
 
 SVGR "ReactComponent" imports have been removed

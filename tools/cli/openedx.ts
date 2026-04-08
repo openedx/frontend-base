@@ -99,6 +99,12 @@ switch (commandName) {
   case CommandTypes.SERVE:
     require('./commands/serve');
     break;
+  case CommandTypes.TRANSLATIONS_PULL:
+    require('./commands/translations').runPull();
+    break;
+  case CommandTypes.TRANSLATIONS_PREPARE:
+    require('./commands/translations').runPrepare();
+    break;
   case CommandTypes.HELP:
     printUsage();
     break;

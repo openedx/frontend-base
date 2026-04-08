@@ -1,6 +1,5 @@
 import { App } from '../../../types';
 import HomePage from './HomePage';
-import messages from './i18n';
 
 const app: App = {
   appId: 'org.openedx.frontend.app.dev.home',
@@ -12,7 +11,6 @@ const app: App = {
       role: 'org.openedx.frontend.role.devHome'
     }
   }],
-  messages,
 };
 
 export default app;

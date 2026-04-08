@@ -10,14 +10,17 @@ import {
   getCodeRules,
   getFileLoaderRules,
   getHtmlWebpackPlugin,
+  getI18nMessagesFallbackPlugin,
   getImageMinimizer,
   getStylesheetRule
 } from './common-config';
 
 import getPublicPath from './utils/getPublicPath';
 import getResolvedSiteConfigPath from './utils/getResolvedSiteConfigPath';
+import getResolvedSiteI18nPath from './utils/getResolvedSiteI18nPath';
 
 const resolvedSiteConfigPath = getResolvedSiteConfigPath('site.config.build.tsx');
+const resolvedSiteI18nPath = getResolvedSiteI18nPath('src/i18n');
 
 const config: Configuration = {
   mode: 'production',
@@ -34,6 +37,7 @@ const config: Configuration = {
   resolve: {
     alias: {
       'site.config': resolvedSiteConfigPath,
+      'site.i18n': resolvedSiteI18nPath,
     },
     plugins: [
       new TsconfigPathsPlugin({
@@ -70,6 +74,7 @@ const config: Configuration = {
       filename: '[name].[chunkhash].css',
     }),
     getHtmlWebpackPlugin(),
+    getI18nMessagesFallbackPlugin(),
     new ForkTsCheckerWebpackPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',

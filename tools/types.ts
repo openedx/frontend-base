@@ -15,5 +15,7 @@ export enum CommandTypes {
   DEV = 'dev',
   FORMAT_JS = 'formatjs',
   SERVE = 'serve',
+  TRANSLATIONS_PULL = 'translations:pull',
+  TRANSLATIONS_PREPARE = 'translations:prepare',
   HELP = 'help',
 }
