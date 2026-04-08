@@ -117,12 +117,12 @@ function clearMessages(messagesDir: string): void {
 
 export function pull({
   siteRoot,
-  execSync,
+  execFileSync,
   shouldPrepare,
   atlasOptions = '',
 }: {
   siteRoot: string,
-  execSync: (command: string) => void,
+  execFileSync: (file: string, args: string[]) => void,
   shouldPrepare: boolean,
   atlasOptions?: string,
 }): void {
@@ -144,7 +144,8 @@ export function pull({
     return;
   }
 
-  const atlasMappings = mappings.map(m => `${m.from}:src/i18n/messages/${m.to}`).join(' ');
-  execSync(`atlas pull ${atlasOptions} ${atlasMappings}`);
+  const atlasOptionsArgs = atlasOptions.trim().split(/\s+/).filter(Boolean);
+  const atlasMappingArgs = mappings.map(m => `${m.from}:src/i18n/messages/${m.to}`);
+  execFileSync('atlas', ['pull', ...atlasOptionsArgs, ...atlasMappingArgs]);
   if (shouldPrepare) prepare({ siteRoot });
 }

@@ -32,12 +32,12 @@ function createSite(baseDir: string, atlasTranslations?: AtlasTranslations): voi
 const tmpPrefix = path.join(os.tmpdir(), 'translations-test-');
 
 describe('pull', () => {
-  let mockExecSync: jest.Mock;
+  let mockExecFileSync: jest.Mock;
   let warnSpy: jest.SpyInstance;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockExecSync = jest.fn();
+    mockExecFileSync = jest.fn();
     warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
@@ -52,28 +52,28 @@ describe('pull', () => {
       path: 'translations/frontend-app-authn/src/i18n',
     });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
-    expect(mockExecSync).toHaveBeenCalledTimes(1);
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('atlas pull'));
+    expect(mockExecFileSync).toHaveBeenCalledTimes(1);
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining(['pull']));
   });
 
   it('does not call atlas pull when dependencies list is empty', () => {
     using tmp = fs.mkdtempDisposableSync(tmpPrefix);
     createSite(tmp.path, { dependencies: [] });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
-    expect(mockExecSync).not.toHaveBeenCalled();
+    expect(mockExecFileSync).not.toHaveBeenCalled();
   });
 
   it('does not call atlas pull when all dependencies fail to resolve', () => {
     using tmp = fs.mkdtempDisposableSync(tmpPrefix);
     createSite(tmp.path, { dependencies: ['@openedx/missing'] });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
-    expect(mockExecSync).not.toHaveBeenCalled();
+    expect(mockExecFileSync).not.toHaveBeenCalled();
   });
 
   it('calls atlas pull with one FROM:TO mapping', () => {
@@ -83,10 +83,10 @@ describe('pull', () => {
       path: 'translations/frontend-app-authn/src/i18n',
     });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
-    expect(mockExecSync).toHaveBeenCalledWith(
-      expect.stringContaining('translations/frontend-app-authn/src/i18n:src/i18n/messages/@openedx/frontend-app-authn'),
+    expect(mockExecFileSync).toHaveBeenCalledWith(
+      'atlas', expect.arrayContaining(['translations/frontend-app-authn/src/i18n:src/i18n/messages/@openedx/frontend-app-authn']),
     );
   });
 
@@ -100,12 +100,14 @@ describe('pull', () => {
     const atlasOptions = '--repository=https://github.com/example/translations --revision=main';
     pull({
       siteRoot: tmp.path,
-      execSync: mockExecSync,
+      execFileSync: mockExecFileSync,
       shouldPrepare: false,
       atlasOptions,
     });
 
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining(atlasOptions));
+    expect(mockExecFileSync).toHaveBeenCalledWith(
+      'atlas', expect.arrayContaining(['--repository=https://github.com/example/translations', '--revision=main']),
+    );
   });
 
   it('collects transitive dependency paths', () => {
@@ -121,11 +123,11 @@ describe('pull', () => {
     });
     createPackage(tmp.path, '@openedx/paragon', { path: 'translations/paragon/src/i18n' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/authn/src/i18n:src/i18n/messages/@openedx/authn'));
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/frontend-base/src/i18n:src/i18n/messages/@openedx/frontend-base'));
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon'));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining(['translations/authn/src/i18n:src/i18n/messages/@openedx/authn']));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining(['translations/frontend-base/src/i18n:src/i18n/messages/@openedx/frontend-base']));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining(['translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon']));
   });
 
   it('deduplicates shared dependencies so each appears only once', () => {
@@ -141,11 +143,10 @@ describe('pull', () => {
     });
     createPackage(tmp.path, '@openedx/paragon', { path: 'translations/paragon/src/i18n' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
-    const atlasArgs = mockExecSync.mock.calls[0][0] as string;
-    // split yields N+1 parts when the target appears N times
-    const occurrences = atlasArgs.split('translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon').length - 1;
+    const atlasArgs = mockExecFileSync.mock.calls[0][1] as string[];
+    const occurrences = atlasArgs.filter(a => a === 'translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon').length;
     expect(occurrences).toBe(1);
   });
 
@@ -161,11 +162,11 @@ describe('pull', () => {
       dependencies: ['@openedx/authn'], // circular
     });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
     expect(warnSpy).toHaveBeenCalledWith('translations:pull: Circular dependency detected: test-site → @openedx/authn → @openedx/paragon → @openedx/authn, skipping.');
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('@openedx/authn'));
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('@openedx/paragon'));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining('@openedx/authn')]));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining('@openedx/paragon')]));
   });
 
   it('uses the full scoped package name as the TO alias', () => {
@@ -175,10 +176,10 @@ describe('pull', () => {
       path: 'translations/authn/src/i18n',
     });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining(':src/i18n/messages/@openedx/frontend-app-authn'));
-    expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining(':src/i18n/messages/frontend-app-authn'));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining(':src/i18n/messages/@openedx/frontend-app-authn')]));
+    expect(mockExecFileSync).not.toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining(':src/i18n/messages/frontend-app-authn')]));
   });
 
   it('does not touch the site-messages directory', () => {
@@ -191,7 +192,7 @@ describe('pull', () => {
     const arJson = path.join(siteMessagesDir, 'ar.json');
     fs.writeFileSync(arJson, '{"key":"value"}', { encoding: 'utf8' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
     expect(fs.readdirSync(siteMessagesDir)).toEqual(['ar.json']);
     expect(fs.readFileSync(arJson, { encoding: 'utf8' })).toBe('{"key":"value"}');
@@ -206,7 +207,7 @@ describe('pull', () => {
     fs.mkdirSync(path.dirname(staleFile), { recursive: true });
     fs.writeFileSync(staleFile, '{"key":"stale"}', { encoding: 'utf8' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
     expect(fs.existsSync(staleFile)).toBe(false);
   });
@@ -220,13 +221,13 @@ describe('pull', () => {
     fs.mkdirSync(path.dirname(translationFile), { recursive: true });
     fs.writeFileSync(translationFile, '{"key":"stale"}', { encoding: 'utf8' });
 
-    mockExecSync.mockImplementation(() => {
+    mockExecFileSync.mockImplementation(() => {
       // wx flag fails if the file already exists, so this throws unless clearing happened first
       fs.mkdirSync(path.dirname(translationFile), { recursive: true });
       fs.writeFileSync(translationFile, '{"key":"new"}', { encoding: 'utf8', flag: 'wx' });
     });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
     expect(fs.readFileSync(translationFile, { encoding: 'utf8' })).toBe('{"key":"new"}');
   });
@@ -236,7 +237,7 @@ describe('pull', () => {
     createSite(tmp.path, { dependencies: ['@openedx/authn'] });
     createPackage(tmp.path, '@openedx/authn', { path: 'translations/authn/src/i18n' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
 
     expect(jest.mocked(prepare)).toHaveBeenCalledWith({ siteRoot: tmp.path });
   });
@@ -246,7 +247,7 @@ describe('pull', () => {
     createSite(tmp.path, { dependencies: ['@openedx/authn'] });
     createPackage(tmp.path, '@openedx/authn', { path: 'translations/authn/src/i18n' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
     expect(jest.mocked(prepare)).not.toHaveBeenCalled();
   });
@@ -256,11 +257,11 @@ describe('pull', () => {
     createSite(tmp.path, { dependencies: ['@openedx/authn', '@openedx/missing'] });
     createPackage(tmp.path, '@openedx/authn', { path: 'translations/authn/src/i18n' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
     expect(warnSpy).toHaveBeenCalledWith('translations:pull: Package @openedx/missing not found in node_modules, skipping.');
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('@openedx/authn'));
-    expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining('@openedx/missing'));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining('@openedx/authn')]));
+    expect(mockExecFileSync).not.toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining('@openedx/missing')]));
   });
 
   it('warns and continues when a dependency has no atlasTranslations config', () => {
@@ -269,21 +270,21 @@ describe('pull', () => {
     createPackage(tmp.path, '@openedx/authn', { path: 'translations/authn/src/i18n' });
     createPackage(tmp.path, '@openedx/no-translations');
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
     expect(warnSpy).toHaveBeenCalledWith('translations:pull: No atlasTranslations config in @openedx/no-translations, skipping.');
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('@openedx/authn'));
-    expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining('@openedx/no-translations'));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining('@openedx/authn')]));
+    expect(mockExecFileSync).not.toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining('@openedx/no-translations')]));
   });
 
   it('pulls translations for the top-level package when atlasTranslations.path is set', () => {
     using tmp = fs.mkdtempDisposableSync(tmpPrefix);
     createSite(tmp.path, { path: 'translations/test-site/src/i18n' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
-    expect(mockExecSync).toHaveBeenCalledWith(
-      expect.stringContaining('translations/test-site/src/i18n:src/i18n/messages/test-site'),
+    expect(mockExecFileSync).toHaveBeenCalledWith(
+      'atlas', expect.arrayContaining(['translations/test-site/src/i18n:src/i18n/messages/test-site']),
     );
   });
 
@@ -296,7 +297,7 @@ describe('pull', () => {
     );
 
     expect(() => {
-      pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+      pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
     }).toThrow('atlasTranslations.path is set');
   });
 
@@ -305,7 +306,7 @@ describe('pull', () => {
     createSite(tmp.path);
 
     expect(() => {
-      pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: true });
+      pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: true });
     }).toThrow('No atlasTranslations field in');
   });
 
@@ -314,12 +315,12 @@ describe('pull', () => {
     createSite(tmp.path, { dependencies: ['@openedx/authn'] });
     createPackage(tmp.path, '@openedx/authn', { path: 'translations/authn/src/i18n' });
 
-    const failingExecSync = () => {
+    const failingExecFileSync = () => {
       throw new Error('atlas exited with code 1');
     };
 
     expect(() => {
-      pull({ siteRoot: tmp.path, execSync: failingExecSync, shouldPrepare: false });
+      pull({ siteRoot: tmp.path, execFileSync: failingExecFileSync, shouldPrepare: false });
     }).toThrow('atlas exited with code 1');
   });
 
@@ -331,10 +332,10 @@ describe('pull', () => {
     });
     createPackage(tmp.path, '@openedx/paragon', { path: 'translations/paragon/src/i18n' });
 
-    pull({ siteRoot: tmp.path, execSync: mockExecSync, shouldPrepare: false });
+    pull({ siteRoot: tmp.path, execFileSync: mockExecFileSync, shouldPrepare: false });
 
     expect(warnSpy).not.toHaveBeenCalled();
-    expect(mockExecSync).toHaveBeenCalledWith(expect.stringContaining('translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon'));
-    expect(mockExecSync).not.toHaveBeenCalledWith(expect.stringContaining('@openedx/meta-package'));
+    expect(mockExecFileSync).toHaveBeenCalledWith('atlas', expect.arrayContaining(['translations/paragon/src/i18n:src/i18n/messages/@openedx/paragon']));
+    expect(mockExecFileSync).not.toHaveBeenCalledWith('atlas', expect.arrayContaining([expect.stringContaining('@openedx/meta-package')]));
   });
 });
