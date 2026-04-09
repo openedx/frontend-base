@@ -561,7 +561,7 @@ And update your `pull_translations` Makefile target to use it:
 
 ```Makefile
 pull_translations: | requirements
-	npm run translations:pull
+	npm run translations:pull -- --atlas-options="$(ATLAS_OPTIONS)"
 ```
 
 Running `npm run translations:pull` will pull translations from `openedx-translations` and generate `src/i18n/messages.ts`.
