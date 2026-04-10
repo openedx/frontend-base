@@ -1,32 +1,26 @@
 import { matchPath } from 'react-router-dom';
-import { getActiveRoles, getProvidedData, getUrlByRouteRole } from '../../../runtime';
-import { courseNavigationRolesProvidesKey } from '../constants';
+import { getActiveRoles, getProvidesAsStrings, getUrlByRouteRole } from '../../../runtime';
+import { providesCourseNavigationRolesId } from '../constants';
 
-interface CourseNavigationProviderData {
-  courseNavigationRoles: string[],
-}
-
-function getProviders(): CourseNavigationProviderData[] {
-  return getProvidedData(courseNavigationRolesProvidesKey).filter(
-    (data): data is CourseNavigationProviderData =>
-      data !== null
-      && typeof data === 'object'
-      && 'courseNavigationRoles' in data
-      && Array.isArray((data as CourseNavigationProviderData).courseNavigationRoles)
-  );
-}
-
-function getProvidedRoles(): string[] {
-  return getProviders().flatMap(data => data.courseNavigationRoles);
+/*
+ * Collects route role strings from all apps that opted into the course
+ * navigation bar feature.  Each app declares its roles as a string array:
+ *
+ *   provides: {
+ *     [providesCourseNavigationRolesId]: ['org.openedx.frontend.role.learning'],
+ *   }
+ */
+function getCourseNavigationBarRoles(): string[] {
+  return getProvidesAsStrings(providesCourseNavigationRolesId);
 }
 
 export function isCourseNavigationRoute(): boolean {
   const activeRoles = getActiveRoles();
-  return getProvidedRoles().some(role => activeRoles.includes(role));
+  return getCourseNavigationBarRoles().some(role => activeRoles.includes(role));
 }
 
 export function isClientRoute(pathname: string): boolean {
-  return getProvidedRoles().some(role => {
+  return getCourseNavigationBarRoles().some(role => {
     const routePath = getUrlByRouteRole(role);
     return routePath !== null
       && routePath.startsWith('/')

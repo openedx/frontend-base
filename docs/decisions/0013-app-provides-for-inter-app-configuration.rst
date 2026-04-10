@@ -1,5 +1,5 @@
-App ``provides`` for Inter-App Data
-####################################
+App ``provides`` for Inter-App Configuration
+############################################
 
 Status
 ======
@@ -11,15 +11,15 @@ Context
 =======
 
 frontend-base applications currently communicate through two structured
-mechanisms: ``routes`` and ``slots``.  Both are defined in the ``App`` interface
-and consumed directly by frontend-base's runtime.
+mechanisms: ``routes``, ``slots``, and ``providers``.  All are defined in the
+``App`` interface and consumed directly by frontend-base's runtime.
 
-As the platform evolves, however, situations arise where apps need to share data
-with each other that frontend-base itself has no reason to understand.  A
-concrete example is the course navigation bar introduced in the header app.
-The header needs to know two things from other apps:
+As the platform evolves, however, situations arise where apps need to share
+configuration data with each other that frontend-base itself has no reason to
+understand.  A concrete example is the course navigation bar introduced in the
+header app. The header needs to know two things from other apps:
 
-1. Which apps want the course navigation bar to appear (currently a hardcoded
+1. Which apps want the course navigation bar to appear (previously a hardcoded
    list of roles in ``constants.ts``).
 
 2. Which URL patterns each app handles client-side, so the navigation bar can
@@ -36,8 +36,8 @@ runtime needs to interpret them directly.  It builds a router from ``routes``
 and renders widgets from ``slots``.  Any new field that frontend-base itself
 must consume deserves the same treatment: a dedicated, typed field.
 
-But for data that flows between apps - where frontend-base is just the conduit -
-a generic mechanism is more appropriate.
+But for generic configuration between apps - where frontend-base is just the
+conduit - a generic mechanism is more appropriate.
 
 
 Decision
@@ -55,25 +55,23 @@ Add an optional ``provides`` field to the ``App`` interface::
       provides?: Record<string, unknown>,
     }
 
-``provides`` is a flat key-value map where each key is an identifier agreed
-upon by the providing and consuming apps, and the value is whatever the
-consumer expects.  frontend-base stores this data and exposes it through a
-runtime function, but does not interpret it.  Any namespaced identifier can
-serve as a key.
+``provides`` is a flat key-value map where each key is a namespaced identifier
+agreed upon by the providing and consuming apps, and the value takes whatever
+shape the consuming app expects.  The runtime stores this data and exposes it
+through a runtime function, but does not interpret it.
 
 A runtime helper would look something like::
 
-    // Returns all `provides` entries matching the given key.
-    function getProvidedData(key: string): unknown[]
+    // Returns all `provides` entries matching the given identifier.
+    function getProvides(id: string): unknown[]
 
 
 Guidelines
 ==========
 
-1. ``provides`` is for inter-app data that frontend-base does not need to
-   interpret.  If frontend-base's runtime must consume the data to function
-   (as it does with routes and slots), a dedicated typed field on ``App`` is
-   the right choice.
+1. ``provides`` is for inter-app configuration that the runtime does not need
+   to interpret.  If it must consume the data to function (as it does with
+   routes and slots), a dedicated typed field on ``App`` is the right choice.
 
 2. Keys in ``provides`` should be their own namespaced identifiers, not
    duplicates of existing app, slot, or widget IDs.  This allows different
@@ -84,8 +82,8 @@ Guidelines
    consuming apps.  It is not enforced by frontend-base.  Consuming apps should
    validate or type-guard the data they receive.
 
-4. ``provides`` should not be used as a back door to modify frontend-base's
-   behavior.  It is not a configuration mechanism for the runtime.
+4. ``provides`` should not be used as a back door to modify the runtime's
+   behavior.  It is not a configuration mechanism for the runtime itself.
 
 
 Consequences
@@ -107,28 +105,29 @@ Course navigation bar example
 As a concrete illustration, the Instructor Dashboard app could declare::
 
     const config: App = {
-      appId: 'org.openedx.frontend.app.instructor',
+      appId: 'org.openedx.frontend.app.instructorDashboard',
       provides: {
-        'org.openedx.frontend.provides.courseNavigationRoles.v1': {
-          courseNavigationRoles: ['org.openedx.frontend.role.instructor'],
-        },
+        'org.openedx.frontend.provides.courseNavigationRoles.v1': [
+          'org.openedx.frontend.role.instructorDashboard',
+        ],
       },
       routes: [...],
       slots: [...],
     };
 
 The header's course navigation bar widget collects ``provides`` entries keyed
-to its provides identifier from all registered apps.  From the provided roles
-it determines both when to render the navigation bar (by checking
-``getActiveRoles()``) and which tab URLs can be navigated client-side (by
-resolving roles to route paths via ``getUrlByRouteRole()``).
+to the course navigation roles identifier from all registered apps.  It expects
+the provided values to be role identifiers, from which it determines both when
+to render the navigation bar (by checking ``getActiveRoles()``) and which tab
+URLs can be navigated client-side (by resolving roles to route paths via
+``getUrlByRouteRole()``).
 
 
 Rejected alternatives
 =====================
 
-Slot operations
----------------
+Widget operations
+-----------------
 
 Each app could register its own widget into the course navigation bar slot
 with an ``active`` condition on its role.  The ``OPTIONS`` operation can even
@@ -157,3 +156,15 @@ with no standard way to discover them.  Providers are the right tool when data
 changes over time and consumers need to re-render.  The course navigation roles
 are fixed at registration time and never change, making ``provides`` a more
 natural fit.
+
+Reusing ``App.config``
+----------------------
+
+The existing ``App.config`` field has the same type (``Record<string, unknown>``)
+and could theoretically hold provided data.  However, ``config`` is per-app: it
+is retrieved by ``appId`` via ``getAppConfig()`` and is meant to hold settings
+*for* that app.  ``provides`` has a cross-app access pattern:
+``getProvides()`` collects entries from all apps that declared data under a
+given identifier.  Merging the two would require scanning every app's config
+for a specific key, blurring the distinction between settings an app consumes
+and data it exposes for others.

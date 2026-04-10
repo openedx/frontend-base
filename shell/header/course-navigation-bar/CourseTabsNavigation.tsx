@@ -13,13 +13,18 @@ interface ResolvedTab extends CourseTab {
   clientPath: string | null,
 }
 
-// Returns the tabId of the tab whose pathname is the longest prefix match
-// against the current path. Uses react-router's matchPath for segment-aware
-// matching. For example, given tabs with paths /course/ (tabId: "outline")
-// and /course/dates/ (tabId: "dates"):
-//   /course/dates/foo  -> "dates"   (longest prefix match)
-//   /course/outline    -> "outline"
-//   /courseware         -> null      (not a segment boundary)
+/*
+ * Returns the tabId of the tab whose pathname is the longest prefix match
+ * against the current path. Uses react-router's matchPath for segment-aware
+ * matching.
+ *
+ * For example, given tabs with paths /course/ (tabId: "outline")
+ * and /course/dates/ (tabId: "dates"):
+ *
+ *   /course/dates/foo  -> "dates"   (longest prefix match)
+ *   /course/outline    -> "outline"
+ *   /courseware        -> null      (not a segment boundary)
+ */
 const getActiveTabId = (currentPath: string, tabs: ResolvedTab[]): string | null => {
   let best: ResolvedTab | null = null;
   for (const tab of tabs) {

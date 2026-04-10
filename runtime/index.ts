@@ -45,7 +45,8 @@ export {
   getActiveWidgetRoles,
   getActiveRoles,
   getExternalLinkUrl,
-  getProvidedData
+  getProvides,
+  getProvidesAsStrings
 } from './config';
 
 export * from './constants';

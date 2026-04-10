@@ -14,7 +14,7 @@ import MobileNavLinks from './mobile/MobileNavLinks';
 import messages from '../Shell.messages';
 import CourseTabsNavigation from './course-navigation-bar/CourseTabsNavigation';
 import { isCourseNavigationRoute } from './course-navigation-bar/utils';
-import { appId, courseNavigationBarSlotId, courseTabsNavigationWidgetId } from './constants';
+import { appId } from './constants';
 
 const config: App = {
   appId,
@@ -139,8 +139,8 @@ const config: App = {
       }
     },
     {
-      slotId: courseNavigationBarSlotId,
-      id: courseTabsNavigationWidgetId,
+      slotId: 'org.openedx.frontend.slot.header.courseNavigationBar.v1',
+      id: 'org.openedx.frontend.widget.header.courseNavigationBar.v1',
       op: WidgetOperationTypes.APPEND,
       component: CourseTabsNavigation,
       condition: {
