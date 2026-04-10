@@ -27,9 +27,9 @@ export interface App {
   appId: string,
   routes?: RoleRouteObject[],
   providers?: AppProvider[],
-  provides?: Record<string, unknown>,
   slots?: SlotOperation[],
   config?: AppConfig,
+  provides?: Record<string, unknown>,
 }
 
 // Site Config

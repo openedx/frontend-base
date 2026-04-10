@@ -1,15 +1,23 @@
-import { WidgetOperationTypes } from '../runtime';
+import { getActiveRoles, getProvidesAsStrings, WidgetOperationTypes } from '../runtime';
 import { App } from '../types';
 import { Footer } from './footer';
 import { Header } from './header';
+import { providesChromelessRolesId } from './constants';
 
-const inactive = [
-  'org.openedx.frontend.role.login',
-  'org.openedx.frontend.role.register',
-  'org.openedx.frontend.role.resetPassword',
-  'org.openedx.frontend.role.confirmPassword',
-  'org.openedx.frontend.role.welcome'
-];
+/*
+ * Returns false when the current route should be chromeless (no header or
+ * footer).  Apps request chromeless mode by listing their route roles under
+ * providesChromelessRolesId in their `provides` entry, e.g.:
+ *
+ *   provides: { [providesChromelessRolesId]: ['org.openedx.frontend.role.authn'] }
+ *
+ * The widget is disabled when any of those roles is currently active.
+ */
+function isChromeVisible(): boolean {
+  const activeRoles = getActiveRoles();
+  const chromelessRoles = getProvidesAsStrings(providesChromelessRolesId);
+  return !chromelessRoles.some(role => activeRoles.includes(role));
+}
 
 const app: App = {
   appId: 'org.openedx.frontend.app.shell',
@@ -20,7 +28,7 @@ const app: App = {
       op: WidgetOperationTypes.APPEND,
       component: Header,
       condition: {
-        inactive,
+        callback: isChromeVisible,
       }
     },
     {
@@ -29,7 +37,7 @@ const app: App = {
       op: WidgetOperationTypes.APPEND,
       component: Footer,
       condition: {
-        inactive,
+        callback: isChromeVisible,
       }
     },
   ]

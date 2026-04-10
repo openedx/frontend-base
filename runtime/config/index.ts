@@ -325,23 +325,37 @@ export function getActiveRoles() {
 }
 
 /**
- * Collects all `provides` entries from registered apps that match the given key.
+ * Collects all `provides` entries from registered apps that match the given identifier.
  * This enables inter-app data sharing without frontend-base needing to understand the data shape.
  *
- * @param key - The namespaced identifier for the provided data.
- * @returns An array of provided data objects from all apps that declared data for this key.
+ * @param id - The namespaced provides identifier.
+ * @returns An array of provided data from all apps that declared data for this identifier.
  */
-export function getProvidedData(key: string): unknown[] {
+export function getProvides(id: string): unknown[] {
   const { apps } = getSiteConfig();
   if (!apps) return [];
 
   const results: unknown[] = [];
   for (const app of apps) {
-    if (app.provides && app.provides[key] !== undefined) {
-      results.push(app.provides[key]);
+    if (app.provides && app.provides[id] !== undefined) {
+      results.push(app.provides[id]);
     }
   }
   return results;
+}
+
+/**
+ * Collects and flattens all `provides` entries for the given identifier
+ * as strings.  Each entry can be a single string or a string array; entries
+ * of other types are silently skipped.
+ *
+ * @param id - The namespaced provides identifier.
+ * @returns A flat array of strings from all apps that declared data for this identifier.
+ */
+export function getProvidesAsStrings(id: string): string[] {
+  return getProvides(id)
+    .filter((data): data is string | string[] => typeof data === 'string' || Array.isArray(data))
+    .flat();
 }
 
 /**
