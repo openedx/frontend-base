@@ -7,6 +7,7 @@ import {
   SITE_INIT_ERROR,
   SITE_READY,
   initialize,
+  loadExternalScripts,
   subscribe
 } from '../runtime';
 import { addAppConfigs } from '../runtime/config';
@@ -30,6 +31,7 @@ subscribe(SITE_READY, async () => {
   const router = createRouter();
 
   addAppConfigs();
+  loadExternalScripts();
 
   const root = createRoot(document.getElementById('root') as HTMLElement);
   root.render(

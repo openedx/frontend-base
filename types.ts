@@ -28,9 +28,18 @@ export interface App {
   routes?: RoleRouteObject[],
   providers?: AppProvider[],
   slots?: SlotOperation[],
+  externalScripts?: ExternalScriptLoaderClass[],
   config?: AppConfig,
   provides?: Record<string, unknown>,
 }
+
+// External Scripts
+
+export interface ExternalScriptLoader {
+  loadScript(): void,
+}
+
+export type ExternalScriptLoaderClass = new (data: { config: AppConfig }) => ExternalScriptLoader;
 
 // Site Config
 
