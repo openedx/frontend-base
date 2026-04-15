@@ -725,7 +725,7 @@ const app: App = {
     id: 'example.page',
     Component: ExamplePage,
     handle: {
-      role: 'example'
+      roles: ['example']
     }
   }],
 };
@@ -835,7 +835,7 @@ const siteConfig: SiteConfig = {
         <div>Test App 1</div>
       ),
       handle: {
-        role: 'test-app-1'
+        roles: ['test-app-1']
       }
     }]
   }],

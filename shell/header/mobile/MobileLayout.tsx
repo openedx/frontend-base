@@ -1,4 +1,4 @@
-import { Button, Nav } from '@openedx/paragon';
+import { Button, Container, Nav } from '@openedx/paragon';
 import { MenuIcon } from '@openedx/paragon/icons';
 import classNames from 'classnames';
 import { useCallback, useState } from 'react';
@@ -16,9 +16,11 @@ export default function MobileLayout() {
 
   return (
     <>
-      <div
+      <Container
+        fluid
+        size="xl"
         className={classNames(
-          'align-items-center justify-content-between pr-3 booyah',
+          'align-items-center justify-content-between',
           isMobile ? 'd-flex' : 'd-none',
         )}
       >
@@ -34,7 +36,7 @@ export default function MobileLayout() {
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-end align-items-center">
           <Slot id="org.openedx.frontend.slot.header.mobileRight.v1" />
         </div>
-      </div>
+      </Container>
       {mobileOpen && (
         <FocusOn onClickOutside={() => setMobileOpen(false)} onEscapeKey={() => setMobileOpen(false)}>
           <Nav className="flex-column">

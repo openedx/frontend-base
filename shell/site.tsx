@@ -21,8 +21,8 @@ import createRouter from './router/createRouter';
  */
 const ReactQueryDevtools = process.env.NODE_ENV === 'development'
   ? lazy(() => import('@tanstack/react-query-devtools')
-    .then((m) => ({ default: m.ReactQueryDevtools }))
-    .catch(() => ({ default: () => null })))
+      .then((m) => ({ default: m.ReactQueryDevtools }))
+      .catch(() => ({ default: () => null })))
   : null;
 
 subscribe(SITE_READY, async () => {

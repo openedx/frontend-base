@@ -29,7 +29,7 @@ export default function ExamplePage() {
   }, []);
 
   return (
-    <Container>
+    <Container fluid size="xl">
       <h1>{config.siteName} test page</h1>
 
       <h2>Links</h2>

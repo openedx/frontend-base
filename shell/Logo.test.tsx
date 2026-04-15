@@ -16,31 +16,31 @@ describe('Logo component', () => {
     setSiteConfig(originalConfig);
   });
 
-  it('renders the image with default URL when no imageUrl prop is provided and headerLogoImageUrl is not set in site config', async () => {
-    const { getByRole, queryByRole } = render(<Logo />);
+  it('renders the image with default URL and links to / when no props are provided', async () => {
+    const { getByRole } = render(<Logo />);
     const image = getByRole('img');
     expect(image).toHaveAttribute('src', 'https://edx-cdn.org/v3/default/logo.svg');
-    const link = queryByRole('link');
-    expect(link).toBeNull();
+    const link = getByRole('link');
+    expect(link).toHaveAttribute('href', '/');
   });
 
-  it('renders the image with provided imageUrl', async () => {
+  it('renders the image with provided imageUrl and links to / by default', async () => {
     const testUrl = 'https://example.com/test-logo.svg';
-    const { getByRole, queryByRole } = render(<Logo imageUrl={testUrl} />);
+    const { getByRole } = render(<Logo imageUrl={testUrl} />);
     const image = getByRole('img');
     expect(image).toHaveAttribute('src', testUrl);
-    const link = queryByRole('link');
-    expect(link).toBeNull();
+    const link = getByRole('link');
+    expect(link).toHaveAttribute('href', '/');
   });
 
-  it('renders the image with headerLogoImageUrl when set in site config and no imageUrl prop is provided', async () => {
+  it('renders the image with headerLogoImageUrl when set in site config', async () => {
     const configLogoUrl = 'https://example.com/config-logo.svg';
     mergeSiteConfig({ headerLogoImageUrl: configLogoUrl });
-    const { getByRole, queryByRole } = render(<Logo />);
+    const { getByRole } = render(<Logo />);
     const image = getByRole('img');
     expect(image).toHaveAttribute('src', configLogoUrl);
-    const link = queryByRole('link');
-    expect(link).toBeNull();
+    const link = getByRole('link');
+    expect(link).toHaveAttribute('href', '/');
   });
 
   it('renders the image wrapped in a Hyperlink when destinationUrl is provided', async () => {

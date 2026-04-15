@@ -27,7 +27,7 @@ function Section({ title, children }: { title: string, children: ReactNode }) {
 
 export default function SlotShowcasePage() {
   return (
-    <Container size="xl" className="showcase-page py-4">
+    <Container fluid size="xl" className="showcase-page py-4">
       <div className="showcase-full-width">
         <h1>Slot Showcase</h1>
         <p>As a best practice, widgets should pass additional props (<code>...props</code>) to their rendered HTMLElement.  This allows custom layouts to add <code>className</code> and <code>style</code> props as necessary for the layout.</p>

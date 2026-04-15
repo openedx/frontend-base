@@ -1,0 +1,10 @@
+header {
+  .nav-link {
+    padding: 1.125rem 1rem;
+
+    &.active {
+      background: var(--pgn-color-bg-active, #0A3055);
+      color: var(--pgn-color-active, #fff);
+    }
+  }
+}
