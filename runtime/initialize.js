@@ -88,7 +88,6 @@ import {
   logError,
   NewRelicLoggingService,
 } from './logging';
-import { GoogleAnalyticsLoader } from './scripts';
 import { publish } from './subscriptions';
 import { EnvironmentTypes } from '../types';
 
@@ -191,13 +190,6 @@ async function runtimeConfig() {
   }
 }
 
-export function loadExternalScripts(externalScripts, data) {
-  externalScripts.forEach(ExternalScript => {
-    const script = new ExternalScript(data);
-    script.loadScript();
-  });
-}
-
 /**
  * The default handler for the initialization lifecycle's `analytics` phase.
  *
@@ -262,8 +254,6 @@ function applyOverrideHandlers(overrides) {
  * @param {*} [options.analyticsService=SegmentAnalyticsService] The `AnalyticsService`
  * implementation to use.
  * @param {*} [options.authMiddleware=[]] An array of middleware to apply to http clients in the auth service.
- * @param {*} [options.externalScripts=[GoogleAnalyticsLoader]] An array of externalScripts.
- * By default added GoogleAnalyticsLoader.
  * @param {*} [options.requireAuthenticatedUser=false] If true, turns on automatic login
  * redirection for unauthenticated users.  Defaults to false, meaning that by default the
  * application will allow anonymous/unauthenticated sessions.
@@ -283,7 +273,6 @@ export async function initialize({
   analyticsService = SegmentAnalyticsService,
   authService = AxiosJwtAuthService,
   authMiddleware = [],
-  externalScripts = [GoogleAnalyticsLoader],
   requireAuthenticatedUser: requireUser = false,
   hydrateAuthenticatedUser: hydrateUser = false,
   messages,
@@ -301,15 +290,13 @@ export async function initialize({
     await runtimeConfig();
     publish(SITE_CONFIG_INITIALIZED);
 
-    loadExternalScripts(externalScripts, {
-      config: getSiteConfig(),
-    });
-
-    // This allows us to replace the implementations of the logging, analytics, and auth services
-    // based on keys in the SiteConfig.  The JavaScript File Configuration method is the only
-    // one capable of supplying an alternate implementation since it can import other modules.
-    // If a service wasn't supplied we fall back to the default parameters on the initialize
-    // function signature.
+    /*
+     * This allows us to replace the implementations of the logging, analytics, and auth
+     * services based on keys in the SiteConfig.  The JavaScript File Configuration method is
+     * the only one capable of supplying an alternate implementation since it can import other
+     * modules.  If a service wasn't supplied we fall back to the default parameters on the
+     * initialize function signature.
+     */
     const loggingServiceImpl = getSiteConfig().loggingService ?? loggingService;
     const analyticsServiceImpl = getSiteConfig().analyticsService ?? analyticsService;
     const authServiceImpl = getSiteConfig().authService ?? authService;

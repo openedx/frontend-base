@@ -86,6 +86,10 @@ export {
 } from './initialize';
 
 export {
+  loadExternalScripts
+} from './scripts';
+
+export {
   configureLogging,
   getLoggingService,
   logError,
