@@ -1,5 +1,4 @@
-import { DropdownButton } from '@openedx/paragon';
-import { Person } from '@openedx/paragon/icons';
+import { AvatarButton, Dropdown } from '@openedx/paragon';
 
 import {
   Slot,
@@ -15,16 +14,19 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
 
   const displayUserName = authenticatedUser?.name || authenticatedUser?.username;
 
-  const title = (
-    <div className="d-flex mr-2 align-items-center gap-2">
-      <Person />
-      {displayUserName}
-    </div>
-  );
-
   return (
-    <DropdownButton size="sm" id="user-nav-dropdown" title={title} variant="outline-primary" className={className}>
-      <Slot id="org.openedx.frontend.slot.header.authenticatedMenu.v1" />
-    </DropdownButton>
+    <Dropdown className={className}>
+      <Dropdown.Toggle
+        as={AvatarButton}
+        id="user-nav-dropdown"
+        variant="outline-primary"
+        src={authenticatedUser?.avatar}
+      >
+        {displayUserName}
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Slot id="org.openedx.frontend.slot.header.authenticatedMenu.v1" />
+      </Dropdown.Menu>
+    </Dropdown>
   );
 }

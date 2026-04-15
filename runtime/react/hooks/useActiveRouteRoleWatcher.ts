@@ -14,8 +14,10 @@ const useActiveRouteRoleWatcher = () => {
     // Route roles
     for (const match of matches) {
       if (isRoleRouteObject(match)) {
-        if (!roles.includes(match.handle.role)) {
-          roles.push(match.handle.role);
+        for (const role of match.handle.roles) {
+          if (!roles.includes(role)) {
+            roles.push(role);
+          }
         }
       }
     }

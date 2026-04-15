@@ -12,7 +12,7 @@ describe('getUrlByRouteRole', () => {
         appId: 'test-app',
         routes: [{
           path: '/app1',
-          handle: { role: 'test-app-1' },
+          handle: { roles: ['test-app-1'] },
         }],
       }],
     } as any);
@@ -29,7 +29,7 @@ describe('getUrlByRouteRole', () => {
           children: [
             {
               path: 'login',
-              handle: { role: 'org.openedx.frontend.role.login' },
+              handle: { roles: ['org.openedx.frontend.role.login'] },
             },
           ],
         }],

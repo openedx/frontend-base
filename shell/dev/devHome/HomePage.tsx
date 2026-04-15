@@ -1,3 +1,4 @@
+import { Container } from '@openedx/paragon';
 import { Link } from 'react-router-dom';
 import { useIntl } from '../../../runtime';
 import { getUrlByRouteRole } from '../../../runtime/routing';
@@ -10,7 +11,7 @@ export default function HomePage() {
   const intl = useIntl();
 
   return (
-    <div className="p-3">
+    <Container fluid size="xl">
       <p>{intl.formatMessage(messages.homeContent)}</p>
       <ul>
         {coursewareUrl !== null && (
@@ -23,6 +24,6 @@ export default function HomePage() {
           <li><Link to={slotShowcaseUrl}>Go to slot showcase page</Link></li>
         )}
       </ul>
-    </div>
+    </Container>
   );
 }

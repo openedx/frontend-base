@@ -1,5 +1,6 @@
 import { Dropdown, Hyperlink, NavDropdown, NavLink } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
+import { useLocation } from 'react-router-dom';
 
 import { getUrlByRouteRole } from '../../runtime/routing';
 import {
@@ -18,6 +19,7 @@ interface LinkMenuItemProps {
 
 export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }: LinkMenuItemProps) {
   const intl = useIntl();
+  const location = useLocation();
   const finalLabel = getItemLabel(label, intl);
 
   let finalUrl: string | null | undefined;
@@ -41,7 +43,7 @@ export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }
     );
   } else if (variant === 'navLink') {
     return (
-      <NavLink href={finalUrl}>
+      <NavLink href={finalUrl} active={location.pathname.replace(/\/$/, '') === finalUrl.replace(/\/$/, '')}>
         {finalLabel}
       </NavLink>
     );

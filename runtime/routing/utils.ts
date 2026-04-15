@@ -8,7 +8,7 @@ function findRoleInRoutes(routes: RouteObject[], role: string, prefix = ''): str
     const segment = route.path ?? '';
     const fullPath = segment.startsWith('/') ? segment : `${prefix}/${segment}`.replace(/\/+/g, '/');
 
-    if (route.handle?.role === role) {
+    if (route.handle?.roles?.includes(role)) {
       return fullPath || null;
     }
 
@@ -48,5 +48,5 @@ export function getUrlByRouteRole(role: string) {
 }
 
 export function isRoleRouteObject(match: RouteObject): match is RoleRouteObject {
-  return match.handle !== undefined && 'role' in match.handle;
+  return match.handle !== undefined && 'roles' in match.handle;
 }
