@@ -3,7 +3,7 @@ import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Slot, useIntl } from '../../../runtime';
 import { CourseTab, getCourseHomeCourseMetadata } from './data/service';
-import { Nav, Navbar, Skeleton } from '@openedx/paragon';
+import { Container, Nav, Navbar, Skeleton } from '@openedx/paragon';
 import messages from './messages';
 import { isClientRoute } from './utils';
 import './course-tabs-navigation.scss';
@@ -74,30 +74,32 @@ const CourseTabsNavigation = () => {
 
   return (
     <Navbar expand="sm" className="course-tabs-navigation pb-0" aria-label={intl.formatMessage(messages.courseMaterial)}>
-      <Nav
-        variant="tabs"
-        activeKey={currentTab}
-      >
-        <Navbar.Toggle aria-controls="course-nav" />
-        <Navbar.Collapse id="course-nav">
-          {
-            resolvedTabs.map(tab => (
-              <Nav.Item key={tab.tabId}>
-                <Nav.Link
-                  {...(tab.clientPath
-                    ? { to: tab.clientPath, as: Link }
-                    : { href: tab.url }
-                  )}
-                  active={tab.tabId === currentTab}
-                >
-                  {tab.title}
-                </Nav.Link>
-              </Nav.Item>
-            ))
-          }
-        </Navbar.Collapse>
-        <Slot id="org.openedx.frontend.slot.header.courseNavigationBar.extraContent.v1" />
-      </Nav>
+      <Container fluid size="xl">
+        <Nav
+          variant="tabs"
+          activeKey={currentTab}
+        >
+          <Navbar.Toggle aria-controls="course-nav" />
+          <Navbar.Collapse id="course-nav">
+            {
+              resolvedTabs.map(tab => (
+                <Nav.Item key={tab.tabId}>
+                  <Nav.Link
+                    {...(tab.clientPath
+                      ? { to: tab.clientPath, as: Link }
+                      : { href: tab.url }
+                    )}
+                    active={tab.tabId === currentTab}
+                  >
+                    {tab.title}
+                  </Nav.Link>
+                </Nav.Item>
+              ))
+            }
+          </Navbar.Collapse>
+          <Slot id="org.openedx.frontend.slot.header.courseNavigationBar.extraContent.v1" />
+        </Nav>
+      </Container>
     </Navbar>
   );
 };
