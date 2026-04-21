@@ -14,7 +14,6 @@
   "author": "Open edX Community",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@edx/brand": "npm:@openedx/brand-openedx@^1.2.3",
     "@openedx/frontend-base": "file:../pack/openedx-frontend-base.tgz",
     "@openedx/paragon": "^23",
     "react": "^18",

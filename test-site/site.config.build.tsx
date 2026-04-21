@@ -2,7 +2,7 @@ import { footerApp, headerApp, shellApp, EnvironmentTypes, SiteConfig } from '@o
 
 import { authenticatedPageConfig, examplePageConfig, iframeWidgetConfig } from './src';
 
-import './src/site.scss';
+import '@openedx/frontend-base/shell/style';
 
 const siteConfig: SiteConfig = {
   siteId: 'test',
