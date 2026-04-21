@@ -18,6 +18,16 @@
       "matchPackagePatterns": ["@edx", "@openedx"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": false
+    },
+    {
+      "matchDepTypes": ["peerDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "rangeStrategy": "update-lockfile"
+    },
+    {
+      "matchDepTypes": ["peerDependencies"],
+      "matchUpdateTypes": ["major"],
+      "rangeStrategy": "widen"
     }
   ]
 }
