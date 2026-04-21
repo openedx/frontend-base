@@ -2,7 +2,7 @@ import { EnvironmentTypes, SiteConfig } from '../types';
 import { devFooterApp, devHeaderApp, devHomeApp, devUserApp, slotShowcaseApp } from './dev';
 import { footerApp, headerApp, shellApp } from '.';
 
-import './app.scss';
+import './style';
 
 const siteConfig: SiteConfig = {
   apps: [

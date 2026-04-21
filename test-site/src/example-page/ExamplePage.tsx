@@ -10,6 +10,7 @@ import { Container } from '@openedx/paragon';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import messages from '../messages';
+import './style.scss';
 import Image from './Image';
 import appleImg from './apple.jpg';
 import appleUrl from './apple.svg';

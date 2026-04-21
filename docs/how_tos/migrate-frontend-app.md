@@ -199,12 +199,11 @@ Define the public API for your package:
 
 ```json
 "exports": {
-  ".": "./dist/index.js",
-  "./app.scss": "./dist/app.scss"
+  ".": "./dist/index.js"
 },
 ```
 
-The `exports` map decouples your public API from the internal `dist/` directory structure. Consumers import from clean paths (e.g., `@openedx/frontend-app-yourapp/app.scss`) and the map resolves them to the actual files in `dist/`. If your app has SCSS files that downstream site projects need to `@use`, add them as exports as shown above.
+The `exports` map decouples your public API from the internal `dist/` directory structure. Consumers import from clean paths and the map resolves them to the actual files in `dist/`.
 
 files
 -----
@@ -770,10 +769,10 @@ Observe the following file and directory structure.  Not counting any extra file
 ```
 src
 (...)
+├── sass
 ├── slots
 ├── widgets
 ├── Main.jsx
-├── app.scss
 ├── app.ts
 ├── constants.ts
 ├── index.ts
@@ -781,7 +780,8 @@ src
 ├── providers.ts
 ├── routes.tsx
 ├── setupTest.tsx
-└── slots.tsx
+├── slots.tsx
+└── style.scss
 ```
 
 A brief explanation of the new ones:
@@ -795,6 +795,8 @@ A brief explanation of the new ones:
 - `providers.ts`: where global context providers are defined
 - `routes.tsx`: where the app's routes are declared
 - `slots.tsx`: what slots the app _uses_; this is distinct from the slots the app _offers_, which are defined in the `slots` directory
+- `style.scss`: app-scoped runtime styles, imported from component code (an internal implementation detail, not exported)
+- `sass`: partials used by `style.scss`, if any
 
 Create, rename, and/or move file contents around to match.  Refer to a previously converted MFE (such as [Learner Dashboard](https://github.com/openedx/frontend-app-learner-dashboard/tree/frontend-base/src)) for examples.
 
@@ -871,27 +873,38 @@ This may require a little interpretation.  In spirit, the modules of your app ar
 These modules should be unopinionated about the path prefix where they are mounted.
 
 
-Create an app.scss file 
-=======================
+Separate runtime styles from the dev harness
+============================================
 
-This is required for running the app in dev mode.
+Frontend apps deal with two distinct sets of styles, and the distinction matters for the styling of the composing site:
 
-Create a new `app.scss` file at the top of your application.  It's responsible for:
+1. **Runtime styles**: App-scoped SCSS that lives inside `src/` and is imported from the app's component code. It is an internal implementation detail of the package, never exposed through the `exports` map, and loaded automatically whenever the app's code runs (including as a lazy-loaded route in a larger site).
+2. **Dev harness imports**: The shell's style manifest (`@openedx/frontend-base/shell/style`) loads Paragon's base CSS and the shell's own styles. It is imported only from `site.config.dev.tsx`, so it runs when the app is run standalone for development.
 
-1. Using the shell's stylesheet, which includes Paragon's core stylesheet.
-2. Using the stylesheets from your application, if any.
+> [!IMPORTANT]
+> Runtime styles must NOT import `@openedx/frontend-base/shell/style` (or any other source of Paragon base styles). Paragon's base styles set CSS custom properties at `:root`. If a lazy-loaded app chunk re-injects those declarations, they clobber any brand overrides that the composing site has already applied, breaking theming globally. See [the theming guide](./theming.md#css-ownership) for details.
 
-For example:
+Runtime styles
+--------------
 
+Keep app-scoped SCSS under `src/` and import it directly from the component code that needs it. The suggested layout is a single `src/style.scss` entry point, with any partials under `src/sass/`:
+
+```ts
+import './style.scss';
 ```
-@use "@openedx/frontend-base/shell/app.scss";
-@use "sass/style";
-```
 
-You must then import this file from your `site.config.dev.tsx` file:
+Any file layout works, as long as the styles are loaded by the app's own JS/TS modules rather than exposed to consumers.
+
+> [!IMPORTANT]
+> Any SCSS entry that uses `@media (--pgn-size-breakpoint-*)` must `@use "@openedx/paragon/styles/css/core/custom-media-breakpoints.css"` at the top. That includes `src/style.scss` and every component-level `index.scss` imported directly from JS: each is its own PostCSS pass and does not inherit the declarations from siblings. Missing `@use`s fail silently (the rule never matches any viewport). See [the theming guide](./theming.md#custom-media-breakpoints) for the full rationale.
+
+Dev harness imports
+-------------------
+
+Import the shell's style manifest from `site.config.dev.tsx` (NOT from `site.config.build.tsx` or any file that ships). This loads the global styles your app needs when it runs standalone:
 
 ```diff
-+ import './app.scss';
++ import '@openedx/frontend-base/shell/style';
 
 const siteConfig: SiteConfig = {
   // config document
@@ -899,6 +912,8 @@ const siteConfig: SiteConfig = {
 
 export default siteConfig;
 ```
+
+Dev harnesses should NOT import brand packages: running against unbranded Paragon defaults surfaces styling bugs that brand overrides would otherwise hide, and it keeps brand assets out of the app's dependency tree entirely.
 
 
 Document module-specific configuration needs

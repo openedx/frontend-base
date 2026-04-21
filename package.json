@@ -9,7 +9,7 @@
     ".": "./dist/index.js",
     "./tools": "./dist/tools/index.js",
     "./tools/tsconfig.json": "./dist/tools/typescript/tsconfig.json",
-    "./shell/app.scss": "./dist/shell/app.scss",
+    "./shell/style": "./dist/shell/style.js",
     "./shell/site": "./dist/shell/site.js"
   },
   "files": [
@@ -53,7 +53,8 @@
   },
   "sideEffects": [
     "*.css",
-    "*.scss"
+    "*.scss",
+    "**/shell/style.{js,ts}"
   ],
   "homepage": "https://github.com/openedx/frontend-base#readme",
   "dependencies": {
