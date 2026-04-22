@@ -17,7 +17,7 @@ const siteConfig: SiteConfig = {
         <div>Test App 1</div>
       ),
       handle: {
-        role: 'test-app-1'
+        roles: ['test-app-1']
       }
     }]
   }],

@@ -38,7 +38,7 @@ const app: App = {
     path: '/slots',
     Component: SlotShowcasePage,
     handle: {
-      role: 'org.openedx.frontend.role.slotShowcase',
+      roles: ['org.openedx.frontend.role.slotShowcase'],
     }
   }],
   slots: [
