@@ -56,6 +56,14 @@ const config: Configuration = {
   optimization: {
     splitChunks: {
       chunks: 'all',
+      cacheGroups: {
+        styles: {
+          name: 'app',
+          type: 'css/mini-extract',
+          chunks: 'all',
+          enforce: true,
+        },
+      },
     },
     minimizer: getImageMinimizer(),
   },
