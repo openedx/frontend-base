@@ -139,6 +139,7 @@ With the exception of any custom scripts, replace the `scripts` section of your 
 ```json
   "scripts": {
     "build": "make build",
+    "build:ci": "make build-ci",
     "clean": "make clean",
     "dev": "PORT=YOUR_PORT PUBLIC_PATH=/YOUR_APP_NAME openedx dev",
     "i18n_extract": "openedx formatjs extract",
@@ -183,9 +184,21 @@ build:
 	    cp "$$f" "$$d"; \
 	  done' sh {} +
 	tsc-alias -p tsconfig.build.json
+
+build-ci:
+	SITE_CONFIG_PATH=site.config.ci.tsx openedx build
 ```
 
 Note that the `find` command copies all files under `assets/` directories regardless of type, so you don't need to enumerate asset extensions.  Also note that `tsc-alias` runs after the copy step so that it can resolve `@src` aliases pointing to asset files.  If it ran before, it wouldn't find them and would omit them from the relative path conversion.
+
+The `build-ci` target is separate from `build` because apps are distributed build-less: `build` compiles only the library `dist/` via `tsc`, which doesn't verify that the app can actually be webpack-bundled as a deployable site. `build:ci` runs `openedx build` against a dedicated `site.config.ci.tsx` (which imports the real app) so webpack traverses the actual app graph, catching errors such as broken imports in lazy-loaded routes that neither `tsc` nor Jest would surface. A dedicated CI config is used rather than `site.config.dev.tsx` (which may include dev--only concerns) or `site.config.test.tsx` (which typically registers an inline app stub for Jest's sake and therefore never pulls the real app into the webpack graph). The CI config's URLs and `environment` value are inert at build time, since nothing executes the produced bundle.
+
+Add a corresponding step to your GitHub Actions workflow after the existing build step, so CI fails on any breakage that would only surface at webpack bundle time:
+
+```yaml
+- name: Build (CI)
+  run: npm run build:ci
+```
 
 Other package.json edits
 ------------------------
