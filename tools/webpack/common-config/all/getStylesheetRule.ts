@@ -21,10 +21,11 @@ import postcssWrapLayer from './postcssWrapLayer';
  *            precedence of runtime brand CSS (which is injected unlayered via
  *            <link> tags and thus beats every layered rule).
  */
-const PARAGON_RESOURCE = /@openedx[\\/]paragon[\\/]/;
-const SHELL_RESOURCE = /(@openedx[\\/]frontend-base|frontend-base[\\/]shell)[\\/]/;
-const BRAND_RESOURCE = /@(open)?edx[\\/]brand(-[^\\/]+)?[\\/]/;
-const NODE_MODULES = /[\\/]node_modules[\\/]/;
+export const PARAGON_PACKAGE = { name: '@openedx/paragon' };
+export const SHELL_PACKAGE = { name: '@openedx/frontend-base' };
+export const BRAND_PACKAGE = { name: /^@(open)?edx\/brand(-.+)?$/ };
+// The site/app split is positional (my project vs. a dep), so it is path-based.
+export const APP_RESOURCE = /[\\/](node_modules|packages)[\\/]/;
 
 /*
  * There are a few things we need to do here.
@@ -40,7 +41,7 @@ export default function getStylesheetRule(mode: 'dev' | 'production'): RuleSetRu
     test: /(.scss|.css)$/,
     oneOf: [
       {
-        resource: PARAGON_RESOURCE,
+        descriptionData: PARAGON_PACKAGE,
         // We need Paragon to not elide CSS: we have to be able to import it
         // directly from shell/style.ts
         sideEffects: true,
@@ -50,21 +51,21 @@ export default function getStylesheetRule(mode: 'dev' | 'production'): RuleSetRu
         ],
       },
       {
-        resource: SHELL_RESOURCE,
+        descriptionData: SHELL_PACKAGE,
         use: [
           MiniCssExtractPlugin.loader,
           ...getStyleUseConfig(mode, 'shell'),
         ],
       },
       {
-        resource: BRAND_RESOURCE,
+        descriptionData: BRAND_PACKAGE,
         use: [
           MiniCssExtractPlugin.loader,
           ...getStyleUseConfig(mode, 'brand'),
         ],
       },
       {
-        resource: { not: [NODE_MODULES] },
+        resource: { not: [APP_RESOURCE] },
         use: [
           getFirstLoader(mode),
           ...getStyleUseConfig(mode, 'site'),

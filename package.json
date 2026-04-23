@@ -9,6 +9,7 @@
     ".": "./dist/index.js",
     "./tools": "./dist/tools/index.js",
     "./tools/tsconfig.json": "./dist/tools/typescript/tsconfig.json",
+    "./shell/layer-order.scss": "./dist/shell/layer-order.scss",
     "./shell/style": "./dist/shell/style.js",
     "./shell/site": "./dist/shell/site.js"
   },

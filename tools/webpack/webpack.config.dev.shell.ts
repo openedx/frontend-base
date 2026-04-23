@@ -24,6 +24,7 @@ const resolvedSiteI18nPath = getResolvedSiteI18nPath('test-site/src/i18n');
 
 const config: Configuration = {
   entry: {
+    cssLayerOrder: path.resolve(process.cwd(), 'shell/layer-order.scss'),
     app: path.resolve(process.cwd(), 'shell/site'),
   },
   output: {
@@ -90,9 +91,10 @@ const config: Configuration = {
       filename: '[name].css',
     }),
     new HtmlWebpackPlugin({
-      inject: true, // Appends script tags linking to the webpack bundles at the end of the body
+      inject: true,
       template: path.resolve(process.cwd(), 'shell/public/index.html'),
-      chunks: ['app'],
+      chunks: ['cssLayerOrder', 'app'],
+      chunksSortMode: 'manual',
     }),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin(),
