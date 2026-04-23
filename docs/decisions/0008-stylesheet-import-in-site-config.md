@@ -34,7 +34,7 @@ The build pipeline wraps each stylesheet in a CSS cascade layer based on the res
 | `site`    | stylesheets outside `node_modules` (the composing site's source)  |
 | `brand`   | `@(open)?edx/brand*` packages                                     |
 
-The order declared at the top of `shell/style.scss` is `@layer paragon, shell, app, site, brand;` so the cascade resolves in that order: `brand` wins over `site`, `site` wins over `app`, `app` wins over `shell`, and `shell` wins over `paragon`.
+The order is declared in `shell/layer-order.scss` as `@layer paragon, shell, app, site, brand;`, so the cascade resolves in that order: `brand` wins over `site`, `site` wins over `app`, `app` wins over `shell`, and `shell` wins over `paragon`.
 
 `brand` is last because, in production, brand CSS is injected at runtime via `<link>` tags that bypass webpack entirely and therefore land **unlayered**. Unlayered rules beat every layered rule regardless of declared order, so runtime brand wins over the site's own CSS. Putting build-time brand imports (e.g. a dev harness that `@use`s a brand package directly) in the last layer keeps dev harness behavior consistent with production: brand overrides apply on top of everything the site declares.
 

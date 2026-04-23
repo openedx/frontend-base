@@ -25,6 +25,7 @@ const resolvedSiteI18nPath = getResolvedSiteI18nPath('src/i18n');
 
 const config: Configuration = {
   entry: {
+    cssLayerOrder: '@openedx/frontend-base/shell/layer-order.scss',
     app: '@openedx/frontend-base/shell/site',
   },
   output: {
