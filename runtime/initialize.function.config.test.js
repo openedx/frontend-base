@@ -19,12 +19,9 @@ jest.mock('site.config', () => () => ({
   JS_FILE_VAR: 'JS_FILE_VAR_VALUE_FUNCTION',
 }));
 
-let config = null;
-
 describe('initialize with function js file config', () => {
   beforeEach(() => {
     jest.resetModules();
-    config = getSiteConfig();
     fetchAuthenticatedUser.mockReset();
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();
@@ -36,6 +33,6 @@ describe('initialize with function js file config', () => {
     const messages = { i_am: 'a message' };
     await initialize({ messages });
 
-    expect(config.JS_FILE_VAR).toEqual('JS_FILE_VAR_VALUE_FUNCTION');
+    expect(getSiteConfig().JS_FILE_VAR).toEqual('JS_FILE_VAR_VALUE_FUNCTION');
   });
 });

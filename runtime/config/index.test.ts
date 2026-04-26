@@ -68,6 +68,38 @@ describe('mergeSiteConfig', () => {
       expect(getSiteConfig().siteName).toBe('Updated');
       expect(getSiteConfig().lmsBaseUrl).toBe('http://original.url');
     });
+
+    it('does not mutate the previous siteConfig reference', () => {
+      const before = getSiteConfig();
+      const beforeSnapshot = { ...before };
+
+      mergeSiteConfig({ siteName: 'Updated' });
+
+      const after = getSiteConfig();
+      expect(after).not.toBe(before);
+      expect(before).toEqual(beforeSnapshot);
+    });
+
+    it('does not mutate previously-held nested arrays', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [{ appId: 'existing', config: { VALUE: 'before' } }],
+      });
+      const beforeApps = getSiteConfig().apps;
+      const beforeAppsLength = beforeApps!.length;
+      const beforeApp = beforeApps![0];
+      const beforeAppConfig = { ...beforeApp.config };
+
+      mergeSiteConfig({
+        apps: [{ appId: 'existing', config: { VALUE: 'after' } }],
+      });
+
+      // The previously-held array and app object must be unchanged.
+      expect(beforeApps!.length).toBe(beforeAppsLength);
+      expect(beforeApp.config).toEqual(beforeAppConfig);
+      // ...even though the live siteConfig sees the merged value.
+      expect(getSiteConfig().apps![0].config!.VALUE).toBe('after');
+    });
   });
 
   describe('app merging (full merge, default behavior)', () => {

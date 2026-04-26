@@ -21,12 +21,9 @@ jest.mock('site.config', () => async () => new Promise((resolve) => {
   });
 }));
 
-let config = null;
-
 describe('initialize with async function js file config', () => {
   beforeEach(() => {
     jest.resetModules();
-    config = getSiteConfig();
     fetchAuthenticatedUser.mockReset();
     ensureAuthenticatedUser.mockReset();
     hydrateAuthenticatedUser.mockReset();
@@ -38,6 +35,6 @@ describe('initialize with async function js file config', () => {
     const messages = { i_am: 'a message' };
     await initialize({ messages });
 
-    expect(config.JS_FILE_VAR).toEqual('JS_FILE_VAR_VALUE_ASYNC_FUNCTION');
+    expect(getSiteConfig().JS_FILE_VAR).toEqual('JS_FILE_VAR_VALUE_ASYNC_FUNCTION');
   });
 });
