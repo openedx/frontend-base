@@ -100,6 +100,7 @@
  * @module Config
  */
 
+import isEqual from 'lodash/isEqual';
 import keyBy from 'lodash/keyBy';
 import merge from 'lodash/merge';
 import {
@@ -287,6 +288,7 @@ export function mergeAppConfig(id: string, newAppConfig: AppConfig) {
 let activeRouteRoles: string[] = [];
 
 export function setActiveRouteRoles(roles: string[]) {
+  if (isEqual(activeRouteRoles, roles)) return;
   activeRouteRoles = roles;
   publish(ACTIVE_ROLES_CHANGED);
 }
@@ -298,19 +300,20 @@ export function getActiveRouteRoles() {
 const activeWidgetRoles: Record<string, number> = {};
 
 export function addActiveWidgetRole(role: string) {
-  activeWidgetRoles[role] ??= 0;
-  activeWidgetRoles[role] += 1;
-  publish(ACTIVE_ROLES_CHANGED);
+  // Only publish when the role transitions from absent to present.
+  const wasPresent = (activeWidgetRoles[role] ?? 0) > 0;
+  activeWidgetRoles[role] = (activeWidgetRoles[role] ?? 0) + 1;
+  if (!wasPresent) publish(ACTIVE_ROLES_CHANGED);
 }
 
 export function removeActiveWidgetRole(role: string) {
-  if (activeWidgetRoles[role] !== undefined) {
-    activeWidgetRoles[role] -= 1;
-  }
+  if (activeWidgetRoles[role] === undefined) return;
+  activeWidgetRoles[role] -= 1;
   if (activeWidgetRoles[role] < 1) {
     delete activeWidgetRoles[role];
+    // Only publish when the role transitions from present to absent.
+    publish(ACTIVE_ROLES_CHANGED);
   }
-  publish(ACTIVE_ROLES_CHANGED);
 }
 
 export function getActiveWidgetRoles() {
