@@ -8,11 +8,6 @@ jest.mock('./WidgetProvider', () => ({
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
-// Mock condition checking to always pass.
-jest.mock('../utils', () => ({
-  isSlotOperationConditionSatisfied: () => true,
-}));
-
 const slotId = 'test-slot';
 
 function makeAppendOp(id: string, label: string, role?: string) {

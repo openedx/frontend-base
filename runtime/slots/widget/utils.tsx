@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
-import { getActiveRoles } from '../../config';
 import { SlotOperation } from '../types';
-import { isSlotOperationConditionSatisfied } from '../utils';
 import { IFrameWidget } from './iframe';
 import { IdentifiedWidget, WidgetAbsoluteOperation, WidgetAppendOperation, WidgetComponentProps, WidgetElementProps, WidgetIdentityProps, WidgetIFrameProps, WidgetInsertAfterOperation, WidgetInsertBeforeOperation, WidgetList, WidgetOperation, WidgetOperationTypes, WidgetOptionsOperation, WidgetPrependOperation, WidgetRemoveOperation, WidgetRendererOperation, WidgetRendererProps, WidgetReplaceOperation } from './types';
 import WidgetProvider from './WidgetProvider';
@@ -204,23 +202,20 @@ function createWidgetList(identifiedWidgets: IdentifiedWidget[]): WidgetList {
 
 export function createWidgets(operations: WidgetOperation[], componentProps?: Record<string, unknown>): WidgetList {
   const identifiedWidgets: IdentifiedWidget[] = [];
-  const activeRoles = getActiveRoles();
 
   for (const operation of operations) {
-    if (isSlotOperationConditionSatisfied(operation, activeRoles)) {
-      if (isWidgetAppendOperation(operation)) {
-        appendWidget(operation, identifiedWidgets, componentProps);
-      } else if (isWidgetPrependOperation(operation)) {
-        prependWidget(operation, identifiedWidgets, componentProps);
-      } else if (isWidgetInsertAfterOperation(operation)) {
-        insertAfterWidget(operation, identifiedWidgets, componentProps);
-      } else if (isWidgetInsertBeforeOperation(operation)) {
-        insertBeforeWidget(operation, identifiedWidgets, componentProps);
-      } else if (isWidgetReplaceOperation(operation)) {
-        replaceWidget(operation, identifiedWidgets, componentProps);
-      } else if (isWidgetRemoveOperation(operation)) {
-        removeWidget(operation, identifiedWidgets);
-      }
+    if (isWidgetAppendOperation(operation)) {
+      appendWidget(operation, identifiedWidgets, componentProps);
+    } else if (isWidgetPrependOperation(operation)) {
+      prependWidget(operation, identifiedWidgets, componentProps);
+    } else if (isWidgetInsertAfterOperation(operation)) {
+      insertAfterWidget(operation, identifiedWidgets, componentProps);
+    } else if (isWidgetInsertBeforeOperation(operation)) {
+      insertBeforeWidget(operation, identifiedWidgets, componentProps);
+    } else if (isWidgetReplaceOperation(operation)) {
+      replaceWidget(operation, identifiedWidgets, componentProps);
+    } else if (isWidgetRemoveOperation(operation)) {
+      removeWidget(operation, identifiedWidgets);
     }
   }
 
