@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useMemo } from 'react';
+import useActiveRoles from '../../react/hooks/useActiveRoles';
 import { useSlotContext, useSlotOperations } from '../hooks';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { WidgetList, WidgetOperation } from './types';
@@ -18,31 +19,26 @@ export function useWidgetsForId(id: string, componentProps?: Record<string, unkn
 
 export function useWidgetOperations(id: string) {
   const operations = useSlotOperations(id);
-  const [widgetOperations, setWidgetOperations] = useState<WidgetOperation[]>([]);
+  const activeRoles = useActiveRoles();
 
-  useEffect(() => {
-    const filteredOperations = operations.filter((operation): operation is WidgetOperation => {
-      return isWidgetOperation(operation) && isSlotOperationConditionSatisfied(operation);
-    });
-
-    setWidgetOperations(filteredOperations);
-  }, [operations]);
-
-  return widgetOperations;
+  return useMemo(
+    () => operations.filter((operation): operation is WidgetOperation => (
+      isWidgetOperation(operation) && isSlotOperationConditionSatisfied(operation, activeRoles)
+    )),
+    [operations, activeRoles],
+  );
 }
 
 export function useSortedWidgetOperations(id: string) {
   const operations = useWidgetOperations(id);
-  const [sortedOperations, setSortedOperations] = useState<WidgetOperation[]>([]);
 
-  useEffect(() => {
+  return useMemo(() => (
     // This sorts widget operations in an order that guarantees that any 'related' widgets
     // needed by relatively positioned operations (INSERT_AFTER, INSERT_BEFORE) should already exist
     // by the time the relative operations are evaluated.  It means the declaration order of
     // operations in SiteConfig does not prevent an operation from interacting with a widget that was
     // declared 'later'.
-    const sortedOperations = operations.sort((a: WidgetOperation, b: WidgetOperation) => {
-      // If both operations are widget operations, there are special sorting rules.
+    [...operations].sort((a: WidgetOperation, b: WidgetOperation) => {
       const aAbsolute = isWidgetAbsoluteOperation(a);
       const bAbsolute = isWidgetAbsoluteOperation(b);
       if (aAbsolute && bAbsolute) {
@@ -58,21 +54,15 @@ export function useSortedWidgetOperations(id: string) {
           return 1;
         }
       }
-
       return 0;
-    });
-
-    setSortedOperations(sortedOperations);
-  }, [operations]);
-
-  return sortedOperations;
+    })
+  ), [operations]);
 }
 
 /**
  * useWidgetOptions iterates through the slot's operations to find any that are "widget options"
  * operations specific to this widget.  It merges these into a single object and returns them -
- * operations are merged in declaration order, meaning last one in wins.  useWidgetOptions only
- * triggers a re-render when the options change.
+ * operations are merged in declaration order, meaning last one in wins.
  */
 export function useWidgetOptions() {
   const { slotId, widgetId } = useContext(WidgetContext);
@@ -82,24 +72,13 @@ export function useWidgetOptions() {
 export function useWidgetOptionsForId(slotId: string, widgetId: string) {
   const operations = useWidgetOperations(slotId);
 
-  const [options, setOptions] = useState<Record<string, unknown>>({});
-  useEffect(() => {
-    const findOptions = () => {
-      let nextOptions: Record<string, unknown> = {};
-      for (const operation of operations) {
-        if (isSlotOperationConditionSatisfied(operation)) {
-          if (isWidgetOptionsOperation(operation)) {
-            if (operation.relatedId === widgetId) {
-              nextOptions = { ...nextOptions, ...operation.options };
-            }
-          }
-        }
+  return useMemo(() => {
+    let options: Record<string, unknown> = {};
+    for (const operation of operations) {
+      if (isWidgetOptionsOperation(operation) && operation.relatedId === widgetId) {
+        options = { ...options, ...operation.options };
       }
-      return nextOptions;
-    };
-
-    setOptions(findOptions());
+    }
+    return options;
   }, [widgetId, operations]);
-
-  return options;
 }

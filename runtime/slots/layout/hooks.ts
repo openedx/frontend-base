@@ -1,4 +1,5 @@
-import { ComponentType, ReactNode, useEffect, useState } from 'react';
+import { ComponentType, ReactNode, useMemo } from 'react';
+import useActiveRoles from '../../react/hooks/useActiveRoles';
 import { useSlotContext, useSlotOperations } from '../hooks';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { LayoutComponentProps, LayoutElementProps, LayoutOperation } from './types';
@@ -14,11 +15,12 @@ function hasLayoutElementProps(operation: LayoutOperation): operation is (Layout
 
 export function useLayoutForSlotId(id: string) {
   const operations = useSlotOperations(id);
-  let layoutElement: ReactNode | ComponentType = null;
+  const activeRoles = useActiveRoles();
 
-  for (const operation of operations) {
-    if (isSlotOperationConditionSatisfied(operation)) {
-      if (isLayoutReplaceOperation(operation)) {
+  return useMemo<ReactNode | ComponentType>(() => {
+    let layoutElement: ReactNode | ComponentType = null;
+    for (const operation of operations) {
+      if (isSlotOperationConditionSatisfied(operation, activeRoles) && isLayoutReplaceOperation(operation)) {
         if (hasLayoutComponentProps(operation)) {
           layoutElement = operation.component;
         } else if (hasLayoutElementProps(operation)) {
@@ -26,15 +28,14 @@ export function useLayoutForSlotId(id: string) {
         }
       }
     }
-  }
-  return layoutElement;
+    return layoutElement;
+  }, [operations, activeRoles]);
 }
 
 /**
  * useLayoutOptions iterates through the slot's operations to find any which are "layout
  * options" operations.  It merges these into a single object and returns them - operations are
- * merged in declaration order, meaning last one in wins.  useLayoutOptions only triggers a
- * re-render when the options change.
+ * merged in declaration order, meaning last one in wins.
  */
 export function useLayoutOptions() {
   const { id } = useSlotContext();
@@ -43,23 +44,15 @@ export function useLayoutOptions() {
 
 export function useLayoutOptionsForId(id: string) {
   const operations = useSlotOperations(id);
-  const [options, setOptions] = useState<Record<string, unknown>>({});
+  const activeRoles = useActiveRoles();
 
-  useEffect(() => {
-    const findOptions = () => {
-      let nextOptions: Record<string, unknown> = {};
-      for (const operation of operations) {
-        if (isSlotOperationConditionSatisfied(operation)) {
-          if (isLayoutOptionsOperation(operation)) {
-            nextOptions = { ...nextOptions, ...operation.options };
-          }
-        }
+  return useMemo(() => {
+    let options: Record<string, unknown> = {};
+    for (const operation of operations) {
+      if (isSlotOperationConditionSatisfied(operation, activeRoles) && isLayoutOptionsOperation(operation)) {
+        options = { ...options, ...operation.options };
       }
-      return nextOptions;
-    };
-
-    setOptions(findOptions());
-  }, [operations]);
-
-  return options;
+    }
+    return options;
+  }, [operations, activeRoles]);
 }

@@ -1,33 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useContext, useMemo } from 'react';
 
-import { SlotOperation } from './types';
 import { getSlotOperations } from './utils';
 import SlotContext from './SlotContext';
 import { createWidgetAppendOperation } from './widget';
 
 /**
- * The useSlotOperations hook will trigger re-renders when the slot configuration changes.
- * It is a fundamental hook that is used by many of the others to ensure they're using up-to-date
- * config as it changes.
+ * Resolves the operations registered for a given slot id (plus any aliases),
+ * prepended with a default-content operation built from the slot's children.
  */
 export function useSlotOperations(id: string) {
   const { children, idAliases } = useSlotContext();
-  const location = useLocation();
-  const [operations, setOperations] = useState<SlotOperation[]>([]);
 
-  useEffect(() => {
-    // Setting default content has to happen inside `useEffect()` so that re-renders only happen
-    // when [children] props change.  This avoids an endless render loop.  After all, the whole
-    // point of a slot is to modify its children via slot operations.
+  return useMemo(() => {
     const defaultOperation = createWidgetAppendOperation('defaultContent', id, children);
-    setOperations(getSlotOperations([id, ...(idAliases ?? [])], defaultOperation));
-
-    // We depend on [location] to force re-renders on navigation.  This guarantees changes in active
-    // roles (and thus, changes in what conditional widgets are shown) properly.
-  }, [id, children, idAliases, location]);
-
-  return operations;
+    return getSlotOperations([id, ...(idAliases ?? [])], defaultOperation);
+  }, [id, children, idAliases]);
 }
 
 export function useSlotContext() {

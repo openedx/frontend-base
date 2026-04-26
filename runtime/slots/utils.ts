@@ -1,5 +1,5 @@
 import { getAuthenticatedUser } from '../auth';
-import { getActiveRoles, getSiteConfig } from '../config';
+import { getSiteConfig } from '../config';
 import { SlotOperation } from './types';
 
 export function getSlotOperations(ids: string[], defaultOperation?: SlotOperation) {
@@ -25,7 +25,7 @@ export function getSlotOperations(ids: string[], defaultOperation?: SlotOperatio
   return ops;
 }
 
-export function isSlotOperationConditionSatisfied(operation: SlotOperation) {
+export function isSlotOperationConditionSatisfied(operation: SlotOperation, activeRoles: string[]) {
   const { condition } = operation;
   if (condition?.authenticated !== undefined) {
     const isAuthenticated = getAuthenticatedUser() !== null;
@@ -36,8 +36,6 @@ export function isSlotOperationConditionSatisfied(operation: SlotOperation) {
   }
 
   if (condition?.active !== undefined || condition?.inactive !== undefined) {
-    const activeRoles: string[] = getActiveRoles();
-
     if (condition?.active !== undefined) {
       let activeConditionRoleFound = false;
       for (const conditionRole of condition.active) {

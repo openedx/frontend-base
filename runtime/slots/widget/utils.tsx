@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { getActiveRoles } from '../../config';
 import { SlotOperation } from '../types';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { IFrameWidget } from './iframe';
@@ -203,9 +204,10 @@ function createWidgetList(identifiedWidgets: IdentifiedWidget[]): WidgetList {
 
 export function createWidgets(operations: WidgetOperation[], componentProps?: Record<string, unknown>): WidgetList {
   const identifiedWidgets: IdentifiedWidget[] = [];
+  const activeRoles = getActiveRoles();
 
   for (const operation of operations) {
-    if (isSlotOperationConditionSatisfied(operation)) {
+    if (isSlotOperationConditionSatisfied(operation, activeRoles)) {
       if (isWidgetAppendOperation(operation)) {
         appendWidget(operation, identifiedWidgets, componentProps);
       } else if (isWidgetPrependOperation(operation)) {
