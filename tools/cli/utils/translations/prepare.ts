@@ -1,5 +1,5 @@
 import fs from 'fs';
-import camelCase from 'lodash.camelcase';
+import camelCase from 'lodash/camelCase';
 import path from 'path';
 import { generateMessagesObject, writeMessagesObjectToFile, type MessagesObject } from './messagesObject';
 

@@ -1,4 +1,4 @@
-import merge from 'lodash.merge';
+import merge from 'lodash/merge';
 import PropTypes from 'prop-types';
 import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
