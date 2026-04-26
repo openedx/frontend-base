@@ -213,8 +213,10 @@ export function mergeSiteConfig(
   const { limitAppMergeToConfig = false } = options;
   const { apps: newApps, ...restOfNewConfig } = newSiteConfig;
 
-  // lodash merge the top-level (non-app) part
-  siteConfig = merge(siteConfig, restOfNewConfig);
+  /* `merge({}, ...)` deep-clones into the fresh target, so the new `siteConfig`
+     is a brand-new reference and the previous one is never mutated. This is what
+     lets React consumers detect that CONFIG_CHANGED actually changed something. */
+  siteConfig = merge({}, siteConfig, restOfNewConfig);
 
   // if we don't have new apps, we're done
   if (!newApps?.length) {
@@ -225,6 +227,7 @@ export function mergeSiteConfig(
   // if we're doing a full merge, merge the objects
   if (!limitAppMergeToConfig) {
     siteConfig.apps = Object.values(merge(
+      {},
       keyBy(siteConfig.apps || [], 'appId'),
       keyBy(newApps, 'appId')
     ));
@@ -241,12 +244,13 @@ export function mergeSiteConfig(
 
   // handle config-only merging
   const newAppsById = keyBy(newApps, 'appId');
-  for (const app of siteConfig.apps) {
+  siteConfig.apps = siteConfig.apps.map((app) => {
     const newApp = newAppsById[app.appId];
-    if (newApp?.config) {
-      app.config = merge(app.config, newApp.config);
+    if (!newApp?.config) {
+      return app;
     }
-  }
+    return { ...app, config: merge({}, app.config, newApp.config) };
+  });
 
   publish(CONFIG_CHANGED);
 }
@@ -281,7 +285,9 @@ export function getAppConfig(id: string) {
 }
 
 export function mergeAppConfig(id: string, newAppConfig: AppConfig) {
-  appConfigs[id] = merge(appConfigs[id], newAppConfig);
+  // Non-mutating: produce a fresh entry so consumers holding a reference to
+  // the previous one don't observe the change underneath them.
+  appConfigs[id] = merge({}, appConfigs[id], newAppConfig);
   publish(CONFIG_CHANGED);
 }
 
