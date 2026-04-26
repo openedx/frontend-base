@@ -1,4 +1,4 @@
-import { ComponentType, createElement, isValidElement, ReactNode } from 'react';
+import { ComponentType, createElement, isValidElement, memo, ReactNode } from 'react';
 import DefaultSlotLayout from './layout/DefaultSlotLayout';
 import { useLayoutForSlotId } from './layout/hooks';
 import SlotContext from './SlotContext';
@@ -30,10 +30,13 @@ function SlotRenderer({ layout }: { layout: ComponentType | ReactNode }) {
   return <>{layoutElement}</>;
 }
 
-export default function Slot({ id, idAliases, children, layout = DefaultSlotLayout, ...props }: SlotProps) {
+function Slot({ id, idAliases, children, layout = DefaultSlotLayout, ...props }: SlotProps) {
   return (
     <SlotContext.Provider value={{ id, idAliases, children, ...props }}>
       <SlotRenderer layout={layout} />
     </SlotContext.Provider>
   );
 }
+
+/* memo so parent re-renders don't cascade through Slot when props are shallow-equal. */
+export default memo(Slot);
