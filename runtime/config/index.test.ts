@@ -1,11 +1,16 @@
-import { CONFIG_CHANGED } from '../constants';
+import { ACTIVE_ROLES_CHANGED, CONFIG_CHANGED } from '../constants';
 import * as subscriptions from '../subscriptions';
 import {
+  addActiveWidgetRole,
   addAppConfigs,
+  getActiveRouteRoles,
+  getActiveWidgetRoles,
   getAppConfig,
   getProvides,
   getSiteConfig,
   mergeSiteConfig,
+  removeActiveWidgetRole,
+  setActiveRouteRoles,
   setSiteConfig,
 } from './index';
 
@@ -433,6 +438,87 @@ describe('mergeSiteConfig', () => {
 
       const result = getProvides('org.openedx.frontend.provides.testProvidesId.v1');
       expect(result).toEqual([{ urlPattern: '/two/' }]);
+    });
+  });
+});
+
+describe('active role mutators', () => {
+  let publishSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    /* Reset shared state. setActiveRouteRoles uses isEqual, so any non-empty
+       array different from the current one will reset; we follow up with []. */
+    setActiveRouteRoles(['__reset__']);
+    setActiveRouteRoles([]);
+    for (const role of getActiveWidgetRoles()) {
+      while (getActiveWidgetRoles().includes(role)) {
+        removeActiveWidgetRole(role);
+      }
+    }
+    publishSpy = jest.spyOn(subscriptions, 'publish');
+  });
+
+  afterEach(() => {
+    publishSpy.mockRestore();
+  });
+
+  describe('setActiveRouteRoles', () => {
+    it('publishes ACTIVE_ROLES_CHANGED when the roles change', () => {
+      setActiveRouteRoles(['role-a']);
+      expect(publishSpy).toHaveBeenCalledWith(ACTIVE_ROLES_CHANGED);
+      expect(getActiveRouteRoles()).toEqual(['role-a']);
+    });
+
+    it('does not publish when called with a deeply-equal array', () => {
+      setActiveRouteRoles(['role-a']);
+      publishSpy.mockClear();
+
+      setActiveRouteRoles(['role-a']);
+      expect(publishSpy).not.toHaveBeenCalled();
+    });
+
+    it('publishes again when the roles transition back to a different value', () => {
+      setActiveRouteRoles(['role-a']);
+      setActiveRouteRoles(['role-b']);
+      publishSpy.mockClear();
+
+      setActiveRouteRoles(['role-a']);
+      expect(publishSpy).toHaveBeenCalledWith(ACTIVE_ROLES_CHANGED);
+    });
+  });
+
+  describe('addActiveWidgetRole / removeActiveWidgetRole', () => {
+    it('publishes only on the 0->1 transition when adding', () => {
+      addActiveWidgetRole('widget-role');
+      expect(publishSpy).toHaveBeenCalledWith(ACTIVE_ROLES_CHANGED);
+      expect(getActiveWidgetRoles()).toContain('widget-role');
+
+      publishSpy.mockClear();
+      addActiveWidgetRole('widget-role');
+      addActiveWidgetRole('widget-role');
+      expect(publishSpy).not.toHaveBeenCalled();
+    });
+
+    it('publishes only on the 1->0 transition when removing', () => {
+      addActiveWidgetRole('widget-role');
+      addActiveWidgetRole('widget-role');
+      addActiveWidgetRole('widget-role');
+      publishSpy.mockClear();
+
+      removeActiveWidgetRole('widget-role');
+      removeActiveWidgetRole('widget-role');
+      expect(publishSpy).not.toHaveBeenCalled();
+      expect(getActiveWidgetRoles()).toContain('widget-role');
+
+      removeActiveWidgetRole('widget-role');
+      expect(publishSpy).toHaveBeenCalledWith(ACTIVE_ROLES_CHANGED);
+      expect(getActiveWidgetRoles()).not.toContain('widget-role');
+    });
+
+    it('does nothing when removing a role that was never added', () => {
+      removeActiveWidgetRole('never-added');
+      expect(publishSpy).not.toHaveBeenCalled();
+      expect(getActiveWidgetRoles()).not.toContain('never-added');
     });
   });
 });
