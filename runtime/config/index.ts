@@ -100,8 +100,8 @@
  * @module Config
  */
 
-import keyBy from 'lodash.keyby';
-import merge from 'lodash.merge';
+import keyBy from 'lodash/keyBy';
+import merge from 'lodash/merge';
 import {
   AppConfig,
   EnvironmentTypes,

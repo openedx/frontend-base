@@ -3,8 +3,8 @@
  *
  * @module Utilities
  */
-import camelCase from 'lodash.camelcase';
-import snakeCase from 'lodash.snakecase';
+import camelCase from 'lodash/camelCase';
+import snakeCase from 'lodash/snakeCase';
 
 /**
  * This is the underlying function used by camelCaseObject, snakeCaseObject, and convertKeyNames
