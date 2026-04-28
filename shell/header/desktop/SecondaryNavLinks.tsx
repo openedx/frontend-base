@@ -3,7 +3,7 @@ import { Slot } from '../../../runtime';
 
 export default function SecondaryNavLinks() {
   return (
-    <Nav className="flex-nowrap">
+    <Nav className="flex-nowrap secondary-nav-links">
       <Slot id="org.openedx.frontend.slot.header.secondaryLinks.v1" />
     </Nav>
   );

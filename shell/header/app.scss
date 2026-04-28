@@ -11,4 +11,10 @@ header {
       color: var(--pgn-color-active, #fff);
     }
   }
+
+  // Secondary-nav cluster sits flush against whatever's to its left
+  // (notifications bell, etc.) — those neighbors bring their own padding.
+  .secondary-nav-links > :first-child {
+    padding-left: 0;
+  }
 }
