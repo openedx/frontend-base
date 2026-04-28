@@ -19,11 +19,13 @@ export interface CourseTab {
 
 export interface CourseHomeCourseMetadata {
   tabs: CourseTab[],
+  [key: string]: any,
 }
 
 function normalizeCourseHomeCourseMetadata(metadata: RawCourseHomeCourseMetadata): CourseHomeCourseMetadata {
   const data = camelCaseObject(metadata);
   return {
+    ...data,
     tabs: (data.tabs || []).map((tab: CourseTab) => ({
       tabId: tab.tabId === 'courseware' ? 'outline' : tab.tabId,
       title: tab.title,
