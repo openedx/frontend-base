@@ -55,7 +55,12 @@ const messages = defineMessages({
     id: 'footer.revealLinks.more',
     defaultMessage: 'More',
     description: 'Text for a button that reveals more links and content in the footer.',
-  }
+  },
+  'header.help': {
+    id: 'header.help',
+    defaultMessage: 'Help',
+    description: 'Help link in the global header that points to documentation or support.',
+  },
 });
 
 export default messages;
