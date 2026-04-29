@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { getSiteConfig, useIntl, FormattedMessage, Slot } from '@openedx/frontend-base';
+import { useIntl, FormattedMessage, getAppConfig } from '@openedx/frontend-base';
 import { Alert } from '@openedx/paragon';
 
 import MasqueradeWidget from './masquerade-widget';
 import messages from './messages';
-
-function getInsightsUrl(courseId?: string): string | undefined {
-  const urlBase = (getSiteConfig() as any).INSIGHTS_BASE_URL;
-  let urlFull: string | undefined;
-  if (urlBase) {
-    urlFull = `${urlBase}/courses`;
-    if (courseId) {
-      urlFull += `/${courseId}`;
-    }
-  }
-  return urlFull;
-}
+import { appId } from '../constants';
 
 function getStudioUrl(courseId?: string, unitId?: string): string | undefined {
-  const urlBase = (getSiteConfig() as any).STUDIO_BASE_URL;
+  const urlBase = getAppConfig(appId).STUDIO_BASE_URL;
   let urlFull: string | undefined;
   if (urlBase) {
     if (unitId) {
@@ -33,7 +22,7 @@ function getStudioUrl(courseId?: string, unitId?: string): string | undefined {
 }
 
 interface MasqueradeBarProps {
-  isStudioButtonVisible?: boolean;
+  isStudioButtonVisible?: boolean,
 }
 
 const MasqueradeBar: React.FC<MasqueradeBarProps> = ({
@@ -42,13 +31,11 @@ const MasqueradeBar: React.FC<MasqueradeBarProps> = ({
   const { courseId = '', unitId = '' } = useParams();
 
   const [didMount, setDidMount] = useState(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setDidMount(true);
     return () => setDidMount(false);
-  });
+  }, []);
 
-  const urlInsights = getInsightsUrl(courseId);
   const urlStudio = getStudioUrl(courseId, unitId);
   const [masqueradeErrorMessage, showMasqueradeError] = useState<string | null>(null);
   const [queryClient] = useState(() => new QueryClient({
@@ -66,7 +53,7 @@ const MasqueradeBar: React.FC<MasqueradeBarProps> = ({
             <div className="align-items-center flex-grow-1 d-md-flex mx-1 my-1">
               <MasqueradeWidget courseId={courseId} onError={showMasqueradeError} />
             </div>
-            {((urlStudio && isStudioButtonVisible) || urlInsights) && (
+            {((urlStudio && isStudioButtonVisible)) && (
               <>
                 <hr className="border-light" />
                 <span className="mr-2 mt-1 col-form-label"><FormattedMessage {...messages.titleViewCourseIn} /></span>
@@ -75,11 +62,6 @@ const MasqueradeBar: React.FC<MasqueradeBarProps> = ({
             {urlStudio && isStudioButtonVisible && (
               <span className="mx-1 my-1">
                 <a className="btn btn-inverse-outline-primary" href={urlStudio}>{formatMessage(messages.titleStudio)}</a>
-              </span>
-            )}
-            {urlInsights && (
-              <span className="mx-1 my-1">
-                <a className="btn btn-inverse-outline-primary" href={urlInsights}>{formatMessage(messages.titleInsights)}</a>
               </span>
             )}
           </div>
@@ -91,8 +73,6 @@ const MasqueradeBar: React.FC<MasqueradeBarProps> = ({
             </Alert>
           </div>
         )}
-        // TODO: check this Slot
-        {/* <Slot id="org.openedx.frontend.slot.header.masqueradeBar.alerts.v1" /> */}
       </div>
     </QueryClientProvider>
   ));

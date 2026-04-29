@@ -4,11 +4,11 @@ import { useMasqueradeContext } from './MasqueradeContext';
 import type { Payload, Role } from './data/api';
 
 interface Props {
-  groupId?: number;
-  groupName: string;
-  role?: Role;
-  userName?: string;
-  userPartitionId?: number;
+  groupId?: number,
+  groupName: string,
+  role?: Role,
+  userName?: string,
+  userPartitionId?: number,
 }
 
 export const MasqueradeWidgetOption: React.FC<Props> = ({

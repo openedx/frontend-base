@@ -39,13 +39,11 @@ export const MasqueradeWidget: React.FC<Props> = ({ courseId, onError }) => {
     queryFn: () => getMasqueradeOptions(courseId),
   });
 
-  // Handle network errors
   React.useEffect(() => {
     if (queryError) {
-      // eslint-disable-next-line no-console
-      console.error('Unable to get masquerade options', queryError);
+      onError('Unable to get masquerade options');
     }
-  }, [queryError]);
+  }, [queryError, onError]);
 
   // Handle success: false from the server
   React.useEffect(() => {
@@ -56,9 +54,11 @@ export const MasqueradeWidget: React.FC<Props> = ({ courseId, onError }) => {
 
   // Derive active and available from query data
   const queryActive = (data?.success && data.active) || defaultActive;
-  const active: ActiveMasqueradeData = activeOverride
-    ? { ...queryActive, ...activeOverride }
-    : queryActive;
+  const active: ActiveMasqueradeData = React.useMemo(() => (
+    activeOverride
+      ? { ...queryActive, ...activeOverride }
+      : queryActive
+  ), [queryActive, activeOverride]);
   const available = (data?.success && data.available) || [];
 
   // Show username input when data loads with an active userName
@@ -67,7 +67,7 @@ export const MasqueradeWidget: React.FC<Props> = ({ courseId, onError }) => {
       setAutoFocus(false);
       setShouldShowUserNameInput(true);
     }
-  }, [data]);
+  }, [data, queryActive.userName]);
 
   const mutation = useMutation({
     mutationFn: (payload: Payload) => postMasqueradeOptions(courseId, payload),
@@ -76,7 +76,7 @@ export const MasqueradeWidget: React.FC<Props> = ({ courseId, onError }) => {
   const handleSubmit = React.useCallback(async (payload: Payload) => {
     onError(''); // Clear any error
     return mutation.mutateAsync(payload);
-  }, [courseId, onError, mutation.mutateAsync]);
+  }, [onError, mutation]);
 
   const toggle = React.useCallback((
     show: boolean | undefined,
