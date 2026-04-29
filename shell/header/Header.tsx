@@ -14,6 +14,7 @@ export default function Header() {
           <Slot id="org.openedx.frontend.slot.header.mobile.v1" />
         </nav>
       </header>
+      <Slot id="org.openedx.frontend.slot.header.masqueradeBar.v1" />
       <Slot id="org.openedx.frontend.slot.header.courseNavigationBar.v1" />
     </>
   );

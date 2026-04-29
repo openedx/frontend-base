@@ -13,7 +13,9 @@ import MobileNavLinks from './mobile/MobileNavLinks';
 
 import messages from '../Shell.messages';
 import CourseTabsNavigation from './course-navigation-bar/CourseTabsNavigation';
+import MasqueradeBar from './masquerade-bar/MasqueradeBar';
 import { isCourseNavigationRoute } from './course-navigation-bar/utils';
+import { isMasqueradeBarRoute } from './masquerade-bar/utils';
 import { appId } from './constants';
 import './app.scss';
 
@@ -146,6 +148,15 @@ const config: App = {
       component: CourseTabsNavigation,
       condition: {
         callback: () => isCourseNavigationRoute(),
+      }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.masqueradeBar.v1',
+      id: 'org.openedx.frontend.widget.header.masqueradeBar.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: MasqueradeBar,
+      condition: {
+        callback: () => isMasqueradeBarRoute(),
       }
     }
   ]
