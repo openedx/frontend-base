@@ -11,11 +11,6 @@ const messages = defineMessages({
     defaultMessage: 'Studio',
     description: 'Button to view in studio',
   },
-  titleInsights: {
-    id: 'masqueradeBar.insights',
-    defaultMessage: 'Insights',
-    description: 'Button Insights',
-  },
 });
 
 export default messages;

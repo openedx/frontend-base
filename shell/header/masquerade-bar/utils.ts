@@ -3,7 +3,7 @@ import { providesMasqueradeBarRolesId } from '../constants';
 
 /*
  * Collects route role strings from all apps that opted into the course
- * navigation bar feature.  Each app declares its roles as a string array:
+ * MasqueradeBar feature.  Each app declares its roles as a string array:
  *
  *   provides: {
  *     [providesMasqueradeBarRolesId]: ['org.openedx.frontend.role.learning'],
