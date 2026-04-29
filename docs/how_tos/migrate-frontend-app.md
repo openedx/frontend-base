@@ -886,6 +886,58 @@ This may require a little interpretation.  In spirit, the modules of your app ar
 These modules should be unopinionated about the path prefix where they are mounted.
 
 
+Set the document title on every route-level page
+================================================
+
+A frontend-base site renders all of its apps inside a single `index.html`, so the document title only changes if a page explicitly updates it.  If your app doesn't set a title, the browser tab keeps whatever the previously rendered app set.
+
+Each route-level page component (the component that a route renders directly, not shared layouts, slots, or nested widgets) must therefore set the document title using `<Helmet>` from `react-helmet`.  The pattern is:
+
+1. Add `react-helmet` to the app's `dependencies` if it isn't there already.
+2. Add a localized message per page, with the id pattern `{page}.page.title` and a default of `{Page Name} | {siteName}`.
+3. Render a `<Helmet>` block in the page component that sets `<title>` from that message, passing `siteName` from `getSiteConfig().siteName` as an i18n parameter.
+
+```jsx
+import { Helmet } from 'react-helmet';
+import { getSiteConfig, useIntl } from '@openedx/frontend-base';
+
+import messages from './messages';
+
+const LearnerDashboard = () => {
+  const { formatMessage } = useIntl();
+  return (
+    <>
+      <Helmet>
+        <title>
+          {formatMessage(messages['learner.dashboard.page.title'], {
+            siteName: getSiteConfig().siteName,
+          })}
+        </title>
+      </Helmet>
+      {/* ...page content */}
+    </>
+  );
+};
+```
+
+```js
+// messages.js
+import { defineMessages } from '@openedx/frontend-base';
+
+export default defineMessages({
+  'learner.dashboard.page.title': {
+    id: 'learner.dashboard.page.title',
+    defaultMessage: 'Dashboard | {siteName}',
+    description: 'page title for the learner dashboard',
+  },
+});
+```
+
+Pages with dynamic titles (for example, a course page that reads `{Course Name} | {siteName}`) follow the same pattern: render `<Helmet>` once the data is available and pass the dynamic value through `formatMessage`.  Until the data resolves, the previous page's title persists, which is acceptable for the brief loading window.
+
+See [ADR 0015](../decisions/0015-page-titles-via-helmet.rst) for the full rationale and rejected alternatives.
+
+
 Separate runtime styles from the dev harness
 ============================================
 
