@@ -4,18 +4,18 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import MasqueradeBar from './MasqueradeBar';
 import * as api from './masquerade-widget/data/api';
-import { getAppConfig } from '@openedx/frontend-base';
+import { getSiteConfig } from '@openedx/frontend-base';
 
 jest.mock('./masquerade-widget/data/api');
 jest.mock('@openedx/frontend-base', () => {
   const actual = jest.requireActual('@openedx/frontend-base');
   return {
     ...actual,
-    getAppConfig: jest.fn().mockReturnValue({}),
+    getSiteConfig: jest.fn().mockReturnValue({}),
   };
 });
 
-const mockGetAppConfig = getAppConfig as jest.MockedFunction<typeof getAppConfig>;
+const mockGetSiteConfig = getSiteConfig as jest.MockedFunction<typeof getSiteConfig>;
 
 const mockGetMasqueradeOptions = api.getMasqueradeOptions as jest.MockedFunction<typeof api.getMasqueradeOptions>;
 
@@ -40,12 +40,10 @@ const defaultMasqueradeResponse: api.MasqueradeStatus = {
 
 function renderMasqueradeBar(
   path = `/course/${COURSE_ID}/unit/${UNIT_ID}`,
-  appConfig: Record<string, unknown> = {},
+  siteConfig: Record<string, unknown> = {},
 ) {
   mockGetMasqueradeOptions.mockResolvedValue(defaultMasqueradeResponse);
-
-  // Set up app config so getAppConfig returns our test values
-  mockGetAppConfig.mockReturnValue(appConfig);
+  mockGetSiteConfig.mockReturnValue(siteConfig as any);
 
   const result = render(
     <IntlProvider locale="en">
@@ -70,7 +68,7 @@ describe('MasqueradeBar', () => {
     renderMasqueradeBar();
 
     await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalledWith(COURSE_ID));
-    expect(screen.getByTestId('instructor-toolbar')).toBeInTheDocument();
+    expect(screen.getByRole('toolbar', { name: /masquerade/i })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
@@ -82,39 +80,36 @@ describe('MasqueradeBar', () => {
 
     renderMasqueradeBar();
 
-    // The MasqueradeWidget calls onError which sets masqueradeErrorMessage state
     await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalled());
-    // Verify the widget rendered (the error propagation from MasqueradeWidget
-    // to MasqueradeBar's Alert is an integration concern tested separately)
-    expect(screen.getByTestId('instructor-toolbar')).toBeInTheDocument();
+    expect(screen.getByRole('toolbar', { name: /masquerade/i })).toBeInTheDocument();
   });
 
-  it('displays Studio link when STUDIO_BASE_URL is configured', async () => {
+  it('displays Studio link when studioBaseUrl is configured', async () => {
     renderMasqueradeBar(
       `/course/${COURSE_ID}/unit/${UNIT_ID}`,
-      { STUDIO_BASE_URL: 'http://localhost:18010' },
+      { studioBaseUrl: 'http://localhost:18010' },
     );
 
     await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalled());
 
     expect(screen.getByText('View course in:')).toBeInTheDocument();
-    const studioLink = screen.getByText('Studio');
-    expect(studioLink.getAttribute('href')).toBe(`http://localhost:18010/container/${UNIT_ID}`);
+    const studioLink = screen.getByRole('link', { name: 'Studio' });
+    expect(studioLink).toHaveAttribute('href', `http://localhost:18010/container/${UNIT_ID}`);
   });
 
   it('builds Studio URL with courseId when unitId is not in the route', async () => {
     renderMasqueradeBar(
       `/course/${COURSE_ID}`,
-      { STUDIO_BASE_URL: 'http://localhost:18010' },
+      { studioBaseUrl: 'http://localhost:18010' },
     );
 
     await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalled());
 
-    const studioLink = screen.getByText('Studio');
-    expect(studioLink.getAttribute('href')).toBe(`http://localhost:18010/course/${COURSE_ID}`);
+    const studioLink = screen.getByRole('link', { name: 'Studio' });
+    expect(studioLink).toHaveAttribute('href', `http://localhost:18010/course/${COURSE_ID}`);
   });
 
-  it('does not display Studio link when STUDIO_BASE_URL is not configured', async () => {
+  it('does not display Studio link when studioBaseUrl is not configured', async () => {
     renderMasqueradeBar(
       `/course/${COURSE_ID}/unit/${UNIT_ID}`,
       {},

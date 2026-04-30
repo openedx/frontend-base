@@ -1,21 +1,11 @@
 import React from 'react';
 
-import type {
-  ActiveMasqueradeData, MasqueradeStatus, Payload, Role,
-} from './data/api';
+import type { MasqueradeOption } from './data/api';
 
 export interface MasqueradeContextValue {
-  active: ActiveMasqueradeData,
-  onSubmit: (payload: Payload) => Promise<MasqueradeStatus>,
-  onError: (error: string) => void,
-  userNameInputToggle: (
-    show: boolean | undefined,
-    groupId: number | null,
-    groupName: string,
-    role: Role,
-    userName: string,
-    userPartitionId: number | null,
-  ) => void,
+  select: (option: MasqueradeOption) => void,
+  selectedOptionName: string | null,
+  showUserNameInput: boolean,
 }
 
 export const MasqueradeContext = React.createContext<MasqueradeContextValue | null>(null);

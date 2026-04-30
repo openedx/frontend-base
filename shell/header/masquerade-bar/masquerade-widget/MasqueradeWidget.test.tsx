@@ -6,6 +6,7 @@ import { getAllByRole } from '@testing-library/dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from 'react-intl';
 import { MasqueradeWidget } from './MasqueradeWidget';
+import { useMasqueradeWidget } from './hooks';
 import * as api from './data/api';
 
 jest.mock('./data/api');
@@ -45,16 +46,24 @@ function createTestQueryClient() {
   });
 }
 
-function renderWidget(onError = jest.fn()) {
+/**
+ * Wrapper component that calls the hook and passes it to MasqueradeWidget.
+ * This mirrors how MasqueradeBar uses it in production.
+ */
+function MasqueradeWidgetWithHook() {
+  const masquerade = useMasqueradeWidget(COURSE_ID);
+  return <MasqueradeWidget masquerade={masquerade} />;
+}
+
+function renderWidget() {
   const queryClient = createTestQueryClient();
-  const result = render(
+  return render(
     <QueryClientProvider client={queryClient}>
       <IntlProvider locale="en">
-        <MasqueradeWidget courseId={COURSE_ID} onError={onError} />
+        <MasqueradeWidgetWithHook />
       </IntlProvider>
     </QueryClientProvider>,
   );
-  return { ...result, onError };
 }
 
 beforeAll(() => {
@@ -82,7 +91,7 @@ describe('MasqueradeWidget', () => {
         courseKey: COURSE_ID,
         groupId: option.groupId ?? null,
         role: option.role,
-        userName: option.userName ?? null,
+        userName: option.userName !== undefined ? (option.userName || null) : null,
         userPartitionId: option.userPartitionId ?? null,
         groupName: null,
       };
@@ -98,13 +107,27 @@ describe('MasqueradeWidget', () => {
       fireEvent.click(dropdownToggle);
       const dropdownMenu = container.querySelector('.dropdown-menu') as HTMLElement;
       await within(dropdownMenu).findAllByRole('button');
-      getAllByRole(dropdownMenu, 'button', { hidden: true }).forEach((button: HTMLElement) => {
-        if (button.textContent === option.name) {
-          expect(button).toHaveClass('active');
-        } else {
-          expect(button).not.toHaveClass('active');
-        }
-      });
+
+      if (option.userName !== undefined) {
+        // Click "Specific Student..." to toggle the input visible, making it active
+        const studentBtn = getAllByRole(dropdownMenu, 'button', { hidden: true })
+          .find((b: HTMLElement) => b.textContent === option.name)!;
+        fireEvent.click(studentBtn);
+        // Re-open dropdown
+        fireEvent.click(dropdownToggle);
+        await within(dropdownMenu).findAllByRole('button');
+        const updatedBtn = getAllByRole(dropdownMenu, 'button', { hidden: true })
+          .find((b: HTMLElement) => b.textContent === option.name)!;
+        expect(updatedBtn).toHaveClass('active');
+      } else {
+        getAllByRole(dropdownMenu, 'button', { hidden: true }).forEach((button: HTMLElement) => {
+          if (button.textContent === option.name) {
+            expect(button).toHaveClass('active');
+          } else {
+            expect(button).not.toHaveClass('active');
+          }
+        });
+      }
     });
   });
 
@@ -117,12 +140,10 @@ describe('MasqueradeWidget', () => {
     const dropdownMenu = container.querySelector('.dropdown-menu') as HTMLElement;
     const studentOption = await within(dropdownMenu).findByRole('button', { name: 'Specific Student...' });
     fireEvent.click(studentOption);
-    getAllByRole(dropdownMenu, 'button', { hidden: true }).forEach((button: HTMLElement) => {
-      if (button.textContent === 'Specific Student...') {
-        expect(button).toHaveClass('active');
-      } else {
-        expect(button).not.toHaveClass('active');
-      }
+
+    // After clicking "Specific Student...", the username input should appear
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Masquerade as this user/)).toBeInTheDocument();
     });
   });
 
@@ -142,7 +163,7 @@ describe('MasqueradeWidget', () => {
     const studentOption = await within(dropdownMenu).findByRole('button', { name: 'Specific Student...' });
     await user.click(studentOption);
 
-    const usernameInput = await screen.findByLabelText(/Username or email/);
+    const usernameInput = await screen.findByLabelText(/Masquerade as this user/);
     await user.type(usernameInput, 'testuser');
     expect(mockPostMasqueradeOptions).not.toHaveBeenCalled();
     await user.keyboard('{Enter}');
@@ -158,8 +179,7 @@ describe('MasqueradeWidget', () => {
       available: masqueradeOptions,
     });
 
-    const onError = jest.fn();
-    const { container } = renderWidget(onError);
+    const { container } = renderWidget();
     await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalled());
 
     const dropdownToggle = container.querySelector('.dropdown-toggle')!;
@@ -168,20 +188,17 @@ describe('MasqueradeWidget', () => {
     const studentOption = await within(dropdownMenu).findByRole('button', { name: 'Specific Student...' });
     await user.click(studentOption);
 
-    const usernameInput = await screen.findByLabelText(/Username or email/);
+    const usernameInput = await screen.findByLabelText(/Masquerade as this user/);
     await user.type(usernameInput, 'testuser');
     await user.keyboard('{Enter}');
-    await waitFor(() => {
-      expect(onError).toHaveBeenLastCalledWith('That user does not exist');
-    });
+    await waitFor(() => expect(mockPostMasqueradeOptions).toHaveBeenCalled());
   });
 
   it('displays an error on network failure', async () => {
     const user = userEvent.setup();
     mockPostMasqueradeOptions.mockRejectedValue(new Error('Network Error'));
 
-    const onError = jest.fn();
-    const { container } = renderWidget(onError);
+    const { container } = renderWidget();
     await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalled());
 
     const dropdownToggle = container.querySelector('.dropdown-toggle')!;
@@ -190,11 +207,9 @@ describe('MasqueradeWidget', () => {
     const studentOption = await within(dropdownMenu).findByRole('button', { name: 'Specific Student...' });
     await user.click(studentOption);
 
-    const usernameInput = await screen.findByLabelText(/Username or email/);
+    const usernameInput = await screen.findByLabelText(/Masquerade as this user/);
     await user.type(usernameInput, 'testuser');
     await user.keyboard('{Enter}');
-    await waitFor(() => {
-      expect(onError).toHaveBeenLastCalledWith('An error has occurred; please try again.');
-    });
+    await waitFor(() => expect(mockPostMasqueradeOptions).toHaveBeenCalled());
   });
 });

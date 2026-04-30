@@ -71,6 +71,7 @@ export interface OptionalSiteConfig {
   runtimeConfigJsonUrl: string | null,
   commonAppConfig: AppConfig,
   headerLogoImageUrl: string,
+  studioBaseUrl: string,
 
   // Theme
   theme: Theme,
