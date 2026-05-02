@@ -2,12 +2,21 @@ import { Slot, WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
 import CopyrightNotice from './CopyrightNotice';
+import DesktopFooterLayout from './DesktopFooterLayout';
 import LabeledLinkColumn from './LabeledLinkColumn';
 import LanguageMenu from './LanguageMenu';
 
 const app: App = {
   appId: 'org.openedx.frontend.app.footer',
   slots: [
+    // Layout
+    {
+      slotId: 'org.openedx.frontend.slot.footer.desktop.v1',
+      id: 'org.openedx.frontend.widget.footer.desktopLayout.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: DesktopFooterLayout,
+    },
+
     // Center links
     {
       slotId: 'org.openedx.frontend.slot.footer.desktopCenterLinks.v1',
