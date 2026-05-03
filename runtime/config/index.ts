@@ -104,6 +104,7 @@ import isEqual from 'lodash/isEqual';
 import keyBy from 'lodash/keyBy';
 import merge from 'lodash/merge';
 import {
+  App,
   AppConfig,
   EnvironmentTypes,
   SiteConfig
@@ -226,11 +227,7 @@ export function mergeSiteConfig(
 
   // if we're doing a full merge, merge the objects
   if (!limitAppMergeToConfig) {
-    siteConfig.apps = Object.values(merge(
-      {},
-      keyBy(siteConfig.apps || [], 'appId'),
-      keyBy(newApps, 'appId')
-    ));
+    siteConfig.apps = mergeApps(siteConfig.apps || [], newApps);
     publish(CONFIG_CHANGED);
     return;
   }
@@ -243,16 +240,88 @@ export function mergeSiteConfig(
   }
 
   // handle config-only merging
-  const newAppsById = keyBy(newApps, 'appId');
-  siteConfig.apps = siteConfig.apps.map((app) => {
-    const newApp = newAppsById[app.appId];
-    if (!newApp?.config) {
-      return app;
-    }
-    return { ...app, config: merge({}, app.config, newApp.config) };
-  });
+  siteConfig.apps = mergeApps(siteConfig.apps, newApps, { configOnly: true });
 
   publish(CONFIG_CHANGED);
+}
+
+/*
+ * Merge two App[] by appId. Existing apps stay in their original positions
+ * (with their pair-merged counterpart from `newApps` substituted in when
+ * present); apps in `newApps` not already in `oldApps` append at the end.
+ * With `{ configOnly: true }`, no apps are added and apps not appearing in
+ * `newApps` pass through unchanged. Per-pair merging is delegated to
+ * `mergeApp`.
+ */
+function mergeApps(
+  oldApps: App[],
+  newApps: App[],
+  options: { configOnly?: boolean } = {},
+): App[] {
+  const incomingByAppId = keyBy(newApps, 'appId');
+
+  // Phase 1: walk existing apps in their original order, pair-merging any
+  // that have a counterpart in newApps.
+  const updatedExisting = oldApps.map((oldApp) => {
+    const newApp = incomingByAppId[oldApp.appId];
+    return newApp ? mergeApp(oldApp, newApp, options) : oldApp;
+  });
+
+  // configOnly mode never adds apps, so we're done.
+  if (options.configOnly) {
+    return updatedExisting;
+  }
+
+  // Phase 2: append apps from newApps that weren't already in oldApps.
+  const existingIds = new Set(oldApps.map((a) => a.appId));
+  const additions = newApps.filter((a) => !existingIds.has(a.appId));
+  return [...updatedExisting, ...additions];
+}
+
+/*
+ * Merge a pair of Apps with the same appId. Deep-merges `config` (and, in the
+ * full-merge case, `provides`); other fields take `newApp`'s value verbatim.
+ * The result is built via `Object.getOwnPropertyDescriptors` so any lazy
+ * getters survive: a snapshot via `lodash.merge` or spread would invoke the
+ * getter at merge time and freeze its return value, which is typically empty
+ * mid-init. Per-field replacement is also the only sensible behavior for the
+ * array fields (`slots`/`routes`/`providers`/`externalScripts`), which don't
+ * survive element-wise merging anyway.
+ */
+function mergeApp(
+  oldApp: App,
+  newApp: App,
+  options: { configOnly?: boolean } = {},
+): App {
+  // configOnly mode: preserve `oldApp` (identity, slots, etc.) and deep-merge
+  // only `newApp.config` on top.
+  if (options.configOnly) {
+    if (!newApp.config) {
+      return oldApp;
+    }
+    return cloneAppDescriptors(oldApp, {
+      config: merge({}, oldApp.config, newApp.config),
+    });
+  }
+
+  // Full mode: take `newApp` (identity, slots, etc.) and deep-merge `config`
+  // and `provides` from `oldApp`. Other fields take `newApp`'s value verbatim.
+  const deepMerged: Record<string, unknown> = {};
+  if (oldApp.config !== undefined || newApp.config !== undefined) {
+    deepMerged.config = merge({}, oldApp.config, newApp.config);
+  }
+  if (oldApp.provides !== undefined || newApp.provides !== undefined) {
+    deepMerged.provides = merge({}, oldApp.provides, newApp.provides);
+  }
+  return cloneAppDescriptors(newApp, deepMerged);
+}
+
+function cloneAppDescriptors(source: App, overrides: Record<string, unknown>): App {
+  const descriptors = Object.getOwnPropertyDescriptors(source);
+  for (const [key, value] of Object.entries(overrides)) {
+    descriptors[key] = { value, writable: true, enumerable: true, configurable: true };
+  }
+  return Object.create(Object.getPrototypeOf(source), descriptors) as App;
 }
 
 const appConfigs: Record<string, AppConfig> = {};

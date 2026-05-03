@@ -192,6 +192,31 @@ describe('mergeSiteConfig', () => {
       const app = getSiteConfig().apps!.find(a => a.appId === 'test-app')!;
       expect(app.config!.NESTED).toEqual({ a: 1, b: 3, c: 4 });
     });
+
+    it('should preserve a lazy `slots` getter through the merge', () => {
+      /* Regression: lodash.merge invokes any getter on the source app while
+       * `siteConfig.apps` is still the pre-merge value, then snapshots the
+       * return value onto the merged copy. Apps with lazy `slots` getters
+       * (e.g. createLegacyPluginApp) need the getter to survive so it can
+       * resolve later, against the post-merge sibling apps. */
+      let getterCalls = 0;
+      const lazyApp: any = {
+        appId: 'lazy-app',
+        get slots() {
+          getterCalls += 1;
+          return [{ slotId: 'fake.slot', id: 'w', op: 'widgetAppend', element: null }];
+        },
+      };
+
+      mergeSiteConfig({ apps: [lazyApp] });
+
+      const merged = getSiteConfig().apps!.find(a => a.appId === 'lazy-app')!;
+      const callsAfterMerge = getterCalls;
+      // Reading slots should still hit the getter (i.e. it survived as a getter).
+      void merged.slots;
+      void merged.slots;
+      expect(getterCalls).toBeGreaterThan(callsAfterMerge);
+    });
   });
 
   describe('app merging (limitAppMergeToConfig: true)', () => {
