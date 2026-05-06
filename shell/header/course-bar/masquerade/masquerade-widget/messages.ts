@@ -1,4 +1,4 @@
-import { defineMessages } from '@openedx/frontend-base';
+import { defineMessages } from '../../../../../runtime';
 
 const messages = defineMessages({
   userNameLabel: {
