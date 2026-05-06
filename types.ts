@@ -63,6 +63,9 @@ export interface OptionalSiteConfig {
   // Site environment
   environment: EnvironmentTypes,
 
+  // Backends
+  cmsBaseUrl: string,
+
   // Apps, routes, and URLs
   apps: App[],
   basename: string,

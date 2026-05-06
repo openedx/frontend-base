@@ -123,6 +123,7 @@ let siteConfig: SiteConfig = {
 
   // Optional
   environment: EnvironmentTypes.PRODUCTION,
+  cmsBaseUrl: '',
   apps: [],
   externalRoutes: [],
   externalLinkUrlOverrides: [],
