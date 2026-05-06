@@ -43,6 +43,7 @@ const siteConfig: SiteConfig = {
 
   // API URLs
   lmsBaseUrl: 'http://local.openedx.io:8000',
+  cmsBaseUrl: 'http://studio.local.openedx.io:8001',
   runtimeConfigJsonUrl: '/api/frontend_site_config/v1/',
 };
 

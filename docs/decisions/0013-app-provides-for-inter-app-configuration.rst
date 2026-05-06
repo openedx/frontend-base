@@ -99,15 +99,18 @@ perspective.  Consuming apps bear the responsibility of defining, documenting,
 and validating the shape of the data they expect.  This is acceptable because
 the data is, by definition, outside frontend-base's domain.
 
-Course navigation bar example
------------------------------
+Course bar example
+------------------
 
 As a concrete illustration, the Instructor Dashboard app could declare::
 
     const config: App = {
       appId: 'org.openedx.frontend.app.instructorDashboard',
       provides: {
-        'org.openedx.frontend.provides.courseNavigationRoles.v1': [
+        'org.openedx.frontend.provides.courseBarRoles.v1': [
+          'org.openedx.frontend.role.instructorDashboard',
+        ],
+        'org.openedx.frontend.provides.courseBarMasqueradeRoles.v1': [
           'org.openedx.frontend.role.instructorDashboard',
         ],
       },
@@ -115,12 +118,14 @@ As a concrete illustration, the Instructor Dashboard app could declare::
       slots: [...],
     };
 
-The header's course navigation bar widget collects ``provides`` entries keyed
-to the course navigation roles identifier from all registered apps.  It expects
-the provided values to be role identifiers, from which it determines both when
-to render the navigation bar (by checking ``getActiveRoles()``) and which tab
-URLs can be navigated client-side (by resolving roles to route paths via
-``getUrlByRouteRole()``).
+The header's course bar has two parts: the tab navigation, which renders for
+any role declared under ``courseBarRoles``, and the masquerade widget, which
+additionally requires the role to be declared under ``courseBarMasqueradeRoles``.
+Masquerade is therefore a refinement of the course bar: a role only present
+in the masquerade list (without a matching course-bar declaration) is
+ignored.  The course-bar role list also supplies which tab URLs can be
+navigated client-side, by resolving roles to route paths via
+``getUrlByRouteRole()``.
 
 
 Rejected alternatives

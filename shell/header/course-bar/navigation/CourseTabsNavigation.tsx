@@ -1,11 +1,16 @@
 import { useMemo } from 'react';
-import { Link, matchPath, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Slot, useIntl } from '../../../runtime';
-import { CourseTab, getCourseHomeCourseMetadata } from './data/service';
+import { Slot, useIntl } from '../../../../runtime';
+import {
+  CourseTab,
+  courseHomeCourseMetadataQueryKey,
+  findActiveTab,
+  getCourseHomeCourseMetadata,
+} from '../data/service';
 import { Container, Nav, Navbar, Skeleton } from '@openedx/paragon';
 import messages from './messages';
-import { isClientRoute } from './utils';
+import { isClientRoute } from '../utils';
 import './course-tabs-navigation.scss';
 
 interface ResolvedTab extends CourseTab {
@@ -13,36 +18,13 @@ interface ResolvedTab extends CourseTab {
   clientPath: string | null,
 }
 
-/*
- * Returns the tabId of the tab whose pathname is the longest prefix match
- * against the current path. Uses react-router's matchPath for segment-aware
- * matching.
- *
- * For example, given tabs with paths /course/ (tabId: "outline")
- * and /course/dates/ (tabId: "dates"):
- *
- *   /course/dates/foo  -> "dates"   (longest prefix match)
- *   /course/outline    -> "outline"
- *   /courseware        -> null      (not a segment boundary)
- */
-const getActiveTabId = (currentPath: string, tabs: ResolvedTab[]): string | null => {
-  let best: ResolvedTab | null = null;
-  for (const tab of tabs) {
-    const match = matchPath({ path: `${tab.pathname}/*`, end: false }, currentPath);
-    if (match && (!best || tab.pathname.length > best.pathname.length)) {
-      best = tab;
-    }
-  }
-  return best?.tabId ?? null;
-};
-
 const CourseTabsNavigation = () => {
   const location = useLocation();
   const { courseId = '' } = useParams();
   const intl = useIntl();
 
   const { data = { tabs: [] }, isLoading } = useQuery({
-    queryKey: ['org.openedx.frontend.app.header.course-meta', courseId],
+    queryKey: courseHomeCourseMetadataQueryKey(courseId),
     queryFn: () => getCourseHomeCourseMetadata(courseId),
     retry: 2,
     enabled: !!courseId,
@@ -60,7 +42,7 @@ const CourseTabsNavigation = () => {
   );
 
   const currentTab = useMemo(
-    () => resolvedTabs.length > 0 ? getActiveTabId(location.pathname, resolvedTabs) : null,
+    () => (resolvedTabs.length > 0 ? findActiveTab(resolvedTabs, location.pathname)?.tabId ?? null : null),
     [location.pathname, resolvedTabs]
   );
 

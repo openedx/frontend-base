@@ -12,8 +12,9 @@ import MobileLayout from './mobile/MobileLayout';
 import MobileNavLinks from './mobile/MobileNavLinks';
 
 import messages from '../Shell.messages';
-import CourseTabsNavigation from './course-navigation-bar/CourseTabsNavigation';
-import { isCourseNavigationRoute } from './course-navigation-bar/utils';
+import CourseTabsNavigation from './course-bar/navigation/CourseTabsNavigation';
+import MasqueradeBar from './course-bar/masquerade/MasqueradeBar';
+import { isCourseBarMasqueradeRoute, isCourseBarRoute } from './course-bar/utils';
 import { appId } from './constants';
 import './app.scss';
 
@@ -145,7 +146,16 @@ const config: App = {
       op: WidgetOperationTypes.APPEND,
       component: CourseTabsNavigation,
       condition: {
-        callback: () => isCourseNavigationRoute(),
+        callback: () => isCourseBarRoute(),
+      }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.masqueradeBar.v1',
+      id: 'org.openedx.frontend.widget.header.masqueradeBar.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: MasqueradeBar,
+      condition: {
+        callback: () => isCourseBarMasqueradeRoute(),
       }
     }
   ]

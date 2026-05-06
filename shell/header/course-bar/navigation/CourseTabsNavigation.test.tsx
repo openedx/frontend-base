@@ -2,13 +2,17 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { IntlProvider } from '../../../runtime/i18n';
+import { IntlProvider } from '../../../../runtime/i18n';
 import CourseTabsNavigation from './CourseTabsNavigation';
-import * as service from './data/service';
-import * as utils from './utils';
+import * as service from '../data/service';
+import * as utils from '../utils';
 
-jest.mock('./data/service');
-jest.mock('./utils');
+/* Mock just the network call; keep findActiveTab + queryKey real. */
+jest.mock('../data/service', () => ({
+  ...jest.requireActual('../data/service'),
+  getCourseHomeCourseMetadata: jest.fn(),
+}));
+jest.mock('../utils');
 
 const mockGetCourseHomeCourseMetadata = service.getCourseHomeCourseMetadata as jest.MockedFunction<typeof service.getCourseHomeCourseMetadata>;
 const mockIsClientRoute = utils.isClientRoute as jest.MockedFunction<typeof utils.isClientRoute>;
