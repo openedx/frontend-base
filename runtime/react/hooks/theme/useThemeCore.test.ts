@@ -62,4 +62,34 @@ describe('useThemeCore', () => {
     expect(document.head.querySelectorAll('link').length).toBe(0);
     expect(onComplete).toHaveBeenCalledTimes(1);
   });
+
+  it('should not append a duplicate link when a core link for the same URL already exists', () => {
+    const existing = document.createElement('link');
+    existing.href = testParams.themeCore.url;
+    existing.rel = 'stylesheet';
+    existing.dataset.themeCore = 'true';
+    document.head.appendChild(existing);
+
+    renderHook(() => useThemeCore(testParams));
+
+    const coreLinks = document.head.querySelectorAll('link[data-theme-core="true"]');
+    expect(coreLinks.length).toBe(1);
+    expect(coreLinks[0]).toBe(existing);
+    expect(onComplete).toHaveBeenCalledTimes(1);
+  });
+
+  it('should replace an existing core link when the URL changes', () => {
+    const existing = document.createElement('link');
+    existing.href = 'https://example.com/old-core.min.css';
+    existing.rel = 'stylesheet';
+    existing.dataset.themeCore = 'true';
+    document.head.appendChild(existing);
+
+    renderHook(() => useThemeCore(testParams));
+
+    const coreLinks = document.head.querySelectorAll('link[data-theme-core="true"]');
+    expect(coreLinks.length).toBe(1);
+    expect(coreLinks[0]).not.toBe(existing);
+    expect((coreLinks[0] as HTMLLinkElement).href).toBe(testParams.themeCore.url);
+  });
 });

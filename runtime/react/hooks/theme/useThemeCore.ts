@@ -27,6 +27,15 @@ const useThemeCore = ({
       return;
     }
 
+    const existingThemeCoreLink: HTMLLinkElement | null = document.head.querySelector('link[data-theme-core="true"]');
+    if (existingThemeCoreLink) {
+      if (existingThemeCoreLink.getAttribute('href') === themeCore.url) {
+        setIsThemeCoreComplete(true);
+        return;
+      }
+      existingThemeCoreLink.remove();
+    }
+
     const themeCoreLink = document.createElement('link');
     themeCoreLink.href = themeCore.url;
     themeCoreLink.rel = 'stylesheet';
