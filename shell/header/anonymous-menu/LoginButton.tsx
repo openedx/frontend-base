@@ -7,7 +7,7 @@ export default function LoginButton({ ...props }) {
   const intl = useIntl();
 
   return (
-    <Button size="sm" href={config.loginUrl} {...props}>
+    <Button variant="link" href={config.loginUrl} {...props}>
       {intl.formatMessage(messages['header.user.menu.login'])}
     </Button>
   );
