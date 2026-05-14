@@ -169,6 +169,7 @@ const config: App = {
       op: WidgetOperationTypes.APPEND,
       component: MasqueradeBar,
       condition: {
+        authenticated: true,
         callback: () => isCourseBarMasqueradeRoute(),
       }
     }

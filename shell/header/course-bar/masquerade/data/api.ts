@@ -34,8 +34,15 @@ export interface MasqueradePayload {
 
 export async function getMasqueradeOptions(courseId: string): Promise<MasqueradeStatus> {
   const url = `${getSiteConfig().lmsBaseUrl}/courses/${courseId}/masquerade`;
-  const { data } = await getAuthenticatedHttpClient().get(url, {});
-  return camelCaseObject(data);
+  const response = await getAuthenticatedHttpClient().get(url, {});
+  /* The LMS 302s to /login instead of returning 403 when masquerade is denied. */
+  if (response.request?.responseURL && response.request.responseURL !== url) {
+    const error = Object.assign(new Error(`Masquerade endpoint redirected to ${response.request.responseURL}`), {
+      customAttributes: { httpErrorStatus: 403 },
+    });
+    throw error;
+  }
+  return camelCaseObject(response.data);
 }
 
 export async function postMasqueradeOptions(courseId: string, payload: MasqueradePayload): Promise<MasqueradeStatus> {

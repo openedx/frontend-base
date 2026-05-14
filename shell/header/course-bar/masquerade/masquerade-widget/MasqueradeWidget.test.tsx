@@ -266,15 +266,13 @@ describe('MasqueradeWidget', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows an alert when masquerade options fail to load', async () => {
+  it('hides the bar entirely on a generic load failure', async () => {
     mockGetMasqueradeOptions.mockRejectedValue(new Error('Boom'));
 
     renderWidget();
 
-    expect(
-      await screen.findByText(/Unable to load masquerade options/),
-    ).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Staff' })).not.toBeInTheDocument();
+    await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalled());
+    expect(screen.queryByRole('region', { name: /masquerade bar/i })).not.toBeInTheDocument();
   });
 
   it('hides the bar entirely when the server returns success: false', async () => {
@@ -284,7 +282,6 @@ describe('MasqueradeWidget', () => {
 
     await waitFor(() => expect(mockGetMasqueradeOptions).toHaveBeenCalled());
     expect(screen.queryByRole('region', { name: /masquerade bar/i })).not.toBeInTheDocument();
-    expect(screen.queryByText(/Unable to load masquerade options/)).not.toBeInTheDocument();
   });
 
   it('hides the bar entirely on 403', async () => {

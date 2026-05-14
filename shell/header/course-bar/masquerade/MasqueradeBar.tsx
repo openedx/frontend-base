@@ -12,13 +12,10 @@ export default function MasqueradeBar() {
   const { formatMessage } = useIntl();
   const { courseId = '', unitId = '' } = useParams();
   const masquerade = useMasqueradeState(courseId);
-  const {
-    errorMessage, isLoading, isDenied, isUnreachable,
-  } = masquerade;
+  const { errorMessage, isLoading, isDenied } = masquerade;
 
-  /* Render nothing while we wait for the first response, and when the server
-   * tells us this user can't masquerade.  Other failures fall through to a
-   * partial bar plus an alert. */
+  /* Render nothing while we wait for the first response, and when the load
+   * fails or the server says this user can't masquerade. */
   if (isLoading || isDenied) {
     return null;
   }
@@ -29,11 +26,9 @@ export default function MasqueradeBar() {
         <div className="bg-primary text-white">
           <Container fluid size="xl">
             <div className="py-3 d-md-flex justify-content-end align-items-start">
-              {!isUnreachable && (
-                <div className="align-items-center flex-grow-1 d-md-flex mx-1 my-1">
-                  <MasqueradeWidget />
-                </div>
-              )}
+              <div className="align-items-center flex-grow-1 d-md-flex mx-1 my-1">
+                <MasqueradeWidget />
+              </div>
               <StudioLink courseId={courseId} unitId={unitId} />
             </div>
           </Container>

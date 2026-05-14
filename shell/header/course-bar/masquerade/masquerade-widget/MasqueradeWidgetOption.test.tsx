@@ -31,7 +31,6 @@ function buildContextValue(
     isSubmitting: false,
     isLoading: false,
     isDenied: false,
-    isUnreachable: false,
     ...overrides,
   };
 }
