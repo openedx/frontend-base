@@ -1,5 +1,5 @@
 import { EnvironmentTypes, SiteConfig } from '../types';
-import { devFooterApp, devHeaderApp, devHomeApp, devUserApp, slotShowcaseApp } from './dev';
+import { devFooterApp, devHeaderApp, devHomeApp, slotShowcaseApp } from './dev';
 import { footerApp, headerApp, shellApp } from '.';
 
 import './style';
@@ -9,7 +9,6 @@ const siteConfig: SiteConfig = {
     shellApp,
     headerApp,
     footerApp,
-    devUserApp,
     devHomeApp,
     devHeaderApp,
     devFooterApp,

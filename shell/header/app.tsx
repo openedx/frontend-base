@@ -4,6 +4,8 @@ import Logo from '../Logo';
 import LinkMenuItem from '../menus/LinkMenuItem';
 import ProfileLinkMenuItem from '../menus/ProfileLinkMenuItem';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
+import LoginButton from './anonymous-menu/LoginButton';
+import RegisterButton from './anonymous-menu/RegisterButton';
 import AuthenticatedMenu from './AuthenticatedMenu';
 import DesktopLayout from './desktop/DesktopLayout';
 import PrimaryNavLinks from './desktop/PrimaryNavLinks';
@@ -107,6 +109,18 @@ const config: App = {
       condition: {
         authenticated: false,
       }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
+      id: 'org.openedx.frontend.widget.header.anonymousMenuLogin.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: LoginButton,
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
+      id: 'org.openedx.frontend.widget.header.anonymousMenuRegister.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: RegisterButton,
     },
 
     // Mobile
