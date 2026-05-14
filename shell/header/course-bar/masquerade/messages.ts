@@ -16,11 +16,6 @@ const messages = defineMessages({
     defaultMessage: 'Studio',
     description: 'Button to view in studio',
   },
-  failedToLoadOptions: {
-    id: 'masqueradeBar.error.failedToLoadOptions',
-    defaultMessage: 'Unable to load masquerade options.',
-    description: 'Error shown when masquerade options cannot be retrieved from the server.',
-  },
   noStudentFound: {
     id: 'masqueradeBar.error.noStudentFound',
     defaultMessage: 'No student with this username or email could be found.',

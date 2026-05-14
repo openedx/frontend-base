@@ -68,14 +68,12 @@ function getHttpStatus(error: unknown): number | undefined {
 }
 
 /*
- * The server tells us "no, you can't masquerade here" via either HTTP 403 or
- * a 200 with `success: false`.  Both mean: hide the bar entirely.  Other
- * failures (network, 5xx) are treated as "couldn't load" and surface as an
- * alert.
+ * Anything other than a successful load with `success: true` hides the bar:
+ * 403, 200 with `success: false`, network errors, 5xx, redirected requests.
  */
 function isQueryDenied(query: { isError: boolean, error: unknown, data: MasqueradeStatus | undefined }): boolean {
   if (query.isError) {
-    return getHttpStatus(query.error) === 403;
+    return true;
   }
   return query.data !== undefined && !query.data.success;
 }
@@ -96,13 +94,8 @@ export function formatErrorMessage(
 }
 
 function pickErrorMessage(
-  query: { isError: boolean, error: unknown, data: MasqueradeStatus | undefined },
   mutation: { isError: boolean, error: unknown, data: MasqueradeStatus | undefined },
 ): MasqueradeErrorMessage | null {
-  /* Denial is handled by hiding the bar; only surface truly-failed loads here. */
-  if (query.isError && getHttpStatus(query.error) !== 403) {
-    return messages.failedToLoadOptions;
-  }
   if (mutation.isError) {
     return getHttpStatus(mutation.error) === 404
       ? messages.noStudentFound
@@ -127,7 +120,6 @@ export interface MasqueradeState {
   isSubmitting: boolean,
   isLoading: boolean,
   isDenied: boolean,
-  isUnreachable: boolean,
 }
 
 export function useMasqueradeState(courseId: string): MasqueradeState {
@@ -227,10 +219,8 @@ export function useMasqueradeState(courseId: string): MasqueradeState {
   const showUserNameInput = active.userName !== null
     || pendingOption?.userName !== undefined;
 
-  const errorMessage = pickErrorMessage(query, mutation);
+  const errorMessage = pickErrorMessage(mutation);
   const isDenied = isQueryDenied(query);
-  /* Query landed but we couldn't load options — bar shows but widget hides. */
-  const isUnreachable = query.isError && getHttpStatus(query.error) !== 403;
   /* Loading until the first response (success or failure) lands. */
   const isLoading = query.isLoading;
 
@@ -262,6 +252,5 @@ export function useMasqueradeState(courseId: string): MasqueradeState {
     isSubmitting: mutation.isPending,
     isLoading,
     isDenied,
-    isUnreachable,
   };
 }
