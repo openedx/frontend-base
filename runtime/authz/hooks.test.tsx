@@ -45,6 +45,7 @@ describe('usePermissions', () => {
     expect(result.current.canView).toBe(true);
     expect(result.current.canEdit).toBe(false);
     expect(result.current.isAuthzEnabled).toBe(true);
+    expect(result.current.isError).toBe(false);
   });
 
   it('returns all keys as true and makes no API call when featureEnabled is false', () => {
@@ -60,6 +61,7 @@ describe('usePermissions', () => {
     expect(result.current.canView).toBe(true);
     expect(result.current.canEdit).toBe(true);
     expect(result.current.isLoading).toBe(false);
+    expect(result.current.isError).toBe(false);
     expect(result.current.isAuthzEnabled).toBe(false);
   });
 
@@ -95,6 +97,39 @@ describe('usePermissions', () => {
 
     expect('canView' in result.current).toBe(true);
     expect('permissions' in result.current).toBe(false);
+  });
+
+  it('returns undefined permission keys and isLoading=true while the API call is in flight', async () => {
+    (getAuthenticatedHttpClient as jest.Mock).mockReturnValue({
+      post: jest.fn(() => new Promise(() => {})), // never resolves
+    });
+
+    const { result } = renderHook(
+      () => usePermissions(QUERY, true, { apiBaseUrl: BASE_URL }),
+      { wrapper: createWrapper() },
+    );
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.canView).toBeUndefined();
+    expect(result.current.canEdit).toBeUndefined();
+  });
+
+  it('sets isError=true and defaults all keys to false when the API call fails', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    (getAuthenticatedHttpClient as jest.Mock).mockReturnValue({
+      post: jest.fn().mockRejectedValue(new Error('network error')),
+    });
+
+    const { result } = renderHook(
+      () => usePermissions(QUERY, true, { apiBaseUrl: BASE_URL }),
+      { wrapper: createWrapper() },
+    );
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.isError).toBe(true);
+    expect(result.current.canView).toBe(false);
+    expect(result.current.canEdit).toBe(false);
+    jest.restoreAllMocks();
   });
 
   it('scopes cache by apiBaseUrl — different base URLs produce distinct query keys', () => {

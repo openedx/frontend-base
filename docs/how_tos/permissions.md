@@ -52,11 +52,10 @@ Permission keys are spread at the top level — no nested `.permissions` object.
 
 ```typescript
 import { usePermissions } from '@openedx/frontend-base';
-import { getConfig } from '@edx/frontend-platform';
 
 // featureEnabled is required — always pass the resolved waffle flag boolean:
 const { enableAuthz } = useWaffleFlags(resourceId);
-const { isLoading, isAuthzEnabled, canViewGrading, canEditGrading } = usePermissions(
+const { isLoading, isError, isAuthzEnabled, canViewGrading, canEditGrading } = usePermissions(
   {
     canViewGrading: { action: 'courses.view_grading_settings', scope: resourceId },
     canEditGrading: { action: 'courses.edit_grading_settings', scope: resourceId },
@@ -64,18 +63,32 @@ const { isLoading, isAuthzEnabled, canViewGrading, canEditGrading } = usePermiss
   enableAuthz ?? false,
 );
 
-// Override the backend URL (e.g. MFEs using @edx/frontend-platform):
-const { isLoading, canViewGrading } = usePermissions(
-  { canViewGrading: { action: 'courses.view_grading_settings', scope: courseId } },
-  enableAuthz ?? false,
-  { apiBaseUrl: getConfig().LMS_BASE_URL },
-);
-
+if (isLoading) { return <LoadingSpinner />; }
+if (isError) { return <ErrorAlert />; }
 if (!canViewGrading) { return <PermissionDeniedAlert />; }
 ```
 
 When `featureEnabled` is `false`: no API call is made and all keys return `true`,
 preserving the pre-authz behavior during rollout.
+
+To override the backend URL (e.g. MFEs using `@edx/frontend-platform`), pass `apiBaseUrl`
+in the options argument:
+
+```typescript
+import { usePermissions } from '@openedx/frontend-base';
+import { getConfig } from '@edx/frontend-platform';
+
+const { enableAuthz } = useWaffleFlags(courseId);
+const { isLoading, isError, canViewGrading } = usePermissions(
+  { canViewGrading: { action: 'courses.view_grading_settings', scope: courseId } },
+  enableAuthz ?? false,
+  { apiBaseUrl: getConfig().LMS_BASE_URL },
+);
+```
+
+> **Service unavailability:** if the authz API call fails, `isError` is `true` and all
+> permission keys resolve to `false`. Always check `isLoading` and `isError` before
+> rendering gated UI to avoid incorrectly denying access during transient failures.
 
 ---
 

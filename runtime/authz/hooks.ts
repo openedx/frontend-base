@@ -3,6 +3,14 @@ import { getSiteConfig } from '../config';
 import type { PermissionValidationQuery, PermissionValidationAnswer } from './types';
 import { validatePermissions } from './api';
 
+/**
+ * TanStack Query cache key factory for permission queries.
+ * Use `validate` to scope cache reads and invalidations to a specific
+ * query + backend combination.
+ *
+ * @example
+ * queryClient.invalidateQueries({ queryKey: permissionsQueryKeys.validate(myQuery) });
+ */
 export const permissionsQueryKeys = {
   all: ['authz'] as const,
   validate: (query: PermissionValidationQuery, apiBaseUrl: string = getSiteConfig().lmsBaseUrl) =>
@@ -22,14 +30,20 @@ export interface UsePermissionsOptions {
 
 /**
  * Intersection return type: metadata fields plus every permission key spread at the top level.
- * Consumers destructure permission keys directly, no nested from `permissions.*` object.
+ * Consumers destructure permission keys directly — no nested `.permissions` object.
  *
  * @example
- * const { isLoading, canViewGradingSettings, canEditGradingSettings } =
- *   usePermissions(query, featureEnabled);
+ * const { enableAuthz } = useWaffleFlags(courseId);
+ * const { isLoading, isError, canViewGrading, canEditGrading } = usePermissions(
+ *   { canViewGrading: { action: 'courses.view_grading_settings', scope: courseId },
+ *     canEditGrading: { action: 'courses.edit_grading_settings', scope: courseId } },
+ *   enableAuthz ?? false,
+ *   { apiBaseUrl: getConfig().LMS_BASE_URL },
+ * );
  */
 export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
   isLoading: boolean,
+  isError: boolean,
   isAuthzEnabled: boolean,
 } & PermissionValidationAnswer<Query>;
 
@@ -41,7 +55,7 @@ export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
  * When featureEnabled is true: hits the authz API; returns actual server values.
  *
  * The caller is responsible for reading its own waffle flag and passing the result
- * as featureEnabled — waffle flag differ per MFE
+ * as featureEnabled — waffle flag names differ per MFE
  *
  * @param query          - Key/value map of permission check descriptors.
  * @param featureEnabled - Pass the result of your waffle flag check here.
@@ -63,7 +77,7 @@ export const usePermissions = <Query extends PermissionValidationQuery>(
 ): UsePermissionsResult<Query> => {
   const { retry = false, apiBaseUrl = getSiteConfig().lmsBaseUrl } = options;
 
-  const { isLoading, data } = useQuery<PermissionValidationAnswer<Query>, Error>({
+  const { isLoading, isError, data } = useQuery<PermissionValidationAnswer<Query>, Error>({
     queryKey: permissionsQueryKeys.validate(query, apiBaseUrl),
     queryFn: featureEnabled ? () => validatePermissions(apiBaseUrl, query) : skipToken,
     retry,
@@ -81,6 +95,7 @@ export const usePermissions = <Query extends PermissionValidationQuery>(
 
   return {
     isLoading: featureEnabled ? isLoading : false,
+    isError: featureEnabled ? isError : false,
     isAuthzEnabled: featureEnabled,
     ...permissionResults,
   } as UsePermissionsResult<Query>;
