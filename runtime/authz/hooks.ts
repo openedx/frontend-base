@@ -45,7 +45,7 @@ export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
   isLoading: boolean,
   isError: boolean,
   isAuthzEnabled: boolean,
-} & PermissionValidationAnswer<Query>;
+} & { [K in keyof Query]: boolean | undefined };
 
 /**
  * Queries the openedx-authz service for the given permissions.

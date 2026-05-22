@@ -1,15 +1,13 @@
 export interface PermissionValidationRequestItem {
-  action: string;
-  scope?: string;
+  action: string,
+  scope?: string,
 }
 
 export interface PermissionValidationResponseItem extends PermissionValidationRequestItem {
-  allowed: boolean;
+  allowed: boolean,
 }
 
-export interface PermissionValidationQuery {
-  [permissionKey: string]: PermissionValidationRequestItem;
-}
+export type PermissionValidationQuery = Record<string, PermissionValidationRequestItem>;
 
 /**
  * Maps each key from the caller's query to a boolean allowed value.
