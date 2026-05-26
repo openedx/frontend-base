@@ -26,6 +26,12 @@ export interface UsePermissionsOptions {
    * Pass explicitly when the authz service requires a different backend (e.g. Studio).
    */
   apiBaseUrl?: string,
+  /**
+   * How long (in ms) the cached result is considered fresh before TanStack Query refetches.
+   * Defaults to 5 minutes. Use permissionsQueryKeys to invalidate manually when user roles
+   * change mid-session.
+   */
+  staleTime?: number,
 }
 
 /**
@@ -52,14 +58,18 @@ export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
  *
  * When featureEnabled is false: no API call is made; all permission keys return true,
  * preserving the pre-authz behavior during gradual rollout.
- * When featureEnabled is true: hits the authz API; returns actual server values.
+ * When featureEnabled is true: posts to the authz API and maps each key in the query
+ * to the allowed boolean from the server response. Keys absent from the response default
+ * to false. Keys are undefined while the request is in flight (check isLoading first).
  *
- * The caller is responsible for reading its own waffle flag and passing the result
- * as featureEnabled — waffle flag names differ per MFE
+ * The caller is responsible for reading its own waffle flag and passing the resolved
+ * boolean as featureEnabled. The hook is agnostic to how that boolean was derived —
+ * whether from a global flag, a per-course override, or a per-org override, the behavior
+ * is the same. Waffle flag names differ per MFE.
  *
  * @param query          - Key/value map of permission check descriptors.
  * @param featureEnabled - Pass the result of your waffle flag check here.
- * @param options        - Optional retry and apiBaseUrl settings.
+ * @param options        - Optional retry, apiBaseUrl, and staleTime settings.
  *
  * @example
  * const { enableAuthzCourseAuthoring } = useWaffleFlags(courseId);
@@ -75,12 +85,18 @@ export const usePermissions = <Query extends PermissionValidationQuery>(
   featureEnabled: boolean,
   options: UsePermissionsOptions = {},
 ): UsePermissionsResult<Query> => {
-  const { retry = false, apiBaseUrl = getSiteConfig().lmsBaseUrl } = options;
+  const {
+    retry = false,
+    apiBaseUrl = getSiteConfig().lmsBaseUrl,
+    // staleTime defaults to 5 min
+    staleTime = 5 * 60 * 1000
+  } = options;
 
   const { isLoading, isError, data } = useQuery<PermissionValidationAnswer<Query>, Error>({
     queryKey: permissionsQueryKeys.validate(query, apiBaseUrl),
     queryFn: featureEnabled ? () => validatePermissions(apiBaseUrl, query) : skipToken,
     retry,
+    staleTime,
   });
 
   const permissionResults = isLoading
