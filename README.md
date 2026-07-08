@@ -1,14 +1,8 @@
 # Open edX frontend framework
 
-| :rotating_light: Alpha                                                                |
-|:------------------------------------------------------------------------------------------|
-| frontend-base is under **active development** and may change significantly without warning. |
+This library is part of a project to create a reference implementation of [OEP-65: Frontend Composability](https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0065-arch-frontend-composability.html).
 
-This library is a **future** replacement for many of the foundational libraries in the Open edX frontend.
-
-Development of this library is part of a project to create a reference implementation for [OEP-65: Frontend Composability](https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0065-arch-frontend-composability.html).
-
-It will replace:
+In practice, it's a replacement for some of the foundational libraries in the Open edX frontend.  In particular:
 
 - https://github.com/openedx/frontend-build
 - https://github.com/openedx/frontend-platform
@@ -16,124 +10,41 @@ It will replace:
 - https://github.com/openedx/frontend-component-header
 - https://github.com/openedx/frontend-component-footer
 
-The new frontend framework will completely take over responsibility for the functionality of those libraries, and will also include a "shell" application.
+It takes over responsibility for the functionality of those libraries, and also includes a "shell" application.
 
-It will enable Open edX frontends to be loaded as "direct plugins" as part of a single, unified application.   It will also support creation of "project" repositories as a central place to check in an Open edX instance's frontend customizations and extensions.
+Furthermore, it enables Open edX frontends to be loaded as "direct plugins" as part of a single, unified application, while also supporting creation of "site" repositories as a central place to check in an Open edX instance's frontend customizations and extensions.
+
+## Migrating an MFE to `frontend-base`
+
+For a step-by-step guide on converting an MFE into a frontend-base app, refer to the [Frontend App Migration How To](./docs/how_tos/migrate-frontend-app.md).  It is the authoritative reference on the conversion process.
+
+Note that the existing Open edX MFEs are being ported over to `frontend-base` gradually.  For an up-to-date reference of the apps that have already undergone the process, see the app dependencies in [`frontend-template-site`'s `package.json`](https://github.com/openedx/frontend-template-site/blob/main/package.json).
+
+## Development
+
+For prototyping changes to the library, this repository includes a self-contained dev mode.  Run `npm run dev` to build `frontend-base` and start its bundled dev shell, which serves a minimal site from the source files directly, so you can iterate without a separate site checkout.  The dev site will be available at `http://apps.local.openedx.io:8080`.
+
+Once the change matures, we recommend moving over to the pre-configured [npm workspaces](https://docs.npmjs.com/cli/using-npm/workspaces) in a local checkout of [frontend-template-site](https://github.com/openedx/frontend-template-site).  This will allow you to test changes against multiple real-world apps.
+
+To do so, check this repository out into the site's `packages/` directory.  Then, run `npm run dev:packages` from the site's root directory: this will watch-build any workspace check-outs and start the dev server, picking up changes automatically.  If any apps (such as `frontend-app-instructor-dashboard`) require corresponding changes, you can check them out into the `packages/` directory as siblings to `frontend-base`. See [Local development with workspaces](https://github.com/openedx/frontend-template-site#local-development-with-workspaces) for full setup details.
+
+### Continuous integration
+
+In addition to running lint and the test suite, Github CI builds the included `test-site` against a packed tarball of `frontend-base`.  This verifies that the library still works end-to-end as a real dependency of a consuming site.
+
+If a change requires corresponding updates to a consuming site (for example, new or changed configuration, exports, or APIs), update `test-site` as part of your pull request so that CI continues to pass.
+
+### Releases
+
+This library is published automatically to npm using `semantic-release`.  On merges to `main`, `alpha` versions are published.  Stable releases come from the `release` branch.  See [ADR 0012: Frontend branching strategy](./docs/decisions/0012-frontend-branching-strategy.rst) for details.
 
 ## Further reading
 
 - [OEP-65: Frontend composability](https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0065-arch-frontend-composability.html)
-- [ADR 0001: Create a unified platform library](https://github.com/openedx/open-edx-proposals/pull/598)
-- [Discourse discussion on frontend projects](https://discuss.openedx.org/t/oep-65-adjacent-a-frontend-architecture-vision/13223)
+- [ADR 0001: Create a unified platform repository](https://open-edx-proposals.readthedocs.io/en/latest/architectural-decisions/oep-0065/decisions/0001-unified-platform-repository.html)
 
 ## Communication
 
 You can follow ongoing progress on the project's [Github project board](https://github.com/orgs/openedx/projects/65/views/1).
 
 Feel free to reach out in [#wg-frontend on Slack](https://openedx.slack.com/archives/C04BM6YC7A6) with any questions.
-
-## Development
-
-This library is under development and for now is released manually to npm.
-
-### Developing with Tutor
-
-In order to use develop frontend-base with Tutor, you need to create a Tutor plugin which patches some of the LMS's development settings.
-
-```
-from tutormfe.hooks import MFE_APPS, MFE_ATTRS_TYPE
-
-from tutor import hooks
-
-hooks.Filters.ENV_PATCHES.add_item(
-  (
-    "openedx-lms-development-settings",
-    """
-CORS_ORIGIN_WHITELIST.append("http://{{ MFE_HOST }}:8080")
-LOGIN_REDIRECT_WHITELIST.append("http://{{ MFE_HOST }}:8080")
-CSRF_TRUSTED_ORIGINS.append("http://{{ MFE_HOST }}:8080")
-"""
-    )
-)
-```
-
-Once you enable this plugin, you can start the development site with:
-
-```
-nvm use
-npm ci
-npm run dev
-```
-
-The development site will be available at `http://apps.local.openedx.io:8080`.
-
-### Developing an app and `frontend-base` concurrently
-
-Concurrent development with `frontend-base` uses a tarball-based workflow rather than traditional local linking approaches. See the [`@openedx/frontend-dev-utils` autoinstall README](https://github.com/openedx/frontend-dev-utils/blob/main/tools/autoinstall/README.md) for details.
-
-#### In `frontend-base`
-
-This watches for changes in `frontend-base` and rebuilds the packaged tarball on each change.
-
-```sh
-nvm use
-npm ci
-npm run watch:pack
-```
-
-#### In the consuming application
-
-> [!NOTE]
-> This assumes the consuming application is using `devutils-dev-with-autoinstall` from `@openedx/frontend-dev-utils`.
-
-This watches for changes to the generated .tgz, installs the updated package, and restarts the dev server.
-
-```sh
-nvm use
-npm ci
-npm run dev:autoinstall
-```
-
-## Migrating an MFE to `frontend-base`
-
-See the [Frontend App Migration How To](./docs/how_tos/migrate-frontend-app.md).
-
-# Notable changes
-
-This is a list of notable changes from the previous paradigm:
-
-- Cease using `AUTHN_MINIMAL_HEADER`, replace it with an actual minimal header.
-- No more using `process.env` in runtime code.
-- Removed dotenv.  Use `site.config.*.tsx`.
-- Removed Purge CSS.  We do not believe that Purge CSS works properly with Paragon in general.
-- Removed `ensureConfig` function.  This sort of type safety should happen with TypeScript types in the site config file.
-- Removed `ensureDefinedConfig` function.  Similar to ensureConfig, this sort of type safety should be handled by TypeScript.
-- A number of site config variables now have sensible defaults:
-  - accessTokenCookieName: 'edx-jwt-cookie-header-payload',
-  - csrfTokenApiPath: '/csrf/api/v1/token',
-  - languagePreferenceCookieName: 'openedx-language-preference',
-  - userInfoCookieName: 'edx-user-info',
-  - environment: 'production',
-- the `basename` and export has been replaced by: `getBasename`.  This is because it may not be possible to determine the values of the original constants at code initialization time, since our config may arrive asynchronously.  This ensures that anyone trying to get these values gets a current value.
-- the `history` export no longer exists.  Consumers should be using react-router 6's `useNavigate()` API instead.
-- When using MockAuthService, set the authenticated user by calling setAuthenticatedUser after instantiating the service.  It's not okay for us to add arbitrary config values to the site config.
-- `REFRESH_ACCESS_TOKEN_ENDPOINT` has been replaced with `refreshAccessTokenApiPath`.  It is now a path that defaults to '/login_refresh'.  The Auth service assumes it is an endpoint on the LMS, and joins the path with `lmsBaseUrl`.  This change creates more parity with other paths such as `csrfTokenApiPath`.
-
-The following config variables have been removed, in favor of defining roles for specific modules, `externalRoutes`, or app-specific custom config as necessary:
-
-- ACCOUNT_PROFILE_URL
-- ACCOUNT_SETTINGS_URL
-- LEARNING_BASE_URL
-- ORDER_HISTORY_URL
-- MARKETING_SITE_BASE_URL
-- LEARNER_DASHBOARD_URL
-- STUDIO_BASE_URL
-- ACCESSIBILITY_URL
-- PRIVACY_POLICY_URL
-- TERMS_OF_SERVICE_URL
-- SUPPORT_URL
-- SUPPORT_EMAIL
-- ECOMMERCE_BASE_URL
-- DISCOVERY_API_BASE_URL
-- CREDENTIALS_BASE_URL
-- PUBLISHER_BASE_URL
