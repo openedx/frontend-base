@@ -63,19 +63,32 @@ frontend-app-authn@2.0.0-alpha2
 3. Creation and publication of release branches
 -----------------------------------------------
 
-When the main branch of a given frontend repository contains breaking changes
-over the current release and is deemed ready for widespread use, a new "n.x"
-branch is cut from it, where "n" is the next major version of the package.  The
-".x" is literal.  For instance:
+The current stable codebase is published from a long-lived ``release`` branch.
+This branch owns the NPM "latest" dist-tag and is published semantically, with
+no breaking changes allowed after publication:
+
+frontend-base@1.0.5
+frontend-app-authn@1.4.3
+
+When the main branch contains breaking changes over the current release and is
+deemed ready for widespread use, its work graduates onto ``release`` as the next
+major.  Before that happens, an "n.x" branch is cut from ``release`` to continue
+maintaining the outgoing major, where "n" is that major's number and the ".x" is
+literal.  For instance, when ``release`` moves from the 1.x line to the 2.x line,
+a ``1.x`` branch is cut to keep publishing 1.x.y patches:
 
 1.x
 2.x
 
-These branches are also published to NPM semantically, with no breaking changes
-allowed after publication:
+These maintenance branches are also published semantically, with no breaking
+changes allowed.
 
-frontend-base@1.0.5
-frontend-app-authn@1.4.3
+.. note::
+
+   We publish the current stable from ``release`` rather than an "n.x" branch
+   because our release tooling (semantic-release) treats any "N.x"-named branch
+   as a maintenance branch, which can only patch an already-shipped major, never
+   originate one.  A ``release`` branch has no such restriction.
 
 
 4. Backports
