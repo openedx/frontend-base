@@ -59,6 +59,31 @@ export interface RequiredSiteConfig {
 export type LocalizedMessages = Record<string, Record<string, string>>;
 export type SiteMessages = LocalizedMessages[];
 
+// Generic logger contract
+export interface LoggingService {
+  debug?(message: string, meta?: Record<string, unknown>): void,
+  info?(message: string, meta?: Record<string, unknown>): void,
+  warn?(message: string, meta?: Record<string, unknown>): void,
+  error?(message: string | Error, meta?: Record<string, unknown>): void,
+}
+
+// Generic analytics contract
+export interface AnalyticsService {
+  identify?(userId: string | number, traits?: Record<string, unknown>): void,
+  track(event: string, properties?: Record<string, unknown>): void,
+  page?(name?: string, properties?: Record<string, unknown>): void,
+  reset?(): void,
+}
+
+// Generic auth contract
+export interface AuthService {
+  isAuthenticated(): boolean | Promise<boolean>,
+  getAccessToken?(): string | null | Promise<string | null>,
+  login?(redirectUrl?: string): void | Promise<void>,
+  logout?(redirectUrl?: string): void | Promise<void>,
+  getCurrentUser?(): User | null | Promise<User | null>,
+}
+
 export interface OptionalSiteConfig {
   // Site environment
   environment: EnvironmentTypes,
@@ -92,6 +117,11 @@ export interface OptionalSiteConfig {
 
   // Analytics
   segmentKey: string | null,
+
+  // Services
+  loggingService: LoggingService,
+  analyticsService: AnalyticsService,
+  authService: AuthService,
 }
 
 export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
