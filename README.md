@@ -36,7 +36,7 @@ If a change requires corresponding updates to a consuming site (for example, new
 
 ### Releases
 
-This library is published automatically to npm using `semantic-release`.  On merges to `main`, `alpha` versions are published.  Stable releases come from the `release` branch.  See [ADR 0012: Frontend branching strategy](./docs/decisions/0012-frontend-branching-strategy.rst) for details.
+This library is published automatically to npm using `semantic-release`.  On merges to `main`, `alpha` versions are published.  Stable releases come from the `release` branch.  See [OEP-10 ADR 0002: Frontend Release Branches](https://open-edx-proposals.readthedocs.io/en/latest/processes/oep-0010/decisions/0002-frontend-release-branches.html) for details.
 
 ## Further reading
 
