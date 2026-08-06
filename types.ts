@@ -2,6 +2,9 @@ import { FC, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { RouteObject } from 'react-router';
 import { SlotOperation } from './runtime/slots/types';
+import { LoggingService } from './runtime/logging/types';
+import { AnalyticsService } from './runtime/analytics/types';
+import { AuthService } from './runtime/auth/types';
 
 // Apps
 
@@ -59,30 +62,34 @@ export interface RequiredSiteConfig {
 export type LocalizedMessages = Record<string, Record<string, string>>;
 export type SiteMessages = LocalizedMessages[];
 
-// Generic logger contract
-export interface LoggingService {
-  debug?(message: string, meta?: Record<string, unknown>): void,
-  info?(message: string, meta?: Record<string, unknown>): void,
-  warn?(message: string, meta?: Record<string, unknown>): void,
-  error?(message: string | Error, meta?: Record<string, unknown>): void,
-}
+export type { LoggingService, AnalyticsService, AuthService };
 
-// Generic analytics contract
-export interface AnalyticsService {
-  identify?(userId: string | number, traits?: Record<string, unknown>): void,
-  track(event: string, properties?: Record<string, unknown>): void,
-  page?(name?: string, properties?: Record<string, unknown>): void,
-  reset?(): void,
-}
+// Logging instantiated
+export type LoggingServiceClass = new (options: {
+  config: SiteConfig,
+}) => LoggingService;
 
-// Generic auth contract
-export interface AuthService {
-  isAuthenticated(): boolean | Promise<boolean>,
-  getAccessToken?(): string | null | Promise<string | null>,
-  login?(redirectUrl?: string): void | Promise<void>,
-  logout?(redirectUrl?: string): void | Promise<void>,
-  getCurrentUser?(): User | null | Promise<User | null>,
-}
+// Analytics instantiated
+export type AnalyticsServiceClass = new (options: {
+  config: SiteConfig,
+  loggingService: LoggingService,
+  httpClient: unknown,
+}) => AnalyticsService;
+
+// Auth instantiated
+export type AuthServiceClass = new (options: {
+  config: {
+    baseUrl: string,
+    lmsBaseUrl: string,
+    loginUrl: string,
+    logoutUrl: string,
+    refreshAccessTokenApiPath: string,
+    accessTokenCookieName: string,
+    csrfTokenApiPath: string,
+  },
+  loggingService: object,
+  middleware?: unknown[],
+}) => AuthService;
 
 export interface OptionalSiteConfig {
   // Site environment
@@ -119,9 +126,9 @@ export interface OptionalSiteConfig {
   segmentKey: string | null,
 
   // Services
-  loggingService: LoggingService,
-  analyticsService: AnalyticsService,
-  authService: AuthService,
+  loggingService: LoggingServiceClass,
+  analyticsService: AnalyticsServiceClass,
+  authService: AuthServiceClass,
 }
 
 export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
