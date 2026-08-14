@@ -112,6 +112,8 @@ export {
   updateLocale
 } from './lib';
 
+export { updateSiteLanguage } from './updateSiteLanguage';
+
 export {
   default as injectIntl
 } from './injectIntlWithShim';
