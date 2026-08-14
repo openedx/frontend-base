@@ -78,6 +78,10 @@ export interface OptionalSiteConfig {
   // Theme
   theme: Theme;
 
+  // i18n
+  defaultLanguage: string,
+  supportedLanguages: string[],
+
   // Cookies
   accessTokenCookieName: string;
   languagePreferenceCookieName: string;

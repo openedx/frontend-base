@@ -98,6 +98,8 @@ export function findSupportedLocale(locale) {
     throw new Error('findSupportedLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
+  const { defaultLanguage } = getSiteConfig();
+
   if (messages[locale] !== undefined) {
     return locale;
   }
@@ -106,7 +108,7 @@ export function findSupportedLocale(locale) {
     return getPrimaryLanguageSubtag(locale);
   }
 
-  return 'en';
+  return defaultLanguage;
 }
 
 /**
@@ -156,8 +158,18 @@ export function getLocalizedLanguageName(locale) {
 }
 
 export function getSupportedLanguageList() {
-  const locales = Object.keys(messages);
-  locales.push('en'); // 'en' is not in the messages object because it's the default.
+  const { defaultLanguage = 'en', supportedLanguages = [] } = getSiteConfig();
+
+  let locales = Object.keys(messages);
+
+  if (!locales.includes(defaultLanguage)) {
+    locales.push(defaultLanguage);
+  }
+
+  if (supportedLanguages.length > 0) {
+    locales = locales.filter((locale) => supportedLanguages.includes(locale));
+  }
+
   locales.sort();
 
   return locales.map((locale) => ({
