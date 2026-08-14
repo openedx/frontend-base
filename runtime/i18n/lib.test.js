@@ -5,12 +5,11 @@ import {
   getMessages,
   getPrimaryLanguageSubtag,
   getSupportedLanguageList,
-  handleRtl,
   isRtl,
   mergeMessages,
 } from './lib';
 
-import { mergeSiteConfig } from '../config';
+import { getSiteConfig, mergeSiteConfig } from '../config';
 
 jest.mock('universal-cookie');
 
@@ -145,6 +144,7 @@ describe('lib', () => {
   describe('handleRtl', () => {
     let setAttribute;
     beforeEach(() => {
+      getSiteConfig().supportedLanguages = [];
       setAttribute = jest.fn();
 
       global.document.getElementsByTagName = jest.fn(() => [
@@ -162,7 +162,7 @@ describe('lib', () => {
         },
       });
 
-      handleRtl();
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
     });
 
@@ -174,7 +174,7 @@ describe('lib', () => {
         },
       });
 
-      handleRtl();
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'ar');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'rtl');
     });
   });

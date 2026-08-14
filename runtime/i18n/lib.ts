@@ -82,12 +82,13 @@ export function getPrimaryLanguageSubtag(code) {
 }
 
 /**
- * Finds the closest supported locale to the one provided.  This is done in three steps:
+ * Finds the closest supported locale to the one provided. This is done in three steps:
  *
- * 1. Returning the locale itself if its exact language code is supported.
- * 2. Returning the primary language subtag of the language code if it is supported (ar for ar-eg,
+ * 1. Returning the locale itself if its exact language code is in the loaded messages
+ *    AND is in the site's supportedLanguages list.
+ * 2. Returning the primary language subtag if it meets the same criteria (ar for ar-eg,
  * for instance).
- * 3. Returning 'en' if neither of the above produce a supported locale.
+ * 3. Returning the site's defaultLanguage if neither of the above match.
  *
  * @param {string} locale
  * @returns {string}
@@ -98,14 +99,22 @@ export function findSupportedLocale(locale) {
     throw new Error('findSupportedLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
-  const { defaultLanguage } = getSiteConfig();
+  const { defaultLanguage, supportedLanguages = [] } = getSiteConfig();
 
-  if (messages[locale] !== undefined) {
+  const isLocaleSupported = (code) => {
+    if (supportedLanguages.length > 0) {
+      return supportedLanguages.includes(code) && messages[code] !== undefined;
+    }
+    return messages[code] !== undefined;
+  };
+
+  if (isLocaleSupported(locale)) {
     return locale;
   }
 
-  if (messages[getPrimaryLanguageSubtag(locale)] !== undefined) {
-    return getPrimaryLanguageSubtag(locale);
+  const primarySubtag = getPrimaryLanguageSubtag(locale);
+  if (isLocaleSupported(primarySubtag)) {
+    return primarySubtag;
   }
 
   return defaultLanguage;
@@ -209,17 +218,16 @@ export function isRtl(locale) {
 }
 
 /**
- * Handles applying the RTL stylesheet and "dir=rtl" attribute to the html tag if the current locale
- * is a RTL language.
+ * Handles applying the RTL stylesheet, "dir" and "lang" attributes to the html tag
+ * based on the current locale.
  *
  * @memberof module:Internationalization
  */
 export function handleRtl() {
-  if (isRtl(getLocale())) {
-    globalThis.document.getElementsByTagName('html')[0].setAttribute('dir', 'rtl');
-  } else {
-    globalThis.document.getElementsByTagName('html')[0].setAttribute('dir', 'ltr');
-  }
+  const locale = getLocale();
+  const htmlElement = globalThis.document.getElementsByTagName('html')[0];
+  htmlElement.setAttribute('lang', locale);
+  htmlElement.setAttribute('dir', isRtl(locale) ? 'rtl' : 'ltr');
 }
 
 /**
