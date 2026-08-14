@@ -122,7 +122,7 @@ export function findSupportedLocale(locale) {
 
 /**
  * Get the locale from the cookie or, failing that, the browser setting.
- * Gracefully fall back to a more general primary language subtag or to English (en)
+ * Gracefully fall back to a more general primary language subtag or to default language
  * if we don't support that language.
  *
  * @param {string|undefined} locale If a locale is provided, returns the closest supported locale. Optional.

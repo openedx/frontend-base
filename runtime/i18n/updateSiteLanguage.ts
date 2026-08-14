@@ -9,8 +9,7 @@ import { updateLocale } from './lib';
  * Changes the user's site language. This is the supported way to switch languages.
  *
  * - For authenticated users, persists the preference to the LMS API.
- * - For all users (authenticated and anonymous), sets the language cookie client-side
- *   and posts to the LMS setlang endpoint.
+ * - For all users (authenticated and anonymous), sets the language cookie via the LMS language preference endpoint.
  * - Updates the UI locale immediately via updateLocale().
  *
  * @param {string} locale The locale code to switch to (e.g. 'es-419', 'ar').
@@ -25,13 +24,22 @@ export async function updateSiteLanguage(locale: string): Promise<void> {
     await patchUserPreferences(user.username, locale);
   }
 
-  // Post to the LMS setlang endpoint for server-side persistence.
-  await postSetlang(locale);
+  await setSessionLanguage(locale);
 
   // Update the UI locale and RTL direction.
   updateLocale();
 }
 
+/**
+ * Updates user language preferences via the preferences API.
+ *
+ * @param {string} username - The username of the authenticated user.
+ * @param {string} locale - The selected language locale code (e.g., 'en', 'es-419', 'ar', 'de-de').
+ *                          Should be a valid ISO language code supported by the platform. For reference:
+ *                          https://github.com/openedx/openedx-platform/blob/master/openedx/envs/common.py#L231
+ * @returns {Promise} - A promise that resolves when the API call completes successfully,
+ *                      or rejects if there's an error with the request. Returns early if no user is authenticated.
+ */
 async function patchUserPreferences(username: string, locale: string) {
   const { lmsBaseUrl } = getSiteConfig();
   await getAuthenticatedHttpClient().patch(
@@ -47,7 +55,19 @@ async function patchUserPreferences(username: string, locale: string) {
   );
 }
 
-async function postSetlang(locale: string) {
+/**
+ * Sets the language for the current session using the lang preference endpoint.
+ *
+ * This function sends a PATCH request to the LMS update_language endpoint to change
+ * the language for the current user session.
+ *
+ * @param {string} locale - The selected language locale code (e.g., 'en', 'es-419', 'ar', 'de-de').
+ *                          Should be a valid ISO language code supported by the platform. For reference:
+ *                          https://github.com/openedx/openedx-platform/blob/master/openedx/envs/common.py#L231
+ * @returns {Promise} - A promise that resolves when the API call completes successfully,
+ *                      or rejects if there's an error with the request.
+ */
+async function setSessionLanguage(locale: string) {
   const { lmsBaseUrl } = getSiteConfig();
   const formData = new FormData();
   formData.append('language', locale);
