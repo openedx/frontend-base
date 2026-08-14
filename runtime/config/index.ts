@@ -129,6 +129,8 @@ let siteConfig: SiteConfig = {
   externalLinkUrlOverrides: [],
   runtimeConfigJsonUrl: null,
   theme: {},
+  defaultLanguage: 'en',
+  supportedLanguages: [],
   accessTokenCookieName: 'edx-jwt-cookie-header-payload',
   csrfTokenApiPath: '/csrf/api/v1/token',
   ignoredErrorRegex: null,

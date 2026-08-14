@@ -4,10 +4,13 @@ import {
   getLocale,
   getMessages,
   getPrimaryLanguageSubtag,
+  getSupportedLanguageList,
   handleRtl,
   isRtl,
   mergeMessages,
 } from './lib';
+
+import { mergeSiteConfig } from '../config';
 
 jest.mock('universal-cookie');
 
@@ -63,6 +66,39 @@ describe('lib', () => {
     it('should fallback to the browser locale if the cookie does not exist', () => {
       getCookies().get = jest.fn(() => null);
       expect(getLocale()).toEqual(global.navigator.language.toLowerCase());
+    });
+  });
+
+  describe('getSupportedLanguageList', () => {
+    it('should return all loaded locales plus the default language', () => {
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+        },
+      });
+      const languages = getSupportedLanguageList();
+      const codes = languages.map((l) => l.code);
+      expect(codes).toContain('de');
+      expect(codes).toContain('es-419');
+      expect(codes).toContain('en');
+    });
+
+    it('should filter by supportedLanguages when configured', () => {
+      mergeSiteConfig({ supportedLanguages: ['en', 'es-419'] });
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+          fr: {},
+        },
+      });
+      const languages = getSupportedLanguageList();
+      const codes = languages.map((l) => l.code);
+      expect(codes).toContain('en');
+      expect(codes).toContain('es-419');
+      expect(codes).not.toContain('de');
+      expect(codes).not.toContain('fr');
     });
   });
 
