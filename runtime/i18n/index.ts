@@ -53,3 +53,5 @@ export {
   mergeMessages,
   updateLocale,
 } from './lib';
+
+export { updateSiteLanguage } from './updateSiteLanguage';

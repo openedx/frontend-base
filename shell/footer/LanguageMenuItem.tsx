@@ -1,7 +1,7 @@
 import { Dropdown } from '@openedx/paragon';
 import { useCallback } from 'react';
 
-import { updateSiteLanguage } from './data/api';
+import { updateSiteLanguage } from '../../runtime';
 
 interface LanguageMenuItemProps {
   language: {

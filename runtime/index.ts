@@ -74,6 +74,7 @@ export {
   mergeMessages,
   updateLocale,
   useIntl,
+  updateSiteLanguage,
   type IntlConfig,
   type ResolvedIntlConfig,
   type IntlShape,
