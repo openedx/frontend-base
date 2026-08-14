@@ -52,6 +52,13 @@ const rtlLocales = [
 let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
 
 /**
+ * The locale selected during this session via updateLocale(), used to update the UI
+ * immediately without waiting for the language preference cookie to be persisted.
+ * Cleared on page load (via configureI18n) so the cookie/browser setting takes effect.
+ */
+let currentLocale: string | undefined;
+
+/**
  * @memberof module:Internationalization
  *
  * Prior versions of react-intl (our primary implementation of the i18n service) included a
@@ -152,7 +159,11 @@ export function getLocale(locale?: string) {
   if (locale !== undefined) {
     return findSupportedLocale(locale);
   }
-  // 2. User setting in cookie
+  // 2. Locale selected in-session via updateLocale()
+  if (currentLocale !== undefined) {
+    return currentLocale;
+  }
+  // 3. User setting in cookie
 
   const { languagePreferenceCookieName } = getSiteConfig();
   if (languagePreferenceCookieName) {
@@ -162,7 +173,7 @@ export function getLocale(locale?: string) {
     }
   }
 
-  // 3. Browser language (default)
+  // 4. Browser language (default)
   // Note that some browers prefer upper case for the region part of the locale, while others don't.
   // Thus the toLowerCase, for consistency.
   // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/language
@@ -200,7 +211,21 @@ export function getSupportedLanguageList() {
   }));
 }
 
-export function updateLocale() {
+/**
+ * Updates the active UI locale and RTL direction.
+ *
+ * If a locale is provided, the UI is updated to that locale immediately, without
+ * waiting for the language preference cookie to be persisted (that is handled
+ * separately, e.g. by updateSiteLanguage()). If no locale is provided, the current
+ * locale is read from the language preference cookie or browser setting.
+ *
+ * @param {string} [locale] The locale code to switch to (e.g. 'es-419', 'ar').
+ * @memberof module:Internationalization
+ */
+export function updateLocale(locale?: string) {
+  if (locale !== undefined) {
+    currentLocale = findSupportedLocale(locale);
+  }
   handleRtl();
   publish(LOCALE_CHANGED);
 }
@@ -273,6 +298,7 @@ interface ConfigureI18nOptions {
  */
 export function configureI18n(options: ConfigureI18nOptions) {
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
+  currentLocale = undefined;
 
   handleRtl();
 }

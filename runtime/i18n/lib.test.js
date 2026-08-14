@@ -7,6 +7,7 @@ import {
   getSupportedLanguageList,
   isRtl,
   mergeMessages,
+  updateLocale,
 } from './lib';
 
 import { getSiteConfig, mergeSiteConfig } from '../config';
@@ -138,6 +139,42 @@ describe('lib', () => {
       expect(isRtl('es-419')).toBe(false);
       expect(isRtl('de')).toBe(false);
       expect(isRtl('ru')).toBe(false);
+    });
+  });
+
+  describe('updateLocale', () => {
+    let setAttribute;
+    beforeEach(() => {
+      configureI18n({
+        messages: {
+          'es-419': {},
+          ar: {},
+        },
+      });
+      setAttribute = jest.fn();
+      global.document.getElementsByTagName = jest.fn(() => [
+        { setAttribute },
+      ]);
+    });
+
+    it('should update the UI locale immediately without relying on the cookie', () => {
+      getCookies().get = jest.fn(() => null);
+
+      updateLocale('es-419');
+
+      expect(getLocale()).toEqual('es-419');
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
+      expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
+    });
+
+    it('should take precedence over the language preference cookie', () => {
+      getCookies().get = jest.fn(() => 'ar');
+
+      updateLocale('es-419');
+
+      expect(getLocale()).toEqual('es-419');
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
+      expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
     });
   });
 

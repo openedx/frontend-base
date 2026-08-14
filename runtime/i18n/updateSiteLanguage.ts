@@ -8,9 +8,10 @@ import { updateLocale } from './lib';
 /**
  * Changes the user's site language. This is the supported way to switch languages.
  *
+ * - Updates the UI locale immediately via updateLocale(), so the change is reflected
+ *   without waiting for the network requests to complete.
  * - For authenticated users, persists the preference to the LMS API.
  * - For all users (authenticated and anonymous), sets the language cookie via the LMS language preference endpoint.
- * - Updates the UI locale immediately via updateLocale().
  *
  * @param {string} locale The locale code to switch to (e.g. 'es-419', 'ar').
  * @returns {Promise<void>} Resolves when the switch is complete. Rejects on network failure.
@@ -19,15 +20,16 @@ import { updateLocale } from './lib';
 export async function updateSiteLanguage(locale: string): Promise<void> {
   const user = getAuthenticatedUser();
 
+  // Update the UI locale and RTL direction immediately, before waiting on any
+  // network requests. This ensures that the UI reflects the change without delay.
+  updateLocale(locale);
+
   // Save the preference for authenticated users.
   if (user !== null) {
     await patchUserPreferences(user.username, locale);
   }
 
   await setSessionLanguage(locale);
-
-  // Update the UI locale and RTL direction.
-  updateLocale();
 }
 
 /**
