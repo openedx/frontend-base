@@ -2,6 +2,9 @@ import { FC, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { RouteObject } from 'react-router';
 import { SlotOperation } from './runtime/slots/types';
+import { LoggingService } from './runtime/logging/types';
+import { AnalyticsService } from './runtime/analytics/types';
+import { AuthService } from './runtime/auth/types';
 
 // Apps
 
@@ -59,6 +62,35 @@ export interface RequiredSiteConfig {
 export type LocalizedMessages = Record<string, Record<string, string>>;
 export type SiteMessages = LocalizedMessages[];
 
+export type { LoggingService, AnalyticsService, AuthService };
+
+// Logging instantiated
+export type LoggingServiceClass = new (options: {
+  config: SiteConfig,
+}) => LoggingService;
+
+// Analytics instantiated
+export type AnalyticsServiceClass = new (options: {
+  config: SiteConfig,
+  loggingService: LoggingService,
+  httpClient: unknown,
+}) => AnalyticsService;
+
+// Auth instantiated
+export type AuthServiceClass = new (options: {
+  config: {
+    baseUrl: string,
+    lmsBaseUrl: string,
+    loginUrl: string,
+    logoutUrl: string,
+    refreshAccessTokenApiPath: string,
+    accessTokenCookieName: string,
+    csrfTokenApiPath: string,
+  },
+  loggingService: object,
+  middleware?: unknown[],
+}) => AuthService;
+
 export interface OptionalSiteConfig {
   // Site environment
   environment: EnvironmentTypes,
@@ -92,6 +124,11 @@ export interface OptionalSiteConfig {
 
   // Analytics
   segmentKey: string | null,
+
+  // Services
+  loggingService: LoggingServiceClass,
+  analyticsService: AnalyticsServiceClass,
+  authService: AuthServiceClass,
 }
 
 export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
