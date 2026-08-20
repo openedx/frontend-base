@@ -20,6 +20,10 @@ Permissions are expressed as a key/value map where:
 - **keys** are arbitrary semantic names you choose (e.g. `canEditGrading`)
 - **values** describe the `action` string and optional `scope` (resource identifier)
 
+To find the available permissions you can use, see the
+[Core Roles and Permissions](https://docs.openedx.org/projects/openedx-authz/en/latest/concepts/core_roles_and_permissions/index.html)
+reference in the openedx-authz documentation.
+
 ```typescript
 import type { PermissionValidationQuery } from '@openedx/frontend-base';
 

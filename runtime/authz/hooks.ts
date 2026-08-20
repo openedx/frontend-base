@@ -67,6 +67,9 @@ export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
  * whether from a global flag, a per-course override, or a per-org override, the behavior
  * is the same. Waffle flag names differ per MFE.
  *
+ * See https://docs.openedx.org/projects/openedx-authz/en/latest/concepts/core_roles_and_permissions/index.html
+ * for the available permission you can query.
+ *
  * @param query          - Key/value map of permission check descriptors.
  * @param featureEnabled - Pass the result of your waffle flag check here.
  * @param options        - Optional retry, apiBaseUrl, and staleTime settings.
