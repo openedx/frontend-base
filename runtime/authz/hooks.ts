@@ -44,7 +44,7 @@ export interface UsePermissionsOptions {
  *   { canViewGrading: { action: 'courses.view_grading_settings', scope: courseId },
  *     canEditGrading: { action: 'courses.edit_grading_settings', scope: courseId } },
  *   enableAuthz ?? false,
- *   { apiBaseUrl: getConfig().LMS_BASE_URL },
+ *   { apiBaseUrl: getSiteConfig().lmsBaseUrl },
  * );
  */
 export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
@@ -80,7 +80,7 @@ export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
  *   { canViewGrading: { action: 'courses.view_grading_settings', scope: courseId },
  *     canEditGrading: { action: 'courses.edit_grading_settings', scope: courseId } },
  *   enableAuthzCourseAuthoring ?? false,
- *   { apiBaseUrl: getConfig().LMS_BASE_URL },
+ *   { apiBaseUrl: getSiteConfig().lmsBaseUrl },
  * );
  */
 export const usePermissions = <Query extends PermissionValidationQuery>(

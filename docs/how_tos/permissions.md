@@ -75,18 +75,17 @@ if (!canViewGrading) { return <PermissionDeniedAlert />; }
 When `featureEnabled` is `false`: no API call is made and all keys return `true`,
 preserving the pre-authz behavior during rollout.
 
-To override the backend URL (e.g. MFEs using `@edx/frontend-platform`), pass `apiBaseUrl`
-in the options argument:
+To override the backend URL (e.g. when the authz service runs on a different backend such as
+Studio), pass `apiBaseUrl` in the options argument:
 
 ```typescript
-import { usePermissions } from '@openedx/frontend-base';
-import { getConfig } from '@edx/frontend-platform';
+import { usePermissions, getSiteConfig } from '@openedx/frontend-base';
 
 const { enableAuthz } = useWaffleFlags(courseId);
 const { isLoading, isError, canViewGrading } = usePermissions(
   { canViewGrading: { action: 'courses.view_grading_settings', scope: courseId } },
   enableAuthz ?? false,
-  { apiBaseUrl: getConfig().LMS_BASE_URL },
+  { apiBaseUrl: getSiteConfig().lmsBaseUrl },
 );
 ```
 
@@ -102,8 +101,7 @@ Avoid calling `usePermissions` directly in every component. Create a single MFE-
 wrapper that encapsulates the waffle flag check and base URL:
 
 ```typescript
-import { usePermissions } from '@openedx/frontend-base';
-import { getConfig } from '@edx/frontend-platform';
+import { usePermissions, getSiteConfig } from '@openedx/frontend-base';
 import { useWaffleFlags } from './waffleHooks'; // your MFE's waffle flag hook
 import type { PermissionValidationQuery } from '@openedx/frontend-base';
 
@@ -115,7 +113,7 @@ export const useResourcePermissions = <Query extends PermissionValidationQuery>(
   return usePermissions(
     permissions,
     enableAuthz ?? false,
-    { apiBaseUrl: getConfig().LMS_BASE_URL },
+    { apiBaseUrl: getSiteConfig().lmsBaseUrl },
   );
 };
 
@@ -149,8 +147,7 @@ const { isLoading, canView, canEdit } =
 If user roles change mid-session and you need to force a refetch:
 
 ```typescript
-import { permissionsQueryKeys } from '@openedx/frontend-base';
-import { getConfig } from '@edx/frontend-platform';
+import { permissionsQueryKeys, getSiteConfig } from '@openedx/frontend-base';
 
 // Default — URL comes from getSiteConfig().lmsBaseUrl (set via mergeSiteConfig):
 queryClient.invalidateQueries({
@@ -159,6 +156,6 @@ queryClient.invalidateQueries({
 
 // Explicit URL — use when you passed apiBaseUrl in UsePermissionsOptions:
 queryClient.invalidateQueries({
-  queryKey: permissionsQueryKeys.validate(myQuery, getConfig().LMS_BASE_URL),
+  queryKey: permissionsQueryKeys.validate(myQuery, getSiteConfig().lmsBaseUrl),
 });
 ```

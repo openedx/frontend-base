@@ -12,7 +12,7 @@ export const PERMISSIONS_VALIDATE_PATH = '/api/authz/v1/permissions/validate/me'
  * Validates whether the currently authenticated user holds the requested permissions
  * against the openedx-authz backend.
  *
- * @param apiBaseUrl - Base URL of the backend running openedx-authz (e.g. getConfig().LMS_BASE_URL).
+ * @param apiBaseUrl - Base URL of the backend running openedx-authz (e.g. getSiteConfig().lmsBaseUrl).
  * @param query      - Key/value map of permission check descriptors.
  * @returns Map of the same keys to boolean allowed values.
  *          Any key absent from the server response resolves to false.
