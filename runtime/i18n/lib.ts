@@ -1,5 +1,4 @@
 import merge from 'lodash/merge';
-import PropTypes from 'prop-types';
 import { MessageFormatElement } from 'react-intl';
 import Cookies from 'universal-cookie';
 
@@ -50,18 +49,6 @@ const rtlLocales = [
 ];
 
 let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
-
-/**
- * @memberof module:Internationalization
- *
- * Prior versions of react-intl (our primary implementation of the i18n service) included a
- * PropTypes-based 'shape' for its `intl` object.  This has since been removed.  For legacy
- * compatibility, we include an `intlShape` export that is set to PropTypes.object.  Usage of this
- * export is deprecated.
- *
- * @deprecated
- */
-export const intlShape = PropTypes.object;
 
 /**
  * @memberof module:Internationalization
