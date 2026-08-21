@@ -19,7 +19,7 @@ module.exports = {
     '<rootDir>/setupTest.js',
   ],
   transformIgnorePatterns: [
-    '/node_modules/(?!(@openedx|@edx)/)',
+    '/node_modules/(?!(@openedx|@edx|react-intl|@formatjs|intl-messageformat)/)',
   ],
   modulePathIgnorePatterns: [
     '/dist/',

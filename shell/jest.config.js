@@ -20,7 +20,7 @@ module.exports = {
     'setupTest.js',
   ],
   transformIgnorePatterns: [
-    '/node_modules/(?!(@openedx|@edx)/)',
+    '/node_modules/(?!(@openedx|@edx|react-intl|@formatjs|intl-messageformat)/)',
   ],
   testPathIgnorePatterns: [
     '/site.config.test.tsx',
