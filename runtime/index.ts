@@ -75,6 +75,7 @@ export {
   LOCALE_TOPIC,
   mergeMessages,
   updateLocale,
+  updateSiteLanguage,
   useIntl
 } from './i18n';
 

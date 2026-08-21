@@ -4,10 +4,13 @@ import {
   getLocale,
   getMessages,
   getPrimaryLanguageSubtag,
-  handleRtl,
+  getSupportedLanguageList,
   isRtl,
   mergeMessages,
+  updateLocale,
 } from './lib';
+
+import { getSiteConfig, mergeSiteConfig } from '../config';
 
 jest.mock('universal-cookie');
 
@@ -66,6 +69,39 @@ describe('lib', () => {
     });
   });
 
+  describe('getSupportedLanguageList', () => {
+    it('should return all loaded locales plus the default language', () => {
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+        },
+      });
+      const languages = getSupportedLanguageList();
+      const codes = languages.map((l) => l.code);
+      expect(codes).toContain('de');
+      expect(codes).toContain('es-419');
+      expect(codes).toContain('en');
+    });
+
+    it('should filter by supportedLanguages when configured', () => {
+      mergeSiteConfig({ supportedLanguages: ['en', 'es-419'] });
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+          fr: {},
+        },
+      });
+      const languages = getSupportedLanguageList();
+      const codes = languages.map((l) => l.code);
+      expect(codes).toContain('en');
+      expect(codes).toContain('es-419');
+      expect(codes).not.toContain('de');
+      expect(codes).not.toContain('fr');
+    });
+  });
+
   describe('getMessages', () => {
     beforeEach(() => {
       configureI18n({
@@ -106,9 +142,46 @@ describe('lib', () => {
     });
   });
 
+  describe('updateLocale', () => {
+    let setAttribute;
+    beforeEach(() => {
+      configureI18n({
+        messages: {
+          'es-419': {},
+          ar: {},
+        },
+      });
+      setAttribute = jest.fn();
+      global.document.getElementsByTagName = jest.fn(() => [
+        { setAttribute },
+      ]);
+    });
+
+    it('should update the UI locale immediately without relying on the cookie', () => {
+      getCookies().get = jest.fn(() => null);
+
+      updateLocale('es-419');
+
+      expect(getLocale()).toEqual('es-419');
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
+      expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
+    });
+
+    it('should take precedence over the language preference cookie', () => {
+      getCookies().get = jest.fn(() => 'ar');
+
+      updateLocale('es-419');
+
+      expect(getLocale()).toEqual('es-419');
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
+      expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
+    });
+  });
+
   describe('handleRtl', () => {
     let setAttribute;
     beforeEach(() => {
+      getSiteConfig().supportedLanguages = [];
       setAttribute = jest.fn();
 
       global.document.getElementsByTagName = jest.fn(() => [
@@ -126,7 +199,7 @@ describe('lib', () => {
         },
       });
 
-      handleRtl();
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
     });
 
@@ -138,7 +211,7 @@ describe('lib', () => {
         },
       });
 
-      handleRtl();
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'ar');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'rtl');
     });
   });

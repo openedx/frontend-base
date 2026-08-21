@@ -1,22 +1,33 @@
 import { Dropdown } from '@openedx/paragon';
 import { useCallback } from 'react';
 
-import { updateSiteLanguage } from './data/api';
-
 interface LanguageMenuItemProps {
   language: {
     code: string,
     name: string,
   },
+  disabled?: boolean,
+  isActive?: boolean,
+  onSelect: (code: string) => void,
 }
 
-export default function LanguageMenuItem({ language }: LanguageMenuItemProps) {
+export default function LanguageMenuItem({
+  language,
+  disabled,
+  isActive,
+  onSelect,
+}: LanguageMenuItemProps) {
   const handleClick = useCallback(() => {
-    updateSiteLanguage(language.code);
-  }, [language.code]);
+    onSelect(language.code);
+  }, [language.code, onSelect]);
 
   return (
-    <Dropdown.Item key={language.code} onClick={handleClick}>
+    <Dropdown.Item
+      key={language.code}
+      className={isActive ? 'active' : ''}
+      disabled={disabled}
+      onClick={handleClick}
+    >
       {language.name}
     </Dropdown.Item>
   );
