@@ -102,11 +102,11 @@ module.exports = tseslint.config(
       '@stylistic/brace-style': ['error', '1tbs'],
       '@stylistic/member-delimiter-style': ['error', {
         multiline: {
-          delimiter: 'comma',
+          delimiter: 'semi',
           requireLast: true,
         },
         singleline: {
-          delimiter: 'comma',
+          delimiter: 'semi',
           requireLast: false,
         }
       }],

@@ -3,23 +3,23 @@ import { getSiteConfig, getAuthenticatedHttpClient, camelCaseObject } from '../.
 
 // Raw API response from /api/course_home/course_metadata/
 interface RawCourseTab {
-  tab_id: string,
-  title: string,
-  url: string,
+  tab_id: string;
+  title: string;
+  url: string;
 }
 
 interface RawCourseHomeCourseMetadata {
-  tabs: RawCourseTab[],
+  tabs: RawCourseTab[];
 }
 
 export interface CourseTab {
-  tabId: string,
-  title: string,
-  url: string,
+  tabId: string;
+  title: string;
+  url: string;
 }
 
 export interface CourseHomeCourseMetadata {
-  tabs: CourseTab[],
+  tabs: CourseTab[];
 }
 
 function normalizeCourseHomeCourseMetadata(metadata: RawCourseHomeCourseMetadata): CourseHomeCourseMetadata {
@@ -50,7 +50,7 @@ export function courseHomeCourseMetadataQueryKey(courseId: string): [string, str
  * user can still see the page they're on.
  */
 export function findActiveTab(tabs: CourseTab[], pathname: string): CourseTab | null {
-  let best: { tab: CourseTab, length: number } | null = null;
+  let best: { tab: CourseTab; length: number } | null = null;
   for (const tab of tabs) {
     const tabPathname = new URL(tab.url).pathname;
     const match = matchPath({ path: `${tabPathname}/*`, end: false }, pathname);

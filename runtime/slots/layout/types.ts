@@ -14,22 +14,22 @@ export enum LayoutOperationTypes {
 }
 
 export interface BaseLayoutOperation extends BaseSlotOperation {
-  op: LayoutOperationTypes,
+  op: LayoutOperationTypes;
 }
 
 // Concrete UI Layout Operations
 
 export type LayoutOptionsOperation = BaseLayoutOperation & {
-  op: LayoutOperationTypes.OPTIONS,
-  options: Record<string, unknown>,
+  op: LayoutOperationTypes.OPTIONS;
+  options: Record<string, unknown>;
 };
 
 export interface LayoutComponentProps {
-  component: React.ComponentType,
+  component: React.ComponentType;
 }
 
 export interface LayoutElementProps {
-  element: ReactNode,
+  element: ReactNode;
 }
 
 export type LayoutRendererProps = (
@@ -37,7 +37,7 @@ export type LayoutRendererProps = (
 );
 
 export type LayoutReplaceOperation = BaseLayoutOperation & LayoutRendererProps & {
-  op: LayoutOperationTypes.REPLACE,
+  op: LayoutOperationTypes.REPLACE;
 };
 
 // Aggregate UI Layout Operations

@@ -7,8 +7,8 @@ import CurrentAppContext from './CurrentAppContext';
 import { useSiteEvent } from './hooks';
 
 interface CurrentAppProviderProps {
-  appId: string,
-  children: ReactNode,
+  appId: string;
+  children: ReactNode;
 }
 
 /**

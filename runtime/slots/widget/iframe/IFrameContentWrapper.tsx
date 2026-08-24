@@ -27,11 +27,11 @@ const ErrorFallbackDefault = () => {
 };
 
 interface IFrameContentWrapperProps {
-  children: ReactNode,
-  className?: string,
-  style?: Record<string, string>,
-  ready?: boolean,
-  errorFallbackComponent?: FunctionComponent,
+  children: ReactNode;
+  className?: string;
+  style?: Record<string, string>;
+  ready?: boolean;
+  errorFallbackComponent?: FunctionComponent;
 }
 
 export default function IFrameContentWrapper({

@@ -3,7 +3,7 @@ import { App, AppProvider } from '../../types';
 import { getSiteConfig } from '../config';
 
 interface CombinedAppProviderProps {
-  children: ReactNode,
+  children: ReactNode;
 }
 
 export default function CombinedAppProvider({ children }: CombinedAppProviderProps) {

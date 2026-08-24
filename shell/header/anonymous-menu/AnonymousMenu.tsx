@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Slot } from '../../../runtime';
 
 interface AnonymousMenuProps {
-  className?: string,
+  className?: string;
 }
 
 export default function AnonymousMenu({ className }: AnonymousMenuProps) {

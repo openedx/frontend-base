@@ -6,7 +6,7 @@ import {
 } from '../../runtime';
 
 interface AuthenticatedMenuProps {
-  className?: string,
+  className?: string;
 }
 
 export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps) {

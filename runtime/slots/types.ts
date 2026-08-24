@@ -8,15 +8,15 @@ import { LayoutOperation } from './layout/types';
 import { WidgetOperation } from './widget/types';
 
 export interface SlotOperationCondition {
-  active?: string[],
-  inactive?: string[],
-  authenticated?: boolean,
-  callback?: () => boolean,
+  active?: string[];
+  inactive?: string[];
+  authenticated?: boolean;
+  callback?: () => boolean;
 }
 
 export interface BaseSlotOperation {
-  slotId: string,
-  condition?: SlotOperationCondition,
+  slotId: string;
+  condition?: SlotOperationCondition;
 }
 
 // Aggregate Slot Operations

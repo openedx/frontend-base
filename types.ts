@@ -6,8 +6,8 @@ import { SlotOperation } from './runtime/slots/types';
 // Apps
 
 export interface ExternalRoute {
-  role: string,
-  url: string,
+  role: string;
+  url: string;
 }
 
 export type RoleRouteObject = RouteObject & {
@@ -15,8 +15,8 @@ export type RoleRouteObject = RouteObject & {
     /**
      * Route roles identify the purpose(s) a route fulfills in the site.
      */
-    roles?: string[],
-  },
+    roles?: string[];
+  };
 };
 
 export type AppConfig = Record<string, unknown>;
@@ -24,19 +24,19 @@ export type AppConfig = Record<string, unknown>;
 export type AppProvider = FC<{ children?: ReactNode }>;
 
 export interface App {
-  appId: string,
-  routes?: RoleRouteObject[],
-  providers?: AppProvider[],
-  slots?: SlotOperation[],
-  externalScripts?: ExternalScriptLoaderClass[],
-  config?: AppConfig,
-  provides?: Record<string, unknown>,
+  appId: string;
+  routes?: RoleRouteObject[];
+  providers?: AppProvider[];
+  slots?: SlotOperation[];
+  externalScripts?: ExternalScriptLoaderClass[];
+  config?: AppConfig;
+  provides?: Record<string, unknown>;
 }
 
 // External Scripts
 
 export interface ExternalScriptLoader {
-  loadScript(): void,
+  loadScript(): void;
 }
 
 export type ExternalScriptLoaderClass = new (data: { config: AppConfig }) => ExternalScriptLoader;
@@ -44,16 +44,16 @@ export type ExternalScriptLoaderClass = new (data: { config: AppConfig }) => Ext
 // Site Config
 
 export interface RequiredSiteConfig {
-  siteId: string,
-  siteName: string,
-  baseUrl: string,
+  siteId: string;
+  siteName: string;
+  baseUrl: string;
 
   // Backends
-  lmsBaseUrl: string,
+  lmsBaseUrl: string;
 
   // Frontends
-  loginUrl: string,
-  logoutUrl: string,
+  loginUrl: string;
+  logoutUrl: string;
 }
 
 export type LocalizedMessages = Record<string, Record<string, string>>;
@@ -61,66 +61,66 @@ export type SiteMessages = LocalizedMessages[];
 
 export interface OptionalSiteConfig {
   // Site environment
-  environment: EnvironmentTypes,
+  environment: EnvironmentTypes;
 
   // Backends
-  cmsBaseUrl: string,
+  cmsBaseUrl: string;
 
   // Apps, routes, and URLs
-  apps: App[],
-  basename: string,
-  externalRoutes: ExternalRoute[],
-  externalLinkUrlOverrides: string[],
-  runtimeConfigJsonUrl: string | null,
-  commonAppConfig: AppConfig,
-  headerLogoImageUrl: string,
+  apps: App[];
+  basename: string;
+  externalRoutes: ExternalRoute[];
+  externalLinkUrlOverrides: string[];
+  runtimeConfigJsonUrl: string | null;
+  commonAppConfig: AppConfig;
+  headerLogoImageUrl: string;
 
   // Theme
-  theme: Theme,
+  theme: Theme;
 
   // Cookies
-  accessTokenCookieName: string,
-  languagePreferenceCookieName: string,
-  userInfoCookieName: string,
+  accessTokenCookieName: string;
+  languagePreferenceCookieName: string;
+  userInfoCookieName: string;
 
   // Paths
-  csrfTokenApiPath: string,
-  refreshAccessTokenApiPath: string,
+  csrfTokenApiPath: string;
+  refreshAccessTokenApiPath: string;
 
   // Logging
-  ignoredErrorRegex: RegExp | null,
+  ignoredErrorRegex: RegExp | null;
 
   // Analytics
-  segmentKey: string | null,
+  segmentKey: string | null;
 }
 
 export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
 
 export interface ThemeVariant {
-  url: string,
+  url: string;
 }
 
 export interface ThemeDefaults {
-  light?: string,
-  dark?: string,
+  light?: string;
+  dark?: string;
 }
 
 export type ThemeVariants = Record<string, ThemeVariant>;
 
 export interface Theme {
-  core?: ThemeVariant,
-  defaults?: ThemeDefaults,
-  variants?: ThemeVariants,
+  core?: ThemeVariant;
+  defaults?: ThemeDefaults;
+  variants?: ThemeVariants;
 }
 
 export interface User {
-  administrator: boolean,
-  email: string,
-  name: string,
-  roles: string[],
-  userId: number,
-  username: string,
-  avatar: string,
+  administrator: boolean;
+  email: string;
+  name: string;
+  roles: string[];
+  userId: number;
+  username: string;
+  avatar: string;
 }
 
 export enum EnvironmentTypes {

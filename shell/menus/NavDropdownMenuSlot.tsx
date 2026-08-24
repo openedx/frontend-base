@@ -10,8 +10,8 @@ import {
 } from './data/utils';
 
 interface DropdownMenuSlotProps {
-  id: string,
-  label: MenuItemName,
+  id: string;
+  label: MenuItemName;
 }
 
 export default function DropdownMenuSlot({ id, label }: DropdownMenuSlotProps) {

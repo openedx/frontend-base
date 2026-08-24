@@ -179,7 +179,7 @@ export function setSiteConfig(newSiteConfig: SiteConfig) {
 }
 
 interface MergeSiteConfigOptions {
-  limitAppMergeToConfig?: boolean,
+  limitAppMergeToConfig?: boolean;
 }
 
 /**

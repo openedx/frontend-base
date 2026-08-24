@@ -6,7 +6,7 @@ function getFoo() {
 }
 
 interface FooProviderProps {
-  children?: ReactNode,
+  children?: ReactNode;
 }
 
 export default function FooProvider({ children }: FooProviderProps) {
