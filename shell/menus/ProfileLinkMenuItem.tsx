@@ -5,9 +5,9 @@ import { MenuItemName } from '../../types';
 import LinkMenuItem from './LinkMenuItem';
 
 interface ProfileLinkMenuItemProps {
-  label: MenuItemName,
-  role: string,
-  variant?: 'hyperlink' | 'navLink' | 'navDropdownItem' | 'dropdownItem',
+  label: MenuItemName;
+  role: string;
+  variant?: 'hyperlink' | 'navLink' | 'navDropdownItem' | 'dropdownItem';
 }
 
 export default function ProfileLinkMenuItem({ label, role, variant = 'hyperlink' }: ProfileLinkMenuItemProps) {

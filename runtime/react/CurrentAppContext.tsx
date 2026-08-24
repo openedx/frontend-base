@@ -17,7 +17,7 @@ import { AppConfig } from '../../types';
  * @memberof module:React
  */
 const CurrentAppContext = createContext<{
-  appConfig: AppConfig,
+  appConfig: AppConfig;
 }>({
   appConfig: {},
 });

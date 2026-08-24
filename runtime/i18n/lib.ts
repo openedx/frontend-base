@@ -238,7 +238,7 @@ export function mergeMessages(newMessages = {}) {
 }
 
 interface ConfigureI18nOptions {
-  messages: LocalizedMessages[] | LocalizedMessages,
+  messages: LocalizedMessages[] | LocalizedMessages;
 }
 
 /**

@@ -19,10 +19,10 @@ const useThemeVariants = ({
   onComplete,
   onDarkModeSystemPreferenceChange,
 }: {
-  themeVariants: ThemeVariants | undefined,
-  currentThemeVariant: string,
-  onComplete: () => void,
-  onDarkModeSystemPreferenceChange: (prefersDarkMode: boolean) => void,
+  themeVariants: ThemeVariants | undefined;
+  currentThemeVariant: string;
+  onComplete: () => void;
+  onDarkModeSystemPreferenceChange: (prefersDarkMode: boolean) => void;
 }) => {
   const [isThemeVariantComplete, setIsThemeVariantComplete] = useState(false);
 

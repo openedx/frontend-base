@@ -60,7 +60,7 @@ export function isOptionSelected(option: MasqueradeOption, active: ActiveMasquer
 }
 
 interface HttpishError {
-  customAttributes?: { httpErrorStatus?: number },
+  customAttributes?: { httpErrorStatus?: number };
 }
 
 function getHttpStatus(error: unknown): number | undefined {
@@ -71,7 +71,7 @@ function getHttpStatus(error: unknown): number | undefined {
  * Anything other than a successful load with `success: true` hides the bar:
  * 403, 200 with `success: false`, network errors, 5xx, redirected requests.
  */
-function isQueryDenied(query: { isError: boolean, error: unknown, data: MasqueradeStatus | undefined }): boolean {
+function isQueryDenied(query: { isError: boolean; error: unknown; data: MasqueradeStatus | undefined }): boolean {
   if (query.isError) {
     return true;
   }
@@ -94,7 +94,7 @@ export function formatErrorMessage(
 }
 
 function pickErrorMessage(
-  mutation: { isError: boolean, error: unknown, data: MasqueradeStatus | undefined },
+  mutation: { isError: boolean; error: unknown; data: MasqueradeStatus | undefined },
 ): MasqueradeErrorMessage | null {
   if (mutation.isError) {
     return getHttpStatus(mutation.error) === 404
@@ -108,18 +108,18 @@ function pickErrorMessage(
 }
 
 export interface MasqueradeState {
-  active: ActiveMasqueradeData,
-  available: MasqueradeOption[],
-  pendingOption: MasqueradeOption | null,
-  showUserNameInput: boolean,
-  userName: string,
-  setUserName: (value: string) => void,
-  select: (option: MasqueradeOption) => void,
-  submitUserName: () => void,
-  errorMessage: MasqueradeErrorMessage | null,
-  isSubmitting: boolean,
-  isLoading: boolean,
-  isDenied: boolean,
+  active: ActiveMasqueradeData;
+  available: MasqueradeOption[];
+  pendingOption: MasqueradeOption | null;
+  showUserNameInput: boolean;
+  userName: string;
+  setUserName: (value: string) => void;
+  select: (option: MasqueradeOption) => void;
+  submitUserName: () => void;
+  errorMessage: MasqueradeErrorMessage | null;
+  isSubmitting: boolean;
+  isLoading: boolean;
+  isDenied: boolean;
 }
 
 export function useMasqueradeState(courseId: string): MasqueradeState {

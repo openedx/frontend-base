@@ -50,8 +50,8 @@ export default function initializeMockApp({
   messages = mockMessages,
   authenticatedUser = null,
 }: {
-  messages?: LocalizedMessages,
-  authenticatedUser?: User | null,
+  messages?: LocalizedMessages;
+  authenticatedUser?: User | null;
 } = {}) {
   const config = siteConfig;
   mergeSiteConfig(config);

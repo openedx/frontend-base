@@ -5,7 +5,7 @@ import { isOptionSelected } from '../hooks';
 import type { MasqueradeOption } from '../data/api';
 
 interface Props {
-  option: MasqueradeOption,
+  option: MasqueradeOption;
 }
 
 export function MasqueradeWidgetOption({ option }: Props) {

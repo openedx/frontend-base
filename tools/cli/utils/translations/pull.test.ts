@@ -7,8 +7,8 @@ import { pull } from './pull';
 jest.mock('./prepare');
 
 interface AtlasTranslations {
-  path?: string,
-  dependencies?: string[],
+  path?: string;
+  dependencies?: string[];
 }
 
 function createPackage(baseDir: string, name: string, atlasTranslations?: AtlasTranslations): void {

@@ -20,9 +20,9 @@ import { getSiteConfig } from '../config';
  * @memberof module:React
  */
 const SiteContext = createContext<{
-  authenticatedUser: User | null,
-  siteConfig: SiteConfig,
-  locale: string,
+  authenticatedUser: User | null;
+  siteConfig: SiteConfig;
+  locale: string;
 }>({
   authenticatedUser: null,
   siteConfig: getSiteConfig(),

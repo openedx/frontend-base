@@ -5,9 +5,9 @@ import { updateSiteLanguage } from './data/api';
 
 interface LanguageMenuItemProps {
   language: {
-    code: string,
-    name: string,
-  },
+    code: string;
+    name: string;
+  };
 }
 
 export default function LanguageMenuItem({ language }: LanguageMenuItemProps) {

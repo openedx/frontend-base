@@ -2,7 +2,7 @@ import LinkMenuItem from '../menus/LinkMenuItem';
 import messages from '../Shell.messages';
 
 interface HelpButtonProps {
-  getUrl: () => string | undefined,
+  getUrl: () => string | undefined;
 }
 
 export default function HelpButton({ getUrl }: HelpButtonProps) {

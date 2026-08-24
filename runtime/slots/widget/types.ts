@@ -53,22 +53,22 @@ export type AbsoluteWidgetOperationTypes = WidgetOperationTypes.APPEND | WidgetO
 export type RelativeWidgetOperationTypes = WidgetOperationTypes.INSERT_AFTER | WidgetOperationTypes.INSERT_BEFORE | WidgetOperationTypes.REPLACE | WidgetOperationTypes.OPTIONS;
 
 export interface BaseWidgetOperation extends BaseSlotOperation {
-  op: WidgetOperationTypes,
+  op: WidgetOperationTypes;
 }
 
 // Widget renderer props
 
 export interface WidgetComponentProps {
-  component: React.ComponentType,
+  component: React.ComponentType;
 }
 
 export interface WidgetElementProps {
-  element: ReactNode,
+  element: ReactNode;
 }
 
 export interface WidgetIFrameProps {
-  url: string,
-  title: string,
+  url: string;
+  title: string;
 }
 
 export type WidgetRendererProps = (
@@ -76,39 +76,39 @@ export type WidgetRendererProps = (
 );
 
 export interface WidgetIdentityProps {
-  id: string,
-  role?: string,
+  id: string;
+  role?: string;
 }
 
 export interface WidgetRelationshipProps {
-  relatedId: string,
+  relatedId: string;
 }
 
 // Concrete UI Widget Operations
 
 export type WidgetAppendOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & {
-  op: WidgetOperationTypes.APPEND,
+  op: WidgetOperationTypes.APPEND;
 };
 
 export type WidgetPrependOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & {
-  op: WidgetOperationTypes.PREPEND,
+  op: WidgetOperationTypes.PREPEND;
 };
 
 export type WidgetInsertAfterOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & WidgetRelationshipProps & {
-  op: WidgetOperationTypes.INSERT_AFTER,
+  op: WidgetOperationTypes.INSERT_AFTER;
 };
 
 export type WidgetInsertBeforeOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & WidgetRelationshipProps & {
-  op: WidgetOperationTypes.INSERT_BEFORE,
+  op: WidgetOperationTypes.INSERT_BEFORE;
 };
 
 export type WidgetRemoveOperation = BaseWidgetOperation & WidgetRelationshipProps & {
-  op: WidgetOperationTypes.REMOVE,
+  op: WidgetOperationTypes.REMOVE;
 };
 
 export type WidgetOptionsOperation = BaseWidgetOperation & WidgetRelationshipProps & {
-  op: WidgetOperationTypes.OPTIONS,
-  options: Record<string, unknown>,
+  op: WidgetOperationTypes.OPTIONS;
+  options: Record<string, unknown>;
 };
 
 export type WidgetReplaceOperation = BaseWidgetOperation & WidgetIdentityProps & WidgetRendererProps & WidgetRelationshipProps & { op: WidgetOperationTypes.REPLACE };
@@ -129,15 +129,15 @@ export type WidgetOperation = WidgetAbsoluteOperation | WidgetRelativeOperation;
  * ID for relative widget operations.
  */
 export interface IdentifiedWidget {
-  id: string,
-  role?: string,
-  node: ReactNode,
+  id: string;
+  role?: string;
+  node: ReactNode;
 }
 
 export interface WidgetList extends Array<ReactNode> {
-  identified: IdentifiedWidget[],
-  byId(id: string): ReactNode[],
-  withoutId(id: string): ReactNode[],
-  byRole(role: string): ReactNode[],
-  withoutRole(role: string): ReactNode[],
+  identified: IdentifiedWidget[];
+  byId(id: string): ReactNode[];
+  withoutId(id: string): ReactNode[];
+  byRole(role: string): ReactNode[];
+  withoutRole(role: string): ReactNode[];
 }

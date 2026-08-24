@@ -26,7 +26,7 @@ export function useMessageEvent(srcWindow: Window | null, type: string, callback
   // useLayoutEffect is called before the browser repaints the screen
   useLayoutEffect(() => {
     // Create a listener callback function
-    const listener = (event: MessageEvent<{ type: string, payload: any }>) => {
+    const listener = (event: MessageEvent<{ type: string; payload: any }>) => {
       // Filter messages to those from our source window.
       // NOTE: the "srcWindow" is determined by the below useHostEvent and usePluginEvent functions
       if (event.source === srcWindow) {
@@ -159,12 +159,12 @@ export function useElementSize() {
   }, [element]);
 
   return useMemo<{
-    ref: LegacyRef<HTMLIFrameElement>,
-    element: HTMLIFrameElement | undefined,
-    width: number,
-    height: number,
-    x: number,
-    y: number,
+    ref: LegacyRef<HTMLIFrameElement>;
+    element: HTMLIFrameElement | undefined;
+    width: number;
+    height: number;
+    x: number;
+    y: number;
   }>(
     () => ({
       ref: measuredRef,

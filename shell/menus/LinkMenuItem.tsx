@@ -11,10 +11,10 @@ import {
 } from './data/utils';
 
 interface LinkMenuItemProps {
-  label: MenuItemName,
-  role?: string,
-  url?: string,
-  variant?: 'hyperlink' | 'navLink' | 'navDropdownItem' | 'dropdownItem',
+  label: MenuItemName;
+  role?: string;
+  url?: string;
+  variant?: 'hyperlink' | 'navLink' | 'navDropdownItem' | 'dropdownItem';
 }
 
 export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }: LinkMenuItemProps) {

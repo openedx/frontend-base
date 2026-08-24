@@ -14,8 +14,8 @@ import { isClientRoute } from '../utils';
 import './course-tabs-navigation.scss';
 
 interface ResolvedTab extends CourseTab {
-  pathname: string,
-  clientPath: string | null,
+  pathname: string;
+  clientPath: string | null;
 }
 
 const CourseTabsNavigation = () => {
