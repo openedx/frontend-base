@@ -67,15 +67,16 @@ export {
   getPrimaryLanguageSubtag,
   getSupportedLanguageList,
   handleRtl,
-  injectIntl,
   IntlProvider,
-  intlShape,
   isRtl,
   LOCALE_CHANGED,
   LOCALE_TOPIC,
   mergeMessages,
   updateLocale,
-  useIntl
+  useIntl,
+  type IntlConfig,
+  type ResolvedIntlConfig,
+  type IntlShape,
 } from './i18n';
 
 export {

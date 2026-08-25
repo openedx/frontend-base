@@ -7,7 +7,7 @@ module.exports = {
     'cli/**/*.{js,jsx,ts,tsx}',
   ],
   transformIgnorePatterns: [
-    '/node_modules/(?!(@openedx|@edx)/)',
+    '/node_modules/(?!(@openedx|@edx|react-intl|@formatjs|intl-messageformat)/)',
   ],
   modulePathIgnorePatterns: [
     '/dist/',

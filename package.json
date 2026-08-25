@@ -116,7 +116,7 @@
     "prop-types": "^15.8.1",
     "react-dev-utils": "12.0.1",
     "react-focus-on": "^3.10.2",
-    "react-intl": "^6.6.6",
+    "react-intl": "^10.1.20",
     "react-refresh": "0.18.0",
     "react-refresh-typescript": "^2.0.9",
     "react-responsive": "^10.0.0",
@@ -160,7 +160,7 @@
     "nodemon": "^3.1.4"
   },
   "peerDependencies": {
-    "@openedx/paragon": "^23.20.0",
+    "@openedx/paragon": "^23.23.0",
     "@tanstack/react-query": "^5.81.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

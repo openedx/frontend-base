@@ -19,6 +19,8 @@ describe('helpButtonSlotOperation', () => {
     mergeAppConfig(TEST_APP_ID, { SUPPORT_URL: 'https://help.example.com/test' });
 
     const op = helpButtonSlotOperation({ appId: TEST_APP_ID, role: TEST_ROLE });
+    // The following is for TypeScript, since `WidgetRendererProps` sometimes has 'element' and sometimes 'component'.
+    if (!('element' in op)) throw new Error(`Expected ${JSON.stringify(op)} to have an 'element'.`);
     expect(isValidElement(op.element)).toBe(true);
 
     const getUrl = (op.element as React.ReactElement<{ getUrl: () => string | undefined }>).props.getUrl;

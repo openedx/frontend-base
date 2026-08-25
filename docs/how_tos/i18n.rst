@@ -44,17 +44,15 @@ These steps will allow your application to accept translation strings. See `fron
 
 #. For places in your code where you need a display string, and it has to be a plain JavaScript string (e.g., a button label), you will need to do the following:
 
-   #. Inject the ``intl`` object into your component:
+   #. Use a hook to access the ``intl`` object within your component:
 
-      #. ``import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';``;
+      #. ``import { useIntl } from '@openedx/frontend-base';``;
 
-      #. add ``intl: intlShape.isRequired`` to your component's ``propTypes``.
-
-      #. instead of ``export Foo``, ``export injectIntl(Foo)`` .
+      #. write ``const intl = useIntl();`` near the beginning of your component.
 
    #. Define your messages using ``defineMessages``. This function doesn't actually do anything; it's just a hook for the translation pipeline to be able to find your translation strings. You can call ``defineMessages`` wherever you want, but if you have a lot of them you might want to move them to a separate file. Either ``MyAppName.messages.js`` (if your entire app has only a few strings) or ``SomeComponent.messages.js`` will work. Your file should look like the example below. For your own sanity, using a short camel-case string for the property name is fine as long as ``id`` is globally unique in the MFE. Example::
 
-       import { defineMessages } from '@edx/frontend-platform/i18n';
+       import { defineMessages } from '@openedx/frontend-base';
 
        const messages = defineMessages({
          'cartPayNow': {
