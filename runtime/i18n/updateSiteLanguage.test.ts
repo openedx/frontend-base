@@ -13,10 +13,11 @@ const mockGetSiteConfig = getSiteConfig as jest.MockedFunction<typeof getSiteCon
 const mockUpdateLocale = updateLocale as jest.MockedFunction<typeof updateLocale>;
 
 describe('updateSiteLanguage', () => {
-  const mockAuthHttpClient = { patch: jest.fn(), post: jest.fn() };
+  const mockAuthHttpClient = { patch: jest.fn() };
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockAuthHttpClient.patch.mockReset();
     mockGetAuthenticatedHttpClient.mockReturnValue(mockAuthHttpClient as any);
     mockGetSiteConfig.mockReturnValue({
       lmsBaseUrl: 'http://localhost:18000',
@@ -55,19 +56,47 @@ describe('updateSiteLanguage', () => {
     );
   });
 
-  it('should update the UI even if the user preference patch fails', async () => {
+  it('should still set the session language if the user preference patch fails', async () => {
     mockGetAuthenticatedUser.mockReturnValue({ username: 'testuser' } as any);
-    mockAuthHttpClient.patch.mockRejectedValueOnce(new Error('Network error'));
+    mockAuthHttpClient.patch.mockImplementation((url: string) => (
+      url.includes('/api/user/v1/preferences/')
+        ? Promise.reject(new Error('Network error'))
+        : Promise.resolve({})
+    ));
 
-    await expect(updateSiteLanguage('es-419')).rejects.toThrow('Network error');
+    await expect(updateSiteLanguage('es-419')).rejects.toThrow(AggregateError);
     expect(mockUpdateLocale).toHaveBeenCalledWith('es-419');
+    expect(mockAuthHttpClient.patch).toHaveBeenCalledWith(
+      'http://localhost:18000/lang_pref/update_language',
+      { 'pref-lang': 'es-419' },
+      { isPublic: true },
+    );
   });
 
-  it('should update the UI even if the setlang call fails', async () => {
-    mockGetAuthenticatedUser.mockReturnValue(null);
-    mockAuthHttpClient.patch.mockRejectedValue(new Error('Setlang failed'));
+  it('should still patch user preferences if the update_language call fails', async () => {
+    mockGetAuthenticatedUser.mockReturnValue({ username: 'testuser' } as any);
+    mockAuthHttpClient.patch.mockImplementation((url: string) => (
+      url.includes('/lang_pref/update_language')
+        ? Promise.reject(new Error('update_language failed'))
+        : Promise.resolve({})
+    ));
 
-    await expect(updateSiteLanguage('es-419')).rejects.toThrow('Setlang failed');
+    await expect(updateSiteLanguage('es-419')).rejects.toThrow(AggregateError);
+    expect(mockUpdateLocale).toHaveBeenCalledWith('es-419');
+    expect(mockAuthHttpClient.patch).toHaveBeenCalledWith(
+      'http://localhost:18000/api/user/v1/preferences/testuser',
+      { 'pref-lang': 'es-419' },
+      { headers: { 'Content-Type': 'application/merge-patch+json' } },
+    );
+  });
+
+  it('should aggregate the failures when both requests fail', async () => {
+    mockGetAuthenticatedUser.mockReturnValue({ username: 'testuser' } as any);
+    mockAuthHttpClient.patch.mockRejectedValue(new Error('Network error'));
+
+    await expect(updateSiteLanguage('es-419')).rejects.toMatchObject({
+      errors: [new Error('Network error'), new Error('Network error')],
+    });
     expect(mockUpdateLocale).toHaveBeenCalledWith('es-419');
   });
 });

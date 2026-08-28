@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 import {
   configureI18n,
   getCookies,
@@ -5,16 +7,24 @@ import {
   getMessages,
   getPrimaryLanguageSubtag,
   getSupportedLanguageList,
+  handleRtl,
   isRtl,
   mergeMessages,
   updateLocale,
 } from './lib';
 
-import { getSiteConfig, mergeSiteConfig } from '../config';
+import { getSiteConfig, mergeSiteConfig, setSiteConfig } from '../config';
 
 jest.mock('universal-cookie');
 
 describe('lib', () => {
+  const defaultSiteConfig = cloneDeep(getSiteConfig());
+
+  // Site config is module-level state, so restore the defaults between tests.
+  afterEach(() => {
+    setSiteConfig(cloneDeep(defaultSiteConfig));
+  });
+
   describe('getPrimaryLanguageSubtag', () => {
     it('should work for primary language subtags', () => {
       expect(getPrimaryLanguageSubtag('en')).toEqual('en');
@@ -181,9 +191,16 @@ describe('lib', () => {
   describe('handleRtl', () => {
     let setAttribute;
     beforeEach(() => {
-      getSiteConfig().supportedLanguages = [];
-      setAttribute = jest.fn();
+      // handleRtl reads the locale via getLocale(), which needs loaded messages.
+      configureI18n({
+        messages: {
+          'es-419': { message: 'es-hah' },
+          ar: { message: 'ar-hah' },
+        },
+      });
 
+      // Spy after configureI18n, which calls handleRtl itself.
+      setAttribute = jest.fn();
       global.document.getElementsByTagName = jest.fn(() => [
         {
           setAttribute,
@@ -193,11 +210,8 @@ describe('lib', () => {
 
     it('should do the right thing for non-RTL languages', () => {
       getCookies().get = jest.fn(() => 'es-419');
-      configureI18n({
-        messages: {
-          'es-419': { message: 'es-hah' },
-        },
-      });
+
+      handleRtl();
 
       expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
@@ -205,11 +219,8 @@ describe('lib', () => {
 
     it('should do the right thing for RTL languages', () => {
       getCookies().get = jest.fn(() => 'ar');
-      configureI18n({
-        messages: {
-          ar: { message: 'ar-hah' },
-        },
-      });
+
+      handleRtl();
 
       expect(setAttribute).toHaveBeenCalledWith('lang', 'ar');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'rtl');

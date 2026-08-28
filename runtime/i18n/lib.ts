@@ -106,7 +106,7 @@ export function findSupportedLocale(locale) {
     throw new Error('findSupportedLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
-  const { defaultLanguage, supportedLanguages = [] } = getSiteConfig();
+  const { defaultLanguage = 'en', supportedLanguages = [] } = getSiteConfig();
 
   const isLocaleSupported = (code) => {
     if (supportedLanguages.length > 0) {

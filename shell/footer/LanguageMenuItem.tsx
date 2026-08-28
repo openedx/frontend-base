@@ -24,7 +24,7 @@ export default function LanguageMenuItem({
   return (
     <Dropdown.Item
       key={language.code}
-      className={isActive ? 'active' : ''}
+      active={isActive}
       disabled={disabled}
       onClick={handleClick}
     >

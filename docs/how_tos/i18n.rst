@@ -6,7 +6,7 @@ React App i18n HOWTO
 Introduction
 ************
 
-This is a step by step guide to making your React app ready to accept translations. The instructions here are very specific to the Openedx setup.
+This is a step by step guide to making your React app ready to accept translations. The instructions here are very specific to the Open edX setup.
 
 .. contents:: Table of Contents
 
@@ -17,7 +17,7 @@ Internationalize your application with react-intl
 
 These steps will allow your application to accept translation strings.
 
-#. Add ``@edx/frontend-base`` as a dependency to your ``package.json`` . (If you are actually writing a consumable component, add ``@edx/frontend-base`` as both a dev dependency and peer dependency instead.)  ``@edx/frontend-base/i18n`` re-exports everything from ``react-intl`` plus additional helpers. You should only access the ``react-intl`` functions and elements exposed by ``@edx/frontend-base/i18n``.
+#. Add ``@openedx/frontend-base`` as a dependency to your ``package.json`` . (If you are actually writing a consumable component, add ``@openedx/frontend-base`` as both a dev dependency and peer dependency instead.)  ``@openedx/frontend-base`` re-exports everything from ``react-intl`` plus additional helpers. You should only access the ``react-intl`` functions and elements exposed by ``@openedx/frontend-base``.
 
 #. In your application entry point, wrap your app in ``SiteProvider`` instead of manually adding an ``IntlProvider``. ``SiteProvider`` renders ``IntlProvider`` with the correct locale and messages internally. See `Load up your translation files`_ for details. (Consumable components: Don't do this step, except possibly in tests. Your consuming application will do it for you.)
 
@@ -67,7 +67,7 @@ These steps will allow your application to accept translation strings.
 
    #. Use the ``useIntl`` hook and ``intl.formatMessage`` to get your translated string::
 
-       import { useIntl } from '@edx/frontend-base';
+       import { useIntl } from '@openedx/frontend-base';
        import messages from './messages';
 
        function MyComponent() {
@@ -153,7 +153,7 @@ Running ``npm run translations:pull`` will pull translations from ``openedx-tran
 Supported languages and switching languages
 *********************************************
 
-``frontend-base`` ships a language menu (in the footer shell) that lets users switch the site language at runtime. It is built on two optional ``SiteConfig`` values and a couple of i18n helpers exported from ``@edx/frontend-base``:
+``frontend-base`` ships a language menu (in the footer shell) that lets users switch the site language at runtime. It is built on two optional ``SiteConfig`` values and a couple of i18n helpers exported from ``@openedx/frontend-base``:
 
 - ``defaultLanguage``: The locale used as a last-resort fallback. Defaults to ``en``.
 - ``supportedLanguages``: An optional list of locale codes. When set, only locales in this list are considered supported; ``findSupportedLocale`` and ``getSupportedLanguageList`` filter by it. When empty (the default), every locale with loaded messages is considered supported.

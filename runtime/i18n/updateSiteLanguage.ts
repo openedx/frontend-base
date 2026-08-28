@@ -13,8 +13,12 @@ import { updateLocale } from './lib';
  * - For authenticated users, persists the preference to the LMS API.
  * - For all users (authenticated and anonymous), sets the language cookie via the LMS language preference endpoint.
  *
+ * Both requests are attempted regardless of whether the other one fails, so a failed
+ * preference save doesn't prevent the session cookie from being set, and vice versa.
+ *
  * @param {string} locale The locale code to switch to (e.g. 'es-419', 'ar').
- * @returns {Promise<void>} Resolves when the switch is complete. Rejects on network failure.
+ * @returns {Promise<void>} Resolves when the switch is complete. Rejects with an
+ *                          AggregateError of the failures if any request fails.
  * @memberof module:Internationalization
  */
 export async function updateSiteLanguage(locale: string): Promise<void> {
@@ -24,12 +28,21 @@ export async function updateSiteLanguage(locale: string): Promise<void> {
   // network requests. This ensures that the UI reflects the change without delay.
   updateLocale(locale);
 
+  const requests = [setSessionLanguage(locale)];
+
   // Save the preference for authenticated users.
   if (user !== null) {
-    await patchUserPreferences(user.username, locale);
+    requests.push(patchUserPreferences(user.username, locale));
   }
 
-  await setSessionLanguage(locale);
+  const results = await Promise.allSettled(requests);
+  const failures = results
+    .filter((result) => result.status === 'rejected')
+    .map((result) => (result as PromiseRejectedResult).reason);
+
+  if (failures.length > 0) {
+    throw new AggregateError(failures, `Failed to persist the site language '${locale}'.`);
+  }
 }
 
 /**
@@ -71,12 +84,9 @@ async function patchUserPreferences(username: string, locale: string) {
  */
 async function setSessionLanguage(locale: string) {
   const { lmsBaseUrl } = getSiteConfig();
-  const formData = new FormData();
-  formData.append('language', locale);
 
-  // Post to the LMS setlang endpoint for server-side persistence.
   // Use the authenticated HTTP client to ensure that the request includes the CSRF token.
-  // Works for both authenticated and anonymous users, since the LMS setlang endpoint is public.
+  // Works for both authenticated and anonymous users, since the endpoint is public.
   await getAuthenticatedHttpClient().patch(
     `${lmsBaseUrl}/lang_pref/update_language`,
     { 'pref-lang': locale },
