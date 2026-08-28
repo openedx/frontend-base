@@ -102,7 +102,12 @@ export const usePermissions = <Query extends PermissionValidationQuery>(
     staleTime,
   });
 
-  const permissionResults = isLoading
+  // Derived once: a disabled consumer must never be treated as loading, even when it
+  // shares a cache key with an enabled consumer whose fetch is in flight. Blanking the
+  // keys off the raw isLoading there would return isLoading: false with undefined keys.
+  const isPermissionsLoading = featureEnabled && isLoading;
+
+  const permissionResults = isPermissionsLoading
     ? ({} as PermissionValidationAnswer<Query>)
     : (Object.keys(query) as (keyof Query)[]).reduce(
         (acc, key) => {
@@ -113,8 +118,8 @@ export const usePermissions = <Query extends PermissionValidationQuery>(
       );
 
   return {
-    isLoading: featureEnabled ? isLoading : false,
-    isError: featureEnabled ? isError : false,
+    isLoading: isPermissionsLoading,
+    isError: featureEnabled && isError,
     isAuthzEnabled: featureEnabled,
     ...permissionResults,
   } as UsePermissionsResult<Query>;

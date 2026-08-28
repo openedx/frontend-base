@@ -30,7 +30,7 @@ reference in the openedx-authz documentation.
 ```typescript
 import type { PermissionValidationQuery } from '@openedx/frontend-base';
 
-const query: PermissionValidationQuery = {
+const query = {
   canViewGrading: {
     action: 'courses.view_grading_settings',
     scope: 'course-v1:org+course+run',
@@ -39,7 +39,7 @@ const query: PermissionValidationQuery = {
     action: 'courses.edit_grading_settings',
     scope: 'course-v1:org+course+run',
   },
-};
+} satisfies PermissionValidationQuery;
 ```
 
 ### Caching
@@ -61,7 +61,7 @@ Permission keys are spread at the top level — no nested `.permissions` object.
 import { usePermissions } from '@openedx/frontend-base';
 
 // featureEnabled is required — always pass the resolved waffle flag boolean:
-const { enableAuthz } = useWaffleFlags(resourceId);
+const { enableAuthz, isLoading: isLoadingFlag } = useWaffleFlags(resourceId);
 const { isLoading, isError, isAuthzEnabled, canViewGrading, canEditGrading } = usePermissions(
   {
     canViewGrading: { action: 'courses.view_grading_settings', scope: resourceId },
@@ -70,7 +70,7 @@ const { isLoading, isError, isAuthzEnabled, canViewGrading, canEditGrading } = u
   enableAuthz ?? false,
 );
 
-if (isLoading) { return <LoadingSpinner />; }
+if (isLoadingFlag || isLoading) { return <LoadingSpinner />; }
 if (isError) { return <ErrorAlert />; }
 if (!canViewGrading) { return <PermissionDeniedAlert />; }
 ```
@@ -120,10 +120,10 @@ export const useResourcePermissions = <Query extends PermissionValidationQuery>(
   );
 };
 
-export const getResourcePermissions = (resourceId: string): PermissionValidationQuery => ({
+export const getResourcePermissions = (resourceId: string) => ({
   canView: { action: 'resources.view', scope: resourceId },
   canEdit: { action: 'resources.edit', scope: resourceId },
-});
+} satisfies PermissionValidationQuery);
 
 // Usage in any component:
 const { isLoading, canView, canEdit } =

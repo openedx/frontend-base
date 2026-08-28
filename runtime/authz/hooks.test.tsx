@@ -158,6 +158,31 @@ describe('usePermissions', () => {
     expect(result.current.canEdit).toBe(false);
   });
 
+  it('keeps a flag-off consumer at all-true while a flag-on consumer fetches the same cache key', () => {
+    (getAuthenticatedHttpClient as jest.Mock).mockReturnValue({
+      post: jest.fn(() => new Promise(() => {})), // never resolves
+    });
+
+    // Both hooks share one QueryClient, so they observe the same query entry.
+    const { result } = renderHook(
+      () => ({
+        enabled: usePermissions(QUERY, true, { apiBaseUrl: BASE_URL }),
+        disabled: usePermissions(QUERY, false, { apiBaseUrl: BASE_URL }),
+      }),
+      { wrapper: createWrapper() },
+    );
+
+    // The flag-on consumer is legitimately in flight.
+    expect(result.current.enabled.isLoading).toBe(true);
+    expect(result.current.enabled.canView).toBeUndefined();
+
+    // The flag-off consumer must keep pre-authz behavior regardless of the shared fetch.
+    expect(result.current.disabled.isAuthzEnabled).toBe(false);
+    expect(result.current.disabled.isLoading).toBe(false);
+    expect(result.current.disabled.canView).toBe(true);
+    expect(result.current.disabled.canEdit).toBe(true);
+  });
+
   it('scopes cache by apiBaseUrl — different base URLs produce distinct query keys', () => {
     const keyA = permissionsQueryKeys.validate(QUERY, 'http://lms-a.example.com');
     const keyB = permissionsQueryKeys.validate(QUERY, 'http://lms-b.example.com');
