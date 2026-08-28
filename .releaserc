@@ -1,6 +1,7 @@
 {
   "branches": [
-    { "name": "release", "channel": "latest" },
+    "+([0-9])?(.{+([0-9]),x}).x",
+    { "name": "stable", "channel": "latest" },
     { "name": "main", "prerelease": "alpha", "channel": "alpha" }
   ],
   "tagFormat": "v${version}",

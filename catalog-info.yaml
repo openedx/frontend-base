@@ -10,6 +10,11 @@ metadata:
   name: frontend-base
   annotations:
     openedx.org/arch-interest-groups: ""
+    # The openedx.org/release key is described in OEP-10:
+    #   https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0010-proc-openedx-releases.html
+    # This repository takes part in Open edX releases by published version rather
+    # than by branch or tag, per OEP-10 ADR 0003, so it is never branch-cut.
+    openedx.org/release: null
   links: []
 spec:
   type: 'library'
