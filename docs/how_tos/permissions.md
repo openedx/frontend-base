@@ -160,3 +160,25 @@ queryClient.invalidateQueries({
   queryKey: permissionsQueryKeys.validate(myQuery, getSiteConfig().lmsBaseUrl),
 });
 ```
+
+---
+
+## `validatePermissions` (outside React)
+
+`validatePermissions` is the raw service call that `usePermissions` wraps. Prefer the hook in
+components: it adds the `featureEnabled` gate and the shared cache, and the raw call provides
+neither. Reach for `validatePermissions` only where hooks cannot run, e.g. a route loader,
+a prefetch, or an imperative check outside the render tree.
+
+```typescript
+import { validatePermissions, getSiteConfig } from '@openedx/frontend-base';
+
+const answer = await validatePermissions(getSiteConfig().lmsBaseUrl, {
+  canViewGrading: { action: 'courses.view_grading_settings', scope: courseId },
+});
+// -> { canViewGrading: true }
+```
+
+Keys absent from the server response resolve to `false`. Note that this call always hits the
+backend — it has no `featureEnabled` parameter, so gating on your waffle flag is your
+responsibility.
