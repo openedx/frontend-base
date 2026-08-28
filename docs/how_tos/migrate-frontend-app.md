@@ -749,12 +749,12 @@ const examplePageUrl = getUrlForRouteRole('example');
 App-specific config values
 --------------------------
 
-App-specific configuration can be expressed by adding an `config` section to the app, allowing arbitrary variables:
+App-specific configuration can be expressed by adding a `defaultConfig` section to the app, allowing arbitrary variables:
 
 ```js
 const app: App = {
   ...
-  config: {
+  defaultConfig: {
     myCustomVariableName: 'my custom variable value',
   },
 };
@@ -767,6 +767,15 @@ getAppConfig('myapp').myCustomVariableName
 ```
 
 Or via `useAppConfig()` (with no need to specify the appId), if `CurrentAppProvider` is wrapping your app.
+
+`getAppConfig` resolves three sources, in order of increasing precedence: the app's `defaultConfig`, the site's `commonAppConfig`, and the app's `config`.  Bundle an app's own values in `defaultConfig`; `config` is where operators override them, in a site config file or via the runtime config API:
+
+```js
+// In a site.config file
+apps: [
+  { ...app, config: { myCustomVariableName: 'operator value' } },
+],
+```
 
 Complete examples
 -----------------
