@@ -8,7 +8,10 @@ to the backend.
 
 ## Prerequisites
 
-Ensure your app root is wrapped with a `QueryClientProvider` from `@tanstack/react-query`.
+Permission requests are managed with TanStack Query, so a `QueryClientProvider` must be
+present above the components calling these hooks. `frontend-base` already provides one in its
+shell, so apps running inside it need no setup. Outside `frontend-base` you have to wrap your
+app root with a `QueryClientProvider` yourself.
 
 ---
 
@@ -135,8 +138,6 @@ const { isLoading, canView, canEdit } =
   inline strings — prevents typos and makes global renames easy.
 - **Use query builder helpers** (`getGradingPermissions(courseId)`) to build the query
   object — keeps permission definitions co-located with the feature they belong to.
-- **Do not duplicate `{ action, scope }` pairs** within a single query — only the first
-  matching key is mapped in the response.
 - **Keep `featureEnabled` close to the flag source** — the boolean should come directly
   from your waffle flag check, not be stored in state or passed through many layers.
 
