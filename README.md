@@ -36,7 +36,15 @@ If a change requires corresponding updates to a consuming site (for example, new
 
 ### Releases
 
-This library is published automatically to npm using `semantic-release`.  On merges to `main`, `alpha` versions are published.  Stable releases come from the `release` branch.  See [OEP-10 ADR 0002: Frontend Release Branches](https://open-edx-proposals.readthedocs.io/en/latest/processes/oep-0010/decisions/0002-frontend-release-branches.html) for details.
+This library is published to npm by `semantic-release`, and its branches follow [OEP-10 ADR 0002: Frontend Stable Branches](https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0010/decisions/0002-frontend-stable-branches.html):
+
+- **`main`** is unstable.  Every merge publishes a prerelease on the `alpha` dist-tag.  Breaking changes land here with no DEPR process and no warning, so it is not supported in production.  All changes, including bug fixes, should target this branch first.
+- **`stable`** carries the newest stable major and owns the `latest` dist-tag.  Changes arrive here as backports from `main`, and no breaking change lands after publication.
+- **`n.x`** and **`n.m.x`** are maintenance branches for majors and minors that `stable` has moved past.  Each owns the dist-tag matching its own name, so consumers select a maintained line by semver range, for example `"1.x"`.
+
+Both `.releaserc` and the `Release CI` workflow already know the whole layout, including the maintenance branch patterns, so a new line starts publishing as soon as it is pushed.
+
+This repository is not branched or tagged for Open edX releases in its own right.  It participates by published version instead, per [OEP-10 ADR 0003: Frontend Release Strategy](https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0010/decisions/0003-frontend-release-strategy.html).
 
 ## Further reading
 
