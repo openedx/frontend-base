@@ -414,6 +414,115 @@ describe('mergeSiteConfig', () => {
     });
   });
 
+  describe('getAppConfig with defaultConfig', () => {
+    it('should return defaultConfig values when nothing else is set', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [{ appId: 'defaults-only-app', defaultConfig: { BUNDLED: 'bundled-value' } }],
+      });
+      addAppConfigs();
+
+      expect(getAppConfig('defaults-only-app')).toEqual({ BUNDLED: 'bundled-value' });
+    });
+
+    it('should let commonAppConfig override defaultConfig', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        commonAppConfig: { SHARED: 'common' },
+        apps: [{
+          appId: 'defaults-common-app',
+          defaultConfig: { SHARED: 'bundled', BUNDLED_ONLY: 'yes' },
+        }],
+      });
+      addAppConfigs();
+
+      expect(getAppConfig('defaults-common-app')).toEqual({
+        SHARED: 'common',
+        BUNDLED_ONLY: 'yes',
+      });
+    });
+
+    it('should resolve defaultConfig below commonAppConfig below config', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        commonAppConfig: { SHARED: 'common', COMMON_AND_APP: 'common' },
+        apps: [{
+          appId: 'three-layer-app',
+          defaultConfig: { SHARED: 'bundled', BUNDLED_ONLY: 'yes' },
+          config: { SHARED: 'app-specific', COMMON_AND_APP: 'app-specific' },
+        }],
+      });
+      addAppConfigs();
+
+      expect(getAppConfig('three-layer-app')).toEqual({
+        SHARED: 'app-specific',
+        COMMON_AND_APP: 'app-specific',
+        BUNDLED_ONLY: 'yes',
+      });
+    });
+
+    it('should deep merge all three layers', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        commonAppConfig: { NESTED: { b: 'common', c: 'common' } },
+        apps: [{
+          appId: 'deep-merge-app',
+          defaultConfig: { NESTED: { a: 'bundled', b: 'bundled', c: 'bundled' } },
+          config: { NESTED: { c: 'app-specific' } },
+        }],
+      });
+      addAppConfigs();
+
+      expect(getAppConfig('deep-merge-app')).toEqual({
+        NESTED: { a: 'bundled', b: 'common', c: 'app-specific' },
+      });
+    });
+
+    it('should not let runtime config write into defaultConfig', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [{
+          appId: 'runtime-override-app',
+          defaultConfig: { SHARED: 'bundled', BUNDLED_ONLY: 'yes' },
+        }],
+      });
+      addAppConfigs();
+
+      mergeSiteConfig(
+        { apps: [{ appId: 'runtime-override-app', config: { SHARED: 'runtime' } }] },
+        { limitAppMergeToConfig: true }
+      );
+      addAppConfigs();
+
+      expect(getSiteConfig().apps![0].defaultConfig).toEqual({
+        SHARED: 'bundled',
+        BUNDLED_ONLY: 'yes',
+      });
+      expect(getAppConfig('runtime-override-app')).toEqual({
+        SHARED: 'runtime',
+        BUNDLED_ONLY: 'yes',
+      });
+    });
+
+    it('should deep merge defaultConfig in a full app merge', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [{ appId: 'full-merge-app', defaultConfig: { KEEP: 'yes', REPLACE: 'old' } }],
+      });
+
+      mergeSiteConfig({
+        apps: [{ appId: 'full-merge-app', defaultConfig: { REPLACE: 'new', ADDED: 'yes' } }],
+      });
+      addAppConfigs();
+
+      expect(getAppConfig('full-merge-app')).toEqual({
+        KEEP: 'yes',
+        REPLACE: 'new',
+        ADDED: 'yes',
+      });
+    });
+  });
+
   describe('getProvides', () => {
     it('should return empty array when no apps exist', () => {
       setSiteConfig({ ...defaultSiteConfig, apps: [] });

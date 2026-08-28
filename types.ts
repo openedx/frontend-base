@@ -29,6 +29,7 @@ export interface App {
   providers?: AppProvider[];
   slots?: SlotOperation[];
   externalScripts?: ExternalScriptLoaderClass[];
+  defaultConfig?: AppConfig;
   config?: AppConfig;
   provides?: Record<string, unknown>;
 }

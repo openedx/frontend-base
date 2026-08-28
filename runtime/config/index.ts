@@ -283,7 +283,8 @@ function mergeApps(
 
 /*
  * Merge a pair of Apps with the same appId. Deep-merges `config` (and, in the
- * full-merge case, `provides`); other fields take `newApp`'s value verbatim.
+ * full-merge case, `defaultConfig` and `provides`); other fields take `newApp`'s
+ * value verbatim.
  * The result is built via `Object.getOwnPropertyDescriptors` so any lazy
  * getters survive: a snapshot via `lodash.merge` or spread would invoke the
  * getter at merge time and freeze its return value, which is typically empty
@@ -296,8 +297,9 @@ function mergeApp(
   newApp: App,
   options: { configOnly?: boolean } = {},
 ): App {
-  // configOnly mode: preserve `oldApp` (identity, slots, etc.) and deep-merge
-  // only `newApp.config` on top.
+  // configOnly mode: preserve `oldApp` (identity, slots, defaultConfig, etc.)
+  // and deep-merge only `newApp.config` on top.  Operator-supplied config can
+  // never write into an app's bundled `defaultConfig`.
   if (options.configOnly) {
     if (!newApp.config) {
       return oldApp;
@@ -307,9 +309,13 @@ function mergeApp(
     });
   }
 
-  // Full mode: take `newApp` (identity, slots, etc.) and deep-merge `config`
-  // and `provides` from `oldApp`. Other fields take `newApp`'s value verbatim.
+  // Full mode: take `newApp` (identity, slots, etc.) and deep-merge
+  // `defaultConfig`, `config`, and `provides` from `oldApp`. Other fields take
+  // `newApp`'s value verbatim.
   const deepMerged: Record<string, unknown> = {};
+  if (oldApp.defaultConfig !== undefined || newApp.defaultConfig !== undefined) {
+    deepMerged.defaultConfig = merge({}, oldApp.defaultConfig, newApp.defaultConfig);
+  }
   if (oldApp.config !== undefined || newApp.config !== undefined) {
     deepMerged.config = merge({}, oldApp.config, newApp.config);
   }
@@ -327,6 +333,10 @@ function cloneAppDescriptors(source: App, overrides: Record<string, unknown>): A
   return Object.create(Object.getPrototypeOf(source), descriptors) as App;
 }
 
+/* Bundled by app authors via `App.defaultConfig`.  Kept separate from
+   `appConfigs` so that operator-supplied config can never write into it. */
+const appDefaultConfigs: Record<string, AppConfig> = {};
+
 const appConfigs: Record<string, AppConfig> = {};
 
 /**
@@ -339,7 +349,10 @@ export function addAppConfigs() {
   if (!apps) return;
 
   for (const app of apps) {
-    const { appId, config } = app;
+    const { appId, config, defaultConfig } = app;
+    if (defaultConfig !== undefined) {
+      appDefaultConfigs[appId] = defaultConfig;
+    }
     if (config !== undefined) {
       appConfigs[appId] = config;
     }
@@ -348,12 +361,21 @@ export function addAppConfigs() {
   publish(CONFIG_CHANGED);
 }
 
+/**
+ * Resolves an app's configuration, deep merging the three sources in order of
+ * increasing precedence:
+ *
+ * - `App.defaultConfig`, bundled by the app author
+ * - `SiteConfig.commonAppConfig`, supplied site-wide by an operator
+ * - `App.config`, supplied per-app by an operator
+ */
 export function getAppConfig(id: string) {
   const { commonAppConfig } = getSiteConfig();
-  if (commonAppConfig === undefined) {
+  const defaultConfig = appDefaultConfigs[id];
+  if (defaultConfig === undefined && commonAppConfig === undefined) {
     return appConfigs[id];
   }
-  return merge({}, commonAppConfig, appConfigs[id]);
+  return merge({}, defaultConfig, commonAppConfig, appConfigs[id]);
 }
 
 export function mergeAppConfig(id: string, newAppConfig: AppConfig) {
