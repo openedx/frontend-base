@@ -77,6 +77,17 @@ describe('lib', () => {
       getCookies().get = jest.fn(() => null);
       expect(getLocale()).toEqual(global.navigator.language.toLowerCase());
     });
+
+    it('should return en even though it has no entry in messages', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419' });
+      expect(getLocale('en')).toEqual('en');
+      expect(getLocale('en-gb')).toEqual('en');
+    });
+
+    it('should return en even if supportedLanguages excludes it', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419', supportedLanguages: ['es-419', 'de'] });
+      expect(getLocale('en')).toEqual('en');
+    });
   });
 
   describe('getSupportedLanguageList', () => {
@@ -92,6 +103,32 @@ describe('lib', () => {
       expect(codes).toContain('de');
       expect(codes).toContain('es-419');
       expect(codes).toContain('en');
+    });
+
+    it('should include en when it is not the default language', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419' });
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+        },
+      });
+      const codes = getSupportedLanguageList().map((l) => l.code);
+      expect(codes).toContain('en');
+      expect(codes).toContain('es-419');
+    });
+
+    it('should include en even when supportedLanguages excludes it', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419', supportedLanguages: ['es-419', 'de'] });
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+          fr: {},
+        },
+      });
+      const codes = getSupportedLanguageList().map((l) => l.code);
+      expect(codes).toEqual(['de', 'en', 'es-419']);
     });
 
     it('should filter by supportedLanguages when configured', () => {

@@ -17,9 +17,9 @@ Internationalize your application with react-intl
 
 These steps will allow your application to accept translation strings.
 
-#. Add ``@openedx/frontend-base`` as a dependency to your ``package.json`` . (If you are actually writing a consumable component, add ``@openedx/frontend-base`` as both a dev dependency and peer dependency instead.)  ``@openedx/frontend-base`` re-exports everything from ``react-intl`` plus additional helpers. You should only access the ``react-intl`` functions and elements exposed by ``@openedx/frontend-base``.
+#. Add ``@openedx/frontend-base`` as a dependency in your ``package.json`` (for a consumable component, add it as both a dev dependency and a peer dependency instead). It re-exports everything from ``react-intl`` plus additional helpers; import ``react-intl`` members from it rather than from ``react-intl`` directly.
 
-#. In your application entry point, wrap your app in ``SiteProvider`` instead of manually adding an ``IntlProvider``. ``SiteProvider`` renders ``IntlProvider`` with the correct locale and messages internally. See `Load up your translation files`_ for details. (Consumable components: Don't do this step, except possibly in tests. Your consuming application will do it for you.)
+#. In your application entry point, wrap your app in ``SiteProvider`` rather than adding an ``IntlProvider`` yourself: ``SiteProvider`` renders one internally, with the resolved locale and messages. See `Load up your translation files`_. (Consumable components: skip this step, except possibly in tests — the consuming application does it for you.)
 
 #. For places in your code where you need a display string, and it's okay if it's a React element (generally, most messages): use a ``FormattedMessage``.
 
@@ -133,9 +133,7 @@ Running ``npm run translations:pull`` will pull translations from ``openedx-tran
       declare const messages: SiteMessages;
       export default messages;
 
-#. The shell's entry point imports your translation messages via the ``site.i18n`` webpack alias and passes them internally, just make sure your ``src/i18n/index.ts`` exports the messages correctly.
-
-   ``SiteProvider`` wraps your app in ``IntlProvider`` with the correct locale and messages. The locale is resolved internally from the ``SiteConfig`` values read via ``getSiteConfig()``, as described in the next step.
+#. The shell's entry point imports your messages through the ``site.i18n`` webpack alias, so exporting them from ``src/i18n/index.ts`` is all the wiring you need.
 
 #. ``frontend-base`` resolves the active locale in the following order:
 
@@ -146,7 +144,7 @@ Running ``npm run translations:pull`` will pull translations from ``openedx-tran
 
    Each candidate is checked against the messages provided to ``configureI18n`` and, when configured, against the site's ``supportedLanguages`` list. If a candidate locale isn't supported exactly, its primary language subtag is tried (e.g. ``es`` for ``es-419``); if neither matches, the site's ``defaultLanguage`` (``en`` by default) is used. Once resolved, ``frontend-base`` sets the ``lang`` and ``dir`` attributes on the ``<html>`` element so that right-to-left languages are handled automatically.
 
-   You can verify everything is working by changing your language preference using the displayed language menu. You can also change your browser language to one of the languages you have translations for.
+   To verify, switch languages from the language menu, or set your browser language to one you have translations for.
 
 
 *********************************************
@@ -155,7 +153,7 @@ Supported languages and switching languages
 
 ``frontend-base`` ships a language menu (in the footer shell) that lets users switch the site language at runtime. It is built on two optional ``SiteConfig`` values and a couple of i18n helpers exported from ``@openedx/frontend-base``:
 
-- ``defaultLanguage``: The locale used as a last-resort fallback. Defaults to ``en``.
+- ``defaultLanguage``: The fallback locale when nothing in the resolution order above matches. Defaults to ``en``.
 - ``supportedLanguages``: An optional list of locale codes. When set, only locales in this list are considered supported; ``findSupportedLocale`` and ``getSupportedLanguageList`` filter by it. When empty (the default), every locale with loaded messages is considered supported.
 
 Where the list of languages comes from
@@ -164,8 +162,9 @@ Where the list of languages comes from
 The language menu's list is produced by ``getSupportedLanguageList()``. It is derived as follows:
 
 #. Start with the keys of the ``messages`` map passed to ``configureI18n`` — i.e. the ``src/i18n/messages/LANG_CODE.json`` files your translation pipeline produced.
-#. Add the site's ``defaultLanguage`` if it isn't already present, so the default is always offered even when no translations are loaded for it.
+#. Add the site's ``defaultLanguage`` if it isn't already present, so it is offered even when no translations are loaded for it. Unlike ``en`` below, it is still subject to the next step's filter.
 #. If ``supportedLanguages`` is configured, keep only the locales that appear in it.
+#. Add ``en`` if it isn't already present. This runs after the filter, so English is offered even when ``supportedLanguages`` omits it.
 #. Sort the remaining codes alphabetically.
 
 The ``name`` shown for each language is the localized name obtained from the browser's native ``Intl.DisplayNames`` API, so each language is displayed in its own language (e.g. ``Deutsch`` for ``de``).

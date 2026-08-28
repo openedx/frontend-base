@@ -48,6 +48,12 @@ const rtlLocales = [
   'yi-us', // Yiddish (United States)
 ];
 
+/**
+ * The language the source strings are written in. It never has an entry in `messages`,
+ * since its strings come from each message's `defaultMessage`.
+ */
+const SOURCE_LANGUAGE = 'en';
+
 let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
 
 /**
@@ -91,8 +97,8 @@ export function getPrimaryLanguageSubtag(code) {
 /**
  * Finds the closest supported locale to the one provided. This is done in three steps:
  *
- * 1. Returning the locale itself if its exact language code is in the loaded messages
- *    AND is in the site's supportedLanguages list.
+ * 1. Returning the locale itself if it is the source language, 'en', or if its exact
+ *    language code is in the loaded messages AND is in the site's supportedLanguages list.
  * 2. Returning the primary language subtag if it meets the same criteria (ar for ar-eg,
  * for instance).
  * 3. Returning the site's defaultLanguage if neither of the above match.
@@ -109,6 +115,11 @@ export function findSupportedLocale(locale) {
   const { defaultLanguage = 'en', supportedLanguages = [] } = getSiteConfig();
 
   const isLocaleSupported = (code) => {
+    // The source language is always available, regardless of supportedLanguages.
+    if (code === SOURCE_LANGUAGE) {
+      return true;
+    }
+
     if (supportedLanguages.length > 0) {
       return supportedLanguages.includes(code) && messages[code] !== undefined;
     }
@@ -180,14 +191,15 @@ export function getLocalizedLanguageName(locale) {
 export function getSupportedLanguageList() {
   const { defaultLanguage = 'en', supportedLanguages = [] } = getSiteConfig();
 
-  let locales = Object.keys(messages);
-
-  if (!locales.includes(defaultLanguage)) {
-    locales.push(defaultLanguage);
-  }
+  let locales = Array.from(new Set([...Object.keys(messages), defaultLanguage]));
 
   if (supportedLanguages.length > 0) {
     locales = locales.filter((locale) => supportedLanguages.includes(locale));
+  }
+
+  // The source language is always available, regardless of supportedLanguages.
+  if (!locales.includes(SOURCE_LANGUAGE)) {
+    locales.push(SOURCE_LANGUAGE);
   }
 
   locales.sort();
