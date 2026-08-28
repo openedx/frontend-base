@@ -48,7 +48,20 @@ const rtlLocales = [
   'yi-us', // Yiddish (United States)
 ];
 
+/**
+ * The language the source strings are written in. It never has an entry in `messages`,
+ * since its strings come from each message's `defaultMessage`.
+ */
+const SOURCE_LANGUAGE = 'en';
+
 let messages: Record<string, Record<string, string> | Record<string, MessageFormatElement[]> | undefined>;
+
+/**
+ * The locale selected during this session via updateLocale(), used to update the UI
+ * immediately without waiting for the language preference cookie to be persisted.
+ * Cleared on page load (via configureI18n) so the cookie/browser setting takes effect.
+ */
+let currentLocale: string | undefined;
 
 /**
  * @memberof module:Internationalization
@@ -82,12 +95,13 @@ export function getPrimaryLanguageSubtag(code) {
 }
 
 /**
- * Finds the closest supported locale to the one provided.  This is done in three steps:
+ * Finds the closest supported locale to the one provided. This is done in three steps:
  *
- * 1. Returning the locale itself if its exact language code is supported.
- * 2. Returning the primary language subtag of the language code if it is supported (ar for ar-eg,
+ * 1. Returning the locale itself if it is the source language, 'en', or if its exact
+ *    language code is in the loaded messages AND is in the site's supportedLanguages list.
+ * 2. Returning the primary language subtag if it meets the same criteria (ar for ar-eg,
  * for instance).
- * 3. Returning 'en' if neither of the above produce a supported locale.
+ * 3. Returning the site's defaultLanguage if neither of the above match.
  *
  * @param {string} locale
  * @returns {string}
@@ -98,20 +112,35 @@ export function findSupportedLocale(locale) {
     throw new Error('findSupportedLocale called before configuring i18n. Call configureI18n with messages first.');
   }
 
-  if (messages[locale] !== undefined) {
+  const { defaultLanguage = 'en', supportedLanguages = [] } = getSiteConfig();
+
+  const isLocaleSupported = (code) => {
+    // The source language is always available, regardless of supportedLanguages.
+    if (code === SOURCE_LANGUAGE) {
+      return true;
+    }
+
+    if (supportedLanguages.length > 0) {
+      return supportedLanguages.includes(code) && messages[code] !== undefined;
+    }
+    return messages[code] !== undefined;
+  };
+
+  if (isLocaleSupported(locale)) {
     return locale;
   }
 
-  if (messages[getPrimaryLanguageSubtag(locale)] !== undefined) {
-    return getPrimaryLanguageSubtag(locale);
+  const primarySubtag = getPrimaryLanguageSubtag(locale);
+  if (isLocaleSupported(primarySubtag)) {
+    return primarySubtag;
   }
 
-  return 'en';
+  return defaultLanguage;
 }
 
 /**
  * Get the locale from the cookie or, failing that, the browser setting.
- * Gracefully fall back to a more general primary language subtag or to English (en)
+ * Gracefully fall back to a more general primary language subtag or to default language
  * if we don't support that language.
  *
  * @param {string|undefined} locale If a locale is provided, returns the closest supported locale. Optional.
@@ -128,7 +157,11 @@ export function getLocale(locale?: string) {
   if (locale !== undefined) {
     return findSupportedLocale(locale);
   }
-  // 2. User setting in cookie
+  // 2. Locale selected in-session via updateLocale()
+  if (currentLocale !== undefined) {
+    return currentLocale;
+  }
+  // 3. User setting in cookie
 
   const { languagePreferenceCookieName } = getSiteConfig();
   if (languagePreferenceCookieName) {
@@ -138,13 +171,21 @@ export function getLocale(locale?: string) {
     }
   }
 
-  // 3. Browser language (default)
+  // 4. Browser language (default)
   // Note that some browers prefer upper case for the region part of the locale, while others don't.
   // Thus the toLowerCase, for consistency.
   // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/language
   return findSupportedLocale(globalThis.navigator.language.toLowerCase());
 }
 
+/**
+ * Returns a language's name in that language, capitalized (e.g. 'Deutsch' for 'de').
+ *
+ * @param {string} locale
+ * @returns {string}
+ * @throws {Error} If the runtime has no display name for the locale.
+ * @memberof module:Internationalization
+ */
 export function getLocalizedLanguageName(locale) {
   const localizedName = (new Intl.DisplayNames([locale], { type: 'language' })).of(locale);
 
@@ -155,9 +196,30 @@ export function getLocalizedLanguageName(locale) {
   return `${localizedName.charAt(0).toLocaleUpperCase(locale)}${localizedName.slice(1)}`;
 }
 
+/**
+ * Returns the languages the language menu offers, as { code, name } pairs sorted by code.
+ *
+ * The list is the locales with loaded messages plus the site's defaultLanguage, filtered by
+ * supportedLanguages when that is configured.  'en' is added after the filter, so English is
+ * always offered.
+ *
+ * @returns {{ code: string, name: string }[]}
+ * @memberof module:Internationalization
+ */
 export function getSupportedLanguageList() {
-  const locales = Object.keys(messages);
-  locales.push('en'); // 'en' is not in the messages object because it's the default.
+  const { defaultLanguage = 'en', supportedLanguages = [] } = getSiteConfig();
+
+  let locales = Array.from(new Set([...Object.keys(messages), defaultLanguage]));
+
+  if (supportedLanguages.length > 0) {
+    locales = locales.filter((locale) => supportedLanguages.includes(locale));
+  }
+
+  // The source language is always available, regardless of supportedLanguages.
+  if (!locales.includes(SOURCE_LANGUAGE)) {
+    locales.push(SOURCE_LANGUAGE);
+  }
+
   locales.sort();
 
   return locales.map((locale) => ({
@@ -166,7 +228,21 @@ export function getSupportedLanguageList() {
   }));
 }
 
-export function updateLocale() {
+/**
+ * Updates the active UI locale and RTL direction.
+ *
+ * If a locale is provided, the UI is updated to that locale immediately, without
+ * waiting for the language preference cookie to be persisted (that is handled
+ * separately, e.g. by updateSiteLanguage()). If no locale is provided, the current
+ * locale is read from the language preference cookie or browser setting.
+ *
+ * @param {string} [locale] The locale code to switch to (e.g. 'es-419', 'ar').
+ * @memberof module:Internationalization
+ */
+export function updateLocale(locale?: string) {
+  if (locale !== undefined) {
+    currentLocale = findSupportedLocale(locale);
+  }
   handleRtl();
   publish(LOCALE_CHANGED);
 }
@@ -197,17 +273,16 @@ export function isRtl(locale) {
 }
 
 /**
- * Handles applying the RTL stylesheet and "dir=rtl" attribute to the html tag if the current locale
- * is a RTL language.
+ * Handles applying the RTL stylesheet, "dir" and "lang" attributes to the html tag
+ * based on the current locale.
  *
  * @memberof module:Internationalization
  */
 export function handleRtl() {
-  if (isRtl(getLocale())) {
-    globalThis.document.getElementsByTagName('html')[0].setAttribute('dir', 'rtl');
-  } else {
-    globalThis.document.getElementsByTagName('html')[0].setAttribute('dir', 'ltr');
-  }
+  const locale = getLocale();
+  const htmlElement = globalThis.document.getElementsByTagName('html')[0];
+  htmlElement.setAttribute('lang', locale);
+  htmlElement.setAttribute('dir', isRtl(locale) ? 'rtl' : 'ltr');
 }
 
 /**
@@ -240,6 +315,7 @@ interface ConfigureI18nOptions {
  */
 export function configureI18n(options: ConfigureI18nOptions) {
   messages = Array.isArray(options.messages) ? merge({}, ...options.messages) : options.messages;
+  currentLocale = undefined;
 
   handleRtl();
 }
