@@ -2,6 +2,8 @@ import React from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { getAuthenticatedHttpClient } from '../auth';
+import { getSiteConfig } from '../config';
+import { PERMISSIONS_VALIDATE_PATH } from './api';
 import { usePermissions, permissionsQueryKeys } from './hooks';
 
 jest.mock('../auth', () => ({
@@ -18,13 +20,15 @@ const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  }
+  return Wrapper;
 };
 
 describe('usePermissions', () => {
   beforeEach(() => jest.clearAllMocks());
+  afterEach(() => jest.restoreAllMocks());
 
   it('returns actual server values when featureEnabled is true', async () => {
     (getAuthenticatedHttpClient as jest.Mock).mockReturnValue({
@@ -129,7 +133,29 @@ describe('usePermissions', () => {
     expect(result.current.isError).toBe(true);
     expect(result.current.canView).toBe(false);
     expect(result.current.canEdit).toBe(false);
-    jest.restoreAllMocks();
+  });
+
+  it('defaults apiBaseUrl to getSiteConfig().lmsBaseUrl when the option is omitted', async () => {
+    const postMock = jest.fn().mockResolvedValue({
+      data: [
+        { action: 'courses.view_grading_settings', scope: 'course-v1:org+course+run', allowed: true },
+        { action: 'courses.edit_grading_settings', scope: 'course-v1:org+course+run', allowed: false },
+      ],
+    });
+    (getAuthenticatedHttpClient as jest.Mock).mockReturnValue({ post: postMock });
+
+    const { result } = renderHook(
+      () => usePermissions(QUERY, true),
+      { wrapper: createWrapper() },
+    );
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(postMock).toHaveBeenCalledWith(
+      `${getSiteConfig().lmsBaseUrl}${PERMISSIONS_VALIDATE_PATH}`,
+      Object.values(QUERY),
+    );
+    expect(result.current.canView).toBe(true);
+    expect(result.current.canEdit).toBe(false);
   });
 
   it('scopes cache by apiBaseUrl — different base URLs produce distinct query keys', () => {
