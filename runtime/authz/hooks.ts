@@ -19,19 +19,19 @@ export const permissionsQueryKeys = {
 
 export interface UsePermissionsOptions {
   /** Default false — authz returns definitive answers; retrying 403s wastes requests. */
-  retry?: boolean | number,
+  retry?: boolean | number;
   /**
    * Base URL of the backend running openedx-authz.
    * Defaults to getSiteConfig().lmsBaseUrl when omitted.
    * Pass explicitly when the authz service requires a different backend (e.g. Studio).
    */
-  apiBaseUrl?: string,
+  apiBaseUrl?: string;
   /**
    * How long (in ms) the cached result is considered fresh before TanStack Query refetches.
    * Defaults to 5 minutes. Use permissionsQueryKeys to invalidate manually when user roles
    * change mid-session.
    */
-  staleTime?: number,
+  staleTime?: number;
 }
 
 /**
@@ -48,9 +48,9 @@ export interface UsePermissionsOptions {
  * );
  */
 export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
-  isLoading: boolean,
-  isError: boolean,
-  isAuthzEnabled: boolean,
+  isLoading: boolean;
+  isError: boolean;
+  isAuthzEnabled: boolean;
 } & { [K in keyof Query]: boolean | undefined };
 
 /**

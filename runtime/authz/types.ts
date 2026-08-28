@@ -1,10 +1,10 @@
 export interface PermissionValidationRequestItem {
-  action: string,
-  scope?: string,
+  action: string;
+  scope?: string;
 }
 
 export interface PermissionValidationResponseItem extends PermissionValidationRequestItem {
-  allowed: boolean,
+  allowed: boolean;
 }
 
 export type PermissionValidationQuery = Record<string, PermissionValidationRequestItem>;
