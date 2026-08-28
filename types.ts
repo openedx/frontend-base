@@ -79,8 +79,8 @@ export interface OptionalSiteConfig {
   theme: Theme;
 
   // i18n
-  defaultLanguage: string,
-  supportedLanguages: string[],
+  defaultLanguage: string;
+  supportedLanguages: string[];
 
   // Cookies
   accessTokenCookieName: string;

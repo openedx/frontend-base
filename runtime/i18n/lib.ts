@@ -178,6 +178,14 @@ export function getLocale(locale?: string) {
   return findSupportedLocale(globalThis.navigator.language.toLowerCase());
 }
 
+/**
+ * Returns a language's name in that language, capitalized (e.g. 'Deutsch' for 'de').
+ *
+ * @param {string} locale
+ * @returns {string}
+ * @throws {Error} If the runtime has no display name for the locale.
+ * @memberof module:Internationalization
+ */
 export function getLocalizedLanguageName(locale) {
   const localizedName = (new Intl.DisplayNames([locale], { type: 'language' })).of(locale);
 
@@ -188,6 +196,16 @@ export function getLocalizedLanguageName(locale) {
   return `${localizedName.charAt(0).toLocaleUpperCase(locale)}${localizedName.slice(1)}`;
 }
 
+/**
+ * Returns the languages the language menu offers, as { code, name } pairs sorted by code.
+ *
+ * The list is the locales with loaded messages plus the site's defaultLanguage, filtered by
+ * supportedLanguages when that is configured.  'en' is added after the filter, so English is
+ * always offered.
+ *
+ * @returns {{ code: string, name: string }[]}
+ * @memberof module:Internationalization
+ */
 export function getSupportedLanguageList() {
   const { defaultLanguage = 'en', supportedLanguages = [] } = getSiteConfig();
 

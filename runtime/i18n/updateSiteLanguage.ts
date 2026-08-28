@@ -53,7 +53,7 @@ export async function updateSiteLanguage(locale: string): Promise<void> {
  *                          Should be a valid ISO language code supported by the platform. For reference:
  *                          https://github.com/openedx/openedx-platform/blob/master/openedx/envs/common.py#L231
  * @returns {Promise} - A promise that resolves when the API call completes successfully,
- *                      or rejects if there's an error with the request. Returns early if no user is authenticated.
+ *                      or rejects if there's an error with the request.
  */
 async function patchUserPreferences(username: string, locale: string) {
   const { lmsBaseUrl } = getSiteConfig();
