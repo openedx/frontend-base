@@ -21,7 +21,8 @@
     "**/*.test.jsx",
     "**/*.test.ts",
     "**/*.test.tsx",
-    "**/__mocks__/**/*"
+    "**/__mocks__/**/*",
+    "**/testMocks/**/*"
   ],
   "references": [
     { "path": "./tools/tsconfig.build.json" }

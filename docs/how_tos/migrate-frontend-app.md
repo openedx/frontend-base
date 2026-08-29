@@ -403,6 +403,18 @@ module.exports = createConfig('test', {
 })
 ```
 
+Note that `createConfig` merges with `webpack-merge`, so any array you pass is appended to the base config's array rather than replacing it.  To replace one, mutate the result:
+
+```js
+const config = createConfig('test', { /* ... */ });
+
+config.modulePathIgnorePatterns = ['/dist/'];
+
+module.exports = config;
+```
+
+If all of your tests live under `src/`, consider adding `roots: ['<rootDir>/src']` as well.  It narrows the crawl further, which speeds up startup.  Be careful: `roots` also filters test discovery, so any suite outside it is skipped silently.  Apps that keep tests in a `plugins/` directory or similar should list those directories too.
+
 Jest test suites that test React components that import SVG and other assets (such as PNGs) must add mocks for those filetypes.  This can be accomplished by adding module name mappers to jest.config.js.  Just make sure they come before the `@src` alias, which must also be added here if you're using it:
 
 ```js
@@ -1082,6 +1094,8 @@ Add the workspaces field to package.json
 ```
 
 This tells npm to look in ``packages/`` for local overrides of published packages.  The ``packages/`` directory is gitignored (see the `.gitignore` step above), since it contains development-only bind-mounted checkouts.
+
+``createConfig('test')`` excludes ``packages/`` from Jest's crawl for the same reason: a checkout there is a dependency, not part of your app, and Jest would otherwise register its manual mocks and collect its test suites as if they were yours.
 
 Add a turbo.site.json file
 --------------------------

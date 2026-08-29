@@ -15,8 +15,6 @@ import {
 
 import { getSiteConfig, mergeSiteConfig, setSiteConfig } from '../config';
 
-jest.mock('universal-cookie');
-
 describe('lib', () => {
   const defaultSiteConfig = cloneDeep(getSiteConfig());
 
