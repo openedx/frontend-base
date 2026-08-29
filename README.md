@@ -28,6 +28,8 @@ Once the change matures, we recommend moving over to the pre-configured [npm wor
 
 To do so, check this repository out into the site's `packages/` directory.  Then, run `npm run dev:packages` from the site's root directory: this will watch-build any workspace check-outs and start the dev server, picking up changes automatically.  If any apps (such as `frontend-app-instructor-dashboard`) require corresponding changes, you can check them out into the `packages/` directory as siblings to `frontend-base`. See [Local development with workspaces](https://github.com/openedx/frontend-template-site#local-development-with-workspaces) for full setup details.
 
+Checkouts in `packages/` are excluded from an app's Jest crawl, so running the app's test suite there behaves the same as it does against a published `frontend-base`.
+
 ### Continuous integration
 
 In addition to running lint and the test suite, Github CI builds the included `test-site` against a packed tarball of `frontend-base`.  This verifies that the library still works end-to-end as a real dependency of a consuming site.

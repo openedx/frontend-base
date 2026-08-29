@@ -36,3 +36,5 @@ jobs:
       run: npm run test
     - name: Build Test Site
       run: cd test-site; npm run build
+    - name: Test Test Site
+      run: cd test-site; npm run test

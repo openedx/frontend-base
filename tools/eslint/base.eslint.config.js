@@ -22,6 +22,7 @@ module.exports = tseslint.config(
       'dist/*',
       'node_modules/*',
       '**/__mocks__/*',
+      '**/testMocks/*',
       '**/__snapshots__/*',
     ],
   },
