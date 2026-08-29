@@ -34,6 +34,7 @@ export {
   type IntlConfig,
   type ResolvedIntlConfig,
   type IntlShape,
+  type MessageDescriptor,
 } from 'react-intl';
 
 export {
