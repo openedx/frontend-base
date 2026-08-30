@@ -25,6 +25,7 @@ const resolvedSiteI18nPath = getResolvedSiteI18nPath('src/i18n');
 const config: Configuration = {
   mode: 'production',
   devtool: 'source-map',
+  ignoreWarnings: [/Failed to parse source map/],
   entry: {
     cssLayerOrder: '@openedx/frontend-base/shell/layer-order.scss',
     app: '@openedx/frontend-base/shell/site',
