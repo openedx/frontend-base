@@ -1153,6 +1153,14 @@ Install ``turbo`` and ``nodemon`` as dev dependencies:
 npm install --save-dev turbo nodemon
 ```
 
+Declare the package manager in ``package.json``, using the exact npm version you develop against:
+
+```json
+"packageManager": "npm@11.12.1",
+```
+
+Turbo 2.10.1 and later rely on this field to detect the workspace.  Without it turbo falls back to single-package mode and rejects the ``//#dev:site`` root task, so ``make build-packages`` fails with ``package_task_in_single_package_mode``.  The version must be exact, since Corepack rejects ranges.
+
 Then add the following scripts to ``package.json``:
 
 ```json
@@ -1166,7 +1174,7 @@ Then add the following scripts to ``package.json``:
 And add the corresponding Makefile targets:
 
 ```makefile
-TURBO = TURBO_TELEMETRY_DISABLED=1 turbo --dangerously-disable-package-manager-check
+TURBO = TURBO_TELEMETRY_DISABLED=1 turbo
 
 # turbo.site.json is the standalone turbo config for this package.  It is
 # renamed to avoid conflicts with turbo v2's workspace validation, which
@@ -1200,7 +1208,7 @@ dev-site: bin-link
 - ``dev:site`` is an alias for ``npm run dev`` that also bin-links the frontend-base bin files; turbo uses it as a root-only task (``//#dev:site``).
 - ``dev:packages`` depends on ``build-packages`` so the CLI is available before starting the watch, then concurrently watches workspace packages for changes and starts the dev server.
 
-The Makefile targets copy ``turbo.site.json`` to ``turbo.json`` before invoking turbo, then remove the copy afterward.  This ensures turbo finds its expected config when running standalone, without leaving a ``turbo.json`` that would conflict in a workspace context.  The ``--dangerously-disable-package-manager-check`` flag and ``TURBO_TELEMETRY_DISABLED=1`` are also set here, keeping turbo invocation details in one place.
+The Makefile targets copy ``turbo.site.json`` to ``turbo.json`` before invoking turbo, then remove the copy afterward.  This ensures turbo finds its expected config when running standalone, without leaving a ``turbo.json`` that would conflict in a workspace context.  ``TURBO_TELEMETRY_DISABLED=1`` is also set here, keeping turbo invocation details in one place.
 
 Using workspaces
 -----------------
