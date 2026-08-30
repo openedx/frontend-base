@@ -101,7 +101,7 @@ module.exports = tseslint.config(
       '@stylistic/jsx-one-expression-per-line': 'off',
       '@stylistic/multiline-ternary': 'off',
       '@stylistic/brace-style': ['error', '1tbs'],
-      '@stylistic/member-delimiter-style': ['error', {
+      '@stylistic/member-delimiter-style': ['warn', {
         multiline: {
           delimiter: 'semi',
           requireLast: true,
