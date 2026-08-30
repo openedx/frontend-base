@@ -37,7 +37,7 @@
     "pack": "mkdir -p pack && npm pack --silent --pack-destination pack >/dev/null && mv \"$(ls -t pack/*.tgz | head -n 1)\" pack/openedx-frontend-base.tgz",
     "prepack": "npm run build",
     "test": "jest",
-    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tools/tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json && tsc --noEmit -p tools/tsconfig.json",
     "watch:build": "nodemon --exec 'npm run build'",
     "watch:docs": "nodemon --watch docs/template --watch README.md --exec npm run docs",
     "watch:pack": "nodemon --exec 'npm run pack'",
