@@ -22,7 +22,7 @@ import {
 import { themeActions } from './reducers';
 
 interface SiteProviderProps {
-  children: ReactNode,
+  children: ReactNode;
 }
 
 /**

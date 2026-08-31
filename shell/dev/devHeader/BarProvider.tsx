@@ -6,7 +6,7 @@ function getBar() {
 }
 
 interface BarProviderProps {
-  children?: ReactNode,
+  children?: ReactNode;
 }
 
 export default function BarProvider({ children }: BarProviderProps) {

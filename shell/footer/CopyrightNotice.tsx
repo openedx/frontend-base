@@ -3,12 +3,12 @@ import { Hyperlink } from '@openedx/paragon';
 import { useSiteConfig } from '../../runtime';
 
 interface CopyrightNoticeProps {
-  title?: string,
+  title?: string;
   /**
    * The URL that the copyright notice should link to when a user clicks on the title.  If not set,
    * the title will not be a link.
    */
-  destination?: string,
+  destination?: string;
 }
 
 export default function CopyrightNotice({ title, destination }: CopyrightNoticeProps) {

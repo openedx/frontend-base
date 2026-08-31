@@ -8,7 +8,8 @@
     "dev": "openedx dev",
     "dev:autoinstall": "PORT=8080 FRONTEND_BASE_DIR=.. devutils-dev-with-autoinstall",
     "lint": "openedx lint .",
-    "serve": "openedx serve"
+    "serve": "openedx serve",
+    "test": "openedx test"
   },
   "keywords": [],
   "author": "Open edX Community",
@@ -23,6 +24,9 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "^1.5.0",
-    "@openedx/frontend-dev-utils": "^1.0.0"
+    "@openedx/frontend-dev-utils": "^1.0.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^29.5.14"
   }
 }

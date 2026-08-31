@@ -1,17 +1,28 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 import {
   configureI18n,
   getCookies,
   getLocale,
   getMessages,
   getPrimaryLanguageSubtag,
+  getSupportedLanguageList,
   handleRtl,
   isRtl,
   mergeMessages,
+  updateLocale,
 } from './lib';
 
-jest.mock('universal-cookie');
+import { getSiteConfig, mergeSiteConfig, setSiteConfig } from '../config';
 
 describe('lib', () => {
+  const defaultSiteConfig = cloneDeep(getSiteConfig());
+
+  // Site config is module-level state, so restore the defaults between tests.
+  afterEach(() => {
+    setSiteConfig(cloneDeep(defaultSiteConfig));
+  });
+
   describe('getPrimaryLanguageSubtag', () => {
     it('should work for primary language subtags', () => {
       expect(getPrimaryLanguageSubtag('en')).toEqual('en');
@@ -64,6 +75,76 @@ describe('lib', () => {
       getCookies().get = jest.fn(() => null);
       expect(getLocale()).toEqual(global.navigator.language.toLowerCase());
     });
+
+    it('should return en even though it has no entry in messages', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419' });
+      expect(getLocale('en')).toEqual('en');
+      expect(getLocale('en-gb')).toEqual('en');
+    });
+
+    it('should return en even if supportedLanguages excludes it', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419', supportedLanguages: ['es-419', 'de'] });
+      expect(getLocale('en')).toEqual('en');
+    });
+  });
+
+  describe('getSupportedLanguageList', () => {
+    it('should return all loaded locales plus the default language', () => {
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+        },
+      });
+      const languages = getSupportedLanguageList();
+      const codes = languages.map((l) => l.code);
+      expect(codes).toContain('de');
+      expect(codes).toContain('es-419');
+      expect(codes).toContain('en');
+    });
+
+    it('should include en when it is not the default language', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419' });
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+        },
+      });
+      const codes = getSupportedLanguageList().map((l) => l.code);
+      expect(codes).toContain('en');
+      expect(codes).toContain('es-419');
+    });
+
+    it('should include en even when supportedLanguages excludes it', () => {
+      mergeSiteConfig({ defaultLanguage: 'es-419', supportedLanguages: ['es-419', 'de'] });
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+          fr: {},
+        },
+      });
+      const codes = getSupportedLanguageList().map((l) => l.code);
+      expect(codes).toEqual(['de', 'en', 'es-419']);
+    });
+
+    it('should filter by supportedLanguages when configured', () => {
+      mergeSiteConfig({ supportedLanguages: ['en', 'es-419'] });
+      configureI18n({
+        messages: {
+          'es-419': {},
+          de: {},
+          fr: {},
+        },
+      });
+      const languages = getSupportedLanguageList();
+      const codes = languages.map((l) => l.code);
+      expect(codes).toContain('en');
+      expect(codes).toContain('es-419');
+      expect(codes).not.toContain('de');
+      expect(codes).not.toContain('fr');
+    });
   });
 
   describe('getMessages', () => {
@@ -106,11 +187,55 @@ describe('lib', () => {
     });
   });
 
+  describe('updateLocale', () => {
+    let setAttribute;
+    beforeEach(() => {
+      configureI18n({
+        messages: {
+          'es-419': {},
+          ar: {},
+        },
+      });
+      setAttribute = jest.fn();
+      global.document.getElementsByTagName = jest.fn(() => [
+        { setAttribute },
+      ]);
+    });
+
+    it('should update the UI locale immediately without relying on the cookie', () => {
+      getCookies().get = jest.fn(() => null);
+
+      updateLocale('es-419');
+
+      expect(getLocale()).toEqual('es-419');
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
+      expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
+    });
+
+    it('should take precedence over the language preference cookie', () => {
+      getCookies().get = jest.fn(() => 'ar');
+
+      updateLocale('es-419');
+
+      expect(getLocale()).toEqual('es-419');
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
+      expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
+    });
+  });
+
   describe('handleRtl', () => {
     let setAttribute;
     beforeEach(() => {
-      setAttribute = jest.fn();
+      // handleRtl reads the locale via getLocale(), which needs loaded messages.
+      configureI18n({
+        messages: {
+          'es-419': { message: 'es-hah' },
+          ar: { message: 'ar-hah' },
+        },
+      });
 
+      // Spy after configureI18n, which calls handleRtl itself.
+      setAttribute = jest.fn();
       global.document.getElementsByTagName = jest.fn(() => [
         {
           setAttribute,
@@ -120,25 +245,19 @@ describe('lib', () => {
 
     it('should do the right thing for non-RTL languages', () => {
       getCookies().get = jest.fn(() => 'es-419');
-      configureI18n({
-        messages: {
-          'es-419': { message: 'es-hah' },
-        },
-      });
 
       handleRtl();
+
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'es-419');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
     });
 
     it('should do the right thing for RTL languages', () => {
       getCookies().get = jest.fn(() => 'ar');
-      configureI18n({
-        messages: {
-          ar: { message: 'ar-hah' },
-        },
-      });
 
       handleRtl();
+
+      expect(setAttribute).toHaveBeenCalledWith('lang', 'ar');
       expect(setAttribute).toHaveBeenCalledWith('dir', 'rtl');
     });
   });

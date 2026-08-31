@@ -6,7 +6,7 @@ React App i18n HOWTO
 Introduction
 ************
 
-This is a step by step guide to making your React app ready to accept translations. The instructions here are very specific to the edX setup.
+This is a step by step guide to making your React app ready to accept translations. The instructions here are very specific to the Open edX setup.
 
 .. contents:: Table of Contents
 
@@ -15,11 +15,11 @@ This is a step by step guide to making your React app ready to accept translatio
 Internationalize your application with react-intl
 *************************************************
 
-These steps will allow your application to accept translation strings. See `frontend-app-account <https://github.com/openedx/frontend-app-account/>`_ for an example app to follow.
+These steps will allow your application to accept translation strings.
 
-#. Add ``@edx/frontend-platform`` as a dependency to your ``package.json`` . (If you are actually writing a consumable component, add ``@edx/frontend-platform`` as both a dev dependency and peer dependency instead.)  ``@edx/frontend-platform/i18n`` is a wrapper around ``react-intl`` that adds some shims. You should only access the ``react-intl`` functions and elements exposed by ``@edx/frontend-platform/i18n``. (They have the same names as in ``react-intl``.)
+#. Add ``@openedx/frontend-base`` as a dependency in your ``package.json`` (for a consumable component, add it as both a dev dependency and a peer dependency instead). It re-exports everything from ``react-intl`` plus additional helpers; import ``react-intl`` members from it rather than from ``react-intl`` directly.
 
-#. In ``App.js``, wrap your entire app in an ``IntlProvider`` element. See `Load up your translation files`_ for details. (Consumable components: Don't do this step, except possibly in tests. Your consuming application will do it for you. Instead, update your `README like this example <https://github.com/openedx/frontend-component-footer/blame/master/README.rst#L23-L27>`__.)
+#. In your application entry point, wrap your app in ``SiteProvider`` rather than adding an ``IntlProvider`` yourself: ``SiteProvider`` renders one internally, with the resolved locale and messages. See `Load up your translation files`_. (Consumable components: skip this step, except possibly in tests — the consuming application does it for you.)
 
 #. For places in your code where you need a display string, and it's okay if it's a React element (generally, most messages): use a ``FormattedMessage``.
 
@@ -42,19 +42,18 @@ These steps will allow your application to accept translation strings. See `fron
 
      For additional help, including adding interprolated variables, see the `FormattedMessage documentation <https://formatjs.io/docs/react-intl/components#formattedmessage>`__. It can also handle plurals.
 
-#. For places in your code where you need a display string, and it has to be a plain JavaScript string (e.g., a button label), you will need to do the following:
+#. For places in your code where you need a display string, and it has to be a plain JavaScript string (e.g., a button label), use the ``useIntl`` hook to access the ``intl`` object:
 
-   #. Inject the ``intl`` object into your component:
+   #. Use a hook to access the ``intl`` object within your component:
 
-      #. ``import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';``;
+      #. ``import { useIntl } from '@openedx/frontend-base';``;
 
-      #. add ``intl: intlShape.isRequired`` to your component's ``propTypes``.
+      #. write ``const intl = useIntl();`` near the beginning of your component.
 
-      #. instead of ``export Foo``, ``export injectIntl(Foo)`` .
+   #. Define your messages using ``defineMessages``. This function doesn't actually do anything; it's just a hook for the translation pipeline to be able to find your translation strings. You can call ``defineMessages`` wherever you want, but if you have a lot of them you might want to move them to a separate file. Either ``messages.ts`` (if your entire app has only a few strings) 
+      or ``SomeComponent/messages.ts`` will work. Your file should look like the example below. For your own sanity, using a short camel-case string for the property name is fine as long as ``id`` is globally unique in the MFE. Example::
 
-   #. Define your messages using ``defineMessages``. This function doesn't actually do anything; it's just a hook for the translation pipeline to be able to find your translation strings. You can call ``defineMessages`` wherever you want, but if you have a lot of them you might want to move them to a separate file. Either ``MyAppName.messages.js`` (if your entire app has only a few strings) or ``SomeComponent.messages.js`` will work. Your file should look like the example below. For your own sanity, using a short camel-case string for the property name is fine as long as ``id`` is globally unique in the MFE. Example::
-
-       import { defineMessages } from '@edx/frontend-platform/i18n';
+       import { defineMessages } from '@openedx/frontend-base';
 
        const messages = defineMessages({
          'cartPayNow': {
@@ -66,11 +65,16 @@ These steps will allow your application to accept translation strings. See `fron
 
        export default messages;
 
-   #. Use the ``intl.formatMessage`` function to get your translated string::
+   #. Use the ``useIntl`` hook and ``intl.formatMessage`` to get your translated string::
 
-       import messages from './SomeComponent.messages';
-       // ...
-       intl.formatMessage(messages.cartPayNow)
+       import { useIntl } from '@openedx/frontend-base';
+       import messages from './messages';
+
+       function MyComponent() {
+         const { formatMessage } = useIntl();
+         const payNowLabel = formatMessage(messages.cartPayNow);
+         // ...
+       }
 
 #. If you want to use ``FormattedMessage`` but your display string is repeated several times, it's probably better to pull it out into a messages file. In this case the messages file will have the ``defaultMessage`` and the ``description``, and you can just give ``FormattedMessage`` the ``id``.
 
@@ -88,27 +92,95 @@ Load up your translation files
 
 .. note:: This step is for applications only. You can skip this for consumable components.
 
-   You can actually do this step even before you have Transifex and Jenkins set up, by providing your own translation files in ``src/i18n/messages/LANG_CODE.json``.
+Translations are pulled and prepared using the ``openedx translations:pull`` CLI command. Add an ``atlasTranslations`` field to your ``package.json`` so the command knows where to find your app's translations and which dependencies to resolve transitively:
 
-#. Your pipeline job should have updated several translation files in ``src/i18n/messages/LANG_CODE.json`` .
+.. code-block:: json
 
-#. Create ``src/i18n/index.js`` using `frontend-app-account's index.js <https://github.com/openedx/frontend-app-account/blob/master/src/i18n/index.js>`_ as a model.
+   "atlasTranslations": {
+     "path": "translations/frontend-app-[YOUR_APP]/src/i18n/messages",
+     "dependencies": ["@openedx/frontend-base"]
+   }
 
-#. In ``App.jsx``, make the following changes::
+Also add a ``translations:pull`` script to your ``package.json``:
 
-     import { IntlProvider, getMessages, configureI18n } from '@edx/frontend-base';
-     import messages from './i18n/index'; // A map of all messages by locale
+.. code-block:: json
 
-      configureI18n({
-        messages,
-        config: getSiteConfig(), // environment and languagePreferenceCookieName are required
-        loggingService: getLoggingService(), // An object with logError and logInfo methods
-      });
+   "scripts": {
+     "translations:pull": "openedx translations:pull"
+   }
 
-      // ...inside ReactDOM.render...
-      <IntlProvider locale={this.props.locale} messages={}>
+And update your ``pull_translations`` Makefile target to use it:
 
-#. As of this writing, ``frontend-base`` reads the locale from the user language preference cookie, or, if none is found, from the browser's language setting. You can verify everything is working by changing your language preference in your account settings. If you are not logged in, you can change your browser language to one of the languages you have translations for.
+.. code-block:: Makefile
+
+   pull_translations: | requirements
+   	npm run translations:pull -- --atlas-options="$(ATLAS_OPTIONS)"
+
+Running ``npm run translations:pull`` will pull translations from ``openedx-translations`` and generate ``src/i18n/messages.ts``.
+
+#. Add a ``src/i18n/index.ts`` file that re-exports the generated messages:
+
+   .. code-block:: ts
+
+      export { default } from './messages';
+
+#. Also add a ``src/i18n/messages.d.ts`` type declaration file so TypeScript knows the shape of the generated module even before ``translations:pull`` has been run:
+
+   .. code-block:: ts
+
+      import type { SiteMessages } from '@openedx/frontend-base';
+
+      declare const messages: SiteMessages;
+      export default messages;
+
+#. The shell's entry point imports your messages through the ``site.i18n`` webpack alias, so exporting them from ``src/i18n/index.ts`` is all the wiring you need.
+
+#. ``frontend-base`` resolves the active locale in the following order:
+
+   1. An explicit locale passed to ``getLocale(locale)`` or ``getMessages(locale)``.
+   2. The locale selected during the current session via ``updateLocale(locale)`` (for example, when the user switches language from the language menu).
+   3. The user's language preference cookie, named by the ``languagePreferenceCookieName`` site config value.
+   4. The browser's language setting.
+
+   Each candidate is checked against the messages provided to ``configureI18n`` and, when configured, against the site's ``supportedLanguages`` list. If a candidate locale isn't supported exactly, its primary language subtag is tried (e.g. ``es`` for ``es-419``); if neither matches, the site's ``defaultLanguage`` (``en`` by default) is used. Once resolved, ``frontend-base`` sets the ``lang`` and ``dir`` attributes on the ``<html>`` element so that right-to-left languages are handled automatically.
+
+   To verify, switch languages from the language menu, or set your browser language to one you have translations for.
+
+
+*********************************************
+Supported languages and switching languages
+*********************************************
+
+``frontend-base`` ships a language menu (in the footer shell) that lets users switch the site language at runtime. It is built on two optional ``SiteConfig`` values and a couple of i18n helpers exported from ``@openedx/frontend-base``:
+
+- ``defaultLanguage``: The fallback locale when nothing in the resolution order above matches. Defaults to ``en``.
+- ``supportedLanguages``: An optional list of locale codes. When set, only locales in this list are considered supported; ``findSupportedLocale`` and ``getSupportedLanguageList`` filter by it. When empty (the default), every locale with loaded messages is considered supported.
+
+Where the list of languages comes from
+--------------------------------------
+
+The language menu's list is produced by ``getSupportedLanguageList()``. It is derived as follows:
+
+#. Start with the keys of the ``messages`` map passed to ``configureI18n`` — i.e. the ``src/i18n/messages/LANG_CODE.json`` files your translation pipeline produced.
+#. Add the site's ``defaultLanguage`` if it isn't already present, so it is offered even when no translations are loaded for it. Unlike ``en`` below, it is still subject to the next step's filter.
+#. If ``supportedLanguages`` is configured, keep only the locales that appear in it.
+#. Add ``en`` if it isn't already present. This runs after the filter, so English is offered even when ``supportedLanguages`` omits it.
+#. Sort the remaining codes alphabetically.
+
+The ``name`` shown for each language is the localized name obtained from the browser's native ``Intl.DisplayNames`` API, so each language is displayed in its own language (e.g. ``Deutsch`` for ``de``).
+
+Switching languages
+-------------------
+
+The supported way to change the site language at runtime is ``updateSiteLanguage(locale)``:
+
+- It optimistically updates the UI locale and RTL direction immediately, via ``updateLocale(locale)``, without waiting for the network.
+- For authenticated users, it persists the preference to the LMS preferences API (``pref-lang``).
+- For all users, it sets the session language through the LMS language preference endpoint.
+
+If persisting the preference fails, the UI keeps the newly selected language and the caller is responsible for surfacing the error; the built-in language menu shows an error toast.
+
+``updateLocale(locale)`` is the lower-level helper that switches the active locale (and RTL handling) for the current session without persisting anything. ``SiteProvider`` subscribes to the ``LOCALE_CHANGED`` event it publishes and re-renders ``IntlProvider`` with the new locale and messages.
 
 
 *************************

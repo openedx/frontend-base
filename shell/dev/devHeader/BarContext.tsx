@@ -1,8 +1,8 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 interface BarContextInterface {
-  bar: string,
-  setBar: Dispatch<SetStateAction<string>>,
+  bar: string;
+  setBar: Dispatch<SetStateAction<string>>;
 };
 
 const BarContext = createContext<BarContextInterface>({

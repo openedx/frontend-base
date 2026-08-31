@@ -22,6 +22,7 @@ module.exports = tseslint.config(
       'dist/*',
       'node_modules/*',
       '**/__mocks__/*',
+      '**/testMocks/*',
       '**/__snapshots__/*',
     ],
   },
@@ -100,13 +101,13 @@ module.exports = tseslint.config(
       '@stylistic/jsx-one-expression-per-line': 'off',
       '@stylistic/multiline-ternary': 'off',
       '@stylistic/brace-style': ['error', '1tbs'],
-      '@stylistic/member-delimiter-style': ['error', {
+      '@stylistic/member-delimiter-style': ['warn', {
         multiline: {
-          delimiter: 'comma',
+          delimiter: 'semi',
           requireLast: true,
         },
         singleline: {
-          delimiter: 'comma',
+          delimiter: 'semi',
           requireLast: false,
         }
       }],

@@ -17,14 +17,22 @@ module.exports = {
     '/node_modules/',
   ],
   transformIgnorePatterns: [
-    '/node_modules/(?!(@openedx|@edx)/)',
+    '/node_modules/(?!(@openedx|@edx|react-intl|@formatjs|intl-messageformat)/)',
   ],
+  /*
+   * 'packages/' holds gitignored, bind-mounted checkouts used for local
+   * development.  Excluding it here keeps jest-haste-map from crawling those
+   * checkouts, which would otherwise register their manual mocks and collect
+   * their test suites as if they belonged to this app.
+   */
   modulePathIgnorePatterns: [
     '/dist/',
+    '<rootDir>/packages/',
   ],
   testPathIgnorePatterns: [
     '/site.config.test.tsx',
     '/node_modules/',
     '/dist/',
+    '<rootDir>/packages/',
   ],
 };

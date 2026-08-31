@@ -3,6 +3,9 @@ on:
   push:
     branches:
     - main
+    - stable
+    - '[0-9]+.x'
+    - '[0-9]+.[0-9]+.x'
   pull_request:
     branches:
     - '**'
@@ -29,7 +32,11 @@ jobs:
         npm ci
     - name: Lint
       run: npm run lint
+    - name: Typecheck
+      run: npm run typecheck
     - name: Test
       run: npm run test
     - name: Build Test Site
       run: cd test-site; npm run build
+    - name: Test Test Site
+      run: cd test-site; npm run test

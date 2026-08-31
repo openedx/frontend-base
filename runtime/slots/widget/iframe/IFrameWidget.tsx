@@ -6,8 +6,8 @@ import { dispatchPluginEvent, useElementSize, usePluginEvent } from './hooks';
 import { IFRAME_FEATURE_POLICY, IFRAME_MOUNTED, IFRAME_READY, IFRAME_RESIZE } from './constants';
 
 interface IFrameWidgetProps {
-  url: string,
-  title: string,
+  url: string;
+  title: string;
 }
 
 export default function IFrameWidget({ url, title }: IFrameWidgetProps) {

@@ -6,7 +6,7 @@ import HorizontalSlotLayout from './HorizontalSlotLayout';
 import SlotShowcasePage from './SlotShowcasePage';
 import WidgetWithOptions from './WidgetWithOptions';
 
-function Widget({ title, op, className, ...props }: { title: string, op?: string, className?: string } & Record<string, unknown>) {
+function Widget({ title, op, className, ...props }: { title: string; op?: string; className?: string } & Record<string, unknown>) {
   return (
     <div className={`showcase-widget ${className ?? ''}`} {...props}>
       {title}

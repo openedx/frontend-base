@@ -2,18 +2,18 @@ import fs from 'fs';
 import path from 'path';
 
 export interface LocaleImport {
-  localeName: string, // e.g. 'es_419'
-  filename: string, // e.g. 'es_419.json'
+  localeName: string; // e.g. 'es_419'
+  filename: string; // e.g. 'es_419.json'
 }
 
 export interface LocaleEntry {
-  key: string, // e.g. 'es-419'
-  varName: string, // e.g. 'es_419'
+  key: string; // e.g. 'es-419'
+  varName: string; // e.g. 'es_419'
 }
 
 export interface MessagesObject {
-  imports: LocaleImport[],
-  entries: LocaleEntry[],
+  imports: LocaleImport[];
+  entries: LocaleEntry[];
 }
 
 /**

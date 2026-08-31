@@ -5,8 +5,8 @@ import { getUrlByRouteRole } from '../runtime/routing';
 import { homeRole } from './constants';
 
 interface LogoProps {
-  imageUrl?: string,
-  destinationUrl?: string,
+  imageUrl?: string;
+  destinationUrl?: string;
 }
 
 export default function Logo({

@@ -5,11 +5,11 @@ import SlotContext from './SlotContext';
 import { useSlotContext } from './hooks';
 
 interface SlotProps {
-  id: string,
-  idAliases?: string[],
-  children?: ReactNode,
-  layout?: ComponentType | ReactNode,
-  [key: string]: unknown,
+  id: string;
+  idAliases?: string[];
+  children?: ReactNode;
+  layout?: ComponentType | ReactNode;
+  [key: string]: unknown;
 }
 
 function SlotRenderer({ layout }: { layout: ComponentType | ReactNode }) {

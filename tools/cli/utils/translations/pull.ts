@@ -3,16 +3,16 @@ import path from 'path';
 import { prepare } from './prepare';
 
 interface PackageTranslationsConfig {
-  name?: string,
+  name?: string;
   atlasTranslations?: {
-    path?: string,
-    dependencies?: string[],
-  },
+    path?: string;
+    dependencies?: string[];
+  };
 }
 
 interface ResolvedMapping {
-  from: string, // atlas FROM path
-  to: string, // full package name (TO)
+  from: string; // atlas FROM path
+  to: string; // full package name (TO)
 }
 
 function validateSiteTranslationsConfig(siteRoot: string): void {
@@ -40,8 +40,8 @@ function validateSiteTranslationsConfig(siteRoot: string): void {
 }
 
 function readTranslationsConfig(pkgJsonPath: string, nodeModulesBase: string): {
-  packageName: string,
-  config: PackageTranslationsConfig,
+  packageName: string;
+  config: PackageTranslationsConfig;
 } | null {
   const packageName = path.relative(nodeModulesBase, path.dirname(pkgJsonPath));
 
@@ -121,10 +121,10 @@ export function pull({
   shouldPrepare,
   atlasOptions = '',
 }: {
-  siteRoot: string,
-  execFileSync: (file: string, args: string[]) => void,
-  shouldPrepare: boolean,
-  atlasOptions?: string,
+  siteRoot: string;
+  execFileSync: (file: string, args: string[]) => void;
+  shouldPrepare: boolean;
+  atlasOptions?: string;
 }): void {
   validateSiteTranslationsConfig(siteRoot);
 

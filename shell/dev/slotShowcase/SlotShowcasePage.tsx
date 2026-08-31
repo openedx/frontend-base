@@ -16,7 +16,7 @@ function SlotContainer({ children }: { children: ReactNode }) {
   );
 }
 
-function Section({ title, children }: { title: string, children: ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
       <h3 className="text-primary-500">{title}</h3>

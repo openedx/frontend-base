@@ -4,10 +4,10 @@ import { addActiveWidgetRole, removeActiveWidgetRole } from '../../config';
 import WidgetContext from './WidgetContext';
 
 interface WidgetProviderProps {
-  children: ReactNode,
-  slotId: string,
-  widgetId: string,
-  role?: string,
+  children: ReactNode;
+  slotId: string;
+  widgetId: string;
+  role?: string;
 }
 
 export default function WidgetProvider({ children, slotId, widgetId, role }: WidgetProviderProps) {

@@ -403,6 +403,18 @@ module.exports = createConfig('test', {
 })
 ```
 
+Note that `createConfig` merges with `webpack-merge`, so any array you pass is appended to the base config's array rather than replacing it.  To replace one, mutate the result:
+
+```js
+const config = createConfig('test', { /* ... */ });
+
+config.modulePathIgnorePatterns = ['/dist/'];
+
+module.exports = config;
+```
+
+If all of your tests live under `src/`, consider adding `roots: ['<rootDir>/src']` as well.  It narrows the crawl further, which speeds up startup.  Be careful: `roots` also filters test discovery, so any suite outside it is skipped silently.  Apps that keep tests in a `plugins/` directory or similar should list those directories too.
+
 Jest test suites that test React components that import SVG and other assets (such as PNGs) must add mocks for those filetypes.  This can be accomplished by adding module name mappers to jest.config.js.  Just make sure they come before the `@src` alias, which must also be added here if you're using it:
 
 ```js
@@ -749,12 +761,12 @@ const examplePageUrl = getUrlForRouteRole('example');
 App-specific config values
 --------------------------
 
-App-specific configuration can be expressed by adding an `config` section to the app, allowing arbitrary variables:
+App-specific configuration can be expressed by adding a `defaultConfig` section to the app, allowing arbitrary variables:
 
 ```js
 const app: App = {
   ...
-  config: {
+  defaultConfig: {
     myCustomVariableName: 'my custom variable value',
   },
 };
@@ -767,6 +779,15 @@ getAppConfig('myapp').myCustomVariableName
 ```
 
 Or via `useAppConfig()` (with no need to specify the appId), if `CurrentAppProvider` is wrapping your app.
+
+`getAppConfig` resolves three sources, in order of increasing precedence: the app's `defaultConfig`, the site's `commonAppConfig`, and the app's `config`.  Bundle an app's own values in `defaultConfig`; `config` is where operators override them, in a site config file or via the runtime config API:
+
+```js
+// In a site.config file
+apps: [
+  { ...app, config: { myCustomVariableName: 'operator value' } },
+],
+```
 
 Complete examples
 -----------------
@@ -1074,6 +1095,8 @@ Add the workspaces field to package.json
 
 This tells npm to look in ``packages/`` for local overrides of published packages.  The ``packages/`` directory is gitignored (see the `.gitignore` step above), since it contains development-only bind-mounted checkouts.
 
+``createConfig('test')`` excludes ``packages/`` from Jest's crawl for the same reason: a checkout there is a dependency, not part of your app, and Jest would otherwise register its manual mocks and collect its test suites as if they were yours.
+
 Add a turbo.site.json file
 --------------------------
 
@@ -1130,6 +1153,14 @@ Install ``turbo`` and ``nodemon`` as dev dependencies:
 npm install --save-dev turbo nodemon
 ```
 
+Declare the package manager in ``package.json``, using the exact npm version you develop against:
+
+```json
+"packageManager": "npm@11.12.1",
+```
+
+Turbo 2.10.1 and later rely on this field to detect the workspace.  Without it turbo falls back to single-package mode and rejects the ``//#dev:site`` root task, so ``make build-packages`` fails with ``package_task_in_single_package_mode``.  The version must be exact, since Corepack rejects ranges.
+
 Then add the following scripts to ``package.json``:
 
 ```json
@@ -1143,7 +1174,7 @@ Then add the following scripts to ``package.json``:
 And add the corresponding Makefile targets:
 
 ```makefile
-TURBO = TURBO_TELEMETRY_DISABLED=1 turbo --dangerously-disable-package-manager-check
+TURBO = TURBO_TELEMETRY_DISABLED=1 turbo
 
 # turbo.site.json is the standalone turbo config for this package.  It is
 # renamed to avoid conflicts with turbo v2's workspace validation, which
@@ -1177,7 +1208,7 @@ dev-site: bin-link
 - ``dev:site`` is an alias for ``npm run dev`` that also bin-links the frontend-base bin files; turbo uses it as a root-only task (``//#dev:site``).
 - ``dev:packages`` depends on ``build-packages`` so the CLI is available before starting the watch, then concurrently watches workspace packages for changes and starts the dev server.
 
-The Makefile targets copy ``turbo.site.json`` to ``turbo.json`` before invoking turbo, then remove the copy afterward.  This ensures turbo finds its expected config when running standalone, without leaving a ``turbo.json`` that would conflict in a workspace context.  The ``--dangerously-disable-package-manager-check`` flag and ``TURBO_TELEMETRY_DISABLED=1`` are also set here, keeping turbo invocation details in one place.
+The Makefile targets copy ``turbo.site.json`` to ``turbo.json`` before invoking turbo, then remove the copy afterward.  This ensures turbo finds its expected config when running standalone, without leaving a ``turbo.json`` that would conflict in a workspace context.  ``TURBO_TELEMETRY_DISABLED=1`` is also set here, keeping turbo invocation details in one place.
 
 Using workspaces
 -----------------

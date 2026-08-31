@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 /* Stub `getProvidesAsStrings` to return per-key role lists. */
-function provideRoles(byKey: { courseBar?: string[], masquerade?: string[] }) {
+function provideRoles(byKey: { courseBar?: string[]; masquerade?: string[] }) {
   mockGetProvidesAsStrings.mockImplementation(id => {
     if (id === providesCourseBarRolesId) {
       return byKey.courseBar ?? [];

@@ -4,8 +4,8 @@ import { Button } from '@openedx/paragon';
 import messages from './messages';
 
 interface Props {
-  courseId?: string,
-  unitId?: string,
+  courseId?: string;
+  unitId?: string;
 }
 
 function buildStudioUrl(courseId?: string, unitId?: string): string | null {

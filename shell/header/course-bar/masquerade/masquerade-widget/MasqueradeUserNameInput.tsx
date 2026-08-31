@@ -8,9 +8,9 @@ import { useMasqueradeContext } from '../MasqueradeContext';
 import messages from './messages';
 
 interface Props {
-  id?: string,
-  className?: string,
-  autoFocus?: boolean,
+  id?: string;
+  className?: string;
+  autoFocus?: boolean;
 }
 
 export function MasqueradeUserNameInput({ id, className, autoFocus }: Props) {
