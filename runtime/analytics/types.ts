@@ -1,5 +1,5 @@
 export interface AnalyticsService {
-  sendTrackingLogEvent(eventName: string, properties: object): Promise<void>,
+  sendTrackingLogEvent(eventName: string, properties: object): Promise<unknown>,
   identifyAuthenticatedUser(userId: string | number, traits?: Record<string, unknown>): void,
   identifyAnonymousUser(traits?: Record<string, unknown>): void,
   sendTrackEvent(eventName?: string, properties?: Record<string, unknown>): void,

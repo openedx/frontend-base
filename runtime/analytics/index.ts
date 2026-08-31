@@ -10,3 +10,4 @@ export {
 } from './interface';
 export { default as MockAnalyticsService } from './MockAnalyticsService';
 export { default as SegmentAnalyticsService } from './SegmentAnalyticsService';
+export type * from './types';

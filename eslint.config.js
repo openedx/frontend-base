@@ -13,7 +13,6 @@ module.exports = tseslint.config(
       'test-site/*',
       'config/*',
       'docs/*',
-      'test-types/*',
     ],
   },
 );

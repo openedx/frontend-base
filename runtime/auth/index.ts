@@ -17,3 +17,4 @@ export {
   setAuthenticatedUser
 } from './interface';
 export { default as MockAuthService } from './MockAuthService';
+export type * from './types';
