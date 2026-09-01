@@ -62,7 +62,7 @@ import { usePermissions } from '@openedx/frontend-base';
 
 // featureEnabled is required — always pass the resolved waffle flag boolean:
 const { enableAuthz, isLoading: isLoadingFlag } = useWaffleFlags(resourceId);
-const { isLoading, isError, isAuthzEnabled, canViewGrading, canEditGrading } = usePermissions(
+const { isLoading, isError, error, isAuthzEnabled, canViewGrading, canEditGrading } = usePermissions(
   {
     canViewGrading: { action: 'courses.view_grading_settings', scope: resourceId },
     canEditGrading: { action: 'courses.edit_grading_settings', scope: resourceId },
@@ -95,6 +95,15 @@ const { isLoading, isError, canViewGrading } = usePermissions(
 > **Service unavailability:** if the authz API call fails, `isError` is `true` and all
 > permission keys resolve to `false`. Always check `isLoading` and `isError` before
 > rendering gated UI to avoid incorrectly denying access during transient failures.
+
+`isLoading` stays `true` while the browser is offline and the request has not started —
+`isPaused` is `true` in that case. Branch on it to show an offline notice rather than a
+spinner that never resolves:
+
+```typescript
+if (isPaused) { return <OfflineNotice />; }
+if (isLoading) { return <LoadingSpinner />; }
+```
 
 ---
 

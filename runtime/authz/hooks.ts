@@ -50,6 +50,9 @@ export interface UsePermissionsOptions {
 export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
   isLoading: boolean;
   isError: boolean;
+  /** True while the request is paused because the browser is offline; isLoading is also true. */
+  isPaused: boolean;
+  error: Error | null;
   isAuthzEnabled: boolean;
 } & { [K in keyof Query]: boolean | undefined };
 
@@ -60,7 +63,8 @@ export type UsePermissionsResult<Query extends PermissionValidationQuery> = {
  * preserving the pre-authz behavior during gradual rollout.
  * When featureEnabled is true: posts to the authz API and maps each key in the query
  * to the allowed boolean from the server response. Keys absent from the response default
- * to false. Keys are undefined while the request is in flight (check isLoading first).
+ * to false. Keys are undefined while the request is unresolved — in flight, or paused
+ * because the browser is offline (check isLoading first).
  *
  * The caller is responsible for reading its own waffle flag and passing the resolved
  * boolean as featureEnabled. The hook is agnostic to how that boolean was derived —
@@ -95,17 +99,21 @@ export const usePermissions = <Query extends PermissionValidationQuery>(
     staleTime = 5 * 60 * 1000
   } = options;
 
-  const { isLoading, isError, data } = useQuery<PermissionValidationAnswer<Query>, Error>({
+  const {
+    isPending, isPaused, isError, error, data,
+  } = useQuery<PermissionValidationAnswer<Query>, Error>({
     queryKey: permissionsQueryKeys.validate(query, apiBaseUrl),
     queryFn: featureEnabled ? () => validatePermissions(apiBaseUrl, query) : skipToken,
     retry,
     staleTime,
   });
 
-  // Derived once: a disabled consumer must never be treated as loading, even when it
-  // shares a cache key with an enabled consumer whose fetch is in flight. Blanking the
-  // keys off the raw isLoading there would return isLoading: false with undefined keys.
-  const isPermissionsLoading = featureEnabled && isLoading;
+  // isPending, not isLoading: isLoading is `isPending && isFetching`, so a query paused
+  // because the browser is offline reports isLoading: false with no data — a consumer
+  // following the isLoading/isError/deny sequence would deny access instead of waiting.
+  // featureEnabled gates it so a disabled consumer is never treated as loading, even when
+  // it shares a cache key with an enabled consumer whose fetch is in flight.
+  const isPermissionsLoading = featureEnabled && isPending;
 
   const permissionResults = isPermissionsLoading
     ? ({} as PermissionValidationAnswer<Query>)
@@ -120,6 +128,8 @@ export const usePermissions = <Query extends PermissionValidationQuery>(
   return {
     isLoading: isPermissionsLoading,
     isError: featureEnabled && isError,
+    isPaused: featureEnabled && isPaused,
+    error: featureEnabled ? error : null,
     isAuthzEnabled: featureEnabled,
     ...permissionResults,
   } as UsePermissionsResult<Query>;
