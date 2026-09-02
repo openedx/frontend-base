@@ -22,6 +22,7 @@
     "noImplicitAny": false,
     "noImplicitThis": true,
     "noUnusedParameters": true,
+    "preserveSymlinks": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "inlineSources": true,
