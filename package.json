@@ -130,7 +130,6 @@
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.7",
     "tsconfig-paths-webpack-plugin": "^4.2.0",
-    "typescript": "^5.6.3",
     "typescript-eslint": "^8.11.0",
     "universal-cookie": "^8.0.1",
     "url-loader": "^4.1.1",
@@ -144,6 +143,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "^1.5.0",
+    "@openedx/paragon": "^23.23.0 || 0.0.0-dev",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -158,14 +158,16 @@
     "axios-mock-adapter": "^1.22.0",
     "jest-chain": "^1.1.6",
     "jsdoc": "^4.0.3",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "typescript": "^5.6.3"
   },
   "peerDependencies": {
-    "@openedx/paragon": "^23.23.0",
+    "@openedx/paragon": "^23.23.0 || 0.0.0-dev",
     "@tanstack/react-query": "^5.81.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^6.26.1",
-    "react-router-dom": "^6.26.1"
+    "react-router-dom": "^6.26.1",
+    "typescript": "^5.6.3"
   }
 }
