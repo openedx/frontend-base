@@ -7,4 +7,3 @@ export {
 } from './interface';
 export { default as MockLoggingService } from './MockLoggingService';
 export { default as NewRelicLoggingService } from './NewRelicLoggingService';
-export type * from './types';

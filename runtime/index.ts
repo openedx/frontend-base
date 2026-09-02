@@ -11,6 +11,8 @@ export {
   sendTrackingLogEvent
 } from './analytics';
 
+export type { AnalyticsService } from './analytics/types';
+
 export {
   AUTHENTICATED_USER_CHANGED,
   AUTHENTICATED_USER_TOPIC,
@@ -30,6 +32,8 @@ export {
   redirectToLogout,
   setAuthenticatedUser
 } from './auth';
+
+export type { AuthService } from './auth/types';
 
 export {
   getSiteConfig,
@@ -101,6 +105,8 @@ export {
   NewRelicLoggingService,
   resetLoggingService
 } from './logging';
+
+export type { LoggingService } from './logging/types';
 
 export {
   CurrentAppContext,
