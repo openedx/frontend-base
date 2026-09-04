@@ -2,6 +2,9 @@ import { FC, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { RouteObject } from 'react-router';
 import { SlotOperation } from './runtime/slots/types';
+import { LoggingService } from './runtime/logging/types';
+import { AnalyticsService } from './runtime/analytics/types';
+import { AuthService } from './runtime/auth/types';
 
 // Apps
 
@@ -60,6 +63,22 @@ export interface RequiredSiteConfig {
 export type LocalizedMessages = Record<string, Record<string, string>>;
 export type SiteMessages = LocalizedMessages[];
 
+export type LoggingServiceClass = new (options: {
+  config: SiteConfig;
+}) => LoggingService;
+
+export type AnalyticsServiceClass = new (options: {
+  config: SiteConfig;
+  loggingService: LoggingService;
+  httpClient: unknown;
+}) => AnalyticsService;
+
+export type AuthServiceClass = new (options: {
+  config: SiteConfig;
+  loggingService: LoggingService;
+  middleware: unknown[];
+}) => AuthService;
+
 export interface OptionalSiteConfig {
   // Site environment
   environment: EnvironmentTypes;
@@ -97,6 +116,11 @@ export interface OptionalSiteConfig {
 
   // Analytics
   segmentKey: string | null;
+
+  // Services
+  loggingService: LoggingServiceClass;
+  analyticsService: AnalyticsServiceClass;
+  authService: AuthServiceClass;
 }
 
 export type SiteConfig = RequiredSiteConfig & Partial<OptionalSiteConfig>;
@@ -125,7 +149,7 @@ export interface User {
   roles: string[];
   userId: number;
   username: string;
-  avatar: string;
+  avatar?: string;
 }
 
 export enum EnvironmentTypes {
