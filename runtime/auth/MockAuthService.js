@@ -260,7 +260,7 @@ class MockAuthService {
    *
    * @returns {Promise<void>}
    */
-  hydrateAuthenticatedUser = jest.fn(() => {
+  hydrateAuthenticatedUser = jest.fn(async () => {
     const user = this.getAuthenticatedUser();
     if (user !== null) {
       this.setAuthenticatedUser({ ...user, ...this.hydratedAuthenticatedUser });
