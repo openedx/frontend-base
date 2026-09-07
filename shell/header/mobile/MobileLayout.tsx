@@ -37,11 +37,19 @@ export default function MobileLayout() {
           <Slot id="org.openedx.frontend.slot.header.mobileRight.v1" />
         </div>
       </Container>
+      {/* scrollLock would put data-scroll-locked on <body>, whose scrollbar compensation
+          margin collapses the page on mobile. This menu is inline, so it doesn't need it. */}
       {mobileOpen && (
-        <FocusOn onClickOutside={() => setMobileOpen(false)} onEscapeKey={() => setMobileOpen(false)}>
-          <Nav className="flex-column">
-            <Slot id="org.openedx.frontend.slot.header.mobileMenuLinks.v1" />
-          </Nav>
+        <FocusOn
+          scrollLock={false}
+          onClickOutside={() => setMobileOpen(false)}
+          onEscapeKey={() => setMobileOpen(false)}
+        >
+          <Container fluid size="xl">
+            <Nav className="flex-column">
+              <Slot id="org.openedx.frontend.slot.header.mobileMenuLinks.v1" />
+            </Nav>
+          </Container>
         </FocusOn>
       )}
     </>
