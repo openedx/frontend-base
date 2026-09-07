@@ -1,4 +1,5 @@
-import { Dropdown, Toast } from '@openedx/paragon';
+import { Dropdown, Icon, Toast } from '@openedx/paragon';
+import { Language } from '@openedx/paragon/icons';
 import { useCallback, useContext, useState } from 'react';
 
 import {
@@ -40,15 +41,20 @@ export default function LanguageMenu() {
     return null;
   }
 
-  const toggleLabel = pendingLanguage
-    ? getLocalizedLanguageName(pendingLanguage)
-    : getLocalizedLanguageName(locale);
+  const toggleLabel = getLocalizedLanguageName(pendingLanguage ?? locale);
 
   return (
     <>
-      <Dropdown>
-        <Dropdown.Toggle id="language-menu-dropdown-trigger" variant="outline-primary" size="sm">
-          {toggleLabel}
+      <Dropdown className="mx-2">
+        <Dropdown.Toggle
+          id="language-menu-dropdown-trigger"
+          variant="tertiary"
+          className="d-flex align-items-center"
+          aria-label={formatMessage(messages.languageMenuToggle, { language: toggleLabel })}
+        >
+          <Icon src={Language} size="sm" />
+          {/* Below md the globe stands alone; the aria-label names the language at every width. */}
+          <span className="d-none d-md-inline ml-2">{toggleLabel}</span>
         </Dropdown.Toggle>
         <Dropdown.Menu className="overflow-auto" style={{ maxHeight: '320px' }}>
           {languages.map((language) => (

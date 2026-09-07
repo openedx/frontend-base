@@ -1,6 +1,7 @@
 import { WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
+import LanguageMenu from '../menus/LanguageMenu';
 import LinkMenuItem from '../menus/LinkMenuItem';
 import ProfileLinkMenuItem from '../menus/ProfileLinkMenuItem';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
@@ -111,6 +112,12 @@ const config: App = {
       }
     },
     {
+      slotId: 'org.openedx.frontend.slot.header.desktopRight.v1',
+      id: 'org.openedx.frontend.widget.header.desktopLanguageMenu.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: LanguageMenu,
+    },
+    {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
       id: 'org.openedx.frontend.widget.header.anonymousMenuLogin.v1',
       op: WidgetOperationTypes.APPEND,
@@ -153,6 +160,12 @@ const config: App = {
       condition: {
         authenticated: false,
       }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
+      id: 'org.openedx.frontend.widget.header.mobileLanguageMenu.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: LanguageMenu,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.courseNavigationBar.v1',

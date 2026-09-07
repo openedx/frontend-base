@@ -1,10 +1,10 @@
 import { Slot, WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
+import LanguageMenu from '../menus/LanguageMenu';
 import CopyrightNotice from './CopyrightNotice';
 import DesktopFooterLayout from './DesktopFooterLayout';
 import LabeledLinkColumn from './LabeledLinkColumn';
-import LanguageMenu from './LanguageMenu';
 
 const app: App = {
   appId: 'org.openedx.frontend.app.footer',

@@ -37,12 +37,20 @@ describe('LanguageMenu', () => {
     });
   });
 
+  it('marks the toggle with a globe and a label that only wide viewports show', () => {
+    renderLanguageMenu();
+
+    const toggle = screen.getByRole('button', { name: 'Change language: English' });
+    expect(toggle.querySelector('svg')).toBeInTheDocument();
+    expect(screen.getByText('English')).toHaveClass('d-none', 'd-md-inline');
+  });
+
   it('switches to the selected language', async () => {
     const user = userEvent.setup();
     mockUpdateSiteLanguage.mockResolvedValue(undefined);
     renderLanguageMenu();
 
-    await user.click(screen.getByRole('button', { name: 'English' }));
+    await user.click(screen.getByRole('button', { name: 'Change language: English' }));
     await user.click(screen.getByText(/español/i));
 
     await waitFor(() => expect(mockUpdateSiteLanguage).toHaveBeenCalledWith('es-419'));
@@ -53,7 +61,7 @@ describe('LanguageMenu', () => {
     mockUpdateSiteLanguage.mockImplementation(() => new Promise(() => {}));
     renderLanguageMenu();
 
-    await user.click(screen.getByRole('button', { name: 'English' }));
+    await user.click(screen.getByRole('button', { name: 'Change language: English' }));
     await user.click(screen.getByText(/español/i));
 
     expect(screen.getByRole('button', { expanded: false })).toHaveTextContent(/español/i);
@@ -64,7 +72,7 @@ describe('LanguageMenu', () => {
     mockUpdateSiteLanguage.mockRejectedValue(new Error('Network Error'));
     renderLanguageMenu();
 
-    await user.click(screen.getByRole('button', { name: 'English' }));
+    await user.click(screen.getByRole('button', { name: 'Change language: English' }));
     await user.click(screen.getByText(/español/i));
 
     const toast = await screen.findByRole('alert');
