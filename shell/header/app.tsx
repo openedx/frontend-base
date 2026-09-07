@@ -121,7 +121,9 @@ const config: App = {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
       id: 'org.openedx.frontend.widget.header.anonymousMenuRegister.v1',
       op: WidgetOperationTypes.APPEND,
-      component: RegisterButton,
+      // Below sm the bar has room for one action, and Sign in is the one worth keeping.
+      // mobileMenuRegister.v1 picks Register up in the mobile menu at those widths.
+      element: <RegisterButton className="d-none d-sm-inline-block" />,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
@@ -142,6 +144,15 @@ const config: App = {
       id: 'org.openedx.frontend.widget.header.mobileMenuLinks.v1',
       op: WidgetOperationTypes.APPEND,
       component: MobileNavLinks
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.mobileMenuLinks.v1',
+      id: 'org.openedx.frontend.widget.header.mobileMenuRegister.v1',
+      op: WidgetOperationTypes.APPEND,
+      element: <RegisterButton variant="link" className="d-sm-none text-left px-3" />,
+      condition: {
+        authenticated: false,
+      }
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
