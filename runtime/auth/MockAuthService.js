@@ -75,14 +75,7 @@ const optionsPropTypes = {
 class MockAuthService {
   /**
    * @param {Object} options
-   * @param {Object} options.config
-   * @param {string} options.config.baseUrl
-   * @param {string} options.config.lmsBaseUrl
-   * @param {string} options.config.loginUrl
-   * @param {string} options.config.logoutUrl
-   * @param {string} options.config.refreshAccessTokenApiPath
-   * @param {string} options.config.accessTokenCookieName
-   * @param {string} options.config.csrfTokenApiPath
+   * @param {import('../../types').SiteConfig} options.config
    * @param {Object} options.loggingService requires logError and logInfo methods
    */
   constructor(options) {
@@ -265,9 +258,9 @@ class MockAuthService {
    * console.log(authenticatedUser); // Will contain additional user information
    * ```
    *
-   * @returns {Promise<null>}
+   * @returns {Promise<void>}
    */
-  hydrateAuthenticatedUser = jest.fn(() => {
+  hydrateAuthenticatedUser = jest.fn(async () => {
     const user = this.getAuthenticatedUser();
     if (user !== null) {
       this.setAuthenticatedUser({ ...user, ...this.hydratedAuthenticatedUser });
