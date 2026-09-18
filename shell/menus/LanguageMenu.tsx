@@ -1,51 +1,39 @@
 import { Dropdown, Icon, Toast } from '@openedx/paragon';
 import { Language } from '@openedx/paragon/icons';
-import { useCallback, useContext, useState } from 'react';
+import classNames from 'classnames';
 
-import {
-  SiteContext,
-  getLocalizedLanguageName,
-  getSupportedLanguageList,
-  updateSiteLanguage,
-  useIntl,
-} from '../../runtime';
+import { getLocalizedLanguageName, useIntl } from '../../runtime';
 
 import LanguageMenuItem from './LanguageMenuItem';
 import messages from './messages';
+import useLanguageSelection from './useLanguageSelection';
 
-export default function LanguageMenu() {
+interface LanguageMenuProps {
+  className?: string;
+}
+
+export default function LanguageMenu({ className }: LanguageMenuProps) {
   const { formatMessage } = useIntl();
-  const { locale } = useContext(SiteContext);
-
-  const [pendingLanguage, setPendingLanguage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const languages = getSupportedLanguageList();
-
-  const handleSelect = useCallback(async (languageCode: string) => {
-    setPendingLanguage(languageCode);
-    setErrorMessage(null);
-    try {
-      await updateSiteLanguage(languageCode);
-    } catch {
-      // The UI switch is optimistic and stays in the picked language; only the
-      // preference save failed, so surface that without reverting.
-      setErrorMessage(formatMessage(messages.languageSaveError));
-    } finally {
-      setPendingLanguage(null);
-    }
-  }, [formatMessage]);
+  const {
+    languages,
+    locale,
+    activeLocale,
+    pendingLanguage,
+    errorMessage,
+    selectLanguage,
+    dismissError,
+  } = useLanguageSelection();
 
   // Hide the menu if there's only one language.
   if (languages.length === 1) {
     return null;
   }
 
-  const toggleLabel = getLocalizedLanguageName(pendingLanguage ?? locale);
+  const toggleLabel = getLocalizedLanguageName(activeLocale);
 
   return (
     <>
-      <Dropdown className="mx-2">
+      <Dropdown className={classNames('mx-2', className)}>
         <Dropdown.Toggle
           id="language-menu-dropdown-trigger"
           variant="tertiary"
@@ -63,7 +51,7 @@ export default function LanguageMenu() {
               language={language}
               disabled={pendingLanguage !== null}
               isActive={language.code === locale}
-              onSelect={handleSelect}
+              onSelect={selectLanguage}
             />
           ))}
         </Dropdown.Menu>
@@ -71,7 +59,7 @@ export default function LanguageMenu() {
       {errorMessage && (
         <Toast
           show
-          onClose={() => setErrorMessage(null)}
+          onClose={dismissError}
         >
           {errorMessage}
         </Toast>

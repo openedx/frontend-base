@@ -2,6 +2,7 @@ import { WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
 import LanguageMenu from '../menus/LanguageMenu';
+import LanguageMenuCollapsible from '../menus/LanguageMenuCollapsible';
 import LinkMenuItem from '../menus/LinkMenuItem';
 import ProfileLinkMenuItem from '../menus/ProfileLinkMenuItem';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
@@ -121,9 +122,7 @@ const config: App = {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
       id: 'org.openedx.frontend.widget.header.anonymousMenuRegister.v1',
       op: WidgetOperationTypes.APPEND,
-      // Below sm the bar has room for one action, and Sign in is the one worth keeping.
-      // mobileMenuRegister.v1 picks Register up in the mobile menu at those widths.
-      element: <RegisterButton className="d-none d-sm-inline-block" />,
+      component: RegisterButton,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
@@ -147,12 +146,9 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobileMenuLinks.v1',
-      id: 'org.openedx.frontend.widget.header.mobileMenuRegister.v1',
+      id: 'org.openedx.frontend.widget.header.mobileMenuLanguage.v1',
       op: WidgetOperationTypes.APPEND,
-      element: <RegisterButton variant="link" className="d-sm-none text-left px-3" />,
-      condition: {
-        authenticated: false,
-      }
+      element: <LanguageMenuCollapsible className="d-sm-none" />,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
@@ -176,7 +172,8 @@ const config: App = {
       slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
       id: 'org.openedx.frontend.widget.header.mobileLanguageMenu.v1',
       op: WidgetOperationTypes.APPEND,
-      component: LanguageMenu,
+      // Below sm this is mobileMenuLanguage.v1's job, in the mobile menu.
+      element: <LanguageMenu className="d-none d-sm-flex" />,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.courseNavigationBar.v1',

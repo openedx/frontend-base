@@ -1,0 +1,22 @@
+// Paragon styles .pgn__menu as a floating menu; in the mobile menu it reads as a list instead.
+.language-menu-collapsible {
+  .pgn__menu {
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .pgn__menu-item {
+    border-bottom: var(--pgn-size-border-width) solid var(--pgn-color-border);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    // The selected language is named by its color rather than a check, so the row stays a
+    // single line of text.
+    &[aria-current='true'] {
+      color: var(--pgn-color-primary-base);
+      font-weight: var(--pgn-typography-font-weight-bold);
+    }
+  }
+}
