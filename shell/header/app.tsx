@@ -147,7 +147,8 @@ const config: App = {
     {
       slotId: 'org.openedx.frontend.slot.header.mobileMenuLinks.v1',
       id: 'org.openedx.frontend.widget.header.mobileMenuLanguage.v1',
-      op: WidgetOperationTypes.APPEND,
+      // Prepended so it stays at the top of the menu whatever order the site lists its apps in.
+      op: WidgetOperationTypes.PREPEND,
       element: <LanguageMenuCollapsible className="d-sm-none" />,
     },
     {
