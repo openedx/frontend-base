@@ -19,7 +19,7 @@ export default function AuthenticatedMenu({ className }: AuthenticatedMenuProps)
       <Dropdown.Toggle
         as={AvatarButton}
         id="user-nav-dropdown"
-        variant="outline-primary"
+        variant="tertiary"
         src={authenticatedUser?.avatar}
       >
         {displayUserName}

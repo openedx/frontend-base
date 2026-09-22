@@ -1,6 +1,8 @@
 import { WidgetOperationTypes } from '../../runtime';
 import { App } from '../../types';
 import Logo from '../Logo';
+import LanguageMenu from '../menus/LanguageMenu';
+import LanguageMenuCollapsible from '../menus/LanguageMenuCollapsible';
 import LinkMenuItem from '../menus/LinkMenuItem';
 import ProfileLinkMenuItem from '../menus/ProfileLinkMenuItem';
 import AnonymousMenu from './anonymous-menu/AnonymousMenu';
@@ -111,16 +113,22 @@ const config: App = {
       }
     },
     {
-      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
-      id: 'org.openedx.frontend.widget.header.anonymousMenuLogin.v1',
+      slotId: 'org.openedx.frontend.slot.header.desktopRight.v1',
+      id: 'org.openedx.frontend.widget.header.desktopLanguageMenu.v1',
       op: WidgetOperationTypes.APPEND,
-      component: LoginButton,
+      component: LanguageMenu,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
       id: 'org.openedx.frontend.widget.header.anonymousMenuRegister.v1',
       op: WidgetOperationTypes.APPEND,
       component: RegisterButton,
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
+      id: 'org.openedx.frontend.widget.header.anonymousMenuLogin.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: LoginButton,
     },
 
     // Mobile
@@ -135,6 +143,13 @@ const config: App = {
       id: 'org.openedx.frontend.widget.header.mobileMenuLinks.v1',
       op: WidgetOperationTypes.APPEND,
       component: MobileNavLinks
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.mobileMenuLinks.v1',
+      id: 'org.openedx.frontend.widget.header.mobileMenuLanguage.v1',
+      // Prepended so it stays at the top of the menu whatever order the site lists its apps in.
+      op: WidgetOperationTypes.PREPEND,
+      element: <LanguageMenuCollapsible className="d-sm-none" />,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
@@ -153,6 +168,13 @@ const config: App = {
       condition: {
         authenticated: false,
       }
+    },
+    {
+      slotId: 'org.openedx.frontend.slot.header.mobileRight.v1',
+      id: 'org.openedx.frontend.widget.header.mobileLanguageMenu.v1',
+      op: WidgetOperationTypes.APPEND,
+      // Below sm this is mobileMenuLanguage.v1's job, in the mobile menu.
+      element: <LanguageMenu className="d-none d-sm-flex" />,
     },
     {
       slotId: 'org.openedx.frontend.slot.header.courseNavigationBar.v1',

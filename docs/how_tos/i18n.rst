@@ -151,7 +151,7 @@ Running ``npm run translations:pull`` will pull translations from ``openedx-tran
 Supported languages and switching languages
 *********************************************
 
-``frontend-base`` ships a language menu (in the footer shell) that lets users switch the site language at runtime. It is built on two optional ``SiteConfig`` values and a couple of i18n helpers exported from ``@openedx/frontend-base``:
+``frontend-base`` ships a language menu that lets users switch the site language at runtime. It is built on two optional ``SiteConfig`` values and a couple of i18n helpers exported from ``@openedx/frontend-base``:
 
 - ``defaultLanguage``: The fallback locale when nothing in the resolution order above matches. Defaults to ``en``.
 - ``supportedLanguages``: An optional list of locale codes. When set, only locales in this list are considered supported; ``findSupportedLocale`` and ``getSupportedLanguageList`` filter by it. When empty (the default), every locale with loaded messages is considered supported.
@@ -168,6 +168,44 @@ The language menu's list is produced by ``getSupportedLanguageList()``. It is de
 #. Sort the remaining codes alphabetically.
 
 The ``name`` shown for each language is the localized name obtained from the browser's native ``Intl.DisplayNames`` API, so each language is displayed in its own language (e.g. ``Deutsch`` for ``de``).
+
+Where the menu appears
+----------------------
+
+The menu comes in two presentations that share their switching behavior: a dropdown, ``LanguageMenu``, and a collapsible, ``LanguageMenuCollapsible``. They are registered as four widgets:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Slot
+     - Widget
+     - Where it shows
+   * - ``header.desktopRight.v1``
+     - ``header.desktopLanguageMenu.v1``
+     - Desktop header
+   * - ``header.mobileRight.v1``
+     - ``header.mobileLanguageMenu.v1``
+     - Mobile header, ``sm`` and up
+   * - ``header.mobileMenuLinks.v1``
+     - ``header.mobileMenuLanguage.v1``
+     - Top of the mobile menu, below ``sm``
+   * - ``footer.desktopRightLinks.v1``
+     - ``footer.desktopRightLinksLanguageMenu.v1``
+     - Footer
+
+Slot IDs are prefixed with ``org.openedx.frontend.slot.`` and widget IDs with ``org.openedx.frontend.widget.``.
+
+The dropdown's toggle is a globe icon, with the current language's name beside it at ``md`` and up. Its ``aria-label`` names the language at every width. The collapsible shows the globe and the language name, and expands to the list in place.
+
+To hide or change the menu, apply ``REMOVE`` or ``REPLACE`` to each widget. Hiding it everywhere takes all four:
+
+.. code-block:: tsx
+
+   {
+     slotId: 'org.openedx.frontend.slot.header.mobileMenuLinks.v1',
+     relatedId: 'org.openedx.frontend.widget.header.mobileMenuLanguage.v1',
+     op: WidgetOperationTypes.REMOVE,
+   },
 
 Switching languages
 -------------------

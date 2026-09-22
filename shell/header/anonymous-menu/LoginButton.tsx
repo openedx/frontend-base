@@ -13,7 +13,7 @@ export default function LoginButton({ ...props }) {
   const url = getUrlByRouteRole(loginRole) ?? config.loginUrl;
 
   return (
-    <Button variant="link" {...getLinkProps(url)} {...props}>
+    <Button variant="primary" {...getLinkProps(url)} {...props}>
       {intl.formatMessage(messages['header.user.menu.login'])}
     </Button>
   );
