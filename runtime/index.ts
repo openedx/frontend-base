@@ -127,9 +127,13 @@ export {
 
 export {
   authenticatedLoader,
+  getLinkProps,
   getUrlByRouteRole,
-  isRoleRouteObject
+  isInternalUrl,
+  isRoleRouteObject,
+  resolveRouteByRole
 } from './routing';
+export type { LinkProps, ResolvedRoute } from './routing/utils';
 
 export {
   clearAllSubscriptions,
