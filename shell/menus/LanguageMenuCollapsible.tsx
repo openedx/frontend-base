@@ -1,4 +1,4 @@
-import { Collapsible, Icon, Menu, Toast } from '@openedx/paragon';
+import { Alert, Collapsible, Icon, Menu } from '@openedx/paragon';
 import classNames from 'classnames';
 import { Language } from '@openedx/paragon/icons';
 
@@ -41,36 +41,33 @@ export default function LanguageMenuCollapsible({ className }: LanguageMenuColla
   );
 
   return (
-    <>
-      <Collapsible
-        styling="basic"
-        title={title}
-        className={classNames('language-menu-collapsible', className)}
-        unmountOnExit
-      >
-        {/* Paragon scopes .pgn__menu-item under .pgn__menu, so the rows are only styled
-            inside this wrapper, which also gives them arrow-key navigation. */}
-        <Menu>
-          {languages.map((language) => (
-            <LanguageMenuItem
-              key={language.code}
-              language={language}
-              variant="menuItem"
-              disabled={pendingLanguage !== null}
-              isActive={language.code === locale}
-              onSelect={selectLanguage}
-            />
-          ))}
-        </Menu>
-      </Collapsible>
+    <Collapsible
+      styling="basic"
+      title={title}
+      className={classNames('language-menu-collapsible', className)}
+      unmountOnExit
+    >
+      {/* Inline rather than a toast: a toast portals to the body, outside the mobile menu's
+          focus trap, so it can't be reached by keyboard and dismissing it closes the menu. */}
       {errorMessage && (
-        <Toast
-          show
-          onClose={dismissError}
-        >
+        <Alert variant="danger" dismissible onClose={dismissError}>
           {errorMessage}
-        </Toast>
+        </Alert>
       )}
-    </>
+      {/* Paragon scopes .pgn__menu-item under .pgn__menu, so the rows are only styled
+          inside this wrapper, which also gives them arrow-key navigation. */}
+      <Menu>
+        {languages.map((language) => (
+          <LanguageMenuItem
+            key={language.code}
+            language={language}
+            variant="menuItem"
+            disabled={pendingLanguage !== null}
+            isActive={language.code === locale}
+            onSelect={selectLanguage}
+          />
+        ))}
+      </Menu>
+    </Collapsible>
   );
 }

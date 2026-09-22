@@ -1,6 +1,7 @@
 import { Dropdown, Icon, Toast } from '@openedx/paragon';
 import { Language } from '@openedx/paragon/icons';
 import classNames from 'classnames';
+import { useId } from 'react';
 
 import { getLocalizedLanguageName, useIntl } from '../../runtime';
 
@@ -14,6 +15,8 @@ interface LanguageMenuProps {
 
 export default function LanguageMenu({ className }: LanguageMenuProps) {
   const { formatMessage } = useIntl();
+  // Both header layouts and the footer mount at once, so the id has to be unique per instance.
+  const toggleId = useId();
   const {
     languages,
     locale,
@@ -35,7 +38,7 @@ export default function LanguageMenu({ className }: LanguageMenuProps) {
     <>
       <Dropdown className={classNames('mx-2', className)}>
         <Dropdown.Toggle
-          id="language-menu-dropdown-trigger"
+          id={toggleId}
           variant="tertiary"
           className="d-flex align-items-center"
           aria-label={formatMessage(messages.languageMenuToggle, { language: toggleLabel })}
