@@ -1,9 +1,8 @@
 import { Button } from '@openedx/paragon';
 
-import { getUrlByRouteRole, useSiteConfig, useIntl } from '../../../runtime';
+import { getLinkProps, getUrlByRouteRole, useSiteConfig, useIntl } from '../../../runtime';
 import { registerRole } from '../../constants';
 import messages from '../../Shell.messages';
-import { getLinkProps } from './utils';
 
 export default function RegisterButton({ ...props }) {
   const config = useSiteConfig();

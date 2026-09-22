@@ -738,7 +738,7 @@ Other configuration is now optional, and many values have been given sensible de
 URL Config changes
 ------------------
 
-Note that the .env files and env.config.js files also include a number of URLs for various micro-frontends and services.  These URLs should now be expressed as part of the `apps` config as route roles, and used in code via `getUrlForRouteRole()`.  Or as externalRoutes.
+Note that the .env files and env.config.js files also include a number of URLs for various micro-frontends and services.  These URLs should now be expressed as part of the `apps` config as route roles, or as `externalRoutes`, and resolved in code via `resolveRouteByRole()`.  It substitutes route params, drops a trailing splat, and reports whether the result is a path in this site or an external URL, so a link can stay in the client when it is.  `getLinkProps()` turns any URL into the props for a component that accepts `as`, a react-router `Link` for a path in this site and a plain anchor otherwise.
 
 ```js
 // Creating a route role with for 'example' in an App
@@ -754,8 +754,14 @@ const app: App = {
   }],
 };
 
-// Using the role in code to link to the page
-const examplePageUrl = getUrlForRouteRole('example');
+// Using the role in code to link to the page: { url: '/example', isInternal: true }, or null
+// when no app or external route provides it
+const examplePage = resolveRouteByRole('example');
+
+// Rendering the link, so that a route in this site navigates without a page load
+{examplePage && (
+  <Button {...getLinkProps(examplePage.url)}>Example</Button>
+)}
 ```
 
 App-specific config values

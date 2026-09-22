@@ -2,7 +2,7 @@ import { Dropdown, Hyperlink, NavDropdown, NavLink } from '@openedx/paragon';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
-import { getUrlByRouteRole } from '../../runtime/routing';
+import { getLinkProps, resolveRouteByRole } from '../../runtime/routing';
 import {
   MenuItemName
 } from '../../types';
@@ -24,7 +24,7 @@ export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }
 
   let finalUrl: string | null | undefined;
   if (role !== undefined) {
-    finalUrl = getUrlByRouteRole(role);
+    finalUrl = resolveRouteByRole(role)?.url;
   } else if (url !== undefined) {
     finalUrl = url;
   }
@@ -35,27 +35,31 @@ export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }
     return null;
   }
 
+  // A path in this site is a react-router Link, so the navigation stays in the client; anything
+  // else is a plain anchor.
+  const linkProps = getLinkProps(finalUrl);
+
   if (variant === 'hyperlink') {
     return (
-      <Hyperlink destination={finalUrl}>
+      <Hyperlink {...linkProps}>
         {finalLabel}
       </Hyperlink>
     );
   } else if (variant === 'navLink') {
     return (
-      <NavLink href={finalUrl} active={location.pathname.replace(/\/$/, '') === finalUrl.replace(/\/$/, '')}>
+      <NavLink {...linkProps} active={location.pathname.replace(/\/$/, '') === finalUrl.replace(/\/$/, '')}>
         {finalLabel}
       </NavLink>
     );
   } else if (variant === 'navDropdownItem') {
     return (
-      <NavDropdown.Item href={finalUrl}>
+      <NavDropdown.Item {...linkProps}>
         {finalLabel}
       </NavDropdown.Item>
     );
   } else if (variant === 'dropdownItem') {
     return (
-      <Dropdown.Item href={finalUrl}>
+      <Dropdown.Item {...linkProps}>
         {finalLabel}
       </Dropdown.Item>
     );
