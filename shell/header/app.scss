@@ -1,14 +1,126 @@
+// Header chrome for the Open edX shell, styled after the marketing site's navbar
+// (lab/components/navbar.tsx) without pulling Tailwind into the theme.
+$header-fg: #0a0a0a;
+$header-muted: #737373;
+$header-active: linear-gradient(to top, #8252fe, #e173ff);
+$header-active-stacked: linear-gradient(to bottom, #8252fe, #e173ff);
+$header-cta: linear-gradient(155deg, #d6e4ff -25%, #000 22%, #000 76%, #d4e4ff 128%);
+
 header {
+  background: #fff;
+
   .container-fluid {
-    min-height: 65px;
+    min-height: 4rem;
+    max-width: 80rem;
+    margin-inline: auto;
+  }
+
+  // Mobile pins the bar to the top; the desktop bar scrolls away with the page.
+  @media (max-width: 768px) {
+    position: sticky;
+    top: 0;
+    z-index: 300;
   }
 
   .nav-link {
-    padding: 1.125rem 1rem;
+    padding: .5rem .75rem;
+    border-radius: .375rem;
+    font-weight: 500;
+    color: $header-muted;
+    transition: color .2s ease-out, background-color .2s ease-out;
 
+    &:hover,
+    &:focus-visible {
+      color: $header-fg;
+    }
+
+    // Active is a short underline rather than Paragon's filled pill.
     &.active {
-      background: var(--pgn-color-bg-active, #0A3055);
-      color: var(--pgn-color-active, #fff);
+      position: relative;
+      background: none;
+      color: $header-fg;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 1.5rem;
+        height: 2px;
+        border-radius: 50rem;
+        background: $header-active;
+        transform: translateX(-50%);
+      }
+    }
+  }
+
+  // Stacked links (mobile menu) take a leading bar instead, and the menu is a
+  // plain white sheet below the bar.
+  .flex-column {
+    background: #fff;
+    padding: .5rem .5rem .75rem;
+
+    .nav-link.active::after {
+      top: 50%;
+      bottom: auto;
+      left: .25rem;
+      width: 3px;
+      height: 1.5rem;
+      background: $header-active-stacked;
+      transform: translateY(-50%);
+    }
+  }
+
+  // Anonymous menu: Login is a quiet text link, Register the filled pill.
+  .btn-login {
+    border: 0;
+    padding: .5rem .75rem;
+    border-radius: .375rem;
+    background: transparent;
+    font-weight: 500;
+    color: $header-muted;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: transparent;
+      color: $header-fg;
+    }
+  }
+
+  .btn-register {
+    border: 0;
+    border-radius: 50rem;
+    padding: .75rem 1.25rem;
+    background: $header-cta;
+    box-shadow: 0 .25rem .5rem rgb(0 0 0 / 20%);
+    font-weight: 500;
+    color: #fff;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: $header-cta;
+      color: #fff;
+    }
+  }
+
+  // Mobile menu toggle: borderless square button on the trailing edge.
+  .btn-mobile-menu {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: .375rem;
+    background: transparent;
+    color: $header-muted;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: transparent;
+      color: $header-fg;
     }
   }
 

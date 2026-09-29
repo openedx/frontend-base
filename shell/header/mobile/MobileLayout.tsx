@@ -25,9 +25,6 @@ export default function MobileLayout() {
         )}
       >
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-start align-items-center">
-          <Button onClick={handleMobileButtonClick} variant="outline">
-            <MenuIcon />
-          </Button>
           <Slot id="org.openedx.frontend.slot.header.mobileLeft.v1" />
         </div>
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-center align-items-center">
@@ -35,6 +32,9 @@ export default function MobileLayout() {
         </div>
         <div className="d-flex flex-grow-1 flex-basis-0 justify-content-end align-items-center">
           <Slot id="org.openedx.frontend.slot.header.mobileRight.v1" />
+          <Button className="btn-mobile-menu" onClick={handleMobileButtonClick} variant="outline">
+            <MenuIcon />
+          </Button>
         </div>
       </Container>
       {/* scrollLock would put data-scroll-locked on <body>, whose scrollbar compensation

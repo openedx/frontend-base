@@ -120,20 +120,20 @@ const config: App = {
     },
     {
       slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
-      id: 'org.openedx.frontend.widget.header.anonymousMenuRegister.v1',
-      op: WidgetOperationTypes.APPEND,
-      component: RegisterButton,
-    },
-    {
-      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
       id: 'org.openedx.frontend.widget.header.anonymousMenuLogin.v1',
       op: WidgetOperationTypes.APPEND,
       component: LoginButton,
     },
+    {
+      slotId: 'org.openedx.frontend.slot.header.anonymousMenu.v1',
+      id: 'org.openedx.frontend.widget.header.anonymousMenuRegister.v1',
+      op: WidgetOperationTypes.APPEND,
+      component: RegisterButton,
+    },
 
     // Mobile
     {
-      slotId: 'org.openedx.frontend.slot.header.mobileCenter.v1',
+      slotId: 'org.openedx.frontend.slot.header.mobileLeft.v1',
       id: 'org.openedx.frontend.widget.header.mobileLogo.v1',
       op: WidgetOperationTypes.APPEND,
       element: <Logo />,

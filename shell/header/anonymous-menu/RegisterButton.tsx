@@ -1,10 +1,11 @@
 import { Button } from '@openedx/paragon';
+import classNames from 'classnames';
 
 import { getLinkProps, getUrlByRouteRole, useSiteConfig, useIntl } from '../../../runtime';
 import { registerRole } from '../../constants';
 import messages from '../../Shell.messages';
 
-export default function RegisterButton({ ...props }) {
+export default function RegisterButton({ className, ...props }: { className?: string } & Record<string, unknown>) {
   const config = useSiteConfig();
   const intl = useIntl();
 
@@ -13,7 +14,7 @@ export default function RegisterButton({ ...props }) {
   const url = getUrlByRouteRole(registerRole) ?? `${config.lmsBaseUrl}/register`;
 
   return (
-    <Button variant="outline-primary" {...getLinkProps(url)} {...props}>
+    <Button variant="primary" {...getLinkProps(url)} className={classNames('btn-register', className)} {...props}>
       {intl.formatMessage(messages['header.user.menu.register'])}
     </Button>
   );
