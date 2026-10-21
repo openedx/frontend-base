@@ -84,7 +84,7 @@ Dependencies shared with the shell should be moved to peerDependencies.  These i
 -  "react-router-dom": "^6.26.1",
 },
 "peerDependencies": {
-+  "@openedx/paragon": "^23",
++  "@openedx/paragon": "^23 || 0.0.0-dev",
 +  "@tanstack/react-query": "^5",
 +  "react": "^18",
 +  "react-dom": "^18",
@@ -130,6 +130,8 @@ But change it to look like this:
 ```
 
 The `0.0.0-dev` alternative is the placeholder version used in the source checkout — semantic-release replaces it with the real version at publish time, but in npm workspaces the package still needs to satisfy peer dependency checks. The `||` lets both scenarios work.
+
+The same goes for `@openedx/paragon` (as in the diff above) and any other `@openedx/` package a site might check out as a workspace next to your app. Without the suffix, `npm install` in that site fails with `ERESOLVE` as soon as the package is mounted, since the published copy of your app is what npm checks the workspace version against.
 
 Edit package.json scripts
 -------------------------
