@@ -10,3 +10,8 @@ export function loadExternalScripts() {
     });
   });
 }
+
+export function collectAppMiddleware() {
+  const apps = getSiteConfig().apps ?? [];
+  return apps.flatMap(app => app.middleware ?? []);
+}
