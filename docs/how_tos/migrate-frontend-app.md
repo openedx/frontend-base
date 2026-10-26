@@ -974,6 +974,12 @@ Pages with dynamic titles (for example, a course page that reads `{Course Name} 
 See [ADR 0015](../decisions/0015-page-titles-via-helmet.rst) for the full rationale and rejected alternatives.
 
 
+Render one `<main>` landmark per route
+======================================
+
+The shell renders no `<main>`. Apps are expected to render `<main>` around primary content in each route. HTML allows no more than one without the `hidden` attribute. The shell's "skip to main content" link moves focus to it. Assert it in your route tests once the page has rendered: `expect(runPageRules(document)).toEqual([])`.
+
+
 Separate runtime styles from the dev harness
 ============================================
 
