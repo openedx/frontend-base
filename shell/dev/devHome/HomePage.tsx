@@ -11,7 +11,7 @@ export default function HomePage() {
   const intl = useIntl();
 
   return (
-    <Container fluid size="xl">
+    <Container as="main" fluid size="xl">
       <p>{intl.formatMessage(messages.homeContent)}</p>
       <ul>
         {coursewareUrl !== null && (

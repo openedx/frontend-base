@@ -14,3 +14,5 @@ export { homeRole, providesChromelessRolesId } from './constants';
 export { default as LinkMenuItem } from './menus/LinkMenuItem';
 export { default as NavDropdownMenuSlot } from './menus/NavDropdownMenuSlot';
 export { default as shellApp } from './app';
+export { runPageRules } from './rules';
+export type { Diagnostic, PageRule } from './rules';
