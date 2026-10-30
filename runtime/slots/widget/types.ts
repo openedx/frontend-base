@@ -78,6 +78,10 @@ export type WidgetRendererProps = (
 export interface WidgetIdentityProps {
   id: string;
   role?: string;
+  /**
+   * Other IDs this widget answers to.  A relative operation (INSERT_AFTER, INSERT_BEFORE, REPLACE, REMOVE, OPTIONS) whose relatedId names one of them applies as if it named `id`.  When a widget ID is renamed, keep the old ID here for at least one release so site configs that target it keep working.
+   */
+  idAliases?: string[];
 }
 
 export interface WidgetRelationshipProps {
@@ -131,6 +135,7 @@ export type WidgetOperation = WidgetAbsoluteOperation | WidgetRelativeOperation;
 export interface IdentifiedWidget {
   id: string;
   role?: string;
+  idAliases?: string[];
   node: ReactNode;
 }
 
