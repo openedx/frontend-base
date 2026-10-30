@@ -5,7 +5,7 @@ import { useLayoutForSlotId } from './layout/hooks';
 import Slot from './Slot';
 import SlotContext from './SlotContext';
 import { getSiteConfig, setSiteConfig } from '../config';
-import { WidgetOperationTypes } from '.';
+import { SlotOperation, useWidgetOptions, WidgetOperationTypes } from '.';
 
 jest.mock('./layout/hooks');
 
@@ -68,5 +68,65 @@ describe('Slot component with site config operations', () => {
     });
     const { findByText } = render(<MemoryRouter><TestSlot /></MemoryRouter>);
     await findByText('Alias Widget');
+  });
+});
+
+function AliasedWidget() {
+  const { label } = useWidgetOptions();
+  return <div>{typeof label === 'string' ? label : 'Aliased'}</div>;
+}
+
+describe('Slot component with operations targeting a widget id alias', () => {
+  const slotId = 'new-slot.ui';
+  const widgets: SlotOperation[] = [
+    { slotId, op: WidgetOperationTypes.APPEND, id: 'aliased-widget', idAliases: ['widget-alias'], component: AliasedWidget },
+    { slotId, op: WidgetOperationTypes.APPEND, id: 'other-widget', element: <div>Other</div> },
+  ];
+
+  beforeEach(() => {
+    (useLayoutForSlotId as jest.Mock).mockReturnValue(null);
+  });
+
+  afterEach(() => {
+    setSiteConfig({ ...getSiteConfig(), apps: [] });
+  });
+
+  async function renderSlotWith(operation: SlotOperation) {
+    setSiteConfig({
+      ...getSiteConfig(),
+      apps: [{ appId: 'test-app', slots: [...widgets, operation] }],
+    });
+    const { container, findByText } = render(<MemoryRouter><TestSlot /></MemoryRouter>);
+    await findByText('Other');
+    return container;
+  }
+
+  function renderedWidgetTexts(container: HTMLElement) {
+    return Array.from(container.querySelectorAll('div')).map(div => div.textContent);
+  }
+
+  it('INSERT_AFTER places the widget after the aliased widget', async () => {
+    const container = await renderSlotWith({ slotId, op: WidgetOperationTypes.INSERT_AFTER, id: 'inserted', relatedId: 'widget-alias', element: <div>Inserted</div> });
+    expect(renderedWidgetTexts(container)).toEqual(['Aliased', 'Inserted', 'Other']);
+  });
+
+  it('INSERT_BEFORE places the widget before the aliased widget', async () => {
+    const container = await renderSlotWith({ slotId, op: WidgetOperationTypes.INSERT_BEFORE, id: 'inserted', relatedId: 'widget-alias', element: <div>Inserted</div> });
+    expect(renderedWidgetTexts(container)).toEqual(['Inserted', 'Aliased', 'Other']);
+  });
+
+  it('REPLACE renders the widget in place of the aliased widget', async () => {
+    const container = await renderSlotWith({ slotId, op: WidgetOperationTypes.REPLACE, id: 'replacement', relatedId: 'widget-alias', element: <div>Replacement</div> });
+    expect(renderedWidgetTexts(container)).toEqual(['Replacement', 'Other']);
+  });
+
+  it('REMOVE drops the aliased widget', async () => {
+    const container = await renderSlotWith({ slotId, op: WidgetOperationTypes.REMOVE, relatedId: 'widget-alias' });
+    expect(renderedWidgetTexts(container)).toEqual(['Other']);
+  });
+
+  it('OPTIONS reaches the aliased widget through useWidgetOptions', async () => {
+    const container = await renderSlotWith({ slotId, op: WidgetOperationTypes.OPTIONS, relatedId: 'widget-alias', options: { label: 'From alias' } });
+    expect(renderedWidgetTexts(container)).toEqual(['From alias', 'Other']);
   });
 });
