@@ -3,7 +3,7 @@ import useActiveRoles from '../../react/hooks/useActiveRoles';
 import { useSlotContext, useSlotOperations } from '../hooks';
 import { isSlotOperationConditionSatisfied } from '../utils';
 import { WidgetList, WidgetOperation } from './types';
-import { createWidgets, isWidgetAbsoluteOperation, isWidgetOperation, isWidgetOptionsOperation, isWidgetRelativeOperation } from './utils';
+import { createWidgets, isWidgetAbsoluteOperation, isWidgetOperation, isWidgetOptionsOperation, isWidgetRelativeOperation, matchesWidgetId } from './utils';
 import WidgetContext from './WidgetContext';
 
 export function useWidgets(): WidgetList {
@@ -48,9 +48,9 @@ export function useSortedWidgetOperations(id: string) {
       } else if (bAbsolute) {
         return 1;
       } else if (isWidgetRelativeOperation(a) && isWidgetRelativeOperation(b)) {
-        if (a.id === b.relatedId) {
+        if (matchesWidgetId(a, b.relatedId)) {
           return -1;
-        } else if (b.id === a.relatedId) {
+        } else if (matchesWidgetId(b, a.relatedId)) {
           return 1;
         }
       }
@@ -65,20 +65,20 @@ export function useSortedWidgetOperations(id: string) {
  * operations are merged in declaration order, meaning last one in wins.
  */
 export function useWidgetOptions() {
-  const { slotId, widgetId } = useContext(WidgetContext);
-  return useWidgetOptionsForId(slotId, widgetId);
+  const { slotId, widgetId, widgetIdAliases } = useContext(WidgetContext);
+  return useWidgetOptionsForId(slotId, widgetId, widgetIdAliases);
 }
 
-export function useWidgetOptionsForId(slotId: string, widgetId: string) {
+export function useWidgetOptionsForId(slotId: string, widgetId: string, widgetIdAliases?: string[]) {
   const operations = useWidgetOperations(slotId);
 
   return useMemo(() => {
     let options: Record<string, unknown> = {};
     for (const operation of operations) {
-      if (isWidgetOptionsOperation(operation) && operation.relatedId === widgetId) {
+      if (isWidgetOptionsOperation(operation) && matchesWidgetId({ id: widgetId, idAliases: widgetIdAliases }, operation.relatedId)) {
         options = { ...options, ...operation.options };
       }
     }
     return options;
-  }, [widgetId, operations]);
+  }, [widgetId, widgetIdAliases, operations]);
 }

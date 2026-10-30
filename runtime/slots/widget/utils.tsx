@@ -56,6 +56,10 @@ export function isWidgetIdentityRoleOperation(operation: SlotOperation): operati
   return isWidgetIdentityOperation(operation) && hasWidgetIdentityRoleProps(operation);
 }
 
+export function matchesWidgetId(identity: { id: string; idAliases?: string[] }, id: string) {
+  return identity.id === id || (identity.idAliases?.includes(id) ?? false);
+}
+
 export function createWidgetAppendOperation(id: string, slotId: string, element: ReactNode) {
   let operation: WidgetOperation | undefined = undefined;
   if (element) {
@@ -101,7 +105,7 @@ function hasWidgetIdentityRoleProps(operation: WidgetOperation): operation is (W
  */
 function createIdentifiedWidget(operation: WidgetRendererOperation, componentProps?: Record<string, unknown>) {
   let widget: ReactNode = null;
-  const { id } = operation;
+  const { id, idAliases, role, slotId } = operation;
   if (hasWidgetComponentProps(operation)) {
     widget = (
       <operation.component {...componentProps} />
@@ -116,9 +120,10 @@ function createIdentifiedWidget(operation: WidgetRendererOperation, componentPro
 
   return {
     id,
-    role: operation.role,
+    role,
+    idAliases,
     node: (
-      <WidgetProvider key={id} slotId={operation.slotId} widgetId={operation.id} role={operation.role}>
+      <WidgetProvider key={id} slotId={slotId} widgetId={id} widgetIdAliases={idAliases} role={role}>
         {widget}
       </WidgetProvider>
     ),
@@ -127,7 +132,7 @@ function createIdentifiedWidget(operation: WidgetRendererOperation, componentPro
 
 function findRelatedWidgetIndex(id: string, widgets: IdentifiedWidget[]) {
   for (const candidateRelatedWidget of widgets) {
-    if (candidateRelatedWidget.id === id) {
+    if (matchesWidgetId(candidateRelatedWidget, id)) {
       return widgets.indexOf(candidateRelatedWidget);
     }
   }
@@ -182,11 +187,11 @@ function createWidgetList(identifiedWidgets: IdentifiedWidget[]): WidgetList {
   widgetList.identified = identifiedWidgets;
 
   widgetList.byId = (id: string): ReactNode[] => {
-    return identifiedWidgets.filter(w => w.id === id).map(w => w.node);
+    return identifiedWidgets.filter(w => matchesWidgetId(w, id)).map(w => w.node);
   };
 
   widgetList.withoutId = (id: string): ReactNode[] => {
-    return identifiedWidgets.filter(w => w.id !== id).map(w => w.node);
+    return identifiedWidgets.filter(w => !matchesWidgetId(w, id)).map(w => w.node);
   };
 
   widgetList.byRole = (role: string): ReactNode[] => {
