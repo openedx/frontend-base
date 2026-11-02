@@ -1,6 +1,7 @@
 import { FC, ReactElement, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { RouteObject } from 'react-router';
+import type { InternalAxiosRequestConfig } from 'axios';
 import { SlotOperation } from './runtime/slots/types';
 import { LoggingService } from './runtime/logging/types';
 import { AnalyticsService } from './runtime/analytics/types';
@@ -26,12 +27,20 @@ export type AppConfig = Record<string, unknown>;
 
 export type AppProvider = FC<{ children?: ReactNode }>;
 
+/**
+ * Describes a single axios request interceptor function
+ * Used by app.middleware to contribute interceptors to the auth HTTP client
+ * See ADR 0018
+*/
+export type RequestMiddleware = (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>;
+
 export interface App {
   appId: string;
   routes?: RoleRouteObject[];
   providers?: AppProvider[];
   slots?: SlotOperation[];
   externalScripts?: ExternalScriptLoaderClass[];
+  middleware?: RequestMiddleware[];
   defaultConfig?: AppConfig;
   config?: AppConfig;
   provides?: Record<string, unknown>;
