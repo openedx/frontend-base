@@ -23,12 +23,12 @@ export enum WidgetOperationTypes {
   PREPEND = 'widgetPrepend',
 
   /**
-   * Adds a widget after the specified widget ID.  Multiple "insert after" operations on the same widget ID occur in the order they were declared.
+   * Adds a widget after the specified widget ID.  Multiple "insert after" operations on the same widget ID occur in the order they were declared.  The widget is placed relative to the target's current position; an app may reorder its default widgets between versions without that being a breaking change (ADR 0018).
    */
   INSERT_AFTER = 'widgetInsertAfter',
 
   /**
-   * Adds a widget before the specified widget ID.  Multiple "insert after" operations on the same widget ID occur in the order they were declared.
+   * Adds a widget before the specified widget ID.  Multiple "insert before" operations on the same widget ID occur in the order they were declared.  The widget is placed relative to the target's current position; an app may reorder its default widgets between versions without that being a breaking change (ADR 0018).
    */
   INSERT_BEFORE = 'widgetInsertBefore',
 
@@ -79,7 +79,7 @@ export interface WidgetIdentityProps {
   id: string;
   role?: string;
   /**
-   * Other IDs this widget answers to.  A relative operation (INSERT_AFTER, INSERT_BEFORE, REPLACE, REMOVE, OPTIONS) whose relatedId names one of them applies as if it named `id`.  When a widget ID is renamed, keep the old ID here for at least one release so site configs that target it keep working.
+   * Other IDs this widget answers to.  A relative operation (INSERT_AFTER, INSERT_BEFORE, REPLACE, REMOVE, OPTIONS) whose relatedId names one of them applies as if it named `id`.  When a widget ID is renamed, keep the old ID here so site configs that target it keep working; removing an alias is a breaking change, like removing any widget ID (ADR 0018).
    */
   idAliases?: string[];
 }
