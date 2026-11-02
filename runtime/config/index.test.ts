@@ -414,6 +414,25 @@ describe('mergeSiteConfig', () => {
     });
   });
 
+  describe('getAppConfig with no config at all', () => {
+    it('should return an empty object for an app with no config', () => {
+      setSiteConfig({
+        ...defaultSiteConfig,
+        apps: [{ appId: 'bare-app' }],
+      });
+      addAppConfigs();
+
+      expect(getAppConfig('bare-app')).toEqual({});
+    });
+
+    it('should return an empty object for an unknown app', () => {
+      setSiteConfig({ ...defaultSiteConfig, apps: [] });
+      addAppConfigs();
+
+      expect(getAppConfig('unknown-app')).toEqual({});
+    });
+  });
+
   describe('getAppConfig with defaultConfig', () => {
     it('should return defaultConfig values when nothing else is set', () => {
       setSiteConfig({

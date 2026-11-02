@@ -368,14 +368,12 @@ export function addAppConfigs() {
  * - `App.defaultConfig`, bundled by the app author
  * - `SiteConfig.commonAppConfig`, supplied site-wide by an operator
  * - `App.config`, supplied per-app by an operator
+ *
+ * Always returns an object: an app with none of the above gets `{}`.
  */
-export function getAppConfig(id: string) {
+export function getAppConfig(id: string): AppConfig {
   const { commonAppConfig } = getSiteConfig();
-  const defaultConfig = appDefaultConfigs[id];
-  if (defaultConfig === undefined && commonAppConfig === undefined) {
-    return appConfigs[id];
-  }
-  return merge({}, defaultConfig, commonAppConfig, appConfigs[id]);
+  return merge({}, appDefaultConfigs[id], commonAppConfig, appConfigs[id]);
 }
 
 export function mergeAppConfig(id: string, newAppConfig: AppConfig) {
