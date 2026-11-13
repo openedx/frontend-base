@@ -90,6 +90,7 @@ import {
 } from './logging';
 import { publish } from './subscriptions';
 import { EnvironmentTypes } from '../types';
+import { collectAppMiddleware } from './scripts';
 
 /**
  * If set in configuration, a basename will be prepended to all relative routes under BrowserRouter.
@@ -272,7 +273,7 @@ export async function initialize({
   loggingService = NewRelicLoggingService,
   analyticsService = SegmentAnalyticsService,
   authService = AxiosJwtAuthService,
-  authMiddleware = [],
+  authMiddleware = collectAppMiddleware(),
   requireAuthenticatedUser: requireUser = false,
   hydrateAuthenticatedUser: hydrateUser = false,
   messages,
