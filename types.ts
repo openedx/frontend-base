@@ -8,8 +8,13 @@ import { AuthService } from './runtime/auth/types';
 
 // Apps
 
+/**
+ * Where the site links to for a route role.  Takes precedence over an installed app's route for
+ * the same role.
+ */
 export interface ExternalRoute {
   role: string;
+  /** May contain `:name` tokens, filled from the params a link is resolved with. */
   url: string;
 }
 

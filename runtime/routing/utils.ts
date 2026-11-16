@@ -24,8 +24,23 @@ function findRoleInRoutes(routes: RouteObject[], role: string, prefix = ''): str
   return null;
 }
 
+/**
+ * The URL the site links to for `role`, if any.  The site's `externalRoutes` take precedence
+ * over the routes of installed apps, so a site can send a role an app declares elsewhere.
+ *
+ * @param {string} role
+ * @returns {string|null}
+ */
 export function getUrlByRouteRole(role: string) {
   const { apps, externalRoutes } = getSiteConfig();
+
+  if (externalRoutes) {
+    for (const externalRoute of externalRoutes) {
+      if (externalRoute.role === role) {
+        return externalRoute.url;
+      }
+    }
+  }
 
   if (apps) {
     for (const app of apps) {
@@ -38,15 +53,16 @@ export function getUrlByRouteRole(role: string) {
     }
   }
 
-  if (externalRoutes) {
-    for (const externalRoute of externalRoutes) {
-      if (externalRoute.role === role) {
-        return externalRoute.url;
-      }
-    }
-  }
-
   return null;
+}
+
+/* Fills the `:name` tokens of an external URL from `params`, URL-encoded. */
+function fillExternalUrlParams(url: string, params: Record<string, string>) {
+  return url.replace(/:([A-Za-z_][\w-]*)/g, (token, name) => (
+    Object.prototype.hasOwnProperty.call(params, name) && params[name] != null
+      ? encodeURIComponent(params[name])
+      : token
+  ));
 }
 
 export function isRoleRouteObject(match: RouteObject): match is RoleRouteObject {
@@ -72,10 +88,11 @@ export interface ResolvedRoute {
 }
 
 /**
- * Resolves the route the site provides for `role`, if any, ready to link to: the path of an
- * installed app's route, or the URL of an external route, as `getUrlByRouteRole` finds it.  An app
- * route's path has its params filled from `params` and a trailing splat dropped, as react-router's
- * `generatePath` does, so a missing required param throws; an external URL is returned as
+ * Resolves the route the site provides for `role`, if any, ready to link to: the URL of an
+ * external route, or the path of an installed app's route, as `getUrlByRouteRole` finds it.  A
+ * path in this site has its params filled from `params` and a trailing splat dropped, as
+ * react-router's `generatePath` does, so a missing required param throws; an external URL has the
+ * `:name` tokens that `params` provides filled in, URL-encoded, and is otherwise returned as
  * configured.  `isInternal` tells the two apart.
  *
  * ```
@@ -96,7 +113,7 @@ export function resolveRouteByRole(role: string, params: Record<string, string> 
     return null;
   }
   const isInternal = isInternalUrl(path);
-  return { url: isInternal ? generatePath(path, params) : path, isInternal };
+  return { url: isInternal ? generatePath(path, params) : fillExternalUrlParams(path, params), isInternal };
 }
 
 export interface LinkProps {

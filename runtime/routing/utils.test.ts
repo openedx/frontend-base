@@ -53,6 +53,21 @@ describe('getUrlByRouteRole', () => {
     expect(getUrlByRouteRole('org.openedx.frontend.role.login')).toBe('https://auth.example.com/login');
   });
 
+  it('prefers an external route over an app route for the same role', () => {
+    mockGetSiteConfig.mockReturnValue({
+      apps: [{
+        appId: 'authn',
+        routes: [{ path: '/authn/login', handle: { roles: ['org.openedx.frontend.role.login'] } }],
+      }],
+      externalRoutes: [{
+        role: 'org.openedx.frontend.role.login',
+        url: 'https://auth.example.com/login',
+      }],
+    } as any);
+
+    expect(getUrlByRouteRole('org.openedx.frontend.role.login')).toBe('https://auth.example.com/login');
+  });
+
   it('returns null when no matching role is found', () => {
     mockGetSiteConfig.mockReturnValue({
       apps: [],
@@ -89,10 +104,10 @@ describe('resolveRouteByRole', () => {
           { path: '/*', handle: { roles: ['catch-all'] } },
         ],
       }],
-      externalRoutes: [{
-        role: 'profile',
-        url: 'https://apps.example.com/profile/',
-      }],
+      externalRoutes: [
+        { role: 'profile', url: 'https://apps.example.com/profile/' },
+        { role: 'dates', url: 'http://lms.example.com:8000/courses/:courseId/dates?tab=:tab' },
+      ],
     } as any);
   });
 
@@ -123,6 +138,21 @@ describe('resolveRouteByRole', () => {
   it('resolves an external route to its URL as configured', () => {
     expect(resolveRouteByRole('profile', { courseId: 'c1' }))
       .toEqual({ url: 'https://apps.example.com/profile/', isInternal: false });
+  });
+
+  it('fills the params of an external URL, URL-encoded', () => {
+    expect(resolveRouteByRole('dates', { courseId: 'course-v1:edX+DemoX+Demo_Course', tab: 'a b' }))
+      .toEqual({
+        url: 'http://lms.example.com:8000/courses/course-v1%3AedX%2BDemoX%2BDemo_Course/dates?tab=a%20b',
+        isInternal: false,
+      });
+  });
+
+  it('leaves the tokens of an external URL that have no param alone', () => {
+    expect(resolveRouteByRole('dates', { courseId: 'c1' }))
+      .toEqual({ url: 'http://lms.example.com:8000/courses/c1/dates?tab=:tab', isInternal: false });
+    expect(resolveRouteByRole('dates', { courseId: 'c1', tab: undefined } as any))
+      .toEqual({ url: 'http://lms.example.com:8000/courses/c1/dates?tab=:tab', isInternal: false });
   });
 
   it('returns null when nothing provides the role', () => {
