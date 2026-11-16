@@ -6,6 +6,8 @@ export default function DefaultLayout() {
     <div className="d-flex flex-column min-vh-100">
       <div className="flex-grow-0 flex-shrink-0">
         <Slot id="org.openedx.frontend.slot.header.main.v1" />
+        <Slot id="org.openedx.frontend.slot.header.masqueradeBar.v1" />
+        <Slot id="org.openedx.frontend.slot.header.courseNavigationBar.v1" />
       </div>
       <div id="main-content" className="flex-grow-1">
         <Slot id="org.openedx.frontend.slot.content.main.v1" layout={DefaultMain} />
