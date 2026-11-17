@@ -920,16 +920,15 @@ Set the document title on every route-level page
 
 A frontend-base site renders all of its apps inside a single `index.html`, so the document title only changes if a page explicitly updates it.  If your app doesn't set a title, the browser tab keeps whatever the previously rendered app set.
 
-Each route-level page component must therefore set the document title using `<Helmet>` from `react-helmet`.  In practice this is the small wrapper component the route lazy-loads (typically `Main`), not the inner content component or any shared layout, slot, or nested widget.  The pattern is:
+Each route-level page component must therefore set the document title using the `usePageTitle()` hook from `@openedx/frontend-base`.  In practice this is the small wrapper component the route lazy-loads (typically `Main`), not the inner content component or any shared layout, slot, or nested widget.  The pattern is:
 
-1. Add `react-helmet` to the app's `dependencies` if it isn't there already.
-2. Add a localized message per page, with the id pattern `{page}.page.title` and a default of `{Page Name} | {siteName}`.  Don't reuse an existing on-page heading message (e.g., the h1/h2 "page title" used in the body): the document title needs `{siteName}` interpolation that would be wrong on a heading.
-3. Render a `<Helmet>` block in the route entry that sets `<title>` from that message, passing `siteName` from `getSiteConfig().siteName` as an i18n parameter.
+1. Add a localized message per page, with the id pattern `{page}.page.title` and a default of `{Page Name} | {siteName}`.  Don't reuse an existing on-page heading message (e.g., the h1/h2 "page title" used in the body): the document title needs `{siteName}` interpolation that would be wrong on a heading.
+2. Call `usePageTitle()` in the route entry with that message, passing `siteName` from `getSiteConfig().siteName` as an i18n parameter.
+3. If the app set its titles with `react-helmet`, remove those `<Helmet>` blocks and drop the dependency.
 
 ```jsx
-// src/Main.jsx — the component the route lazy-loads
-import { CurrentAppProvider, getSiteConfig, useIntl } from '@openedx/frontend-base';
-import { Helmet } from 'react-helmet';
+// src/Main.jsx - the component the route lazy-loads
+import { CurrentAppProvider, getSiteConfig, useIntl, usePageTitle } from '@openedx/frontend-base';
 
 import { appId } from './constants';
 import messages from './messages';
@@ -937,15 +936,12 @@ import Dashboard from './containers/Dashboard';
 
 const Main = () => {
   const { formatMessage } = useIntl();
+  usePageTitle(formatMessage(messages['learner.dashboard.page.title'], {
+    siteName: getSiteConfig().siteName,
+  }));
+
   return (
     <CurrentAppProvider appId={appId}>
-      <Helmet>
-        <title>
-          {formatMessage(messages['learner.dashboard.page.title'], {
-            siteName: getSiteConfig().siteName,
-          })}
-        </title>
-      </Helmet>
       <Dashboard />
     </CurrentAppProvider>
   );
@@ -967,11 +963,11 @@ export default defineMessages({
 });
 ```
 
-If the app has nested child routes (for example, a parent route with tabbed sub-routes under it), set the title once at the parent route entry.  Per-child titles are optional and follow the same pattern in each child component.
+If the app has nested child routes (for example, a parent route with tabbed sub-routes under it), set the title once at the parent route entry.  Per-child titles are optional and follow the same pattern in each child component: the innermost title wins.
 
-Pages with dynamic titles (for example, a course page that reads `{Course Name} | {siteName}`) follow the same pattern: render `<Helmet>` once the data is available and pass the dynamic value through `formatMessage`.  Until the data resolves, the previous page's title persists, which is acceptable for the brief loading window.
+Pages with dynamic titles (for example, a course page that reads `{Course Name} | {siteName}`) follow the same pattern: pass `undefined` to `usePageTitle()` until the data is available, then pass the dynamic value through `formatMessage`.  Until the data resolves, the tab shows the parent route's title, or the previous page's if no parent sets one, which is acceptable for the brief loading window.
 
-See [ADR 0015](../decisions/0015-page-titles-via-helmet.rst) for the full rationale and rejected alternatives.
+See [ADR 0015](../decisions/0015-page-titles-via-use-page-title.rst) for the full rationale and rejected alternatives.
 
 
 Render one `<main>` landmark per route
