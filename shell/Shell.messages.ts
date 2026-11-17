@@ -56,6 +56,16 @@ const messages = defineMessages({
     defaultMessage: 'More',
     description: 'Text for a button that reveals more links and content in the footer.',
   },
+  notFoundPageTitle: {
+    id: 'not.found.page.title',
+    defaultMessage: 'Page not found | {siteName}',
+    description: 'Document title for the page shown when a route is not found.',
+  },
+  errorPageTitle: {
+    id: 'error.page.title',
+    defaultMessage: 'Error | {siteName}',
+    description: 'Document title for the page shown when an unexpected error occurs.',
+  },
   'header.help': {
     id: 'header.help',
     defaultMessage: 'Help',

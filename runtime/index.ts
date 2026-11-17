@@ -121,6 +121,7 @@ export {
   PageWrap,
   useSiteEvent,
   useAuthenticatedUser,
+  usePageTitle,
   useSiteConfig,
   useAppConfig
 } from './react';
