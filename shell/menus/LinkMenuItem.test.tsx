@@ -43,6 +43,17 @@ function clickWithoutNavigating(link: HTMLElement) {
 
 const variants = ['hyperlink', 'navLink', 'navDropdownItem', 'dropdownItem'] as const;
 
+// Paragon's Hyperlink defaults target to _self, adds noopener noreferrer to any rel on a _blank
+// link, and appends "in a new tab" to a _blank link's accessible name. The other variants render
+// exactly what LinkMenuItem passes them.
+const plainExpectations = { defaultTarget: null, explicitNoopenerRel: 'noopener', newTabName: 'Account' };
+const expected = {
+  hyperlink: { defaultTarget: '_self', explicitNoopenerRel: 'noopener noreferrer', newTabName: 'Account in a new tab' },
+  navLink: plainExpectations,
+  navDropdownItem: plainExpectations,
+  dropdownItem: plainExpectations,
+};
+
 describe('LinkMenuItem', () => {
   describe.each(variants)('as %s', (variant) => {
     it('navigates to a route an app provides without leaving the client', () => {
@@ -63,6 +74,42 @@ describe('LinkMenuItem', () => {
 
       clickWithoutNavigating(link);
       expect(screen.getByTestId('location')).toHaveTextContent('/home');
+    });
+
+    it('renders neither target nor rel by default', () => {
+      renderItem({ role: profileRole, variant });
+      const link = screen.getByRole('link', { name: 'Account' });
+      expect(link.getAttribute('target')).toBe(expected[variant].defaultTarget);
+      expect(link).not.toHaveAttribute('rel');
+    });
+
+    it('defaults rel to noopener noreferrer when opening a new tab', () => {
+      renderItem({ role: profileRole, variant, target: '_blank' });
+      const link = screen.getByRole('link', { name: expected[variant].newTabName });
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+
+    it('uses an explicit rel unchanged', () => {
+      renderItem({ role: profileRole, variant, target: '_blank', rel: 'noopener' });
+      const link = screen.getByRole('link', { name: expected[variant].newTabName });
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', expected[variant].explicitNoopenerRel);
+    });
+
+    it('passes any other target through without a rel', () => {
+      renderItem({ role: profileRole, variant, target: 'studio-help' });
+      const link = screen.getByRole('link', { name: 'Account' });
+      expect(link).toHaveAttribute('target', 'studio-help');
+      expect(link).not.toHaveAttribute('rel');
+    });
+
+    it('keeps target and rel on a route an app provides', () => {
+      renderItem({ role: accountRole, variant, target: '_blank' });
+      const link = screen.getByRole('link', { name: expected[variant].newTabName });
+      expect(link).toHaveAttribute('href', '/account');
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     });
   });
 
