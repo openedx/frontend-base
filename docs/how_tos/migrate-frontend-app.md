@@ -980,6 +980,12 @@ Render one `<main>` landmark per route
 The shell renders no `<main>`. Apps are expected to render `<main>` around primary content in each route. HTML allows no more than one without the `hidden` attribute. The shell's "skip to main content" link moves focus to it. Assert it in your route tests once the page has rendered: `expect(runPageRules(document)).toEqual([])`.
 
 
+Pass `preventScrollReset` on navigations that stay on the page
+===============================================================
+
+The shell renders react-router's [`<ScrollRestoration />`](https://reactrouter.com/v6/components/scroll-restoration), so each client-side navigation starts at the top of the page, and back/forward restores the previous position. An app doesn't need to manage this itself. A navigation that only updates the address in place, such as a filter or sort written to the query string, would also jump to the top, so pass `preventScrollReset` to it: `navigate('?sort=date', { preventScrollReset: true })`, `setSearchParams(params, { preventScrollReset: true })`, or `<Link to="?page=2" preventScrollReset>`.
+
+
 Separate runtime styles from the dev harness
 ============================================
 

@@ -1,3 +1,5 @@
+import { ScrollRestoration } from 'react-router-dom';
+
 import {
   SiteProvider,
   Slot
@@ -12,6 +14,8 @@ export default function Shell() {
 
   return (
     <SiteProvider>
+      {/* Start each navigation at the top of the page, and restore the position on back/forward. */}
+      <ScrollRestoration />
       <Slot id="org.openedx.frontend.slot.layout.main.v1" layout={DefaultLayout} />
     </SiteProvider>
   );
