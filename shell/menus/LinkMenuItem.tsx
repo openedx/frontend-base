@@ -1,4 +1,5 @@
 import { Dropdown, Hyperlink, NavDropdown, NavLink } from '@openedx/paragon';
+import { ComponentProps } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
@@ -15,9 +16,13 @@ interface LinkMenuItemProps {
   role?: string;
   url?: string;
   variant?: 'hyperlink' | 'navLink' | 'navDropdownItem' | 'dropdownItem';
+  /** Where to open the link, such as `_blank` for a new tab. */
+  target?: React.HTMLAttributeAnchorTarget;
+  /** Link relationship. Defaults to `noopener noreferrer` when `target` is `_blank`. */
+  rel?: string;
 }
 
-export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }: LinkMenuItemProps) {
+export default function LinkMenuItem({ label, role, url, variant = 'hyperlink', target, rel }: LinkMenuItemProps) {
   const intl = useIntl();
   const location = useLocation();
   const finalLabel = getItemLabel(label, intl);
@@ -37,11 +42,19 @@ export default function LinkMenuItem({ label, role, url, variant = 'hyperlink' }
 
   // A path in this site is a react-router Link, so the navigation stays in the client; anything
   // else is a plain anchor.
-  const linkProps = getLinkProps(finalUrl);
+  const linkProps = {
+    ...getLinkProps(finalUrl),
+    target,
+    // Default rel for new tabs to protect against reverse tabnabbing: without noopener, the
+    // opened page gets a window.opener handle and can redirect this one.
+    rel: rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined),
+  };
 
   if (variant === 'hyperlink') {
     return (
-      <Hyperlink {...linkProps}>
+      // Paragon types Hyperlink's target as '_blank' | '_self', but it passes any value through to
+      // the anchor.
+      <Hyperlink {...linkProps} target={target as ComponentProps<typeof Hyperlink>['target']}>
         {finalLabel}
       </Hyperlink>
     );
